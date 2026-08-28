@@ -1,0 +1,171 @@
+{
+  "run_id": "20260828T175028Z",
+  "generated_at": "2026-08-28T17:50:28.599874+00:00",
+  "task": "concall_summary",
+  "fixture_task": "concall_summary",
+  "replayed_as": "concall_summary",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-fixtures/concall_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "investor_calls",
+      "population_size": 4157,
+      "skipped": [],
+      "subset_of": "concall_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 20,
+      "selection": "One per tone_label present — tone_label is the only closed-set,"
+    },
+    "cases_total": 3,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "structured_output_used": 1,
+    "json_repair_used": 0,
+    "guided_and_clean": 1,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 64.702,
+    "total_prompt_tokens": 11908,
+    "total_completion_tokens": 288,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "tone_label_agreement_rate": 1.0,
+    "invalid_tone_labels": 0,
+    "tone_confusion": {
+      "Mixed->Mixed": 1
+    },
+    "mean_lexical_overlap": 0.2675
+  },
+  "results": [
+    {
+      "task": "concall_summary",
+      "fixture_id": "CC_ALKYLAMINE_106620224",
+      "ok": true,
+      "output": {
+        "summary": "The earnings call for Alkyl Amines Chemicals Limited on May 6, 2026, discussed the company's Q4FY26 financial performance. Management noted that both revenue and profit remained flat compared to the previous year, with minor fluctuations of around 1%. The company faced challenges in sourcing ammonia, particularly in March, but managed to maintain operations through inventory. However, ongoing geopolitical tensions, such as the war affecting supply chains, remain a concern. Demand for products has not significantly declined, as customers absorb higher prices due to the relatively minor cost of the company's products in their overall expenses. Volume growth was flat, with a slight decline in both price and volume. The company is working on a new project in Kurkumbh, slightly delayed to the next quarter, but the economics remain unchanged. Management expressed cautious optimism about future growth, citing potential benefits from reduced Chinese competition and improved margins. However, uncertainties remain regarding the duration of current price levels and the impact of new competitors entering the methylamine market. The company is also exploring R&D initiatives for new products but has not yet announced specifics. Overall, the company is navigating a challenging environment with a focus on maintaining market share and managing supply chain disruptions.",
+        "tone_label": "Mixed",
+        "tone_note": "The tone is mixed as the document acknowledges both challenges and cautious optimism, highlighting uncertainties and potential benefits."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 11908,
+      "completion_tokens": 288,
+      "total_tokens": 12196,
+      "latency_sec": 64.7016,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": "Mixed",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1374,
+        "reference_chars": 1004,
+        "lexical_overlap": 0.2675,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The earnings conference call for Alkyl Amines Chemicals Limited, held on May 6, 2026, featured management discussing the company's financial performance for Q4FY26. Management reported that both the top line and bottom line remained flat, with a slight increase in market share despite challenging market conditions. They noted that raw material prices, particularly ammonia, had risen significantly due to geopolitical factors, impacting production costs. Management indicated that while they had managed to source ammonia, the future supply chain remained uncertain. They mentioned a cautious optimism regarding potential volume growth of 5% to 10% in the upcoming year, contingent on market stability. Additionally, management highlighted ongoing projects and the potential for new product launches, while emphasizing the importance of maintaining competitive margins amidst fluctuating raw material prices. The call concluded with management expressing gratitude for investor interest and engagement.",
+        "tone_label": "Mixed",
+        "tone_note": "Management conveyed both challenges and cautious optimism regarding future performance.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T20:23:32.274836"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_ALKYLAMINE_106620224",
+        "symbol": "ALKYLAMINE",
+        "company_name": "Alkyl Amines Chemicals Limited",
+        "filing_id": "106620224",
+        "doc_type": "concall_transcript",
+        "doc_kind": "earnings concall transcript"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "concall_front_slice",
+        "input_type": "raw_transcript_text[:120000] front slice",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-25T20:23:32.274836",
+        "reference_prompt_version": "concall_summarizer@8bb3170",
+        "reference_output_schema": [
+          "summary",
+          "tone_label",
+          "tone_note"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "None material: concall_summarizer.py has NOT been rewired through Evidence Finder, so the code path that produced this reference is the code path that exists today. The input is exactly reproducible and this is a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "May 13, 2026 \n \nTo,  \nBSE Limited \nP. J. Towers, Dalal Street,  \nMumbai - 400 001  \nSCRIP CODE: 506767  \n \n \nThe NaƟonal Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex,  \nBandra - (E), Mumbai - 400 051 \nSYMBOL: ALKYLAMINE \nDear Sir / Madam, \n \nSubject: Transcript of Conference Call held on May 6, 2026 with investors and analyst on financial \nperformance of Q4FY26 \n \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, \n2015, we are enclosing herewith the transcript of the Conference Call held on Wednesday, May 6, \n2026 at 3.00 p.m. (IST) with investors and analyst on financial performance of Q4FY26. \n \nThe said transcript will also be made available at the website of the Company at www.alkylamines.com \nunder Investor Relations>Investor Center>Conference Call Transcripts \n \nYou are requested to kindly take the same on your record.   \n \nThanking you, \n \nFor Alkyl Amines Chemicals Limited \n \n \n \nChintamani Thatte \nGeneral Manager (Legal) & Company Secretary  \n& Compliance Oﬃcer \n \nEncl: As above \nChintamani \nDattatraya \nThatte\nDigitally signed by \nChintamani \nDattatraya Thatte \nDate: 2026.05.13 \n12:42:34 +05'30'\n\nPage 1 of 16 \n \n \n \n“Alkyl Amines Chemicals Limited \nQ4 and FY26 Earnings Conference Call” \nMay 06, 2026 \n \n \n \n \n \n \n       \n \n \nMANAGEMENT: MR. KIRAT PATEL – EXECUTIVE DIRECTOR – ALKYL \nAMINES CHEMICALS LIMITED \n \nMRS. KANCHAN SHINDE – CHIEF FINANCIAL OFFICER \n– ALKYL AMINES CHEMICALS LIMITED \n \nMR\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}

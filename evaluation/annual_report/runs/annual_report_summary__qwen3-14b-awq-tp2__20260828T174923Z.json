@@ -1,0 +1,227 @@
+{
+  "run_id": "20260828T174923Z",
+  "generated_at": "2026-08-28T17:49:23.852532+00:00",
+  "task": "annual_report_summary",
+  "fixture_task": "annual_report_summary",
+  "replayed_as": "annual_report_summary",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-fixtures/annual_report_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "annual_reports",
+      "reference_set": "LEGACY_REFERENCE (72 summaries written 2026-08-16)",
+      "population_size": 72,
+      "evidence_finder": "RedixFi data-pipeline/evidence_finder.py (real)",
+      "evidence_max_tokens": 20000,
+      "skipped": [],
+      "subset_of": "annual_report_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 20,
+      "selection": "Distinct symbols, spread across evidence size (small/median/large) so"
+    },
+    "cases_total": 3,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "structured_output_used": 1,
+    "json_repair_used": 0,
+    "guided_and_clean": 1,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 79.364,
+    "total_prompt_tokens": 23638,
+    "total_completion_tokens": 580,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "mean_lexical_overlap": 0.0606
+  },
+  "results": [
+    {
+      "task": "annual_report_summary",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "executive_summary": "Eternal Limited, formerly Zomato, reported significant growth in FY2025-26 driven by a shift to inventory ownership in its quick commerce segment, which expanded revenue to include full monetary value of goods sold. The company highlighted growth across food delivery, quick commerce, and going-out segments, alongside challenges in its B2B supplies business. Strategic focus areas included operational efficiency, stakeholder management, and risk mitigation through diversified supply chains and technological investments.",
+        "key_points": [
+          "Shift to inventory ownership in quick commerce significantly expanded revenue scope, including full monetary value of goods sold.",
+          "Food delivery and going-out segments showed growth, while B2B supplies faced challenges due to business model adjustments.",
+          "Emphasis on operational efficiency, stakeholder alignment, and risk mitigation through diversified supply chains and technology."
+        ],
+        "important_risks": [
+          "Intensifying competition across segments threatens growth and profitability.",
+          "Stakeholder management challenges, including labor volatility and supply chain constraints.",
+          "Macro-economic fluctuations and geopolitical risks impacting consumer spending and logistics."
+        ],
+        "key_takeaway": "Eternal's strategic shift to inventory ownership in quick commerce drove substantial revenue growth, but the company faces ongoing challenges in managing competition, stakeholder dynamics, and macroeconomic risks.",
+        "summary": "Eternal Limited, formerly Zomato, reported significant growth in FY2025-26 driven by a shift to inventory ownership in its quick commerce segment, which expanded revenue to include full monetary value of goods sold. The company highlighted growth across food delivery, quick commerce, and going-out segments, alongside challenges in its B2B supplies business. Strategic focus areas included operational efficiency, stakeholder management, and risk mitigation through diversified supply chains and technological investments.",
+        "bullets": [
+          "Shift to inventory ownership in quick commerce significantly expanded revenue scope, including full monetary value of goods sold.",
+          "Food delivery and going-out segments showed growth, while B2B supplies faced challenges due to business model adjustments.",
+          "Emphasis on operational efficiency, stakeholder alignment, and risk mitigation through diversified supply chains and technology."
+        ]
+      },
+      "attempts": 2,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "financial figure stated as fact '169%'",
+          "text": {
+            "executive_summary": "Eternal Limited, formerly Zomato, reported a 169% YoY increase in consolidated revenue from operations in FY2025-26, driven by a shift to inventory ownership in quick commerce, which now includes the full monetary value of goods sold. The company's food delivery revenue grew 26% YoY, while quick commerce revenue surged 626% YoY. However, the B2B supplies segment saw a 13% decline due to scaling back non-restaurant operations. The report highlights strategic transitions, including Blinkit's inventory-owned model to control pricing and margins, and ongoing investments in technology and operational efficiency.",
+            "key_points": [
+              "Shift to inventory ownership in quick commerce significantly boosted revenue by including full monetary value of goods sold.",
+              "Blinkit's transition to an inventory-owned model to enhance pricing control and operational efficiency.",
+              "Continued investment in technology and infrastructure to support growth in food delivery and quick commerce segments."
+            ],
+            "important_risks": [
+              "Intensifying competition in both established and emerging segments may compress margins and impact profitability.",
+              "Stakeholder management challenges, including labor volatility and supply chain constraints, could disrupt operations.",
+              "Macro-economic fluctuations and geopolitical volatility may affect consumer spending and operational costs."
+            ],
+            "key_takeaway": "Eternal Limited's strategic shift to inventory ownership in quick commerce has driven substantial revenue growth, but the company faces risks from competitive pressures, stakeholder management, and macro-economic uncertainties.",
+            "summary": "Eternal Limited, formerly Zomato, reported a 169% YoY increase in consolidated revenue from operations in FY2025-26, driven by a shift to inventory ownership in quick commerce, which now includes the full monetary value of goods sold. The company's food delivery revenue grew 26% YoY, while quick commerce revenue surged 626% YoY. However, the B2B supplies segment saw a 13% decline due to scaling back non-restaurant operations. The report highlights strategic transitions, including Blinkit's inventory-owned model to control pricing and margins, and ongoing investments in technology and operational efficiency.",
+            "bullets": [
+              "Shift to inventory ownership in quick commerce significantly boosted revenue by including full monetary value of goods sold.",
+              "Blinkit's transition to an inventory-owned model to enhance pricing control and operational efficiency.",
+              "Continued investment in technology and infrastructure to support growth in food delivery and quick commerce segments."
+            ]
+          }
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 23638,
+      "completion_tokens": 580,
+      "total_tokens": 24218,
+      "latency_sec": 79.3635,
+      "comparison": {
+        "reference_present": true,
+        "reference_schema_matches_replay": false,
+        "schema_mismatch_note": "Reference is LEGACY-shaped (summary/bullets/key_takeaway) but this replay uses the CURRENT schema. Field-level comparison is not meaningful here — replay as 'annual_report_summary_legacy' for the like-for-like reading.",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_key_point_count": 3,
+        "reference_key_point_count": 0,
+        "candidate_risk_count": 3,
+        "reference_risk_count": 0,
+        "candidate_chars": 1382,
+        "reference_chars": 159,
+        "lexical_overlap": 0.0606,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Eternal Limited's annual report for FY2025-26 outlines the company's commitment to building a sustainable business across four key segments: food delivery, quick commerce, going-out experiences, and B2B supplies. Management emphasized the importance of innovation and customer engagement, highlighting initiatives like the Healthy Mode on the Zomato app and the expansion of the Blinkit quick commerce platform. The report also detailed the company's focus on sustainability, including significant investments in electric vehicle delivery and efforts to minimize plastic waste, while maintaining a strong governance framework to support its operations.",
+        "bullets": [
+          "Management highlighted a commitment to sustainability and reducing carbon emissions.",
+          "The company focused on expanding its quick commerce and food delivery segments.",
+          "Eternal Limited emphasized innovation in customer engagement through new app features.",
+          "Management reported on the importance of governance and ethical business practices.",
+          "The report detailed efforts to support local communities and enhance food supply chains."
+        ],
+        "key_takeaway": "Eternal Limited is dedicated to building a sustainable and innovative business model while enhancing customer experiences across its diverse service offerings.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-16T12:43:46.706384"
+      },
+      "case_meta": {
+        "benchmark_id": "AR_ETERNAL_AR_30059_ETERNAL_2025_2026_A_48211721_29072026204435",
+        "symbol": "ETERNAL",
+        "company_name": "ETERNAL LIMITED",
+        "fiscal_year": "FY2025-26",
+        "filing_id": "AR_30059_ETERNAL_2025_2026_A_48211721_29072026204435",
+        "doc_type": "annual_report"
+      },
+      "provenance": {
+        "reference_set": "LEGACY_REFERENCE",
+        "pipeline_version": "legacy_front_slice_pre_evidence_finder",
+        "input_type": "dual: legacy_front_slice + evidence_finder",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-16T12:43:46.706384",
+        "reference_prompt_version": "annual_report_summarizer@2026-08-16",
+        "reference_prompt_source_commit": "b9e40c4~1",
+        "reference_output_schema": [
+          "summary",
+          "bullets",
+          "key_takeaway"
+        ],
+        "current_pipeline_version": "evidence_finder@b9e40c4",
+        "current_prompt_version": "annual_report_summarizer@8bb3170",
+        "current_output_schema": [
+          "executive_summary",
+          "key_points",
+          "important_risks",
+          "key_takeaway"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "The stored reference PREDATES the Evidence Finder layer (reference 2026-08-16, Evidence Finder 2026-08-24).",
+          "Replaying as 'annual_report_summary_legacy' is like-for-like. Replaying as 'annual_report_summary' changes BOTH the input and the output schema, and is NOT a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "[Evidence chunk 1, page ~2]\nre registered with the Company/ \nregistrar and share transfer agent/ depositories/ depository participants. \n \nThe Board has appointed National Securities Depository Limited (“NSDL”) as the e-voting \nagency. Members of the Company holding shares in demat or physical form as on Wednesday, \nAugust 19, 2026 (“Cut-off date”) are entitled to cast their vote on the resolutions as set out in \nthe Notice by electronic means, through remote e-voting facility which shall commence on \nSaturday, August 22, 2026 at 9:00 A.M. (IST) and end on Tuesday, August 25, 2026 at 5:00 P.M. \n(IST) or through e-voting at the AGM. \n \nThe Notice convening the AGM along with the Annual Report are uploaded on the Company’s \nwebsite at www.eternal.com and also at the website of NSDL at www.evoting.nsdl.com. \n \nFor Eternal Limited \n(Formerly known as Zomato Limited) \n \n \n \nSandhya Sethia \nCompany Secretary & Compliance Officer \nDate: July 28, 2026 \nEncl.: As above \nSANDHY\nA SETHIA\nDigitally signed by \nSANDHYA SETHIA \nDate: 2026.07.29 \n20:34:18 +05'30'\n\nAnnual Report 2025-26\nNATIONAL SPORTS STADIUM\nPowering India's changing lifestyles\n\nOur mission statement\nPowering India's\nchanging lifestyles\nOur vision statements \nBetter food for more people\nZOMATO\nInstant commerce indistinguishable from magic\nBLINKIT\nWorld class going-out experiences in India\nDISTRICT\nBuilding Indiaˇss most trusted food supply chain\nHYPERPURE\nMake India malnutrition free\nFEEDING INDIA\n\nTable of contents\nCompany\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}

@@ -1,0 +1,263 @@
+{
+  "run_id": "20260828T175054Z",
+  "generated_at": "2026-08-28T17:50:54.661177+00:00",
+  "task": "ask_ai",
+  "fixture_task": "ask_ai",
+  "replayed_as": "ask_ai",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-fixtures/ask_ai_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collections": [
+        "ask_log",
+        "ask_conversations"
+      ],
+      "population_size": 44,
+      "packet_rebuilt_via": "RedixFi core/ask.py::build_fact_packet (real)",
+      "embedding_enabled": false,
+      "skipped": [
+        {
+          "ask_log_id": "6a883226df08c294d1862af3",
+          "reason": "no assistant answer"
+        },
+        {
+          "ask_log_id": "6a87b9eed1d25d8d5fe8ae8d",
+          "reason": "no assistant answer"
+        },
+        {
+          "ask_log_id": "6a8739f65e18aee74f30e53f",
+          "reason": "no assistant answer"
+        }
+      ],
+      "subset_of": "ask_ai_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 30,
+      "selection": "Distinct symbols, and spread across reference answer length so both a"
+    },
+    "cases_total": 3,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "structured_output_used": 1,
+    "json_repair_used": 0,
+    "guided_and_clean": 1,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 24.012,
+    "total_prompt_tokens": 8722,
+    "total_completion_tokens": 433,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "refusal_agreement_rate": 1.0,
+    "mean_lexical_overlap": 0.1875
+  },
+  "results": [
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The data shows TCS's composite score rose from 49 to 53 on 2026-08-28, but the cause of this change is not specified — several explanations are usually possible.",
+        "refused": false,
+        "refusal_reason": null,
+        "causal_backstop": true
+      },
+      "attempts": 2,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "validation: fabricated causal attribution 'driven by' with no matched news event",
+          "text": {
+            "answer": "**TCS** (Tata Consultancy Services) is a leading Indian IT services company in the **NIFTYIT** sector, operating in the **Software & Programming** industry. As of **2026-08-28**, its **composite score** is **53**, showing a **+4** increase from the previous day and a **+16** increase over the past five days. Key signals include **trend strengthening**, **increased volume participation**, **delivery holding steady**, and **RSI moving higher**. The company's **sector rank** is **42** out of **93** in its sector, and its **promoter stake** remains stable at **71.77%**. Financially, TCS reported **revenue of ₹72,275 crore** in Q1 FY2027, with a **13.9% YoY growth** and **2.2% QoQ growth**, driven by strong performance in BFSI, technology, and AI services. The **AI revenue** reached **$2.6 billion** in annualized terms, and the company secured a **TCV of $9.5 billion**, including significant AI-led deals. However, **operating margins** were **24%**, down **130 basis points** due to wage hikes. The **PE ratio** is **14.76**, **below** the sector average of **23.59**, and the **dividend yield** is **2.67%**. Recent news includes **geopolitical tensions** affecting the broader market and a **report on variable pay** for employees.",
+            "refused": false,
+            "refusal_reason": null
+          }
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 8722,
+      "completion_tokens": 433,
+      "total_tokens": 9155,
+      "latency_sec": 24.0119,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": false,
+        "reference_refused": false,
+        "refusal_agreement": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "reference_compliance_backstop_artifact": false,
+        "candidate_chars": 161,
+        "reference_chars": 44,
+        "lexical_overlap": 0.1875,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The composite score for TCS today is **34**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p15",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p78",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p81",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a85e6d5252e66cd52d9e668",
+        "symbol": "TCS",
+        "question": "TCS",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      },
+      "evidence_excerpt": "{\"symbol\": \"TCS\", \"measured_signals\": {\"date\": \"2026-08-28\", \"composite_score\": 53, \"delta_1d\": 4, \"delta_5d\": 16, \"sector\": \"NIFTYIT\", \"industry\": \"Software & Programming\", \"signal_states\": [\"BELOW_20DMA\"], \"component_changes\": [{\"signal\": \"trend\", \"note\": \"trend strengthened\"}, {\"signal\": \"volume\", \"note\": \"volume participation increased\"}, {\"signal\": \"delivery\", \"note\": \"delivery held steady\"}, {\"signal\": \"rsi\", \"note\": \"RSI moved higher\"}, {\"signal\": \"sector\", \"note\": \"industry standing improved\"}, {\"signal\": \"pcr\", \"note\": \"options positioning shifted more call-heavy\"}, {\"signal\": \"pledge\", \"note\": \"promoter pledge unchanged\"}, {\"signal\": \"insider\", \"note\": \"insider filings unchanged\"}, {\"signal\": \"fii\", \"note\": \"FII flow backdrop unchanged\"}], \"signals\": {\"trend_10d_pct\": -0.8, \"volume_ratio_5d\": 0.66, \"delivery_pct\": 54.6, \"delivery_avg20\": 48.1, \"rsi_14\": 53.4, \"sector_rank\": 42, \"sector_count\": 93, \"pcr\": 0.99, \"pcr_available\": true, \"event_risk_5d\": false, \"pledge_pct\": 0.6, \"pledge_trend\": \"stable\"}}, \"fundamentals_derived\": {\"valuation\": {\"pe_ttm\": 14.76, \"pb\": 8.52, \"net_margin_ttm\": 18.05, \"roe_ttm\": 45.42, \"debt_to_equity\": 0.1, \"sector_pe\": 23.59, \"pe_vs_sector\": \"below\", \"dividend_yield_pct\": 2.67}, \"quarterly\": {\"latest_quarter_end\": \"2026-06-30\", \"revenue\": 72275.0, \"revenue_yoy_pct\": 13.93, \"revenue_qoq_pct\": 2.23, \"revenue_accel_quarters\": 4, \"pat\": 13349.0, \"pat_yoy_pct\": 4.62, \"opm_pct\": 23.04, \"opm_yoy_bps_change\": -144, \"opm_vs_8q_avg\": \"below\", \"eps\""
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "run_id": "20260828T175030Z",
+  "generated_at": "2026-08-28T17:50:30.635004+00:00",
+  "task": "red_flag",
+  "fixture_task": "red_flag",
+  "replayed_as": "red_flag",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-fixtures/red_flag_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "chromadb annual_reports",
+      "available_positives": {
+        "auditor_qualification": 684,
+        "contingent_liability": 1144,
+        "related_party_transaction": 1754,
+        "promoter_pledge": 26
+      },
+      "available_negatives": 53305,
+      "strata": {
+        "auditor_qualification": 10,
+        "contingent_liability": 10,
+        "related_party_transaction": 10,
+        "promoter_pledge": 10,
+        "negative_unflagged": 20
+      },
+      "dropped_no_keyword_candidates": 0,
+      "sampling": "evenly-strided over sorted ids (deterministic), not first-N",
+      "subset_of": "red_flag_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 60,
+      "selection": "One per positive category plus negatives. The negatives matter most:"
+    },
+    "cases_total": 6,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "structured_output_used": 1,
+    "json_repair_used": 0,
+    "guided_and_clean": 1,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 2.021,
+    "total_prompt_tokens": 601,
+    "total_completion_tokens": 54,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "outcomes": {
+      "agree": 1
+    },
+    "agreement_rate": 1.0
+  },
+  "results": [
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true,
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The auditor discusses their independence and ethical compliance in accordance with the Code of Ethics and the Act. They mention key audit matters related to revenue recognition from fixed price contracts using the percentage of completion method."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 601,
+      "completion_tokens": 54,
+      "total_tokens": 655,
+      "latency_sec": 2.0214,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": "auditor_qualification",
+        "outcome": "agree",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 246,
+        "reference_summary_chars": 231,
+        "summary_overlap": 0.3125
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the audit process and key audit matters related to the standalone financial statements, including the recognition of revenue from fixed price contracts and the judgments and estimates involved in this process."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ABB_AR_ABB_277",
+        "symbol": "ABB",
+        "company_name": "ABB India Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ABB_277",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      },
+      "evidence_excerpt": "ndependent of the Company in accordance with the Code \nof Ethics issued by the Institute of Chartered Accountants \nof India together with the ethical requirements that are \nrelevant to our audit of the standalone financial statements \nunder the provisions of the Act and the Rules thereunder, \nand we have fulfilled our other ethical responsibilities in \naccordance with these requirements and the Code of Ethics. \nWe believe that the audit evidence we have obtained is \nsufficient and appropriate to provide a basis for our opinion \non the standalone financial statements.\nKEY AUDIT MATTERS\nKey audit matters are those matters that, in our professional judgment, were of most significance in our audit of the \nstandalone financial statements of the current period. These matters were addressed in the context of our audit of the \nstandalone financial statements as a whole, and in forming our opinion thereon, and we do not provide a separate opinion \non these matters.\nRevenue from fixed price contracts using percentage of completion method\nSee Note 2.3(a) and 2.6 to the standalone financial statements.\nThe key audit matter\nHow the matter was addressed in our audit\nRevenue from fixed price contracts are recognized in \naccordance with Ind AS 115, Revenue from Contracts with \nCustomers, and as detailed in note 2.3(a) and 2.6 of the \n“material accounting policies” in the standalone financial \nstatements.\nThere are key judgments and estimates involved in the \nrecognition of revenue relating t\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}
