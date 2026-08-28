@@ -1,0 +1,218 @@
+"""Side-by-side comparison metrics.
+
+DELIBERATE DESIGN LIMIT — read this before adding a "score".
+
+The founder's instruction is explicit: no LLM judge as the final authority,
+human comparison required first. So this module computes only OBJECTIVE,
+mechanically-checkable signals and refuses to emit an overall quality
+number. It answers questions with a defensible right answer:
+
+  * did the candidate output pass the SAME compliance validator the
+    production output had to pass?
+  * for red_flag, did it reach the same category decision? (a real
+    confusion matrix — this is the one task with genuine ground truth)
+  * did it obey the schema RedixFi's parser requires?
+  * how do lengths, refusal rates and grounding overlap compare?
+
+It does NOT judge factual correctness, reasoning quality, financial
+terminology, or usefulness to an investor. Those are on the human review
+sheet the report generates, and they stay there until a human fills them in.
+"""
+from __future__ import annotations
+
+import re
+from typing import Any, Dict, List, Optional, Set
+
+from ..compliance.validators import ask_answer_violation, violation
+
+_WORD_RE = re.compile(r"[a-z0-9]+")
+_STOPWORDS = frozenset({
+    "the", "a", "an", "and", "or", "of", "to", "in", "for", "on", "with", "as",
+    "is", "was", "were", "are", "be", "been", "by", "that", "this", "it", "its",
+    "at", "from", "not", "no", "has", "have", "had", "which", "their", "they",
+})
+
+
+def _tokens(text: str) -> Set[str]:
+    return {w for w in _WORD_RE.findall((text or "").lower()) if w not in _STOPWORDS and len(w) > 2}
+
+
+def jaccard(a: str, b: str) -> float:
+    ta, tb = _tokens(a), _tokens(b)
+    if not ta and not tb:
+        return 1.0
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
+def _ar_text(payload: Dict[str, Any]) -> str:
+    parts = [
+        payload.get("executive_summary") or "",
+        " ".join(payload.get("key_points") or []),
+        " ".join(payload.get("important_risks") or []),
+        payload.get("key_takeaway") or "",
+    ]
+    return " ".join(p for p in parts if p)
+
+
+def compare_annual_report(case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str, Any]:
+    reference = case.get("reference") or {}
+    ref_text, cand_text = _ar_text(reference), _ar_text(candidate)
+
+    def compliance(payload: Dict[str, Any]) -> Optional[str]:
+        for field in ("executive_summary", "key_takeaway"):
+            reason = violation(payload.get(field) or "", check_financial_figures=True)
+            if reason:
+                return f"{field}: {reason}"
+        for field in ("key_points", "important_risks"):
+            for item in payload.get(field) or []:
+                reason = violation(item, check_financial_figures=True)
+                if reason:
+                    return f"{field}: {reason}"
+        return None
+
+    return {
+        "reference_present": bool(reference),
+        "candidate_compliance": compliance(candidate),
+        "reference_compliance": compliance(reference) if reference else None,
+        "candidate_key_point_count": len(candidate.get("key_points") or []),
+        "reference_key_point_count": len(reference.get("key_points") or []),
+        "candidate_risk_count": len(candidate.get("important_risks") or []),
+        "reference_risk_count": len(reference.get("important_risks") or []),
+        "candidate_chars": len(cand_text),
+        "reference_chars": len(ref_text),
+        "lexical_overlap": round(jaccard(ref_text, cand_text), 4),
+        # Overlap is a WEAK signal — two faithful summaries of the same
+        # evidence can word things very differently. It is reported to help
+        # a human triage which cases to read closely, never as a score.
+        "overlap_is_triage_only": True,
+    }
+
+
+def compare_red_flag(case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str, Any]:
+    reference = case.get("reference") or {}
+    ref_category = reference.get("risk_flag_type")      # absent == not confirmed
+    cand_category = candidate.get("risk_flag_type")
+
+    if ref_category and cand_category:
+        outcome = "agree" if ref_category == cand_category else "category_mismatch"
+    elif ref_category and not cand_category:
+        outcome = "false_negative"
+    elif cand_category and not ref_category:
+        outcome = "false_positive"
+    else:
+        outcome = "agree_no_flag"
+
+    cand_summary = candidate.get("risk_flag_summary") or ""
+    ref_summary = reference.get("risk_flag_summary") or ""
+
+    return {
+        "reference_present": bool(reference),
+        "reference_category": ref_category,
+        "candidate_category": cand_category,
+        "outcome": outcome,
+        "candidate_compliance": violation(cand_summary) if cand_summary else None,
+        "reference_compliance": violation(ref_summary) if ref_summary else None,
+        "candidate_summary_chars": len(cand_summary),
+        "reference_summary_chars": len(ref_summary),
+        "summary_overlap": round(jaccard(ref_summary, cand_summary), 4)
+        if (ref_summary and cand_summary) else None,
+    }
+
+
+def compare_ask_ai(case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str, Any]:
+    reference = case.get("reference") or {}
+    causal_backstop = bool(candidate.get("causal_backstop"))
+    ref_answer = reference.get("answer") or ""
+    cand_answer = candidate.get("answer") or ""
+
+    ref_refused = reference.get("refused")
+    cand_refused = bool(candidate.get("refused"))
+
+    return {
+        "reference_present": bool(reference),
+        "candidate_refused": cand_refused,
+        "reference_refused": ref_refused,
+        "refusal_agreement": (None if ref_refused is None else cand_refused == bool(ref_refused)),
+        "candidate_compliance": ask_answer_violation(cand_answer, causal_backstop),
+        "reference_compliance": ask_answer_violation(ref_answer, causal_backstop) if ref_answer else None,
+        "candidate_chars": len(cand_answer),
+        "reference_chars": len(ref_answer),
+        "lexical_overlap": round(jaccard(ref_answer, cand_answer), 4),
+        "overlap_is_triage_only": True,
+    }
+
+
+COMPARATORS = {
+    "annual_report_summary": compare_annual_report,
+    "red_flag": compare_red_flag,
+    "ask_ai": compare_ask_ai,
+}
+
+
+def compare(task: str, case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str, Any]:
+    comparator = COMPARATORS.get(task)
+    if comparator is None:
+        return {"error": f"no comparator for task '{task}'"}
+    return comparator(case, candidate)
+
+
+def aggregate(task: str, rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Roll-up of the objective signals only. Explicitly carries no overall
+    quality verdict — that is the human reviewer's output, not this
+    module's."""
+    total = len(rows)
+    if not total:
+        return {"cases": 0}
+
+    comparisons = [r.get("comparison") or {}for r in rows]
+    generated = [r for r in rows if r.get("ok")]
+
+    summary: Dict[str, Any] = {
+        "cases": total,
+        "generated_ok": len(generated),
+        "generation_failures": total - len(generated),
+        "candidate_compliance_failures": sum(
+            1 for c in comparisons if c.get("candidate_compliance")
+        ),
+        "reference_compliance_failures": sum(
+            1 for c in comparisons if c.get("reference_compliance")
+        ),
+        "cases_with_reference": sum(1 for c in comparisons if c.get("reference_present")),
+        "json_repair_used": sum(1 for r in rows if r.get("json_repair_used")),
+        "mean_latency_sec": round(
+            sum(r.get("latency_sec") or 0 for r in rows) / total, 3
+        ),
+        "total_prompt_tokens": sum(r.get("prompt_tokens") or 0 for r in rows),
+        "total_completion_tokens": sum(r.get("completion_tokens") or 0 for r in rows),
+        "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    }
+
+    if task == "red_flag":
+        outcomes: Dict[str, int] = {}
+        for c in comparisons:
+            key = c.get("outcome") or "unknown"
+            outcomes[key] = outcomes.get(key, 0) + 1
+        summary["outcomes"] = outcomes
+        decided = sum(
+            outcomes.get(k, 0) for k in
+            ("agree", "agree_no_flag", "category_mismatch", "false_positive", "false_negative")
+        )
+        if decided:
+            agree = outcomes.get("agree", 0) + outcomes.get("agree_no_flag", 0)
+            summary["agreement_rate"] = round(agree / decided, 4)
+
+    if task == "ask_ai":
+        decided = [c for c in comparisons if c.get("refusal_agreement") is not None]
+        if decided:
+            summary["refusal_agreement_rate"] = round(
+                sum(1 for c in decided if c["refusal_agreement"]) / len(decided), 4
+            )
+
+    overlaps = [c["lexical_overlap"] for c in comparisons
+                if isinstance(c.get("lexical_overlap"), (int, float))]
+    if overlaps:
+        summary["mean_lexical_overlap"] = round(sum(overlaps) / len(overlaps), 4)
+
+    return summary

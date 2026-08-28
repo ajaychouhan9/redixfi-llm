@@ -1,0 +1,37 @@
+# secrets — never commit
+.env
+*.key
+*.pem
+kaggle.json
+
+# fixtures may contain full annual-report text pulled from production.
+# They are evaluation INPUT, not source. Export them per-environment.
+fixtures/*.json
+fixtures/*.jsonl
+!fixtures/.gitkeep
+
+# evaluation OUTPUT (model responses, comparison reports)
+evaluation/**/runs/
+evaluation/**/*.json
+evaluation/**/*.md
+!evaluation/**/.gitkeep
+
+# models / weights — never in git
+models/
+*.safetensors
+*.gguf
+*.bin
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# local
+.vscode/
+.idea/
+*.log

@@ -1,0 +1,28 @@
+# Primary preflight target (founder decision, 2026-08-28).
+# The authoritative values live in app/models/registry.py; this file records
+# them in a readable form for review and for pinning a run's config.
+model:
+  registry_name: qwen3-14b-awq
+  hf_repo: Qwen/Qwen3-14B-AWQ
+  quantization: awq
+  dtype: float16            # T4 is Turing — NEVER bfloat16
+  tensor_parallel_size: 1   # ~9 GB fits one T4; avoids NCCL as a variable
+  max_model_len: 16384
+  gpu_memory_utilization: 0.90
+  is_moe: false
+  approx_weights_gb: 9.0
+
+sampling:
+  temperature: 0            # matches RedixFi's production setting exactly
+  seed: 0
+  max_tokens: 1024
+
+serving:
+  backend: vllm
+  base_url: http://127.0.0.1:8000/v1
+  served_model_name: qwen3-14b-awq
+
+notes: >
+  Dense model, no MoE kernels. Validate the entire stack here before
+  attempting the 30B. A failure at this size is a stack problem, not a
+  capacity problem, which is what makes it the right first test.

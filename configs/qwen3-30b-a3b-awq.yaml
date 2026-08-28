@@ -1,0 +1,28 @@
+# Stretch target. Attempt ONLY after qwen3-14b-awq is proven end-to-end.
+model:
+  registry_name: qwen3-30b-a3b-awq
+  hf_repo: Qwen/Qwen3-30B-A3B-Instruct-2507-AWQ
+  quantization: awq
+  dtype: float16
+  tensor_parallel_size: 2   # needs both T4s
+  max_model_len: 8192       # conservative: KV cache OOMs before weights do
+  gpu_memory_utilization: 0.92
+  is_moe: true
+  approx_weights_gb: 18.0
+
+sampling:
+  temperature: 0
+  seed: 0
+  max_tokens: 1024
+
+serving:
+  backend: vllm
+  base_url: http://127.0.0.1:8000/v1
+  served_model_name: qwen3-30b-a3b-awq
+
+notes: >
+  30.5B total / ~3.3B active MoE. NON-THINKING — do not design around
+  <think> output. Quantized-MoE on Turing (SM75) is the weakest-covered
+  combination in vLLM's support matrix, so this may simply not run on T4.
+  Treat a clean, recorded failure as a legitimate result rather than
+  something to force.

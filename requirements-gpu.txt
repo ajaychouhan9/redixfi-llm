@@ -1,0 +1,18 @@
+# Kaggle GPU environment ONLY. Do NOT install locally.
+#
+# Kaggle images already ship torch built against the image's CUDA. Do not
+# reinstall torch — let vLLM resolve against what is present, or you will
+# spend a GPU session rebuilding CUDA wheels.
+#
+# T4 is Turing (SM75): no bf16, no FP8, no FlashAttention-2. vLLM falls back
+# to xformers automatically. Serve with --dtype float16 explicitly.
+#
+# vLLM is left UNPINNED on purpose: the working version depends on the
+# Kaggle image's CUDA/torch pair, which changes without notice. Record the
+# version that actually worked in the preflight JSON, and pin it here only
+# once a Kaggle run has confirmed it.
+vllm
+accelerate
+autoawq
+
+-r requirements.txt

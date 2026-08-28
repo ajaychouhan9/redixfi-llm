@@ -1,0 +1,14 @@
+# Core — needed everywhere (local dev, Kaggle, VM export)
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+
+# Fixture export on the RedixFi VM only.
+# chromadb is pinned to the SAME version RedixFi pins (api/requirements.txt).
+# Reading a persistent store with a different major version risks a schema
+# mismatch against a production directory.
+pymongo==4.10.1
+chromadb==1.5.9
+
+# Token accounting (matches RedixFi's own tiktoken usage for gpt-4o-mini)
+tiktoken==0.8.0
