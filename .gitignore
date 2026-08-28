@@ -16,6 +16,10 @@ evaluation/**/*.json
 evaluation/**/*.md
 !evaluation/**/.gitkeep
 
+# Kaggle upload bundle — contains the fixtures, rebuild with
+# scripts/make_sample_subset.py + the tar command in the runbook
+kaggle_upload/
+
 # models / weights — never in git
 models/
 *.safetensors

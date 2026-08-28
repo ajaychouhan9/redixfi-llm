@@ -1,0 +1,271 @@
+{
+  "schema_version": 2,
+  "task": "red_flag",
+  "exported_at": "2026-08-28T12:47:24.698890+00:00",
+  "source": {
+    "exported_by": "LLM/scripts/export_fixtures.py",
+    "read_only": true,
+    "openai_calls_made": 0,
+    "redixfi_root": "/home/ubuntu/redixfi-backend",
+    "redixfi_commit": "a45b555",
+    "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+    "host": "redixfi-vnic",
+    "collection": "chromadb annual_reports",
+    "available_positives": {
+      "auditor_qualification": 684,
+      "contingent_liability": 1144,
+      "related_party_transaction": 1754,
+      "promoter_pledge": 26
+    },
+    "available_negatives": 53305,
+    "strata": {
+      "auditor_qualification": 10,
+      "contingent_liability": 10,
+      "related_party_transaction": 10,
+      "promoter_pledge": 10,
+      "negative_unflagged": 20
+    },
+    "dropped_no_keyword_candidates": 0,
+    "sampling": "evenly-strided over sorted ids (deterministic), not first-N",
+    "subset_of": "red_flag_benchmark.json",
+    "subset_reason": "first GPU run — small, diverse sample",
+    "parent_case_count": 60,
+    "selection": "One per positive category plus negatives. The negatives matter most:"
+  },
+  "cases": [
+    {
+      "benchmark_id": "RF_ABB_AR_ABB_277",
+      "chunk_id": "AR_ABB_277",
+      "symbol": "ABB",
+      "company_name": "ABB India Limited",
+      "doc_type": "annual_report",
+      "fiscal_year": "FY2026",
+      "page_number": 185,
+      "chunk_index": 277,
+      "source_pdf_url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+      "chunk_text": "ndependent of the Company in accordance with the Code \nof Ethics issued by the Institute of Chartered Accountants \nof India together with the ethical requirements that are \nrelevant to our audit of the standalone financial statements \nunder the provisions of the Act and the Rules thereunder, \nand we have fulfilled our other ethical responsibilities in \naccordance with these requirements and the Code of Ethics. \nWe believe that the audit evidence we have obtained is \nsufficient and appropriate to provide a basis for our opinion \non the standalone financial statements.\nKEY AUDIT MATTERS\nKey audit matters are those matters that, in our professional judgment, were of most significance in our audit of the \nstandalone financial statements of the current period. These matters were addressed in the context of our audit of the \nstandalone financial statements as a whole, and in forming our opinion thereon, and we do not provide a separate opinion \non these matters.\nRevenue from fixed price contracts using percentage of completion method\nSee Note 2.3(a) and 2.6 to the standalone financial statements.\nThe key audit matter\nHow the matter was addressed in our audit\nRevenue from fixed price contracts are recognized in \naccordance with Ind AS 115, Revenue from Contracts with \nCustomers, and as detailed in note 2.3(a) and 2.6 of the \n“material accounting policies” in the standalone financial \nstatements.\nThere are key judgments and estimates involved in the \nrecognition of revenue relating to fixed price contracts on a \npercentage of completion method, which includes:\n \n•\nEstimation of total contract costs and remaining costs \nto completion, which is a critical factor in measuring \nthe progress of a contract and amounts of revenue \nto be recognized;\n \n•\nEvaluation of risks arising from operational delays, \ncontract terms, changes in estimations, technical, legal, \nexternal environment, etc. This requires the Company to \nestimate costs to capture such risks, including liquidated \nda",
+      "candidates": [
+        "auditor_qualification"
+      ],
+      "case_polarity": "positive",
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the audit process and key audit matters related to the standalone financial statements, including the recognition of revenue from fixed price contracts and the judgments and estimates involved in this process."
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "benchmark_id": "RF_ABB_AR_ABB_312",
+      "chunk_id": "AR_ABB_312",
+      "symbol": "ABB",
+      "company_name": "ABB India Limited",
+      "doc_type": "annual_report",
+      "fiscal_year": "FY2026",
+      "page_number": 208,
+      "chunk_index": 312,
+      "source_pdf_url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+      "chunk_text": "ring the period. Application \nof accounting policies that require critical accounting \nestimates involving complex and subjective judgments \nand the use of assumptions in these standalone financial \nstatements have been disclosed in Note 2.3. Accounting \nestimates could change from period to period. Actual \nresults could differ from those estimates. Appropriate \nchanges in estimates are made as management \nbecomes \naware \nof \nchanges \nin \ncircumstances \nsurrounding the estimates. Changes in estimates are \nreflected in the financial statements in the period in \nwhich changes are made and, if material, their effects \nare disclosed in the notes to the standalone financial \nstatements. Estimates and underlying assumptions are \nreviewed on an ongoing basis.\n2.3\t Critical accounting estimates and judgements\n\t\na.\t\nProject revenue and costs (refer note 2.6)\n\t\n\t\nThe Company uses the percentage-of-completion \nmethod in accounting for its fixed-price contracts. \nUse of the percentage-of-completion method \nrequires the Company to measure the costs \nexpended to date as a proportion of the total \ncosts estimated to be incurred. Costs expended \nhave been used to measure progress towards \ncompletion as there is a direct relationship \nbetween input and productivity. Provisions for \nestimated losses, if any, on uncompleted contracts \nare recorded in the period in which such losses \nbecome probable based on the expected contract \nestimates at the reporting date.\n\t\nb.\t\nProvision for litigations and contingencies (refer \nnote 2.14)\n\t\n\t\nThe Company estimates the provisions that have \npresent obligations as a result of past events and \nit is probable that outflow of resources will be \nrequired to settle the obligations. These provisions \nare reviewed at the end of each reporting period and \nare adjusted to reflect the current best estimates. \nThe Company uses significant judgements to \nassess contingent liabilities. Contingent liabilities \nare recognised when there is a possible obligatio",
+      "candidates": [
+        "contingent_liability"
+      ],
+      "case_polarity": "positive",
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the company's provisions for litigations and contingencies, indicating that provisions are estimated for present obligations that may require resource outflow. It also mentions the assessment of contingent liabilities based on significant judgments."
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "benchmark_id": "RF_ADANIENT_AR_ADANIENT_926",
+      "chunk_id": "AR_ADANIENT_926",
+      "symbol": "ADANIENT",
+      "company_name": "Adani Enterprises Limited",
+      "doc_type": "annual_report",
+      "fiscal_year": "FY2025-26",
+      "page_number": 303,
+      "chunk_index": 926,
+      "source_pdf_url": "https://nsearchives.nseindia.com/corporate/nishant_joshi_adani_com_29052026223026_AELIntimationfordispatchofARandNoticeAGM.pdf",
+      "chunk_text": "f 1 year \nMCLR+5BPS p.a. aggregating to ` 133.93 crore(Previous year: ` Nil). First pari passu charge by way of \nhypothecation of all movable assets of the Company including, but not limited to plant & machinery, \nspares tools & accessories, current assets of the Company. First pari passu charge on all rights, title, \ninterests, benefits, claims and demands whatesover of the Company with respect to the insurance \ncontracs, all money receivables under the insured assets of the Company. First pari passu floatng \ncharge on book debts, operating cash flows, receivables, commissions, revenue of whatsover nature.\n23.\tNon-Current Borrowings (Contd.)\n23.\tNon-Current Borrowings (Contd.)\nNotes forming part of the Consolidated Financial Statements\nfor the year ended March 31, 2026\nNotes forming part of the Consolidated Financial Statements\nfor the year ended March 31, 2026\nPortfolio  \nOverview\nCorporate \nOverview\nStrategic \nReview\nESG \nOverview\nStatutory \nReports\nFinancial \nStatements\nADANI ENTERPRISES LIMITED\nIntegrated Annual Report 2025-26\n\t\n\t\n\t\n\u0007First pari passu charge on all the bank accounts of the Company. Pledge of shares to the extent of \n51% of the total paid up equity shares of the company subject to complianc of section 19(2),(3) of \nthe Banking Regulation Acrore 1949, and Non Discloure Undertaking (NDU) of the remailng shares. \nStand by Letter of Credit from a reputable overseas bank, to the satisfaction of the Lender for 40 % of \nfacility amount including interest and other costs / expenses owed by the company to the Lender as \nper the terms of the facility letter in relation to 40 % of facilty amount. The SBLC has been provided by \nInternational Finacial LLC. First pari passu charge by way of equitable mortgage on lease hold rights of \nthe land to the extent of 29 acres on which MRO facilities Constructed with all the buildings, structures, \netc. on such land. Such security was created and perfected in the form and manner satisfactory to the \nlender on execution",
+      "candidates": [
+        "promoter_pledge"
+      ],
+      "case_polarity": "positive",
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses the pledge of shares amounting to 51% of the total paid-up equity shares of the company, subject to compliance with specific regulations and a Non-Disclosure Undertaking for the remaining shares."
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "benchmark_id": "RF_ABB_AR_ABB_122",
+      "chunk_id": "AR_ABB_122",
+      "symbol": "ABB",
+      "company_name": "ABB India Limited",
+      "doc_type": "annual_report",
+      "fiscal_year": "FY2026",
+      "page_number": 81,
+      "chunk_index": 122,
+      "source_pdf_url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+      "chunk_text": "vernance reports under Regulation \n27(2) are accurate and specific which re-directs to the relevant document(s)/ \nsection of the website\nYes\nNone\n4)\nDisqualification of Director:\nNone of the Directors of the Company are disqualified under Section 164 of \nCompanies Act, 2013, as confirmed by the listed entity.\nYes\nNone\nANNEXURE- C\nWE HEREBY REPORT THAT, DURING THE REVIEW PERIOD, THE COMPLIANCE \nSTATUS OF THE LISTED ENTITY IS AS GIVEN HEREUNDER:\nBoards’ Report\nSr. \nNo. Particulars\nCompliance status \n(Yes/No/NA)\nObservations / \nRemarks by PCS\n5)\nDetails related to Subsidiaries of listed entities have been examined w.r.t., \na)\t Identification of material subsidiary companies\nb)\t Requirements with respect to disclosure of material as well as other \nsubsidiaries\nYes\nNone\n6)\nPreservation of Documents:\nThe listed entity is preserving and maintaining records as prescribed under SEBI \nRegulations and disposal/archival of records is being carried out as per Policy \nof Preservation of Documents and Archival policy prescribed under SEBI Listing \nRegulations. \nYes\nNone\n7)\nPerformance Evaluation:\nThe listed entity has conducted performance evaluation of the Board, \nIndependent Directors and the Committees at the start of every financial year/\nduring the financial year as prescribed in SEBI Regulations\nYes\nNone\n8)\nRelated Party Transactions:\na)\t The listed entity has obtained prior approval of Audit Committee for all \nRelated party transactions, or\nb)\t The Listed entity has provided detailed reasons along with confirmation \nwhether the transactions were subsequently approved/ ratified/ rejected by \nthe Audit Committee, in case no prior approval has been obtained.\nYes\nNA\nNone\nNo reportable \nevent\n9)\nDisclosure of events or information:\nThe listed entity has provided all the required disclosure(s) under Regulation 30 \nread with Schedule III of SEBI Listing Regulations, 2015 within the time limits \nprescribed thereunder.\nYes\nNone\n10) Prohibition of Insider Trading:\nThe listed entity i",
+      "candidates": [
+        "related_party_transaction"
+      ],
+      "case_polarity": "positive",
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The listed entity has obtained prior approval of the Audit Committee for all related party transactions and provided detailed reasons regarding the approval status of transactions that did not receive prior approval."
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "benchmark_id": "RF_ADANIGREEN_AR_ADANIGREEN_1065",
+      "chunk_id": "AR_ADANIGREEN_1065",
+      "symbol": "ADANIGREEN",
+      "company_name": "Adani Green Energy Limited",
+      "doc_type": "annual_report",
+      "fiscal_year": "FY2024-25",
+      "page_number": 565,
+      "chunk_index": 1065,
+      "source_pdf_url": "https://nsearchives.nseindia.com/corporate/ADANIGREEN_30052025224253_Letter.pdf",
+      "chunk_text": "ith previous transactions during a financial year, whether \ndirectly and/or through its subsidiary(ies), exceed(s) \n` 1,000 crore or 10% of the annual consolidated turnover \nas per the last audited financial statements of the listed \nentity, whichever is lower. Further, the definition of \nRelated Party Transaction as per Regulation 2(1)(zc) of \nthe SEBI Listing Regulations includes the transaction \ninvolving a transfer of resources, services or obligations \nbetween a listed entity or any of its subsidiaries on one \nhand and a related party of the listed entity or any of its \nsubsidiaries on the other hand.\nThe Company proposes to enter into a related party \ntransaction(s) as mentioned below, on mutually agreed \nterms and conditions, and the aggregate of such \ntransaction(s), are expected to cross the applicable \nmateriality thresholds as mentioned above. Accordingly, as \nper the SEBI Listing Regulations, prior approval of the \nMembers is being sought for all such arrangements / \ntransactions proposed to be undertaken by the Company. \nThe said transactions shall be in the ordinary course of \nbusiness of the Company and on an arm’s length basis.\nThe Audit Committee of the Company (comprising solely \nof the Independent and Nominee Directors) has, on the \nbasis of relevant details provided by the management \nas required by the law, at its meeting held on March 28, \n2025 reviewed and approved the said transaction(s), \nsubject to approval of the Members, while noting that \nsuch transaction shall be on arms’ length basis and in \nthe ordinary course of business of the Company and are \nin accordance with Related Party Transactions Policy \nof the Company.\nYour Board of Directors considered the same and \nrecommended passing of the resolution contained in Item \nNos. 7 of this Notice.\nIntegrated Annual Report 2024-25\nADANI GREEN ENERGY LIMITED\nFurther, the Information required under Regulation 23 of SEBI Listing Regulations read with SEBI Circular dated \nNovember 22, 2021 is pro",
+      "candidates": [
+        "related_party_transaction"
+      ],
+      "case_polarity": "negative",
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "benchmark_id": "RF_ASIANPAINT_AR_ASIANPAINT_679",
+      "chunk_id": "AR_ASIANPAINT_679",
+      "symbol": "ASIANPAINT",
+      "company_name": "Asian Paints Limited",
+      "doc_type": "annual_report",
+      "fiscal_year": "FY2025-26",
+      "page_number": 207,
+      "chunk_index": 679,
+      "source_pdf_url": "https://nsearchives.nseindia.com/corporate/ASIANPAINT_12062026162044_SEIntimationIntegratedAnnualReportFY26signed.pdf",
+      "chunk_text": "petition \nAct, 2002. The Company has filed its responses from time to time with respect to the \ninformation sought by the DG. \n\t\n\u0007Based on the present status and the Company’s assessment of the proceedings, the Company \nbelieves that it has a reasonable basis to defend its position in this matter. Considering the \nearly stage of the investigation and inherent uncertainties associated with such proceedings, \nit is not possible to estimate the likelihood of potential financial impact, if any.\n\t\n-\n-\nTotal\n\t\n\u0007^The above claims are pending before various Appellate Authorities. The management, including its advisors, expect that its position will likely be \nupheld on ultimate resolution and will not have a material adverse effect on the Company’s financial statements.  \nIt is not practicable for the Company to estimate the timings of cash outflows, if any, in respect of the pending resolution of the respective \nproceedings as it is determinable only on receipt of judgements/ decisions pending with various forums/ authorities. The Company does not \nexpect any reimbursements in respect of the contingent liabilities.\n\t\n\u0007*Towards custom duty and IGST for capital goods imported under Manufacturing & Other operation in Warehouse Regulation (MOOWR) scheme \nagainst which the Company has executed a bond which is three times of the custom duty calculated at the time of import. The amount and timing \nof liability towards such custom duty and IGST will crystalize at the time of filing of ex-bond bill of entry at the time of removal of goods from the \nbonded warehouse.\nb. \t Commitments\n(₹ in Crores)\nAs at \n31.03.2026\nAs at \n31.03.2025\nA. \t \u0007Estimated amount of contracts remaining to be executed on capital account and not \nprovided for\n\t\ni. \t\nTowards Property, Plant and Equipment\n\t\nii.\t\nTowards Intangible Assets\n\t\niii. \t Towards Right-to-use assets&\nB.  \t \u0007Letters of Credit and Bank guarantees issued by bankers towards procurement of \ngoods and services and outstanding as at year end\n\t",
+      "candidates": [
+        "contingent_liability"
+      ],
+      "case_polarity": "negative",
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    }
+  ]
+}

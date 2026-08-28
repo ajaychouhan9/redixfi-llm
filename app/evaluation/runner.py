@@ -59,6 +59,7 @@ def run_evaluation(
     limit: Optional[int] = None,
     progress: Optional[Callable[[int, int, str], None]] = None,
     replay_as: Optional[str] = None,
+    gpu: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """`replay_as` selects which runner interprets the fixture. It defaults
     to the fixture's own task; the annual-report fixture also accepts
@@ -98,6 +99,19 @@ def run_evaluation(
             if k in case
         }
         row["provenance"] = case.get("provenance")
+        # A short excerpt of exactly what the model was shown, so a reviewer
+        # can judge grounding without opening the fixture. Truncated because
+        # a full annual-report evidence block is ~50 KB.
+        evidence = (case.get("evidence_text") or case.get("input_text")
+                    or case.get("chunk_text") or "")
+        if not evidence and case.get("fact_packet"):
+            import json as _json
+            evidence = _json.dumps(case["fact_packet"], ensure_ascii=False,
+                                   default=str)[:1500]
+        if evidence:
+            suffix = ("\n\n… truncated for review; full text is in the fixture …"
+                      if len(evidence) > 1500 else "")
+            row["evidence_excerpt"] = evidence[:1500] + suffix
         rows.append(row)
 
     try:
@@ -139,6 +153,9 @@ def run_evaluation(
             "platform": platform.platform(),
             "llm_project_commit": _git_commit(),
         },
+        # Recorded so a result can never be read without knowing the hardware
+        # and runtime that produced it.
+        "gpu": gpu,
         "summary": compare_mod.aggregate(task, rows),
         "results": rows,
     }

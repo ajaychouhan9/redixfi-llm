@@ -362,7 +362,7 @@ def test_report_flags_an_echo_run_as_non_evidence():
         "summary": {"cases": 0}, "results": [],
     }
     rendered = report_mod.render(run)
-    assert "echo` backend" in rendered
+    assert "NO MODEL WAS CONSULTED" in rendered
     assert "EXPERIMENTAL / NOT PRODUCTION" in rendered
 
 
@@ -444,7 +444,16 @@ def test_end_to_end_sample_fixture_runs_green(tmp_path, task):
     assert run["summary"]["cases"] == len(fixture_set.cases)
     assert run["summary"]["quality_verdict"].startswith("NOT COMPUTED")
     rendered = report_mod.render(run)
-    assert "Human review" in rendered
+    # The five sections the founder specified must all be present.
+    for section in ("SOURCE / EVIDENCE", "OLD — GPT-4o-mini OUTPUT",
+                    "NEW — QWEN OUTPUT", "OBJECTIVE VALIDATION",
+                    "HUMAN REVIEW NOTES"):
+        assert section in rendered, f"missing review section: {section}"
+    # ...and the quality dimensions must be listed but left unfilled.
+    for dimension in ("factual quality", "evidence grounding", "completeness",
+                      "hallucination", "numerical accuracy", "readability",
+                      "compliance"):
+        assert dimension in rendered, f"missing review dimension: {dimension}"
 
 
 # --------------------------------------------------------------------------
