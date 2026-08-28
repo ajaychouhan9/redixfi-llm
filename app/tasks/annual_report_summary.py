@@ -21,6 +21,7 @@ from typing import Any, Dict, List, Optional
 
 from ..compliance.validators import summarizer_violation
 from ..inference.base import Backend, GenerationRequest, Message
+from ..schemas.output_schemas import schema_for_task
 from ..prompts.annual_report_summary import (
     BULLET_MAX,
     BULLET_MIN,
@@ -93,6 +94,11 @@ def run(
     seed: Optional[int] = 0,
 ) -> TaskResult:
     result = TaskResult(task=TASK_NAME, fixture_id=str(fixture.get("fixture_id") or ""), ok=False)
+
+    # Guided decoding: constrain the shape at DECODE time so valid
+    # JSON is produced by construction. parse_json_object stays as a
+    # fallback and `json_repair_used` still reports if it was needed.
+    schema = schema_for_task(TASK_NAME, None)
     rejections: List[Dict[str, Any]] = []
     corrective_note: Optional[str] = None
 
@@ -108,6 +114,7 @@ def run(
             max_tokens=max_tokens,
             seed=seed,
             json_mode=True,
+            json_schema=schema,
         )
         generation = backend.generate(request)
         result.absorb(generation)

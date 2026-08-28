@@ -28,6 +28,7 @@ from typing import Any, Dict, Optional
 
 from ..compliance.validators import violation
 from ..inference.base import Backend, GenerationRequest, Message
+from ..schemas.output_schemas import schema_for_task
 from ..prompts.red_flag import SYSTEM_PROMPT, build_user_content
 from .base import TaskResult, parse_json_object
 
@@ -43,6 +44,11 @@ def run(
     seed: Optional[int] = 0,
 ) -> TaskResult:
     result = TaskResult(task=TASK_NAME, fixture_id=str(fixture.get("fixture_id") or ""), ok=False)
+
+    # Guided decoding: constrain the shape at DECODE time so valid
+    # JSON is produced by construction. parse_json_object stays as a
+    # fallback and `json_repair_used` still reports if it was needed.
+    schema = schema_for_task(TASK_NAME, fixture)
     candidates = list(fixture.get("candidates") or [])
 
     # classify_chunk's own short-circuit: no keyword candidates means no LLM
@@ -63,6 +69,7 @@ def run(
         max_tokens=max_tokens,
         seed=seed,
         json_mode=True,
+        json_schema=schema,
     )
     generation = backend.generate(request)
     result.absorb(generation)

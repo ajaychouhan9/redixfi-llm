@@ -311,7 +311,19 @@ def aggregate(task: str, rows: List[Dict[str, Any]]) -> Dict[str, Any]:
             1 for c in comparisons if c.get("reference_compliance")
         ),
         "cases_with_reference": sum(1 for c in comparisons if c.get("reference_present")),
+        # THE GUIDED-DECODING SCORECARD. json_repair_used alone cannot show
+        # the fix worked: "no repairs" is only meaningful if decoding was
+        # actually constrained. All three are reported together.
+        "structured_output_used": sum(
+            1 for r in rows if r.get("structured_output_used")),
         "json_repair_used": sum(1 for r in rows if r.get("json_repair_used")),
+        "guided_and_clean": sum(
+            1 for r in rows
+            if r.get("structured_output_used") and not r.get("json_repair_used")),
+        "guided_but_repaired": sum(
+            1 for r in rows
+            if r.get("structured_output_used") and r.get("json_repair_used")),
+        "unguided": sum(1 for r in rows if not r.get("structured_output_used")),
         "mean_latency_sec": round(
             sum(r.get("latency_sec") or 0 for r in rows) / total, 3
         ),

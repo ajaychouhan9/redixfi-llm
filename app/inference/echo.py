@@ -125,6 +125,10 @@ class EchoBackend(BaseBackend):
             payload = {"answer": "", "refused": True, "refusal_reason": "unknown task"}
 
         text = json.dumps(payload, ensure_ascii=False)
+        # Echo emits a bare JSON object by construction, so when a schema was
+        # requested it is honestly reporting that the shape was enforced —
+        # which keeps the offline harness test meaningful.
+        schema_requested = request.json_schema is not None
         prompt_chars = sum(len(m.content) for m in request.messages)
         return GenerationResult(
             text=text,
@@ -136,6 +140,8 @@ class EchoBackend(BaseBackend):
             completion_tokens=len(text) // 4,
             total_tokens=(prompt_chars + len(text)) // 4,
             finish_reason="stop",
+            structured_output_used=schema_requested,
+            structured_output_mode="json_schema" if schema_requested else None,
             raw={"is_synthetic": True, "detected_task": task,
                  "token_counts_are_estimates": True},
         )

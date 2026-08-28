@@ -145,7 +145,18 @@ def _objective_block(task: str, row: Dict[str, Any]) -> str:
 
     if isinstance(cmp_.get("lexical_overlap"), (int, float)):
         lines.append(f"| Lexical overlap | {cmp_['lexical_overlap']} _(triage aid, NOT a score)_ |")
-    lines.append(f"| JSON repair needed | {'yes' if row.get('json_repair_used') else 'no'} |")
+    guided = row.get("structured_output_used")
+    repaired = row.get("json_repair_used")
+    if guided and not repaired:
+        shape = "✅ guided decoding — valid JSON by construction"
+    elif guided and repaired:
+        shape = "⚠️ guided decoding ON but repair still needed — investigate"
+    elif repaired:
+        shape = "❌ unguided, post-hoc repair was required"
+    else:
+        shape = "unguided, but output parsed cleanly"
+    lines.append(f"| Output shape | {shape} |")
+    lines.append(f"| Structured mode | `{row.get('structured_output_mode') or 'none'}` |")
 
     tps = (row.get("completion_tokens") or 0) / row["latency_sec"] if row.get("latency_sec") else 0
     lines.append(f"| Latency | {row.get('latency_sec')} s |")

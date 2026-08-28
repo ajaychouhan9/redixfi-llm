@@ -53,7 +53,16 @@ class TaskResult:
     attempts: int = 0
     rejections: List[Dict[str, Any]] = field(default_factory=list)
     error: Optional[str] = None
+    # Did post-hoc repair have to salvage the output? With guided decoding
+    # working this should be False everywhere; it is the number the fix is
+    # measured by, so it is NOT removed.
     json_repair_used: bool = False
+    # Did the backend actually constrain decoding to a schema? Recorded
+    # separately from json_repair_used: "guided ON and no repair needed" and
+    # "guided OFF and no repair needed" are very different facts, and only
+    # the first proves the shape is enforced rather than lucky.
+    structured_output_used: bool = False
+    structured_output_mode: Optional[str] = None
     model: str = ""
     backend: str = ""
     prompt_tokens: int = 0
@@ -64,6 +73,11 @@ class TaskResult:
     def absorb(self, generation: GenerationResult) -> None:
         self.model = generation.model
         self.backend = generation.backend
+        # Sticky across retries: if ANY attempt was guided, the case was.
+        self.structured_output_used = (
+            self.structured_output_used or generation.structured_output_used)
+        self.structured_output_mode = (
+            generation.structured_output_mode or self.structured_output_mode)
         self.prompt_tokens += generation.prompt_tokens
         self.completion_tokens += generation.completion_tokens
         self.total_tokens += generation.total_tokens
@@ -79,6 +93,8 @@ class TaskResult:
             "rejections": self.rejections,
             "error": self.error,
             "json_repair_used": self.json_repair_used,
+            "structured_output_used": self.structured_output_used,
+            "structured_output_mode": self.structured_output_mode,
             "model": self.model,
             "backend": self.backend,
             "prompt_tokens": self.prompt_tokens,

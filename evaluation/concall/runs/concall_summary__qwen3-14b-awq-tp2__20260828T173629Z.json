@@ -1,0 +1,284 @@
+{
+  "run_id": "20260828T173629Z",
+  "generated_at": "2026-08-28T17:36:29.607450+00:00",
+  "task": "concall_summary",
+  "fixture_task": "concall_summary",
+  "replayed_as": "concall_summary",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "echo",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "fixtures/sample15/concall_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "investor_calls",
+      "population_size": 4157,
+      "skipped": [],
+      "subset_of": "concall_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 20,
+      "selection": "One per tone_label present — tone_label is the only closed-set,"
+    },
+    "cases_total": 3,
+    "cases_run": 3
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "llm_project_commit": "de89893"
+  },
+  "gpu": null,
+  "summary": {
+    "cases": 3,
+    "generated_ok": 3,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 3,
+    "structured_output_used": 3,
+    "json_repair_used": 0,
+    "guided_and_clean": 3,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 0.0,
+    "total_prompt_tokens": 25410,
+    "total_completion_tokens": 390,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "tone_label_agreement_rate": 0.3333,
+    "invalid_tone_labels": 0,
+    "tone_confusion": {
+      "Mixed->Neutral": 1,
+      "Neutral->Neutral": 1,
+      "Positive->Neutral": 1
+    },
+    "mean_lexical_overlap": 0.0322
+  },
+  "results": [
+    {
+      "task": "concall_summary",
+      "fixture_id": "CC_ALKYLAMINE_106620224",
+      "ok": true,
+      "output": {
+        "summary": "Management reported on operating activity during the period. The document described commissioning progress at the company's facilities and management said demand from domestic customers remained the largest contributor to order intake. Management also described the sourcing programme as extended to further component categories during the quarter under review.",
+        "tone_label": "Neutral",
+        "tone_note": "Management described operating activity in even terms without emphasising either strength or weakness."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "echo",
+      "prompt_tokens": 11870,
+      "completion_tokens": 130,
+      "total_tokens": 12000,
+      "latency_sec": 0.0001,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": "Neutral",
+        "tone_label_agrees": false,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 361,
+        "reference_chars": 1004,
+        "lexical_overlap": 0.036,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The earnings conference call for Alkyl Amines Chemicals Limited, held on May 6, 2026, featured management discussing the company's financial performance for Q4FY26. Management reported that both the top line and bottom line remained flat, with a slight increase in market share despite challenging market conditions. They noted that raw material prices, particularly ammonia, had risen significantly due to geopolitical factors, impacting production costs. Management indicated that while they had managed to source ammonia, the future supply chain remained uncertain. They mentioned a cautious optimism regarding potential volume growth of 5% to 10% in the upcoming year, contingent on market stability. Additionally, management highlighted ongoing projects and the potential for new product launches, while emphasizing the importance of maintaining competitive margins amidst fluctuating raw material prices. The call concluded with management expressing gratitude for investor interest and engagement.",
+        "tone_label": "Mixed",
+        "tone_note": "Management conveyed both challenges and cautious optimism regarding future performance.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T20:23:32.274836"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_ALKYLAMINE_106620224",
+        "symbol": "ALKYLAMINE",
+        "company_name": "Alkyl Amines Chemicals Limited",
+        "filing_id": "106620224",
+        "doc_type": "concall_transcript",
+        "doc_kind": "earnings concall transcript"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "concall_front_slice",
+        "input_type": "raw_transcript_text[:120000] front slice",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-25T20:23:32.274836",
+        "reference_prompt_version": "concall_summarizer@8bb3170",
+        "reference_output_schema": [
+          "summary",
+          "tone_label",
+          "tone_note"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "None material: concall_summarizer.py has NOT been rewired through Evidence Finder, so the code path that produced this reference is the code path that exists today. The input is exactly reproducible and this is a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "May 13, 2026 \n \nTo,  \nBSE Limited \nP. J. Towers, Dalal Street,  \nMumbai - 400 001  \nSCRIP CODE: 506767  \n \n \nThe NaƟonal Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex,  \nBandra - (E), Mumbai - 400 051 \nSYMBOL: ALKYLAMINE \nDear Sir / Madam, \n \nSubject: Transcript of Conference Call held on May 6, 2026 with investors and analyst on financial \nperformance of Q4FY26 \n \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, \n2015, we are enclosing herewith the transcript of the Conference Call held on Wednesday, May 6, \n2026 at 3.00 p.m. (IST) with investors and analyst on financial performance of Q4FY26. \n \nThe said transcript will also be made available at the website of the Company at www.alkylamines.com \nunder Investor Relations>Investor Center>Conference Call Transcripts \n \nYou are requested to kindly take the same on your record.   \n \nThanking you, \n \nFor Alkyl Amines Chemicals Limited \n \n \n \nChintamani Thatte \nGeneral Manager (Legal) & Company Secretary  \n& Compliance Oﬃcer \n \nEncl: As above \nChintamani \nDattatraya \nThatte\nDigitally signed by \nChintamani \nDattatraya Thatte \nDate: 2026.05.13 \n12:42:34 +05'30'\n\nPage 1 of 16 \n \n \n \n“Alkyl Amines Chemicals Limited \nQ4 and FY26 Earnings Conference Call” \nMay 06, 2026 \n \n \n \n \n \n \n       \n \n \nMANAGEMENT: MR. KIRAT PATEL – EXECUTIVE DIRECTOR – ALKYL \nAMINES CHEMICALS LIMITED \n \nMRS. KANCHAN SHINDE – CHIEF FINANCIAL OFFICER \n– ALKYL AMINES CHEMICALS LIMITED \n \nMR\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary",
+      "fixture_id": "CC_COROMANDEL_106614369",
+      "ok": true,
+      "output": {
+        "summary": "Management reported on operating activity during the period. The document described commissioning progress at the company's facilities and management said demand from domestic customers remained the largest contributor to order intake. Management also described the sourcing programme as extended to further component categories during the quarter under review.",
+        "tone_label": "Neutral",
+        "tone_note": "Management described operating activity in even terms without emphasising either strength or weakness."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "echo",
+      "prompt_tokens": 954,
+      "completion_tokens": 130,
+      "total_tokens": 1084,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Neutral",
+        "candidate_tone_label": "Neutral",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 361,
+        "reference_chars": 418,
+        "lexical_overlap": 0.0161,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Coromandel International Limited announced the scheduling of a conference call to discuss its Q4FY26 results, which took place on May 8, 2026. The investor presentation related to this call was made available on the company's website, in compliance with SEBI regulations. The communication was signed by B. Shanmugasundaram, the Company Secretary and Compliance Officer, and requested acknowledgment of the submission.",
+        "tone_label": "Neutral",
+        "tone_note": "The document provided factual information regarding the conference call and investor presentation.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T20:50:19.560211"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_COROMANDEL_106614369",
+        "symbol": "COROMANDEL",
+        "company_name": "Coromandel International Limited",
+        "filing_id": "106614369",
+        "doc_type": "concall_transcript",
+        "doc_kind": "investor presentation"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "concall_front_slice",
+        "input_type": "raw_transcript_text[:120000] front slice",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-25T20:50:19.560211",
+        "reference_prompt_version": "concall_summarizer@8bb3170",
+        "reference_output_schema": [
+          "summary",
+          "tone_label",
+          "tone_note"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "None material: concall_summarizer.py has NOT been rewired through Evidence Finder, so the code path that produced this reference is the code path that exists today. The input is exactly reproducible and this is a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "Ref. No: 2026-27/008 \n \n  May 08, 2026 \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor, \nBandra-Kurla Complex, \nBandra (E), Mumbai 400 051 \nSymbol: COROMANDEL \nBSE Limited, \nPhiroze Jeejeebhoy Towers, \nDalal Street, \nMumbai 400 001.p \nScrip Code: 506395 \n \nDear Sir / Madam,  \n \nSub \n: \nInvestor Presentation of Conference Call to discuss the Q4FY26 results to be held on May \n8, 2026 \nThis is further to our letter(s) ref no. 2026-27/005 dated May 05, 2026 regarding Conference Call to discuss \nfinancial results of the Company for the quarter ended March 31, 2026. \n \nIn this regard, we wish to inform that the Investor presentation to be made at the Conference Call scheduled \ntoday i.e., May 8, 2026 at 02:30 PM (IST) has been uploaded on the website of the Company at \nhttps://www.coromandel.biz/investors/corporate-presentation/ as required pursuant to Regulation \n46(2)(o) of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015. \n \nWe kindly request you to take the above submission on record. \n \nThanking you, \n \nYours truly, \nFor Coromandel International Limited \n \n \n \nB. Shanmugasundaram  \nCompany Secretary & Compliance Officer \n \nBALASUBRAM\nANIAN \nSHANMUGASU\nNDARAM\nDigitally signed by \nBALASUBRAMANIAN \nSHANMUGASUNDARA\nM \nDate: 2026.05.08 \n13:11:27 +05'30'"
+    },
+    {
+      "task": "concall_summary",
+      "fixture_id": "CC_KIRIINDUS_106747935",
+      "ok": true,
+      "output": {
+        "summary": "Management reported on operating activity during the period. The document described commissioning progress at the company's facilities and management said demand from domestic customers remained the largest contributor to order intake. Management also described the sourcing programme as extended to further component categories during the quarter under review.",
+        "tone_label": "Neutral",
+        "tone_note": "Management described operating activity in even terms without emphasising either strength or weakness."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "echo",
+      "prompt_tokens": 12586,
+      "completion_tokens": 130,
+      "total_tokens": 12716,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Neutral",
+        "tone_label_agrees": false,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 361,
+        "reference_chars": 1042,
+        "lexical_overlap": 0.0446,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Kiri Industries Limited held its Q1 FY27 Earnings Conference Call on August 13, 2026, where management provided updates on their integrated copper and fertilizer project, which has moved into the construction phase. Management reported that orders for long-lead packages have been placed and highlighted the project's alignment with their long-term growth strategy. The operating environment for the dyes and chemicals business improved, with a 63% year-on-year revenue growth to INR 295 crore, driven by better pricing and operational efficiency. Standalone EBITDA was reported at INR 17 crore, while consolidated revenue reached INR 312 crore, marking a 55% increase. Management noted that the company remains focused on maintaining a prudent capital structure and executing projects efficiently. The discussion also addressed shareholder concerns regarding dividends, with management emphasizing the need to reinvest profits for growth. The call concluded with management expressing optimism about future performance and project timelines.",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasized strong performance and growth potential in their projects.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T13:57:19.070139"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_KIRIINDUS_106747935",
+        "symbol": "KIRIINDUS",
+        "company_name": "Kiri Industries Limited",
+        "filing_id": "106747935",
+        "doc_type": "concall_transcript",
+        "doc_kind": "earnings concall transcript"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "concall_front_slice",
+        "input_type": "raw_transcript_text[:120000] front slice",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-25T13:57:19.070139",
+        "reference_prompt_version": "concall_summarizer@8bb3170",
+        "reference_output_schema": [
+          "summary",
+          "tone_label",
+          "tone_note"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "None material: concall_summarizer.py has NOT been rewired through Evidence Finder, so the code path that produced this reference is the code path that exists today. The input is exactly reproducible and this is a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "CIN No.: L24231GJ1998PLC034094 \n \nDate: August 18, 2026 \n \nTo,\nBSE Limited \nPhiroze Jeejeebhoy Towers,  \nDalal Street, Mumbai- 400 001 \nScrip Code: 532967 \nTo,\nNational Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex, \nBandra (E), Mumbai - 400 051 \nScrip ID - KIRIINDUS \n \nDear Sir/Madam, \n \nSub: Submission of Transcript for Q1-FY27 Earnings Conference call \n \nIn compliance with Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find attached herewith the Transcript of Q1-FY27 Earnings Conference \nCall held on Thursday, August 13, 2026 at 10:30 A.M. \n \nThe Transcript of Q1-FY27 Earnings Conference Call is also available on website of the Company \nat www.kiriindustries.com. \n \nYou are kindly requested to take note of the same. \n \nThanking You, \n \nYours faithfully, \n \nFor Kiri Industries Limited \n \n \n \nSuresh Gondalia \nCompany Secretary \nM No. : F7306 \nEncl: As stated \n \nGONDALIA \nSURESH \nSAVAJIBHAI\nDigitally signed by GONDALIA SURESH SAVAJIBHAI \nDN: c=IN, postalCode=380015, st=GUJARAT, street=21, \nBHAVI APARTMENT, ,156 NEHRU \nPARK, ,AHMADABAD,VASTRAPUR ,380015, l=AHMADABAD, \no=Personal, \nserialNumber=61ef2e945d9b4545361118485ed828d8e6a1\n7a5394d0cc83c0083d7fae6378bf, \npseudonym=df3fa15041844632b83c6e37da8b7e34, \n2.5.4.20=2ffb8407a32dbc76dc1756ccf827b5ded85b5aad6\n7c9ece0e2e2eb8303f03eca, \nemail=SURESH.GONDALIA@KIRIINDUSTRIES.COM, \ncn=GONDALIA SURESH SAVAJIBHAI \nDate: 2026.08.18 10:36:36 +05'30'\n\n \n \nPage 1 of 1\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}

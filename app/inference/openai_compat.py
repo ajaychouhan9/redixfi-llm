@@ -52,7 +52,20 @@ class OpenAICompatBackend(BaseBackend):
             "max_tokens": request.max_tokens,
             "stream": stream,
         }
-        if request.json_mode:
+        # Prefer a real schema over bare json_object. vLLM's OpenAI server
+        # and the OpenAI API both accept `response_format: json_schema`;
+        # `strict: true` is what makes it a decode-time constraint rather
+        # than a hint. Falls back to json_object when no schema was given.
+        if request.json_schema:
+            body["response_format"] = {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "task_output",
+                    "schema": request.json_schema,
+                    "strict": True,
+                },
+            }
+        elif request.json_mode:
             body["response_format"] = {"type": "json_object"}
         if request.seed is not None:
             body["seed"] = request.seed
@@ -83,6 +96,12 @@ class OpenAICompatBackend(BaseBackend):
 
         choice = (data.get("choices") or [{}])[0]
         usage = data.get("usage") or {}
+        # The server does not echo back which constraint it applied, so this
+        # reflects what WE asked for. It is only trustworthy alongside the
+        # json_repair_used count: guided ON with repairs still happening
+        # means the server ignored the request.
+        so_mode = ("json_schema" if request.json_schema
+                   else ("json_object" if request.json_mode else None))
         return GenerationResult(
             text=str((choice.get("message") or {}).get("content") or ""),
             model=data.get("model") or request.model,
@@ -91,6 +110,8 @@ class OpenAICompatBackend(BaseBackend):
             completion_tokens=int(usage.get("completion_tokens") or 0),
             total_tokens=int(usage.get("total_tokens") or 0),
             finish_reason=choice.get("finish_reason"),
+            structured_output_used=so_mode is not None,
+            structured_output_mode=so_mode,
             raw=data,
         )
 

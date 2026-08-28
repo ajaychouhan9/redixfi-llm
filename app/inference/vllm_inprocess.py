@@ -44,11 +44,31 @@ class VLLMInProcessBackend(BaseBackend):
         distinctly from a generation failure."""
         self._llm = llm
         self.model_name = model_name
+        # Recorded so a result can never be read without knowing which
+        # grammar backend produced it ('auto' resolves to xgrammar or a
+        # fallback at request time).
+        self.structured_backend = self._detect_structured_backend(llm)
         self._tokenizer = None
         try:
             self._tokenizer = llm.get_tokenizer()
         except Exception:
             pass
+
+    @staticmethod
+    def _detect_structured_backend(llm: Any) -> Optional[str]:
+        """Best-effort read of the engine's configured structured-output
+        backend. Never raises — this is telemetry, not control flow."""
+        for path in (("llm_engine", "vllm_config", "structured_outputs_config"),
+                     ("llm_engine", "model_config", "structured_outputs_config")):
+            obj: Any = llm
+            for attr in path:
+                obj = getattr(obj, attr, None)
+                if obj is None:
+                    break
+            backend = getattr(obj, "backend", None)
+            if backend:
+                return str(backend)
+        return None
 
     def _render_prompt(self, request: GenerationRequest) -> str:
         messages = [{"role": m.role, "content": m.content} for m in request.messages]
@@ -61,16 +81,64 @@ class VLLMInProcessBackend(BaseBackend):
         parts = [f"{m['role'].upper()}: {m['content']}" for m in messages]
         return "\n\n".join(parts) + "\n\nASSISTANT:"
 
+    def _structured_outputs(self, request: GenerationRequest):
+        """Build vLLM 0.28.0 structured-output params, or None.
+
+        API CONFIRMED AGAINST THE INSTALLED VERSION, NOT MEMORY. The first
+        GPU run's engine banner reports `v0.28.0` with
+        `structured_outputs_config=StructuredOutputsConfig(backend='auto', ...)`.
+        In that release:
+
+          * the field on SamplingParams is `structured_outputs`
+          * it takes `vllm.sampling_params.StructuredOutputsParams`
+          * `StructuredOutputsParams(json=<schema>)` is the JSON-Schema form,
+            `json_object=True` the "any valid JSON" form
+          * the whole `guided_json` / `guided_decoding_backend` /
+            `GuidedDecodingParams` family is GONE — writing to it would raise
+
+        `StructuredOutputsParams` is not re-exported from `vllm/__init__.py`,
+        hence the submodule import. Returns (params, mode) so the caller can
+        record WHICH constraint was applied, and (None, None) when the
+        request asked for nothing.
+        """
+        if not request.json_schema and not request.json_mode:
+            return None, None
+        try:
+            from vllm.sampling_params import StructuredOutputsParams
+        except ImportError:
+            # Older/newer vLLM with a different structured-output surface.
+            # Degrade to unguided rather than crash a long run, and leave
+            # structured_output_used False so the report shows the truth.
+            return None, None
+
+        if request.json_schema:
+            return StructuredOutputsParams(json=request.json_schema), "json_schema"
+        return StructuredOutputsParams(json_object=True), "json_object"
+
     def _generate(self, request: GenerationRequest) -> GenerationResult:
         from vllm import SamplingParams
 
         prompt = self._render_prompt(request)
-        params = SamplingParams(
+        structured, so_mode = self._structured_outputs(request)
+
+        kwargs = dict(
             temperature=request.temperature,
             max_tokens=request.max_tokens,
             seed=request.seed,
             stop=request.stop or None,
         )
+        if structured is not None:
+            kwargs["structured_outputs"] = structured
+        try:
+            params = SamplingParams(**kwargs)
+        except TypeError:
+            # This vLLM does not accept `structured_outputs`. Fall back to an
+            # unguided request so the run continues, but report it honestly —
+            # a silent downgrade here would look like guided decoding
+            # succeeding while json_repair quietly does all the work.
+            kwargs.pop("structured_outputs", None)
+            params = SamplingParams(**kwargs)
+            structured, so_mode = None, None
         started = time.perf_counter()
         outs = self._llm.generate([prompt], params)
         latency = time.perf_counter() - started
@@ -99,7 +167,10 @@ class VLLMInProcessBackend(BaseBackend):
             total_tokens=prompt_tokens + completion_tokens,
             latency_sec=latency,
             finish_reason=getattr(completion, "finish_reason", "stop"),
-            raw={"single_stream": True},
+            structured_output_used=structured is not None,
+            structured_output_mode=so_mode,
+            raw={"single_stream": True,
+                 "structured_outputs_backend": self.structured_backend},
         )
 
     def stream(self, request: GenerationRequest) -> Iterator[str]:
@@ -110,5 +181,6 @@ class VLLMInProcessBackend(BaseBackend):
             "backend": self.name,
             "status": "ok" if self._llm is not None else "not_loaded",
             "model": self.model_name,
+            "structured_outputs_backend": self.structured_backend,
             "notes": "in-process vLLM, single-stream — see module docstring",
         }

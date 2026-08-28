@@ -33,6 +33,13 @@ class GenerationRequest:
     # enforce it must still accept the flag and degrade gracefully — the
     # task layer re-parses and re-validates regardless.
     json_mode: bool = False
+    # GUIDED (structured) DECODING. When set, the backend must constrain
+    # generation to this JSON Schema so valid JSON is produced BY
+    # CONSTRUCTION rather than repaired afterwards. Backends that cannot
+    # enforce it must ignore it and leave `structured_output_used` False on
+    # the result — silently pretending would hide exactly the measurement
+    # this exists to produce. See app/schemas/output_schemas.py.
+    json_schema: Optional[Dict[str, Any]] = None
     stop: Optional[List[str]] = None
 
     def messages_as_dicts(self) -> List[Dict[str, str]]:
@@ -50,6 +57,12 @@ class GenerationResult:
     latency_sec: float = 0.0
     finish_reason: Optional[str] = None
     error: Optional[str] = None
+    # True only when the backend actually applied a grammar/schema
+    # constraint at decode time. The whole point of guided decoding is
+    # being able to show json_repair_used drops to ~0 BECAUSE this is True,
+    # so the two must be recorded independently.
+    structured_output_used: bool = False
+    structured_output_mode: Optional[str] = None
     raw: Dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -67,6 +80,8 @@ class GenerationResult:
             "latency_sec": round(self.latency_sec, 4),
             "finish_reason": self.finish_reason,
             "error": self.error,
+            "structured_output_used": self.structured_output_used,
+            "structured_output_mode": self.structured_output_mode,
         }
 
 

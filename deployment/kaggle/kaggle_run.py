@@ -105,6 +105,12 @@ def main():
                     choices=["auto", "vllm", "transformers"],
                     help="auto tries vLLM then falls back to Transformers+AWQ")
     ap.add_argument("--skip-benchmark", action="store_true")
+    ap.add_argument("--smoke", action="store_true",
+                    help="GUIDED-DECODING SMOKE RUN: one case per category (4 "
+                         "total) to confirm structured output works on real "
+                         "hardware before committing quota to the full set")
+    ap.add_argument("--limit-per-task", type=int, default=None,
+                    help="cap cases per benchmark (--smoke implies 1)")
     ap.add_argument("--server-timeout", type=int, default=1800)
     args = ap.parse_args()
 
@@ -442,7 +448,16 @@ def main():
         return
 
     # -- 10 -----------------------------------------------------------------
-    head(10, "15-CASE BENCHMARK (small sample — STOPS after this)")
+    per_task = 1 if args.smoke else args.limit_per_task
+    label = ("GUIDED-DECODING SMOKE RUN (1 case per category)" if args.smoke
+             else "15-CASE BENCHMARK (small sample — STOPS after this)")
+    head(10, label)
+    if args.smoke:
+        print("  Purpose: confirm structured output works on THIS hardware.", flush=True)
+        print("  Success = structured_output_used equals the case count AND", flush=True)
+        print("            json_repair_used is 0. Anything else means guided", flush=True)
+        print("            decoding is not actually engaging — do NOT spend", flush=True)
+        print("            quota on the full run until it is.", flush=True)
     from app.evaluation import fixtures as fx
     from app.evaluation import report as report_mod
     from app.evaluation.runner import run_evaluation, save_run
@@ -455,7 +470,9 @@ def main():
     ]
     bench_start = time.time()
     totals = {"cases": 0, "ok": 0, "failed": 0,
-              "prompt_tokens": 0, "completion_tokens": 0, "latency": 0.0}
+              "prompt_tokens": 0, "completion_tokens": 0, "latency": 0.0,
+              "structured_output_used": 0, "json_repair_used": 0,
+              "guided_and_clean": 0, "guided_but_repaired": 0, "unguided": 0}
 
     for fname, task, outdir in jobs:
         path = os.path.join(args.fixtures, fname)
@@ -467,6 +484,7 @@ def main():
 
         run = run_evaluation(
             backend, fs, args.model, temperature=0.0, max_tokens=1024, seed=0,
+            limit=per_task,
             replay_as=task, gpu=dict(STATE["gpu"], **{
                 "context_length": spec.max_model_len,
                 "quantization": spec.quantization}),
@@ -482,6 +500,9 @@ def main():
         totals["prompt_tokens"] += s["total_prompt_tokens"]
         totals["completion_tokens"] += s["total_completion_tokens"]
         totals["latency"] += s["mean_latency_sec"] * s["cases"]
+        for key in ("structured_output_used", "json_repair_used",
+                    "guided_and_clean", "guided_but_repaired", "unguided"):
+            totals[key] += s.get(key, 0)
         for k, v in s.items():
             print(f"      {k:34s} {v}")
         print(f"      review sheet -> {jpath.replace('.json', '.md')}")
@@ -499,6 +520,24 @@ def main():
     head(11, "SUMMARY")
     print(f"  cases            : {totals['ok']}/{totals['cases']} generated "
           f"({totals['failed']} failures)")
+    print()
+    print("  --- GUIDED DECODING SCORECARD (the point of this run) ---")
+    print(f"  structured_output_used : {totals['structured_output_used']}/{totals['cases']}")
+    print(f"  json_repair_used       : {totals['json_repair_used']}/{totals['cases']}"
+          "   <- target 0")
+    print(f"  guided_and_clean       : {totals['guided_and_clean']}/{totals['cases']}"
+          "   <- target = case count")
+    print(f"  guided_but_repaired    : {totals['guided_but_repaired']}"
+          "   <- non-zero means the grammar is not holding")
+    print(f"  unguided               : {totals['unguided']}"
+          "   <- non-zero means the schema never reached the engine")
+    if totals["cases"]:
+        if totals["guided_and_clean"] == totals["cases"]:
+            print("  VERDICT: guided decoding is WORKING on this hardware.")
+        else:
+            print("  VERDICT: guided decoding did NOT fully engage — investigate "
+                  "before spending quota on the full run.")
+    print()
     print(f"  benchmark wall   : {bench_time/60:.1f} min "
           f"({per_case:.1f}s per case)")
     print(f"  output tok/s     : {tps:.1f}")
