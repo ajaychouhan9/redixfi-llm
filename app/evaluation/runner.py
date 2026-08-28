@@ -16,13 +16,21 @@ from typing import Any, Callable, Dict, List, Optional
 from ..inference.base import Backend
 from ..models.registry import get_model_spec
 from ..tasks import annual_report_summary as task_ar
+from ..tasks import annual_report_summary_legacy as task_ar_legacy
 from ..tasks import ask_ai as task_ask
+from ..tasks import concall_summary as task_cc
 from ..tasks import red_flag as task_rf
 from . import compare as compare_mod
 from .fixtures import FixtureSet
 
 TASK_RUNNERS: Dict[str, Callable] = {
     "annual_report_summary": task_ar.run,
+    # The annual-report fixture is DUAL-INPUT and can be replayed two ways:
+    # against the current Evidence Finder pipeline (above), or against the
+    # legacy front-slice contract that actually produced the stored 2026-08-16
+    # reference (below). Only the legacy replay is like-for-like.
+    "annual_report_summary_legacy": task_ar_legacy.run,
+    "concall_summary": task_cc.run,
     "red_flag": task_rf.run,
     "ask_ai": task_ask.run,
 }
@@ -50,33 +58,46 @@ def run_evaluation(
     seed: Optional[int] = 0,
     limit: Optional[int] = None,
     progress: Optional[Callable[[int, int, str], None]] = None,
+    replay_as: Optional[str] = None,
 ) -> Dict[str, Any]:
-    runner = TASK_RUNNERS.get(fixtures.task)
+    """`replay_as` selects which runner interprets the fixture. It defaults
+    to the fixture's own task; the annual-report fixture also accepts
+    "annual_report_summary_legacy" to replay the pre-Evidence-Finder
+    contract its reference was actually produced under."""
+    task = replay_as or fixtures.task
+    allowed = fixtures.replayable_as()
+    if task not in allowed:
+        raise ValueError(
+            f"fixture task '{fixtures.task}' cannot be replayed as '{task}'; "
+            f"allowed: {allowed}")
+    runner = TASK_RUNNERS.get(task)
     if runner is None:
-        raise ValueError(f"no runner for task '{fixtures.task}'")
+        raise ValueError(f"no runner for task '{task}'")
 
     cases = fixtures.cases[:limit] if limit else fixtures.cases
     rows: List[Dict[str, Any]] = []
 
     for index, case in enumerate(cases, start=1):
         if progress:
-            progress(index, len(cases), str(case.get("fixture_id")))
+            progress(index, len(cases), str(case.get("benchmark_id") or case.get("fixture_id")))
         result = runner(
             backend, case, model,
             temperature=temperature, max_tokens=max_tokens, seed=seed,
         )
         row = result.to_dict()
-        row["comparison"] = compare_mod.compare(fixtures.task, case, result.output)
+        row["comparison"] = compare_mod.compare(task, case, result.output)
         # Keep the reference alongside every row so the output file is
         # self-contained — a reviewer never has to hold two files open, and
         # the reference can never drift away from what it was compared to.
         row["reference"] = case.get("reference")
         row["case_meta"] = {
             k: case.get(k)
-            for k in ("symbol", "company_name", "fiscal_year", "question",
-                      "doc_type", "chunk_id", "candidates")
+            for k in ("benchmark_id", "symbol", "company_name", "fiscal_year",
+                      "filing_id", "question", "doc_type", "doc_kind", "chunk_id",
+                      "candidates", "case_polarity", "reconstruction_status")
             if k in case
         }
+        row["provenance"] = case.get("provenance")
         rows.append(row)
 
     try:
@@ -98,7 +119,9 @@ def run_evaluation(
     return {
         "run_id": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "task": fixtures.task,
+        "task": task,
+        "fixture_task": fixtures.task,
+        "replayed_as": task,
         "model": model,
         "model_config": model_config,
         "backend": getattr(backend, "name", "unknown"),
@@ -116,7 +139,7 @@ def run_evaluation(
             "platform": platform.platform(),
             "llm_project_commit": _git_commit(),
         },
-        "summary": compare_mod.aggregate(fixtures.task, rows),
+        "summary": compare_mod.aggregate(task, rows),
         "results": rows,
     }
 

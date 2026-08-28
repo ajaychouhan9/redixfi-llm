@@ -267,18 +267,72 @@ def test_ask_budget_is_two_attempts_not_three():
 # --------------------------------------------------------------------------
 # fixtures / comparison / report
 # --------------------------------------------------------------------------
+def _prov():
+    return {"pipeline_version": "test", "input_type": "test"}
+
+
 def test_fixture_validation_catches_real_problems():
     doc = fixtures_mod.build_document("red_flag", [
-        {"fixture_id": "a", "chunk_text": "x", "candidates": []},
+        {"benchmark_id": "RF_A_1", "chunk_text": "x", "candidates": [],
+         "case_polarity": "positive", "reference": {"risk_flag_type": None},
+         "provenance": _prov()},
     ], {}, "now")
     problems = fixtures_mod.validate_document(doc)
     assert any("empty candidate list" in p for p in problems)
 
-    doc = fixtures_mod.build_document("annual_report_summary", [
-        {"fixture_id": "a", "symbol": "A", "evidence_text": "t"},
-        {"fixture_id": "a", "symbol": "B", "evidence_text": "t"},
+    doc = fixtures_mod.build_document("concall_summary", [
+        {"benchmark_id": "CC_A_1", "symbol": "A", "input_text": "t", "provenance": _prov()},
+        {"benchmark_id": "CC_A_1", "symbol": "B", "input_text": "t", "provenance": _prov()},
     ], {}, "now")
-    assert any("duplicate fixture_id" in p for p in fixtures_mod.validate_document(doc))
+    assert any("duplicate benchmark_id" in p for p in fixtures_mod.validate_document(doc))
+
+
+def test_fixture_validation_requires_provenance():
+    doc = fixtures_mod.build_document("concall_summary", [
+        {"benchmark_id": "CC_A_1", "symbol": "A", "input_text": "t"},
+    ], {}, "now")
+    assert any("missing 'provenance'" in p for p in fixtures_mod.validate_document(doc))
+
+
+def test_fixture_validation_enforces_benchmark_id_prefix():
+    doc = fixtures_mod.build_document("concall_summary", [
+        {"benchmark_id": "XX_A_1", "symbol": "A", "input_text": "t",
+         "provenance": _prov()},
+    ], {}, "now")
+    assert any("does not start with 'CC_'" in p for p in fixtures_mod.validate_document(doc))
+
+
+def test_ask_ai_must_be_stamped_partial():
+    """A rebuilt packet presented as exact would be the single most
+    misleading thing this benchmark could ship."""
+    case = {"benchmark_id": "ASK_A_1", "question": "q", "fact_packet": {},
+            "provenance": _prov()}
+    doc = fixtures_mod.build_document("ask_ai", [case], {}, "now")
+    assert any("PACKET_RECONSTRUCTION_PARTIAL" in p
+               for p in fixtures_mod.validate_document(doc))
+
+    case["reconstruction_status"] = "PACKET_RECONSTRUCTION_PARTIAL"
+    doc = fixtures_mod.build_document("ask_ai", [case], {}, "now")
+    assert fixtures_mod.validate_document(doc) == []
+
+
+def test_annual_report_fixture_requires_both_inputs():
+    """Dual-input is the whole point of Phase A — a case with only the
+    Evidence Finder side cannot be replayed against the pipeline that
+    produced its reference."""
+    case = {"benchmark_id": "AR_A_1", "symbol": "A", "evidence_text": "e",
+            "provenance": _prov()}
+    doc = fixtures_mod.build_document("annual_report_summary", [case], {}, "now")
+    assert any("no legacy_input_text" in p for p in fixtures_mod.validate_document(doc))
+
+
+def test_red_flag_requires_polarity_and_reference_key():
+    case = {"benchmark_id": "RF_A_1", "chunk_text": "x",
+            "candidates": ["auditor_qualification"], "provenance": _prov()}
+    problems = fixtures_mod.validate_document(
+        fixtures_mod.build_document("red_flag", [case], {}, "now"))
+    assert any("case_polarity" in p for p in problems)
+    assert any("risk_flag_type" in p for p in problems)
 
 
 def test_red_flag_comparison_classifies_every_outcome():
@@ -337,9 +391,14 @@ def test_echo_backend_detects_each_task_and_marks_itself_synthetic():
     from app.prompts.ask_ai import ASK_SYSTEM_TEMPLATE
     from app.prompts.red_flag import SYSTEM_PROMPT as RF
 
+    from app.prompts.annual_report_summary_legacy import SYSTEM_PROMPT as AR_LEGACY
+    from app.prompts.concall_summary import SYSTEM_PROMPT as CC
+
     backend = EchoBackend()
     for system, expected in (
         (AR, "annual_report_summary"),
+        (AR_LEGACY, "annual_report_summary_legacy"),
+        (CC, "concall_summary"),
         (RF, "red_flag"),
         (ASK_SYSTEM_TEMPLATE.format(symbol="T"), "ask_ai"),
     ):
@@ -354,13 +413,19 @@ def test_echo_backend_detects_each_task_and_marks_itself_synthetic():
 def test_echo_output_passes_every_task_validator():
     """The echo stubs must be compliance-clean, or a harness run fails for
     reasons that have nothing to do with the harness."""
+    from app.tasks import annual_report_summary_legacy as task_legacy
+    from app.tasks import concall_summary as task_cc
+
     backend = EchoBackend()
     assert task_ar.run(backend, _ar_fixture(), "echo").ok
+    assert task_legacy.run(backend, _ar_legacy_fixture(), "echo").ok
+    assert task_cc.run(backend, _cc_fixture(), "echo").ok
     assert task_rf.run(backend, _rf_fixture(), "echo").ok
     assert task_ask.run(backend, _ask_fixture(), "echo").ok
 
 
-@pytest.mark.parametrize("task", ["annual_report_summary", "red_flag", "ask_ai"])
+@pytest.mark.parametrize("task", ["annual_report_summary", "concall_summary",
+                                  "red_flag", "ask_ai"])
 def test_end_to_end_sample_fixture_runs_green(tmp_path, task):
     """Generates the synthetic fixture, runs it through the full harness,
     and renders the review sheet — the whole local pipeline, no GPU."""
@@ -428,3 +493,143 @@ def test_recommended_model_per_task_is_registered():
     assert get_model_spec(
         RECOMMENDED_MODEL_BY_TASK["annual_report_summary"]
     ).max_model_len >= 32768
+
+
+# --------------------------------------------------------------------------
+# Phase D — concall (PRIMARY summarization benchmark)
+# --------------------------------------------------------------------------
+def _cc_fixture():
+    return {
+        "benchmark_id": "CC_T_1", "symbol": "T", "company_name": "T Ltd",
+        "filing_date": "2025-08-02", "doc_kind": "earnings concall transcript",
+        "input_text": "Management reported commissioning progress at two facilities.",
+    }
+
+
+def test_concall_accepts_a_valid_tone_label():
+    from app.tasks import concall_summary as task_cc
+    good = json.dumps({
+        "summary": "Management reported commissioning progress at two facilities.",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasised commissioning progress.",
+    })
+    result = task_cc.run(ScriptedBackend([good]), _cc_fixture(), "test-model")
+    assert result.ok and result.output["tone_label"] == "Positive"
+
+
+def test_concall_rejects_a_tone_label_outside_the_closed_set():
+    """tone_label is a 4-way closed set in production. Anything else is a
+    hard failure there, and must be a hard failure here."""
+    from app.tasks import concall_summary as task_cc
+    bad = json.dumps({
+        "summary": "Management reported commissioning progress.",
+        "tone_label": "Bullish",          # not in TONE_LABELS
+        "tone_note": "Management emphasised progress.",
+    })
+    result = task_cc.run(ScriptedBackend([bad]), _cc_fixture(), "test-model")
+    assert not result.ok
+    assert "invalid tone_label" in result.rejections[0]["reason"]
+
+
+def test_concall_does_not_apply_the_financial_figure_rule():
+    """FINANCIAL_FIGURE_RE belongs only to the annual report summarizer.
+    Production does not apply it to concalls, so neither may this."""
+    from app.tasks import concall_summary as task_cc
+    with_figure = json.dumps({
+        "summary": "Management reported that volumes rose 12% during the quarter.",
+        "tone_label": "Neutral",
+        "tone_note": "Management described volume trends.",
+    })
+    result = task_cc.run(ScriptedBackend([with_figure]), _cc_fixture(), "test-model")
+    assert result.ok
+
+
+def test_concall_comparison_scores_tone_agreement():
+    case = {"reference": {"summary": "s", "tone_label": "Positive", "tone_note": "n"}}
+    agree = compare_mod.compare("concall_summary", case,
+                                {"summary": "s", "tone_label": "Positive", "tone_note": "n"})
+    assert agree["tone_label_agrees"] is True and agree["tone_label_valid"] is True
+
+    disagree = compare_mod.compare("concall_summary", case,
+                                   {"summary": "s", "tone_label": "Negative", "tone_note": "n"})
+    assert disagree["tone_label_agrees"] is False
+
+    invalid = compare_mod.compare("concall_summary", case,
+                                  {"summary": "s", "tone_label": "Bullish", "tone_note": "n"})
+    assert invalid["tone_label_valid"] is False
+
+
+# --------------------------------------------------------------------------
+# Phase A-legacy — the like-for-like replay
+# --------------------------------------------------------------------------
+def _ar_legacy_fixture():
+    return {
+        "benchmark_id": "AR_T_1", "symbol": "T", "company_name": "T Ltd",
+        "fiscal_year": "FY2024-25", "filing_date": "2025-01-01", "page_count": 100,
+        "legacy_input_text": "Chairman's letter. Management described capacity work.",
+    }
+
+
+def test_legacy_annual_report_uses_the_three_field_contract():
+    from app.tasks import annual_report_summary_legacy as task_legacy
+    good = json.dumps({
+        "summary": "The report described management's stated priorities.",
+        "bullets": ["Management described capacity work",
+                    "The report stated a sourcing programme",
+                    "Governance practices were reviewed"],
+        "key_takeaway": "The report centred on stated operating priorities.",
+    })
+    result = task_legacy.run(ScriptedBackend([good]), _ar_legacy_fixture(), "test-model")
+    assert result.ok
+    assert "bullets" in result.output
+    # important_risks did not exist in the legacy contract.
+    assert "important_risks" not in result.output
+    assert "key_points" not in result.output
+
+
+def test_legacy_annual_report_refuses_without_the_legacy_input():
+    from app.tasks import annual_report_summary_legacy as task_legacy
+    fixture = _ar_legacy_fixture()
+    del fixture["legacy_input_text"]
+    backend = ScriptedBackend(["{}"])
+    result = task_legacy.run(backend, fixture, "test-model")
+    assert not result.ok and backend.calls == 0
+    assert "legacy_input_text" in result.error
+
+
+def test_legacy_prompt_differs_from_current_and_asks_for_bullets():
+    from app.prompts import annual_report_summary as current
+    from app.prompts import annual_report_summary_legacy as legacy
+    assert legacy.SYSTEM_PROMPT != current.SYSTEM_PROMPT
+    assert '"bullets"' in legacy.SYSTEM_PROMPT
+    assert "important_risks" not in legacy.SYSTEM_PROMPT
+    assert "important_risks" in current.SYSTEM_PROMPT
+
+
+def test_annual_report_fixture_replays_both_ways(tmp_path):
+    """One exported fixture, two readings — the point of dual-input."""
+    subprocess.run(
+        [sys.executable, os.path.join(ROOT, "scripts", "make_sample_fixtures.py"),
+         "--out-dir", str(tmp_path), "--task", "annual_report_summary"],
+        check=True, capture_output=True, cwd=ROOT)
+    fs = fixtures_mod.load(str(tmp_path / "sample_annual_report_summary.json"))
+    assert set(fs.replayable_as()) == {"annual_report_summary",
+                                       "annual_report_summary_legacy"}
+
+    current = run_evaluation(EchoBackend(), fs, "echo-model")
+    assert current["replayed_as"] == "annual_report_summary"
+
+    legacy = run_evaluation(EchoBackend(), fs, "echo-model",
+                            replay_as="annual_report_summary_legacy")
+    assert legacy["replayed_as"] == "annual_report_summary_legacy"
+    assert legacy["results"][0]["comparison"]["comparison_is_like_for_like"] is True
+
+
+def test_fixture_cannot_be_replayed_as_an_unrelated_task(tmp_path):
+    subprocess.run(
+        [sys.executable, os.path.join(ROOT, "scripts", "make_sample_fixtures.py"),
+         "--out-dir", str(tmp_path), "--task", "concall_summary"],
+        check=True, capture_output=True, cwd=ROOT)
+    fs = fixtures_mod.load(str(tmp_path / "sample_concall_summary.json"))
+    with pytest.raises(ValueError, match="cannot be replayed"):
+        run_evaluation(EchoBackend(), fs, "echo-model", replay_as="red_flag")

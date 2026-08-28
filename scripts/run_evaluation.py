@@ -36,6 +36,8 @@ from app.models.registry import get_model_spec  # noqa: E402
 
 OUT_DIRS = {
     "annual_report_summary": "evaluation/annual_report/runs",
+    "annual_report_summary_legacy": "evaluation/annual_report/runs",
+    "concall_summary": "evaluation/concall/runs",
     "red_flag": "evaluation/red_flags/runs",
     "ask_ai": "evaluation/ask_ai/runs",
 }
@@ -52,6 +54,12 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--out-dir", default=None)
     parser.add_argument("--max-report-cases", type=int, default=25)
+    parser.add_argument("--replay-as", default=None,
+                        help="which runner interprets the fixture. Defaults to the "
+                             "fixture's own task; the annual-report fixture also "
+                             "accepts 'annual_report_summary_legacy' for the "
+                             "like-for-like replay against the pipeline that "
+                             "actually produced its reference.")
     parser.add_argument("--ignore-context-check", action="store_true",
                         help="run even when prompts exceed the model's context window "
                              "(the overflowing requests will fail and be recorded)")
@@ -67,11 +75,19 @@ def main() -> None:
     seed = settings.seed if args.seed is None else args.seed
 
     fixture_set = fixtures_mod.load(args.fixture)
+    replay_as = args.replay_as or fixture_set.task
+    if replay_as not in fixture_set.replayable_as():
+        raise SystemExit(
+            f"fixture task '{fixture_set.task}' cannot be replayed as "
+            f"'{replay_as}'; allowed: {fixture_set.replayable_as()}")
     backend = build_backend(settings)
 
     total_cases = len(fixture_set.cases)
     with_reference = len(fixture_set.with_reference())
     print(f"Task            : {fixture_set.task}")
+    print(f"Replayed as     : {replay_as}"
+          + ("   <- LIKE-FOR-LIKE (matches the reference's own pipeline)"
+             if replay_as == "annual_report_summary_legacy" else ""))
     print(f"Fixture         : {args.fixture} ({total_cases} cases, "
           f"{with_reference} with a production reference)")
     print(f"Model / backend : {model} / {settings.backend}")
@@ -91,7 +107,7 @@ def main() -> None:
     except KeyError:
         spec = None
     cases_to_check = fixture_set.cases[:args.limit] if args.limit else fixture_set.cases
-    budget = context_check.check(fixture_set.task, cases_to_check, spec, max_tokens)
+    budget = context_check.check(replay_as, cases_to_check, spec, max_tokens)
     print(context_check.render(budget) + "\n")
 
     if not budget.get("fits") and not args.ignore_context_check:
@@ -107,10 +123,10 @@ def main() -> None:
     run = run_evaluation(
         backend, fixture_set, model,
         temperature=temperature, max_tokens=max_tokens, seed=seed,
-        limit=args.limit, progress=progress,
+        limit=args.limit, progress=progress, replay_as=replay_as,
     )
 
-    out_dir = args.out_dir or OUT_DIRS.get(fixture_set.task, "evaluation/runs")
+    out_dir = args.out_dir or OUT_DIRS.get(replay_as, "evaluation/runs")
     json_path = save_run(run, out_dir)
     md_path = json_path.replace(".json", ".md")
     report_mod.save(run, md_path, max_cases=args.max_report_cases)

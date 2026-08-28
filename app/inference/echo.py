@@ -37,6 +37,41 @@ _AR_STUB = {
     ),
 }
 
+_CONCALL_STUB = {
+    "summary": (
+        "Management reported on operating activity during the period. The "
+        "document described commissioning progress at the company's "
+        "facilities and management said demand from domestic customers "
+        "remained the largest contributor to order intake. Management also "
+        "described the sourcing programme as extended to further component "
+        "categories during the quarter under review."
+    ),
+    "tone_label": "Neutral",
+    "tone_note": (
+        "Management described operating activity in even terms without "
+        "emphasising either strength or weakness."
+    ),
+}
+
+# The legacy annual-report contract: summary/bullets/key_takeaway, and no
+# important_risks — that field did not exist before 2026-08-24.
+_AR_LEGACY_STUB = {
+    "summary": (
+        "The report described the company's stated priorities across its "
+        "operating segments. Management said it focused on capacity, "
+        "governance and sustainability during the period."
+    ),
+    "bullets": [
+        "Management described a focus on capacity and operational resilience",
+        "The report stated continued investment in sustainability programmes",
+        "Management said governance practices were reviewed during the year",
+    ],
+    "key_takeaway": (
+        "The report centred on management's stated operating priorities for "
+        "the period."
+    ),
+}
+
 _RED_FLAG_STUB = {
     "category": None,
     "summary": "",
@@ -59,7 +94,14 @@ class EchoBackend(BaseBackend):
                 system = message.content
                 break
         if "summarize a single exchange-filed corporate annual report" in system:
-            return "annual_report_summary"
+            # The legacy and current annual-report prompts share an opening
+            # line; they are told apart by their output contract, which is
+            # the only thing that actually differs for a responder.
+            if "important_risks" in system:
+                return "annual_report_summary"
+            return "annual_report_summary_legacy"
+        if "summarize a single exchange-filed corporate document" in system:
+            return "concall_summary"
         if "confirm whether a document excerpt genuinely discusses" in system:
             return "red_flag"
         if "fact packet" in system:
@@ -71,6 +113,10 @@ class EchoBackend(BaseBackend):
         payload: Dict[str, Any]
         if task == "annual_report_summary":
             payload = dict(_AR_STUB)
+        elif task == "annual_report_summary_legacy":
+            payload = dict(_AR_LEGACY_STUB)
+        elif task == "concall_summary":
+            payload = dict(_CONCALL_STUB)
         elif task == "red_flag":
             payload = dict(_RED_FLAG_STUB)
         elif task == "ask_ai":

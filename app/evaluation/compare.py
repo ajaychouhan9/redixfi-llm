@@ -24,6 +24,7 @@ import re
 from typing import Any, Dict, List, Optional, Set
 
 from ..compliance.validators import ask_answer_violation, violation
+from ..prompts.concall_summary import TONE_LABELS
 
 _WORD_RE = re.compile(r"[a-z0-9]+")
 _STOPWORDS = frozenset({
@@ -144,8 +145,81 @@ def compare_ask_ai(case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str,
     }
 
 
+
+def compare_annual_report_legacy(case, candidate):
+    """LEGACY 3-field contract: summary / bullets / key_takeaway.
+
+    This is the LIKE-FOR-LIKE comparison for Phase A — same prompt, same
+    front-slice input, same schema as the gpt-4o-mini run that produced the
+    stored reference on 2026-08-16. Only the model differs.
+    """
+    reference = case.get("reference") or {}
+
+    def text_of(payload):
+        return " ".join(p for p in [
+            payload.get("summary") or "",
+            " ".join(payload.get("bullets") or []),
+            payload.get("key_takeaway") or "",
+        ] if p)
+
+    def compliance(payload):
+        for field in ("summary", "key_takeaway"):
+            reason = violation(payload.get(field) or "", check_financial_figures=True)
+            if reason:
+                return f"{field}: {reason}"
+        for item in payload.get("bullets") or []:
+            reason = violation(item, check_financial_figures=True)
+            if reason:
+                return f"bullets: {reason}"
+        return None
+
+    return {
+        "reference_present": bool(reference),
+        "comparison_is_like_for_like": True,
+        "candidate_compliance": compliance(candidate),
+        "reference_compliance": compliance(reference) if reference else None,
+        "candidate_bullet_count": len(candidate.get("bullets") or []),
+        "reference_bullet_count": len(reference.get("bullets") or []),
+        "candidate_chars": len(text_of(candidate)),
+        "reference_chars": len(text_of(reference)),
+        "lexical_overlap": round(jaccard(text_of(reference), text_of(candidate)), 4),
+        "overlap_is_triage_only": True,
+    }
+
+
+def compare_concall(case, candidate):
+    """Concall carries the one genuinely objective quality signal in any
+    summarization phase: `tone_label` is a 4-way CLOSED-SET classification
+    the production model already committed to, so agreement on it is a real
+    accuracy number rather than a similarity heuristic."""
+    reference = case.get("reference") or {}
+    ref_tone = reference.get("tone_label")
+    cand_tone = candidate.get("tone_label")
+
+    return {
+        "reference_present": bool(reference),
+        "reference_tone_label": ref_tone,
+        "candidate_tone_label": cand_tone,
+        "tone_label_agrees": (None if not (ref_tone and cand_tone)
+                              else ref_tone == cand_tone),
+        "tone_label_valid": cand_tone in TONE_LABELS if cand_tone else False,
+        "candidate_compliance": violation(candidate.get("summary") or "")
+                                or violation(candidate.get("tone_note") or ""),
+        "reference_compliance": (violation(reference.get("summary") or "")
+                                 or violation(reference.get("tone_note") or ""))
+                                if reference else None,
+        "candidate_chars": len(candidate.get("summary") or ""),
+        "reference_chars": len(reference.get("summary") or ""),
+        "lexical_overlap": round(jaccard(reference.get("summary") or "",
+                                         candidate.get("summary") or ""), 4),
+        "overlap_is_triage_only": True,
+    }
+
+
 COMPARATORS = {
     "annual_report_summary": compare_annual_report,
+    "annual_report_summary_legacy": compare_annual_report_legacy,
+    "concall_summary": compare_concall,
     "red_flag": compare_red_flag,
     "ask_ai": compare_ask_ai,
 }
@@ -202,6 +276,20 @@ def aggregate(task: str, rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         if decided:
             agree = outcomes.get("agree", 0) + outcomes.get("agree_no_flag", 0)
             summary["agreement_rate"] = round(agree / decided, 4)
+
+    if task == "concall_summary":
+        decided = [c for c in comparisons if c.get("tone_label_agrees") is not None]
+        if decided:
+            summary["tone_label_agreement_rate"] = round(
+                sum(1 for c in decided if c["tone_label_agrees"]) / len(decided), 4)
+        summary["invalid_tone_labels"] = sum(
+            1 for c in comparisons
+            if c.get("candidate_tone_label") and not c.get("tone_label_valid"))
+        tones = {}
+        for c in comparisons:
+            key = f"{c.get('reference_tone_label')}->{c.get('candidate_tone_label')}"
+            tones[key] = tones.get(key, 0) + 1
+        summary["tone_confusion"] = tones
 
     if task == "ask_ai":
         decided = [c for c in comparisons if c.get("refusal_agreement") is not None]

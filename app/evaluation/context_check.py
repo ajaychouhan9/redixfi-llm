@@ -25,7 +25,9 @@ from typing import Any, Dict, List, Optional
 
 from ..models.registry import ModelSpec
 from ..prompts import annual_report_summary as ar_prompt
+from ..prompts import annual_report_summary_legacy as ar_legacy_prompt
 from ..prompts import ask_ai as ask_prompt
+from ..prompts import concall_summary as cc_prompt
 from ..prompts import red_flag as rf_prompt
 
 # Qwen tokenizers typically produce slightly more tokens than o200k_base on
@@ -48,6 +50,11 @@ def count_tokens(text: str) -> int:
 def _prompt_for(task: str, case: Dict[str, Any]) -> str:
     if task == "annual_report_summary":
         return ar_prompt.SYSTEM_PROMPT + ar_prompt.build_user_content(case)
+    if task == "annual_report_summary_legacy":
+        return (ar_legacy_prompt.SYSTEM_PROMPT
+                + ar_legacy_prompt.build_user_content(case))
+    if task == "concall_summary":
+        return cc_prompt.SYSTEM_PROMPT + cc_prompt.build_user_content(case)
     if task == "red_flag":
         return rf_prompt.SYSTEM_PROMPT + rf_prompt.build_user_content(case)
     if task == "ask_ai":
