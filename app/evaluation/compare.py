@@ -23,7 +23,8 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List, Optional, Set
 
-from ..compliance.validators import ask_answer_violation, violation
+from ..compliance.validators import (ask_answer_violation, summarizer_violation,
+                                      violation)
 from ..prompts.concall_summary import TONE_LABELS
 
 _WORD_RE = re.compile(r"[a-z0-9]+")
@@ -63,20 +64,41 @@ def compare_annual_report(case: Dict[str, Any], candidate: Dict[str, Any]) -> Di
 
     def compliance(payload: Dict[str, Any]) -> Optional[str]:
         for field in ("executive_summary", "key_takeaway"):
-            reason = violation(payload.get(field) or "", check_financial_figures=True)
+            reason = summarizer_violation(payload.get(field) or "",
+                                          check_financial_figures=True)
             if reason:
                 return f"{field}: {reason}"
         for field in ("key_points", "important_risks"):
             for item in payload.get(field) or []:
-                reason = violation(item, check_financial_figures=True)
+                reason = summarizer_violation(item, check_financial_figures=True)
                 if reason:
                     return f"{field}: {reason}"
         return None
 
+    # SCHEMA MISMATCH GUARD. Production's 72 annual-report references are
+    # LEGACY-shaped (summary/bullets/key_takeaway); this comparator reads the
+    # CURRENT shape (executive_summary/key_points/important_risks). Running
+    # the current-pipeline replay against a legacy reference therefore finds
+    # no executive_summary and would report "empty text" as a COMPLIANCE
+    # FAILURE for all 20 references — a reviewer would reasonably read that
+    # as production having emitted non-compliant text, which is false. All 20
+    # legacy references pass compliance when read with their own schema.
+    reference_is_legacy_shaped = bool(reference) and (
+        "executive_summary" not in reference and "summary" in reference)
+
     return {
         "reference_present": bool(reference),
+        "reference_schema_matches_replay": not reference_is_legacy_shaped,
+        "schema_mismatch_note": (
+            "Reference is LEGACY-shaped (summary/bullets/key_takeaway) but this "
+            "replay uses the CURRENT schema. Field-level comparison is not "
+            "meaningful here — replay as 'annual_report_summary_legacy' for the "
+            "like-for-like reading."
+        ) if reference_is_legacy_shaped else None,
         "candidate_compliance": compliance(candidate),
-        "reference_compliance": compliance(reference) if reference else None,
+        # Suppressed on a schema mismatch — see the guard above.
+        "reference_compliance": (None if reference_is_legacy_shaped
+                                 else (compliance(reference) if reference else None)),
         "candidate_key_point_count": len(candidate.get("key_points") or []),
         "reference_key_point_count": len(reference.get("key_points") or []),
         "candidate_risk_count": len(candidate.get("important_risks") or []),
@@ -122,6 +144,24 @@ def compare_red_flag(case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[st
     }
 
 
+def _ask_reference_compliance(ref_answer: str, causal_backstop: bool):
+    """Returns (reported_failure, is_backstop_artifact).
+
+    A reference that passes WITHOUT the causal backstop but fails WITH it is
+    an artifact of packet reconstruction (see compare_ask_ai), not evidence
+    that production emitted non-compliant text. It is reported separately and
+    not counted as a reference compliance failure."""
+    if not ref_answer:
+        return None, False
+    with_backstop = ask_answer_violation(ref_answer, causal_backstop)
+    if not with_backstop:
+        return None, False
+    without_backstop = ask_answer_violation(ref_answer, False)
+    if causal_backstop and not without_backstop:
+        return None, True          # artifact: suppressed, flagged
+    return with_backstop, False
+
+
 def compare_ask_ai(case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str, Any]:
     reference = case.get("reference") or {}
     causal_backstop = bool(candidate.get("causal_backstop"))
@@ -137,7 +177,16 @@ def compare_ask_ai(case: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str,
         "reference_refused": ref_refused,
         "refusal_agreement": (None if ref_refused is None else cand_refused == bool(ref_refused)),
         "candidate_compliance": ask_answer_violation(cand_answer, causal_backstop),
-        "reference_compliance": ask_answer_violation(ref_answer, causal_backstop) if ref_answer else None,
+        # RECONSTRUCTION ARTIFACT GUARD. `causal_backstop` is derived from the
+        # REBUILT packet, not the historical one. If the packet carried a real
+        # cause when production answered, the backstop was OFF and causal
+        # language ("due to") was legitimately allowed; the rebuilt packet has
+        # since lost that news event, so the backstop now reads ON and the same
+        # answer looks non-compliant. Reporting that as a production compliance
+        # failure would be wrong, so it is separated out rather than counted.
+        "reference_compliance": _ask_reference_compliance(ref_answer, causal_backstop)[0],
+        "reference_compliance_backstop_artifact":
+            _ask_reference_compliance(ref_answer, causal_backstop)[1],
         "candidate_chars": len(cand_answer),
         "reference_chars": len(ref_answer),
         "lexical_overlap": round(jaccard(ref_answer, cand_answer), 4),
@@ -164,11 +213,12 @@ def compare_annual_report_legacy(case, candidate):
 
     def compliance(payload):
         for field in ("summary", "key_takeaway"):
-            reason = violation(payload.get(field) or "", check_financial_figures=True)
+            reason = summarizer_violation(payload.get(field) or "",
+                                          check_financial_figures=True)
             if reason:
                 return f"{field}: {reason}"
         for item in payload.get("bullets") or []:
-            reason = violation(item, check_financial_figures=True)
+            reason = summarizer_violation(item, check_financial_figures=True)
             if reason:
                 return f"bullets: {reason}"
         return None
@@ -203,10 +253,14 @@ def compare_concall(case, candidate):
         "tone_label_agrees": (None if not (ref_tone and cand_tone)
                               else ref_tone == cand_tone),
         "tone_label_valid": cand_tone in TONE_LABELS if cand_tone else False,
-        "candidate_compliance": violation(candidate.get("summary") or "")
-                                or violation(candidate.get("tone_note") or ""),
-        "reference_compliance": (violation(reference.get("summary") or "")
-                                 or violation(reference.get("tone_note") or ""))
+        # summarizer_violation, NOT violation: concall_summarizer.py carries
+        # the "call"-means-a-meeting carve-out, so "the earnings conference
+        # call" is correct output. Using the risk-classifier variant here
+        # flagged 6 of 20 REAL production references as non-compliant.
+        "candidate_compliance": summarizer_violation(candidate.get("summary") or "")
+                                or summarizer_violation(candidate.get("tone_note") or ""),
+        "reference_compliance": (summarizer_violation(reference.get("summary") or "")
+                                 or summarizer_violation(reference.get("tone_note") or ""))
                                 if reference else None,
         "candidate_chars": len(candidate.get("summary") or ""),
         "reference_chars": len(reference.get("summary") or ""),
@@ -249,6 +303,9 @@ def aggregate(task: str, rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "generation_failures": total - len(generated),
         "candidate_compliance_failures": sum(
             1 for c in comparisons if c.get("candidate_compliance")
+        ),
+        "reference_backstop_artifacts": sum(
+            1 for c in comparisons if c.get("reference_compliance_backstop_artifact")
         ),
         "reference_compliance_failures": sum(
             1 for c in comparisons if c.get("reference_compliance")

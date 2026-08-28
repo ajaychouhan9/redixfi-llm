@@ -82,9 +82,19 @@ TRADING_CONTEXT_NEAR_CALL_RE = re.compile(
 
 
 def violation(text: str, *, check_financial_figures: bool = False) -> Optional[str]:
-    """Mirrors annual_report_summarizer.py::_violation and
-    risk_flag_classifier.py::_violation (they are byte-identical apart from
-    the financial-figure check, which only the summarizer applies).
+    """Mirrors risk_flag_classifier.py::_violation ONLY.
+
+    IMPORTANT — this variant has NO "call"-means-a-meeting carve-out,
+    because risk_flag_classifier.py deliberately has none: it uses a plain
+    FORBIDDEN_WORDS_RE.search(). Verified against the RedixFi source.
+
+    The two SUMMARIZERS are different — both annual_report_summarizer.py
+    and concall_summarizer.py DO carry the carve-out. Use
+    summarizer_violation() for those, never this. Getting it wrong rejects
+    a legitimate "earnings conference call" as forbidden language, which is
+    exactly what happened before this split existed: 6 of 20 real
+    production concall references were flagged as non-compliant by this
+    function.
 
     Returns a human-readable reason string when `text` must be REJECTED,
     or None when it passes. Order matters and is preserved from the
@@ -104,6 +114,34 @@ def violation(text: str, *, check_financial_figures: bool = False) -> Optional[s
         window = text[max(0, m.start() - 4):m.end()]
         if not BUY_SELL_SAFE_RE.search(window):
             return f"forbidden word '{m.group(0)}'"
+    if check_financial_figures:
+        m = FINANCIAL_FIGURE_RE.search(text)
+        if m:
+            return f"financial figure stated as fact '{m.group(0).strip()}'"
+    return None
+
+
+def summarizer_violation(
+    text: str, *, check_financial_figures: bool = False,
+) -> Optional[str]:
+    """Mirrors annual_report_summarizer.py::_violation and
+    concall_summarizer.py::_violation.
+
+    PROVENANCE: both are byte-identical to chunk_fails_compliance's
+    forbidden-word handling (they carry the same "call"-means-a-meeting
+    carve-out), and the annual report one appends FINANCIAL_FIGURE_RE.
+    Source commits b9e40c4 (AR) and 8bb3170 (concall), copied 2026-08-28.
+
+      annual_report_summarizer -> check_financial_figures=True
+      concall_summarizer       -> check_financial_figures=False
+
+    The carve-out is not cosmetic: a concall summary that says "the
+    earnings conference call" is correct and expected output, and must not
+    be rejected.
+    """
+    reason = chunk_fails_compliance(text)
+    if reason:
+        return reason
     if check_financial_figures:
         m = FINANCIAL_FIGURE_RE.search(text)
         if m:

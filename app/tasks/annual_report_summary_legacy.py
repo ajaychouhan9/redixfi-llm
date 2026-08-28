@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from ..compliance.validators import violation
+from ..compliance.validators import summarizer_violation
 from ..inference.base import Backend, GenerationRequest, Message
 from ..prompts.annual_report_summary_legacy import (
     BULLET_MAX,
@@ -56,7 +56,7 @@ def validate(out: Dict[str, Any]) -> Optional[str]:
     """Legacy validation set. Financial-figure checking is ON — rule (4) of
     the legacy prompt is identical to the current one on that point."""
     def check(text: str) -> Optional[str]:
-        return violation(text, check_financial_figures=True)
+        return summarizer_violation(text, check_financial_figures=True)
 
     return (
         check(out["summary"])

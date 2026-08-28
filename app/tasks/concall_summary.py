@@ -21,7 +21,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from ..compliance.validators import violation
+from ..compliance.validators import summarizer_violation
 from ..inference.base import Backend, GenerationRequest, Message
 from ..prompts.concall_summary import (
     MAX_ATTEMPTS,
@@ -46,8 +46,8 @@ def validate(out: Dict[str, Any]) -> Optional[str]:
     """Mirrors concall_summarizer.py::generate_summary's `bad` expression,
     including order."""
     return (
-        violation(out["summary"])
-        or violation(out["tone_note"])
+        summarizer_violation(out["summary"])
+        or summarizer_violation(out["tone_note"])
         or (None if out["tone_label"] in TONE_LABELS
             else f"invalid tone_label {out['tone_label']!r}")
     )

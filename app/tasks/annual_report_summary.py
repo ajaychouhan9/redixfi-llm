@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from ..compliance.validators import violation
+from ..compliance.validators import summarizer_violation
 from ..inference.base import Backend, GenerationRequest, Message
 from ..prompts.annual_report_summary import (
     BULLET_MAX,
@@ -69,7 +69,7 @@ def validate(out: Dict[str, Any]) -> Optional[str]:
     rule (4) of the system prompt is the summarizer's distinguishing rule.
     """
     def check(text: str) -> Optional[str]:
-        return violation(text, check_financial_figures=True)
+        return summarizer_violation(text, check_financial_figures=True)
 
     return (
         check(out["executive_summary"])

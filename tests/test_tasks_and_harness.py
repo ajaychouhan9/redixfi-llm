@@ -487,12 +487,18 @@ def test_context_check_passes_small_prompts():
 def test_recommended_model_per_task_is_registered():
     from app.models.registry import RECOMMENDED_MODEL_BY_TASK
     for task, model in RECOMMENDED_MODEL_BY_TASK.items():
-        assert task in ("annual_report_summary", "red_flag", "ask_ai")
+        assert task in ("annual_report_summary", "annual_report_summary_legacy",
+                        "concall_summary", "red_flag", "ask_ai")
         assert get_model_spec(model)
-    # Phase A must not be pointed at a context that cannot hold it.
-    assert get_model_spec(
-        RECOMMENDED_MODEL_BY_TASK["annual_report_summary"]
-    ).max_model_len >= 32768
+    # Each phase must be pointed at a context that can actually hold it,
+    # using the sizes MEASURED against the real exported fixtures.
+    needs = {"concall_summary": 19308, "annual_report_summary": 16291,
+             "annual_report_summary_legacy": 62456, "red_flag": 944, "ask_ai": 4640}
+    for task, required in needs.items():
+        spec = get_model_spec(RECOMMENDED_MODEL_BY_TASK[task])
+        assert spec.max_model_len >= required, (
+            f"{task} needs {required} tokens but {spec.name} offers "
+            f"{spec.max_model_len}")
 
 
 # --------------------------------------------------------------------------
@@ -633,3 +639,102 @@ def test_fixture_cannot_be_replayed_as_an_unrelated_task(tmp_path):
     fs = fixtures_mod.load(str(tmp_path / "sample_concall_summary.json"))
     with pytest.raises(ValueError, match="cannot be replayed"):
         run_evaluation(EchoBackend(), fs, "echo-model", replay_as="red_flag")
+
+
+# --------------------------------------------------------------------------
+# validator fidelity — the call carve-out, found by real production data
+# --------------------------------------------------------------------------
+def test_summarizer_validator_allows_earnings_conference_call():
+    """6 of 20 REAL production concall references were flagged non-compliant
+    before this split existed. Both RedixFi summarizers carry the
+    "call"-means-a-meeting carve-out; risk_flag_classifier does not."""
+    from app.compliance.validators import summarizer_violation
+
+    phrase = "The earnings conference call on February 13 highlighted turnover growth."
+    assert summarizer_violation(phrase) is None
+    # risk_flag_classifier's variant genuinely has no carve-out.
+    assert violation(phrase) is not None
+    # but a real trading call must still be rejected by both
+    assert summarizer_violation("Place a buy call at the target price") is not None
+
+
+def test_summarizer_validator_financial_figure_split():
+    from app.compliance.validators import summarizer_violation
+    figure = "Revenue rose 12% during the year."
+    assert summarizer_violation(figure, check_financial_figures=True) is not None
+    assert summarizer_violation(figure, check_financial_figures=False) is None
+
+
+def test_annual_report_comparator_flags_legacy_schema_mismatch():
+    """A legacy-shaped reference read with the current schema must NOT be
+    reported as a compliance failure — that would read as production having
+    emitted bad text, which is false."""
+    legacy_ref = {
+        "summary": "The report described management's stated priorities.",
+        "bullets": ["a", "b", "c"],
+        "key_takeaway": "A takeaway.",
+    }
+    r = compare_mod.compare("annual_report_summary", {"reference": legacy_ref}, {})
+    assert r["reference_schema_matches_replay"] is False
+    assert r["reference_compliance"] is None
+    assert "like-for-like" in r["schema_mismatch_note"]
+
+    current_ref = {"executive_summary": "The report described priorities.",
+                   "key_points": ["a"], "important_risks": [], "key_takeaway": "T."}
+    r2 = compare_mod.compare("annual_report_summary", {"reference": current_ref}, {})
+    assert r2["reference_schema_matches_replay"] is True
+    assert r2["schema_mismatch_note"] is None
+
+
+@pytest.mark.skipif(not os.path.exists(os.path.join(ROOT, "fixtures",
+                                                    "concall_benchmark.json")),
+                    reason="real exported fixtures not present")
+def test_real_production_references_pass_their_own_validators():
+    """Regression guard against vendoring drift: every REAL production
+    reference must pass the validator its own pipeline used."""
+    from app.compliance.validators import summarizer_violation
+
+    cc = fixtures_mod.load(os.path.join(ROOT, "fixtures", "concall_benchmark.json"))
+    bad = [c["symbol"] for c in cc.cases
+           if summarizer_violation(c["reference"]["summary"])
+           or summarizer_violation(c["reference"]["tone_note"])]
+    assert not bad, f"concall references failing their own validator: {bad}"
+
+    ar = fixtures_mod.load(os.path.join(ROOT, "fixtures",
+                                        "annual_report_benchmark.json"))
+    bad = []
+    for c in ar.cases:
+        r = c["reference"]
+        checks = [summarizer_violation(r.get("summary") or "", check_financial_figures=True),
+                  summarizer_violation(r.get("key_takeaway") or "", check_financial_figures=True)]
+        checks += [summarizer_violation(b, check_financial_figures=True)
+                   for b in (r.get("bullets") or [])]
+        if any(checks):
+            bad.append(c["symbol"])
+    assert not bad, f"annual report references failing their own validator: {bad}"
+
+
+def test_ask_reference_backstop_artifact_is_separated_not_counted():
+    """The causal backstop is derived from a REBUILT packet. An answer that
+    was compliant when production wrote it must not be reported as a
+    production compliance failure just because the rebuilt packet lost the
+    news event that justified its causal language."""
+    answer = "The score fell due to the reported order cancellation."
+    case = {"reference": {"answer": answer, "refused": False}}
+
+    art = compare_mod.compare("ask_ai", case, {"answer": "x", "refused": False,
+                                               "causal_backstop": True})
+    assert art["reference_compliance"] is None
+    assert art["reference_compliance_backstop_artifact"] is True
+
+    off = compare_mod.compare("ask_ai", case, {"answer": "x", "refused": False,
+                                               "causal_backstop": False})
+    assert off["reference_compliance"] is None
+    assert off["reference_compliance_backstop_artifact"] is False
+
+    # A genuine violation is still reported, backstop or not.
+    real = compare_mod.compare(
+        "ask_ai", {"reference": {"answer": "Place a buy call.", "refused": False}},
+        {"answer": "x", "refused": False, "causal_backstop": True})
+    assert real["reference_compliance"] is not None
+    assert real["reference_compliance_backstop_artifact"] is False
