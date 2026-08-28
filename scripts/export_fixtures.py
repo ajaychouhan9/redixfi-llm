@@ -280,7 +280,12 @@ def build_annual_report(limit: int, symbols: Optional[List[str]]) -> Dict[str, A
 
     # Draw from the WHOLE legacy-reference population, then stride, so the 20
     # are spread across the 72 rather than being whichever 20 sort first.
-    population = list(db["annual_reports"].find(query, projection))
+    # Sorted explicitly. Without a sort MongoDB returns natural order, which
+    # is NOT stable between runs — two validation passes selected different
+    # 20-document samples (4.80 MB vs 4.54 MB) before this was fixed. A
+    # fixture must be reproducible, so the draw is deterministic: sort by
+    # filing_id, then stride.
+    population = list(db["annual_reports"].find(query, projection).sort("filing_id", 1))
     print(f"  legacy-reference population: {len(population)} documents")
     chosen = spread_sample(population, limit)
 
