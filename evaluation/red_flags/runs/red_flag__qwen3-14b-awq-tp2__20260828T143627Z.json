@@ -1,0 +1,527 @@
+{
+  "run_id": "20260828T143627Z",
+  "generated_at": "2026-08-28T14:36:27.872046+00:00",
+  "task": "red_flag",
+  "fixture_task": "red_flag",
+  "replayed_as": "red_flag",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-fixtures/red_flag_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "chromadb annual_reports",
+      "available_positives": {
+        "auditor_qualification": 684,
+        "contingent_liability": 1144,
+        "related_party_transaction": 1754,
+        "promoter_pledge": 26
+      },
+      "available_negatives": 53305,
+      "strata": {
+        "auditor_qualification": 10,
+        "contingent_liability": 10,
+        "related_party_transaction": 10,
+        "promoter_pledge": 10,
+        "negative_unflagged": 20
+      },
+      "dropped_no_keyword_candidates": 0,
+      "sampling": "evenly-strided over sorted ids (deterministic), not first-N",
+      "subset_of": "red_flag_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 60,
+      "selection": "One per positive category plus negatives. The negatives matter most:"
+    },
+    "cases_total": 6,
+    "cases_run": 6
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "summary": {
+    "cases": 6,
+    "generated_ok": 6,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 6,
+    "json_repair_used": 6,
+    "mean_latency_sec": 10.47,
+    "total_prompt_tokens": 3796,
+    "total_completion_tokens": 2263,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "outcomes": {
+      "false_negative": 2,
+      "agree": 2,
+      "agree_no_flag": 2
+    },
+    "agreement_rate": 0.6667
+  },
+  "results": [
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 601,
+      "completion_tokens": 386,
+      "total_tokens": 987,
+      "latency_sec": 10.7431,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 231,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the audit process and key audit matters related to the standalone financial statements, including the recognition of revenue from fixed price contracts and the judgments and estimates involved in this process."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ABB_AR_ABB_277",
+        "symbol": "ABB",
+        "company_name": "ABB India Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ABB_277",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      },
+      "evidence_excerpt": "ndependent of the Company in accordance with the Code \nof Ethics issued by the Institute of Chartered Accountants \nof India together with the ethical requirements that are \nrelevant to our audit of the standalone financial statements \nunder the provisions of the Act and the Rules thereunder, \nand we have fulfilled our other ethical responsibilities in \naccordance with these requirements and the Code of Ethics. \nWe believe that the audit evidence we have obtained is \nsufficient and appropriate to provide a basis for our opinion \non the standalone financial statements.\nKEY AUDIT MATTERS\nKey audit matters are those matters that, in our professional judgment, were of most significance in our audit of the \nstandalone financial statements of the current period. These matters were addressed in the context of our audit of the \nstandalone financial statements as a whole, and in forming our opinion thereon, and we do not provide a separate opinion \non these matters.\nRevenue from fixed price contracts using percentage of completion method\nSee Note 2.3(a) and 2.6 to the standalone financial statements.\nThe key audit matter\nHow the matter was addressed in our audit\nRevenue from fixed price contracts are recognized in \naccordance with Ind AS 115, Revenue from Contracts with \nCustomers, and as detailed in note 2.3(a) and 2.6 of the \n“material accounting policies” in the standalone financial \nstatements.\nThere are key judgments and estimates involved in the \nrecognition of revenue relating t\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true,
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the company's estimation of contingent liabilities, including provisions for obligations arising from past events where resource outflows are probable. It mentions that contingent liabilities are recognized when there is a possible obligation, and these are reviewed and adjusted periodically."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 598,
+      "completion_tokens": 412,
+      "total_tokens": 1010,
+      "latency_sec": 11.2834,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": "contingent_liability",
+        "outcome": "agree",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 315,
+        "reference_summary_chars": 271,
+        "summary_overlap": 0.2308
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the company's provisions for litigations and contingencies, indicating that provisions are estimated for present obligations that may require resource outflow. It also mentions the assessment of contingent liabilities based on significant judgments."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ABB_AR_ABB_312",
+        "symbol": "ABB",
+        "company_name": "ABB India Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ABB_312",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      },
+      "evidence_excerpt": "ring the period. Application \nof accounting policies that require critical accounting \nestimates involving complex and subjective judgments \nand the use of assumptions in these standalone financial \nstatements have been disclosed in Note 2.3. Accounting \nestimates could change from period to period. Actual \nresults could differ from those estimates. Appropriate \nchanges in estimates are made as management \nbecomes \naware \nof \nchanges \nin \ncircumstances \nsurrounding the estimates. Changes in estimates are \nreflected in the financial statements in the period in \nwhich changes are made and, if material, their effects \nare disclosed in the notes to the standalone financial \nstatements. Estimates and underlying assumptions are \nreviewed on an ongoing basis.\n2.3\t Critical accounting estimates and judgements\n\t\na.\t\nProject revenue and costs (refer note 2.6)\n\t\n\t\nThe Company uses the percentage-of-completion \nmethod in accounting for its fixed-price contracts. \nUse of the percentage-of-completion method \nrequires the Company to measure the costs \nexpended to date as a proportion of the total \ncosts estimated to be incurred. Costs expended \nhave been used to measure progress towards \ncompletion as there is a direct relationship \nbetween input and productivity. Provisions for \nestimated losses, if any, on uncompleted contracts \nare recorded in the period in which such losses \nbecome probable based on the expected contract \nestimates at the reporting date.\n\t\nb.\t\nProvision for litigations \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 697,
+      "completion_tokens": 454,
+      "total_tokens": 1151,
+      "latency_sec": 12.6457,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 217,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses the pledge of shares amounting to 51% of the total paid-up equity shares of the company, subject to compliance with specific regulations and a Non-Disclosure Undertaking for the remaining shares."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ADANIENT_AR_ADANIENT_926",
+        "symbol": "ADANIENT",
+        "company_name": "Adani Enterprises Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ADANIENT_926",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      },
+      "evidence_excerpt": "f 1 year \nMCLR+5BPS p.a. aggregating to ` 133.93 crore(Previous year: ` Nil). First pari passu charge by way of \nhypothecation of all movable assets of the Company including, but not limited to plant & machinery, \nspares tools & accessories, current assets of the Company. First pari passu charge on all rights, title, \ninterests, benefits, claims and demands whatesover of the Company with respect to the insurance \ncontracs, all money receivables under the insured assets of the Company. First pari passu floatng \ncharge on book debts, operating cash flows, receivables, commissions, revenue of whatsover nature.\n23.\tNon-Current Borrowings (Contd.)\n23.\tNon-Current Borrowings (Contd.)\nNotes forming part of the Consolidated Financial Statements\nfor the year ended March 31, 2026\nNotes forming part of the Consolidated Financial Statements\nfor the year ended March 31, 2026\nPortfolio  \nOverview\nCorporate \nOverview\nStrategic \nReview\nESG \nOverview\nStatutory \nReports\nFinancial \nStatements\nADANI ENTERPRISES LIMITED\nIntegrated Annual Report 2025-26\n\t\n\t\n\t\n\u0007First pari passu charge on all the bank accounts of the Company. Pledge of shares to the extent of \n51% of the total paid up equity shares of the company subject to complianc of section 19(2),(3) of \nthe Banking Regulation Acrore 1949, and Non Discloure Undertaking (NDU) of the remailng shares. \nStand by Letter of Credit from a reputable overseas bank, to the satisfaction of the Lender for 40 % of \nfacility amount including interest and othe\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true,
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The listed entity has obtained prior approval from the Audit Committee for all related party transactions, or provided detailed reasons if no prior approval was obtained, with no reportable events noted."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 646,
+      "completion_tokens": 289,
+      "total_tokens": 935,
+      "latency_sec": 8.1244,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": "related_party_transaction",
+        "outcome": "agree",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 203,
+        "reference_summary_chars": 216,
+        "summary_overlap": 0.6667
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The listed entity has obtained prior approval of the Audit Committee for all related party transactions and provided detailed reasons regarding the approval status of transactions that did not receive prior approval."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ABB_AR_ABB_122",
+        "symbol": "ABB",
+        "company_name": "ABB India Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ABB_122",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      },
+      "evidence_excerpt": "vernance reports under Regulation \n27(2) are accurate and specific which re-directs to the relevant document(s)/ \nsection of the website\nYes\nNone\n4)\nDisqualification of Director:\nNone of the Directors of the Company are disqualified under Section 164 of \nCompanies Act, 2013, as confirmed by the listed entity.\nYes\nNone\nANNEXURE- C\nWE HEREBY REPORT THAT, DURING THE REVIEW PERIOD, THE COMPLIANCE \nSTATUS OF THE LISTED ENTITY IS AS GIVEN HEREUNDER:\nBoards’ Report\nSr. \nNo. Particulars\nCompliance status \n(Yes/No/NA)\nObservations / \nRemarks by PCS\n5)\nDetails related to Subsidiaries of listed entities have been examined w.r.t., \na)\t Identification of material subsidiary companies\nb)\t Requirements with respect to disclosure of material as well as other \nsubsidiaries\nYes\nNone\n6)\nPreservation of Documents:\nThe listed entity is preserving and maintaining records as prescribed under SEBI \nRegulations and disposal/archival of records is being carried out as per Policy \nof Preservation of Documents and Archival policy prescribed under SEBI Listing \nRegulations. \nYes\nNone\n7)\nPerformance Evaluation:\nThe listed entity has conducted performance evaluation of the Board, \nIndependent Directors and the Committees at the start of every financial year/\nduring the financial year as prescribed in SEBI Regulations\nYes\nNone\n8)\nRelated Party Transactions:\na)\t The listed entity has obtained prior approval of Audit Committee for all \nRelated party transactions, or\nb)\t The Listed entity has provided detailed\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "summary failed compliance: forward-tense word 'expected'"
+        }
+      ],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 625,
+      "completion_tokens": 385,
+      "total_tokens": 1010,
+      "latency_sec": 10.6525,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ADANIGREEN_AR_ADANIGREEN_1065",
+        "symbol": "ADANIGREEN",
+        "company_name": "Adani Green Energy Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ADANIGREEN_1065",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      },
+      "evidence_excerpt": "ith previous transactions during a financial year, whether \ndirectly and/or through its subsidiary(ies), exceed(s) \n` 1,000 crore or 10% of the annual consolidated turnover \nas per the last audited financial statements of the listed \nentity, whichever is lower. Further, the definition of \nRelated Party Transaction as per Regulation 2(1)(zc) of \nthe SEBI Listing Regulations includes the transaction \ninvolving a transfer of resources, services or obligations \nbetween a listed entity or any of its subsidiaries on one \nhand and a related party of the listed entity or any of its \nsubsidiaries on the other hand.\nThe Company proposes to enter into a related party \ntransaction(s) as mentioned below, on mutually agreed \nterms and conditions, and the aggregate of such \ntransaction(s), are expected to cross the applicable \nmateriality thresholds as mentioned above. Accordingly, as \nper the SEBI Listing Regulations, prior approval of the \nMembers is being sought for all such arrangements / \ntransactions proposed to be undertaken by the Company. \nThe said transactions shall be in the ordinary course of \nbusiness of the Company and on an arm’s length basis.\nThe Audit Committee of the Company (comprising solely \nof the Independent and Nominee Directors) has, on the \nbasis of relevant details provided by the management \nas required by the law, at its meeting held on March 28, \n2025 reviewed and approved the said transaction(s), \nsubject to approval of the Members, while noting that \nsuch tra\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "summary failed compliance: forward-tense word 'expects'"
+        }
+      ],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 629,
+      "completion_tokens": 337,
+      "total_tokens": 966,
+      "latency_sec": 9.372,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ASIANPAINT_AR_ASIANPAINT_679",
+        "symbol": "ASIANPAINT",
+        "company_name": "Asian Paints Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ASIANPAINT_679",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      },
+      "evidence_excerpt": "petition \nAct, 2002. The Company has filed its responses from time to time with respect to the \ninformation sought by the DG. \n\t\n\u0007Based on the present status and the Company’s assessment of the proceedings, the Company \nbelieves that it has a reasonable basis to defend its position in this matter. Considering the \nearly stage of the investigation and inherent uncertainties associated with such proceedings, \nit is not possible to estimate the likelihood of potential financial impact, if any.\n\t\n-\n-\nTotal\n\t\n\u0007^The above claims are pending before various Appellate Authorities. The management, including its advisors, expect that its position will likely be \nupheld on ultimate resolution and will not have a material adverse effect on the Company’s financial statements.  \nIt is not practicable for the Company to estimate the timings of cash outflows, if any, in respect of the pending resolution of the respective \nproceedings as it is determinable only on receipt of judgements/ decisions pending with various forums/ authorities. The Company does not \nexpect any reimbursements in respect of the contingent liabilities.\n\t\n\u0007*Towards custom duty and IGST for capital goods imported under Manufacturing & Other operation in Warehouse Regulation (MOOWR) scheme \nagainst which the Company has executed a bond which is three times of the custom duty calculated at the time of import. The amount and timing \nof liability towards such custom duty and IGST will crystalize at the time of filing of ex-bo\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}

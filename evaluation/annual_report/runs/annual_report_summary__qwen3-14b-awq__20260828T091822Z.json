@@ -1,0 +1,116 @@
+{
+  "run_id": "20260828T091822Z",
+  "generated_at": "2026-08-28T09:18:22.768797+00:00",
+  "task": "annual_report_summary",
+  "model": "qwen3-14b-awq",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 1,
+    "max_model_len": 16384,
+    "is_moe": false
+  },
+  "backend": "echo",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "fixtures/sample_annual_report_summary.json",
+    "exported_at": "2026-08-28T09:18:22.258464+00:00",
+    "schema_version": 1,
+    "source": {
+      "synthetic": true,
+      "warning": "SYNTHETIC SAMPLE — invented text and invented reference outputs. Not from RedixFi production. Harness validation only; never cite results from this fixture as a model comparison.",
+      "exported_by": "LLM/scripts/make_sample_fixtures.py"
+    },
+    "cases_total": 1,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "llm_project_commit": "unknown"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "json_repair_used": 0,
+    "mean_latency_sec": 0.0,
+    "total_prompt_tokens": 784,
+    "total_completion_tokens": 157,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "mean_lexical_overlap": 0.2063
+  },
+  "results": [
+    {
+      "task": "annual_report_summary",
+      "fixture_id": "SAMPLECO:FY2024-25",
+      "ok": true,
+      "output": {
+        "executive_summary": "The report described the company's stated priorities across its operating segments. Management said it focused on capacity, governance and sustainability during the period. The document outlined the areas management identified as central to its strategy.",
+        "key_points": [
+          "Management described a focus on capacity and operational resilience",
+          "The report stated continued investment in sustainability programmes",
+          "Management said governance practices were reviewed during the year"
+        ],
+        "important_risks": [],
+        "key_takeaway": "The report centred on management's stated operating priorities for the period.",
+        "summary": "The report described the company's stated priorities across its operating segments. Management said it focused on capacity, governance and sustainability during the period. The document outlined the areas management identified as central to its strategy.",
+        "bullets": [
+          "Management described a focus on capacity and operational resilience",
+          "The report stated continued investment in sustainability programmes",
+          "Management said governance practices were reviewed during the year"
+        ]
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 784,
+      "completion_tokens": 157,
+      "total_tokens": 941,
+      "latency_sec": 0.0001,
+      "comparison": {
+        "reference_present": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_key_point_count": 3,
+        "reference_key_point_count": 4,
+        "candidate_risk_count": 0,
+        "reference_risk_count": 0,
+        "candidate_chars": 536,
+        "reference_chars": 716,
+        "lexical_overlap": 0.2063,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "executive_summary": "The annual report of Sample Industries Limited for FY2024-25 outlined management's focus on consolidating manufacturing capacity across its three reportable segments. Management said the local sourcing programme was extended to further component categories during the year. The report also described commissioning work at two facilities and a third site in design.",
+        "key_points": [
+          "Management described a focus on consolidating manufacturing capacity",
+          "The report stated the local sourcing programme was extended",
+          "Commissioning work was described at two facilities",
+          "Management set a goal of raising locally manufactured component share"
+        ],
+        "important_risks": [],
+        "key_takeaway": "The report centred on management's stated consolidation of manufacturing capacity and local sourcing.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-24T21:41:00+00:00"
+      },
+      "case_meta": {
+        "symbol": "SAMPLECO",
+        "company_name": "Sample Industries Limited",
+        "fiscal_year": "FY2024-25"
+      }
+    }
+  ]
+}

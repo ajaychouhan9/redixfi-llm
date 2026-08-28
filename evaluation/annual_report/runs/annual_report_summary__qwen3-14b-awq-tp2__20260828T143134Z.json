@@ -1,0 +1,514 @@
+{
+  "run_id": "20260828T143134Z",
+  "generated_at": "2026-08-28T14:31:34.911449+00:00",
+  "task": "annual_report_summary",
+  "fixture_task": "annual_report_summary",
+  "replayed_as": "annual_report_summary",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-fixtures/annual_report_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "annual_reports",
+      "reference_set": "LEGACY_REFERENCE (72 summaries written 2026-08-16)",
+      "population_size": 72,
+      "evidence_finder": "RedixFi data-pipeline/evidence_finder.py (real)",
+      "evidence_max_tokens": 20000,
+      "skipped": [],
+      "subset_of": "annual_report_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 20,
+      "selection": "Distinct symbols, spread across evidence size (small/median/large) so"
+    },
+    "cases_total": 3,
+    "cases_run": 3
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "summary": {
+    "cases": 3,
+    "generated_ok": 1,
+    "generation_failures": 2,
+    "candidate_compliance_failures": 2,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 3,
+    "json_repair_used": 3,
+    "mean_latency_sec": 137.157,
+    "total_prompt_tokens": 83459,
+    "total_completion_tokens": 5066,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "mean_lexical_overlap": 0.0214
+  },
+  "results": [
+    {
+      "task": "annual_report_summary",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "executive_summary": "Eternal Limited, formerly Zomato, reported a significant shift in its business model with a move to inventory ownership in quick commerce, driving substantial revenue growth. The company emphasized strategic expansion across food delivery, quick commerce, going-out experiences, and B2B supplies, while highlighting governance, risk management, and sustainability initiatives. The report outlined challenges including competitive pressures, stakeholder management, and macroeconomic uncertainties.",
+        "key_points": [
+          "Adoption of inventory ownership in quick commerce to expand revenue scope beyond marketplace commissions",
+          "Strategic diversification across food delivery, quick commerce, going-out experiences, and B2B supply chains",
+          "Focus on corporate governance, risk mitigation frameworks, and compliance with regulatory requirements",
+          "Commitment to sustainability through energy conservation and operational efficiency measures"
+        ],
+        "important_risks": [
+          "Intensifying competition in quick commerce and food delivery sectors",
+          "Vulnerability to labor strikes and supply chain disruptions in distributed operations",
+          "Macroeconomic volatility impacting consumer spending and logistics",
+          "Potential for black swan events disrupting urban mobility and supply networks"
+        ],
+        "key_takeaway": "The company's strategic pivot to inventory ownership in quick commerce fundamentally reshaped its revenue model and operational focus, underscoring a shift from pure marketplace facilitation to integrated supply chain control.",
+        "summary": "Eternal Limited, formerly Zomato, reported a significant shift in its business model with a move to inventory ownership in quick commerce, driving substantial revenue growth. The company emphasized strategic expansion across food delivery, quick commerce, going-out experiences, and B2B supplies, while highlighting governance, risk management, and sustainability initiatives. The report outlined challenges including competitive pressures, stakeholder management, and macroeconomic uncertainties.",
+        "bullets": [
+          "Adoption of inventory ownership in quick commerce to expand revenue scope beyond marketplace commissions",
+          "Strategic diversification across food delivery, quick commerce, going-out experiences, and B2B supply chains",
+          "Focus on corporate governance, risk mitigation frameworks, and compliance with regulatory requirements",
+          "Commitment to sustainability through energy conservation and operational efficiency measures"
+        ]
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 11807,
+      "completion_tokens": 581,
+      "total_tokens": 12388,
+      "latency_sec": 78.7751,
+      "comparison": {
+        "reference_present": true,
+        "reference_schema_matches_replay": false,
+        "schema_mismatch_note": "Reference is LEGACY-shaped (summary/bullets/key_takeaway) but this replay uses the CURRENT schema. Field-level comparison is not meaningful here — replay as 'annual_report_summary_legacy' for the like-for-like reading.",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_key_point_count": 4,
+        "reference_key_point_count": 0,
+        "candidate_risk_count": 4,
+        "reference_risk_count": 0,
+        "candidate_chars": 1434,
+        "reference_chars": 159,
+        "lexical_overlap": 0.0642,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Eternal Limited's annual report for FY2025-26 outlines the company's commitment to building a sustainable business across four key segments: food delivery, quick commerce, going-out experiences, and B2B supplies. Management emphasized the importance of innovation and customer engagement, highlighting initiatives like the Healthy Mode on the Zomato app and the expansion of the Blinkit quick commerce platform. The report also detailed the company's focus on sustainability, including significant investments in electric vehicle delivery and efforts to minimize plastic waste, while maintaining a strong governance framework to support its operations.",
+        "bullets": [
+          "Management highlighted a commitment to sustainability and reducing carbon emissions.",
+          "The company focused on expanding its quick commerce and food delivery segments.",
+          "Eternal Limited emphasized innovation in customer engagement through new app features.",
+          "Management reported on the importance of governance and ethical business practices.",
+          "The report detailed efforts to support local communities and enhance food supply chains."
+        ],
+        "key_takeaway": "Eternal Limited is dedicated to building a sustainable and innovative business model while enhancing customer experiences across its diverse service offerings.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-16T12:43:46.706384"
+      },
+      "case_meta": {
+        "benchmark_id": "AR_ETERNAL_AR_30059_ETERNAL_2025_2026_A_48211721_29072026204435",
+        "symbol": "ETERNAL",
+        "company_name": "ETERNAL LIMITED",
+        "fiscal_year": "FY2025-26",
+        "filing_id": "AR_30059_ETERNAL_2025_2026_A_48211721_29072026204435",
+        "doc_type": "annual_report"
+      },
+      "provenance": {
+        "reference_set": "LEGACY_REFERENCE",
+        "pipeline_version": "legacy_front_slice_pre_evidence_finder",
+        "input_type": "dual: legacy_front_slice + evidence_finder",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-16T12:43:46.706384",
+        "reference_prompt_version": "annual_report_summarizer@2026-08-16",
+        "reference_prompt_source_commit": "b9e40c4~1",
+        "reference_output_schema": [
+          "summary",
+          "bullets",
+          "key_takeaway"
+        ],
+        "current_pipeline_version": "evidence_finder@b9e40c4",
+        "current_prompt_version": "annual_report_summarizer@8bb3170",
+        "current_output_schema": [
+          "executive_summary",
+          "key_points",
+          "important_risks",
+          "key_takeaway"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "The stored reference PREDATES the Evidence Finder layer (reference 2026-08-16, Evidence Finder 2026-08-24).",
+          "Replaying as 'annual_report_summary_legacy' is like-for-like. Replaying as 'annual_report_summary' changes BOTH the input and the output schema, and is NOT a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "[Evidence chunk 1, page ~2]\nre registered with the Company/ \nregistrar and share transfer agent/ depositories/ depository participants. \n \nThe Board has appointed National Securities Depository Limited (“NSDL”) as the e-voting \nagency. Members of the Company holding shares in demat or physical form as on Wednesday, \nAugust 19, 2026 (“Cut-off date”) are entitled to cast their vote on the resolutions as set out in \nthe Notice by electronic means, through remote e-voting facility which shall commence on \nSaturday, August 22, 2026 at 9:00 A.M. (IST) and end on Tuesday, August 25, 2026 at 5:00 P.M. \n(IST) or through e-voting at the AGM. \n \nThe Notice convening the AGM along with the Annual Report are uploaded on the Company’s \nwebsite at www.eternal.com and also at the website of NSDL at www.evoting.nsdl.com. \n \nFor Eternal Limited \n(Formerly known as Zomato Limited) \n \n \n \nSandhya Sethia \nCompany Secretary & Compliance Officer \nDate: July 28, 2026 \nEncl.: As above \nSANDHY\nA SETHIA\nDigitally signed by \nSANDHYA SETHIA \nDate: 2026.07.29 \n20:34:18 +05'30'\n\nAnnual Report 2025-26\nNATIONAL SPORTS STADIUM\nPowering India's changing lifestyles\n\nOur mission statement\nPowering India's\nchanging lifestyles\nOur vision statements \nBetter food for more people\nZOMATO\nInstant commerce indistinguishable from magic\nBLINKIT\nWorld class going-out experiences in India\nDISTRICT\nBuilding Indiaˇss most trusted food supply chain\nHYPERPURE\nMake India malnutrition free\nFEEDING INDIA\n\nTable of contents\nCompany\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "annual_report_summary",
+      "fixture_id": "",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "forward-tense word 'Will'",
+          "text": {
+            "executive_summary": "Larsen & Toubro Limited (LT) emphasized its commitment to inclusive workplace initiatives, achieving progress toward its gender diversity goals with women comprising nearly 10% of the workforce. The company highlighted its resilience in navigating global uncertainties, supported by stakeholder trust and a 'Can do, Will do, Will get it done' ethos. Strategic restructuring efforts, including digital commerce under a dedicated subsidiary, and sustainability initiatives like renewable energy adoption and decarbonization were outlined as key priorities.",
+            "key_points": [
+              "Initiatives to advance gender diversity, including women-friendly programs and progress toward the Lakshya 2026 goal.",
+              "Employee-centric culture reinforced by recognition programs and reaffirmed 'Great Place to Work' certification.",
+              "Strategic restructuring to streamline operations, including digital commerce under a dedicated subsidiary.",
+              "Focus on sustainability through renewable energy adoption, decarbonization efforts, and energy efficiency improvements.",
+              "Robust corporate governance frameworks, internal controls, and risk management policies aligned with global standards."
+            ],
+            "important_risks": [
+              "Competition from domestic and international firms, particularly in government tenders, impacting margins.",
+              "Global economic volatility, including trade disruptions and subdued real GDP growth expectations.",
+              "Commodity price fluctuations affecting project margins, especially for firm-price contracts.",
+              "Challenges in managing supply chain reconfigurations and fiscal sustainability concerns globally."
+            ],
+            "key_takeaway": "Larsen & Toubro's resilience amid global uncertainties is underpinned by stakeholder trust, strategic restructuring, and a commitment to sustainability and inclusive growth initiatives.",
+            "summary": "Larsen & Toubro Limited (LT) emphasized its commitment to inclusive workplace initiatives, achieving progress toward its gender diversity goals with women comprising nearly 10% of the workforce. The company highlighted its resilience in navigating global uncertainties, supported by stakeholder trust and a 'Can do, Will do, Will get it done' ethos. Strategic restructuring efforts, including digital commerce under a dedicated subsidiary, and sustainability initiatives like renewable energy adoption and decarbonization were outlined as key priorities.",
+            "bullets": [
+              "Initiatives to advance gender diversity, including women-friendly programs and progress toward the Lakshya 2026 goal.",
+              "Employee-centric culture reinforced by recognition programs and reaffirmed 'Great Place to Work' certification.",
+              "Strategic restructuring to streamline operations, including digital commerce under a dedicated subsidiary.",
+              "Focus on sustainability through renewable energy adoption, decarbonization efforts, and energy efficiency improvements.",
+              "Robust corporate governance frameworks, internal controls, and risk management policies aligned with global standards."
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "reason": "forward-tense word 'Will'",
+          "text": {
+            "executive_summary": "The report highlights Larsen & Toubro's focus on gender diversity initiatives, employee-centric culture, and resilience amid global uncertainty. Management emphasized the company's 'Can do, Will do, Will get it done' mantra, stakeholder partnerships, and progress toward Lakshya 2031 targets. Strategic restructuring, digital transformation, and sustainability efforts were noted as key priorities.",
+            "key_points": [
+              "Commitment to gender diversity with women constituting close to 10% of the workforce and initiatives to advance Lakshya 2026 goals.",
+              "Employee recognition programs and 'Great Place to Work' certification reaffirming the company's position as an employer of choice.",
+              "Strategic restructuring including transfer of businesses to subsidiaries, rebranding of LTIMindtree as LTM Limited, and focus on AI-driven data centers and semiconductor investments.",
+              "Sustainability efforts such as electrification of processes, renewable energy adoption, and carbon footprint reduction initiatives across operations."
+            ],
+            "important_risks": [
+              "Competition from domestic and international firms impacting margins through aggressive pricing strategies.",
+              "Global economic uncertainty, including structural shifts in trade architecture and subdued real GDP growth expectations.",
+              "Commodity price volatility and contingent risks from unawarded project bids affecting potential margins.",
+              "Regulatory and compliance risks across operations, including adherence to evolving statutory and sustainability frameworks."
+            ],
+            "key_takeaway": "Larsen & Toubro prioritizes sustainability, operational resilience, and strategic transformation through electrification, digital innovation, and inclusive workforce initiatives to navigate global challenges and achieve long-term growth targets.",
+            "summary": "The report highlights Larsen & Toubro's focus on gender diversity initiatives, employee-centric culture, and resilience amid global uncertainty. Management emphasized the company's 'Can do, Will do, Will get it done' mantra, stakeholder partnerships, and progress toward Lakshya 2031 targets. Strategic restructuring, digital transformation, and sustainability efforts were noted as key priorities.",
+            "bullets": [
+              "Commitment to gender diversity with women constituting close to 10% of the workforce and initiatives to advance Lakshya 2026 goals.",
+              "Employee recognition programs and 'Great Place to Work' certification reaffirming the company's position as an employer of choice.",
+              "Strategic restructuring including transfer of businesses to subsidiaries, rebranding of LTIMindtree as LTM Limited, and focus on AI-driven data centers and semiconductor investments.",
+              "Sustainability efforts such as electrification of processes, renewable energy adoption, and carbon footprint reduction initiatives across operations."
+            ]
+          }
+        },
+        {
+          "pass": 3,
+          "reason": "forward-tense word 'Will'",
+          "text": {
+            "executive_summary": "The report highlights Larsen & Toubro's focus on gender diversity initiatives, employee-centric culture, and resilience amid global uncertainty. Management emphasized the company's 'Can do, Will do, Will get it done' mantra, stakeholder partnerships, and progress toward Lakshya 2031 targets. Strategic restructuring, including business transfers to subsidiaries and rebranding efforts, were noted, alongside sustainability initiatives like electrification of processes and energy efficiency improvements.",
+            "key_points": [
+              "Commitment to gender diversity with women constituting close to 10% of the workforce and initiatives to advance Lakshya 2026 goals.",
+              "Employee recognition programs and 'Great Place to Work' certification reaffirming the company's position as an employer of choice.",
+              "Strategic restructuring, including the transfer of Realty and e-commerce businesses to subsidiaries and rebranding of LTIMindtree as LTM Limited.",
+              "Sustainability efforts focused on electrification of machinery, renewable energy adoption, and reducing carbon footprint through process optimization.",
+              "Corporate governance frameworks, risk management policies, and adherence to global standards like COSO for internal controls."
+            ],
+            "important_risks": [
+              "Competition from domestic and international firms, particularly in government tenders, impacting margins.",
+              "Global economic uncertainty, including structural shifts in trade and potential volatility in commodity prices.",
+              "Contingent risks from unawarded bids and price adjustments in projects with fixed-price contracts.",
+              "Regulatory and compliance challenges across diverse operations and subsidiaries."
+            ],
+            "key_takeaway": "Larsen & Toubro's emphasis on sustainability, operational efficiency, and stakeholder partnerships underscores its strategic focus on long-term resilience and inclusive growth amid global uncertainties.",
+            "summary": "The report highlights Larsen & Toubro's focus on gender diversity initiatives, employee-centric culture, and resilience amid global uncertainty. Management emphasized the company's 'Can do, Will do, Will get it done' mantra, stakeholder partnerships, and progress toward Lakshya 2031 targets. Strategic restructuring, including business transfers to subsidiaries and rebranding efforts, were noted, alongside sustainability initiatives like electrification of processes and energy efficiency improvements.",
+            "bullets": [
+              "Commitment to gender diversity with women constituting close to 10% of the workforce and initiatives to advance Lakshya 2026 goals.",
+              "Employee recognition programs and 'Great Place to Work' certification reaffirming the company's position as an employer of choice.",
+              "Strategic restructuring, including the transfer of Realty and e-commerce businesses to subsidiaries and rebranding of LTIMindtree as LTM Limited.",
+              "Sustainability efforts focused on electrification of machinery, renewable energy adoption, and reducing carbon footprint through process optimization.",
+              "Corporate governance frameworks, risk management policies, and adherence to global standards like COSO for internal controls."
+            ]
+          }
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 34509,
+      "completion_tokens": 2413,
+      "total_tokens": 36922,
+      "latency_sec": 169.6064,
+      "comparison": {
+        "reference_present": true,
+        "reference_schema_matches_replay": false,
+        "schema_mismatch_note": "Reference is LEGACY-shaped (summary/bullets/key_takeaway) but this replay uses the CURRENT schema. Field-level comparison is not meaningful here — replay as 'annual_report_summary_legacy' for the like-for-like reading.",
+        "candidate_compliance": "executive_summary: empty text",
+        "reference_compliance": null,
+        "candidate_key_point_count": 0,
+        "reference_key_point_count": 0,
+        "candidate_risk_count": 0,
+        "reference_risk_count": 0,
+        "candidate_chars": 0,
+        "reference_chars": 113,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The annual report for Larsen & Toubro Limited for FY 2024-25 highlighted the company's transformative year amidst global challenges, emphasizing its adaptability and commitment to sustainable infrastructure. Management reported a strong performance driven by digital adoption, enhanced project execution, and a robust order book, particularly in the Middle East and domestic markets. The report outlined strategic initiatives in energy transition, safety, and sustainability, alongside a focus on governance and stakeholder engagement.",
+        "bullets": [
+          "Management emphasized a commitment to sustainable infrastructure and energy transition.",
+          "The company reported strong growth in digital adoption and project execution capabilities.",
+          "Safety initiatives included a structured reward and penalty system linked to performance.",
+          "L&T's diversified portfolio and international presence were highlighted as key strengths.",
+          "The report outlined ongoing efforts in governance and stakeholder engagement."
+        ],
+        "key_takeaway": "Management underscored the company's resilience and strategic positioning in a rapidly changing global landscape.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-16T14:03:46.243627"
+      },
+      "case_meta": {
+        "benchmark_id": "AR_LT_AR_29259_LT_2025_2026_A_29793480_14052026183032",
+        "symbol": "LT",
+        "company_name": "Larsen & Toubro Limited",
+        "fiscal_year": "FY2025-26",
+        "filing_id": "AR_29259_LT_2025_2026_A_29793480_14052026183032",
+        "doc_type": "annual_report"
+      },
+      "provenance": {
+        "reference_set": "LEGACY_REFERENCE",
+        "pipeline_version": "legacy_front_slice_pre_evidence_finder",
+        "input_type": "dual: legacy_front_slice + evidence_finder",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-16T14:03:46.243627",
+        "reference_prompt_version": "annual_report_summarizer@2026-08-16",
+        "reference_prompt_source_commit": "b9e40c4~1",
+        "reference_output_schema": [
+          "summary",
+          "bullets",
+          "key_takeaway"
+        ],
+        "current_pipeline_version": "evidence_finder@b9e40c4",
+        "current_prompt_version": "annual_report_summarizer@8bb3170",
+        "current_output_schema": [
+          "executive_summary",
+          "key_points",
+          "important_risks",
+          "key_takeaway"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "The stored reference PREDATES the Evidence Finder layer (reference 2026-08-16, Evidence Finder 2026-08-24).",
+          "Replaying as 'annual_report_summary_legacy' is like-for-like. Replaying as 'annual_report_summary' changes BOTH the input and the output schema, and is NOT a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "[Evidence chunk 23, page ~14]\npment \nprogramme is in progress to fast-track \nthe careers of potential leaders.  \nCommitted to create an inclusive \nwork environment, your Company \nhas introduced several career-assisting \nschemes for women and a number \nof women-friendly initiatives. These \ninitiatives have significantly advanced \nour Lakshya 2026 gender diversity \ngoal, with women employees now \nconstituting close to 10% of the total \nworkforce. The growing participation \nof women across both engineering and \nnon-engineering roles is contributing \nto a more diverse and effective \ntalent base. \nA culture of recognition and \ncelebration continues to fuel \nhigh performance, foster healthy \ncompetition, and reinforces mutual \nrespect among teams. This employee-\ncentric approach has once again \nearned the Company the prestigious \n‘Great Place to Work’ (GPTW) \ncertification – for the third consecutive \nyear, reaffirming L&T’s position as an \nemployer of choice. \nNavigating the future \ntogether \nThe global environment remains \nuncertain, and the near term may \ncontinue to see phases of volatility. \nYour Company, however, has \nnavigated multiple cycles of disruption \nin recent decades. On each occasion, \nit has demonstrated resilience and \nemerged stronger, supported by the \nenduring trust and partnership of all \nits stakeholders — customers, vendor \npartners, investors, employees, as well \nas the government. This time too, \nyour Company remains guided by its \nenduring mantra of ‘Can \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "annual_report_summary",
+      "fixture_id": "",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "forward-tense word 'target'",
+          "text": {
+            "executive_summary": "Bharat Electronics Limited (BEL) emphasized its strategic focus on strengthening core defense capabilities, expanding into non-defense and export markets, and driving operational excellence in FY2025-26. The report highlighted continued investment in R&D to support India’s technological self-reliance, adherence to ESG practices including a roadmap to achieve Net Zero emissions by 2030, and efforts to enhance manufacturing efficiency through digital transformation. BEL also underscored its commitment to rewarding shareholders through consistent dividend policies and maintaining robust financial performance.",
+            "key_points": [
+              "Strategic focus on strengthening core defense business and expanding presence in non-defense and export markets.",
+              "Commitment to R&D investments for innovation and indigenous technological capabilities aligned with India’s 'AtmaNirbhar Bharat' vision.",
+              "Adoption of ESG practices, including a Net Zero Scope 1 & 2 emissions target by 2030 and recognition for cyber security and governance excellence.",
+              "Operational improvements through digital transformation, Industry 4.0 integration, and supply chain modernization initiatives.",
+              "Consistent dividend policy and strong financial metrics, including a 37% Return on Capital Employed (ROCE)."
+            ],
+            "important_risks": [],
+            "key_takeaway": "BEL’s strategic emphasis on defense leadership, technological self-reliance, and ESG-aligned growth positions it to sustain long-term value creation while addressing evolving national and global security demands.",
+            "summary": "Bharat Electronics Limited (BEL) emphasized its strategic focus on strengthening core defense capabilities, expanding into non-defense and export markets, and driving operational excellence in FY2025-26. The report highlighted continued investment in R&D to support India’s technological self-reliance, adherence to ESG practices including a roadmap to achieve Net Zero emissions by 2030, and efforts to enhance manufacturing efficiency through digital transformation. BEL also underscored its commitment to rewarding shareholders through consistent dividend policies and maintaining robust financial performance.",
+            "bullets": [
+              "Strategic focus on strengthening core defense business and expanding presence in non-defense and export markets.",
+              "Commitment to R&D investments for innovation and indigenous technological capabilities aligned with India’s 'AtmaNirbhar Bharat' vision.",
+              "Adoption of ESG practices, including a Net Zero Scope 1 & 2 emissions target by 2030 and recognition for cyber security and governance excellence.",
+              "Operational improvements through digital transformation, Industry 4.0 integration, and supply chain modernization initiatives.",
+              "Consistent dividend policy and strong financial metrics, including a 37% Return on Capital Employed (ROCE)."
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "reason": "forward-tense word 'targets'",
+          "text": {
+            "executive_summary": "The report outlines Bharat Electronics Limited's (BEL) FY2025-26 performance, emphasizing growth in defense and non-defense segments, increased exports, and strategic investments in R&D and sustainability. Management highlighted a focus on indigenization, operational excellence, and expanding global market presence through partnerships and technological innovation. The document also details BEL's commitment to corporate governance, stakeholder engagement, and ESG practices.",
+            "key_points": [
+              "Strengthening core defense business while expanding non-defense and export markets.",
+              "Commitment to indigenization aligned with 'AtmaNirbhar Bharat' and 'Viksit Bharat' national goals.",
+              "Strategic investments in R&D and digital transformation to drive innovation and operational efficiency.",
+              "Focus on ESG practices, including net-zero emission targets and community development initiatives."
+            ],
+            "important_risks": [],
+            "key_takeaway": "BEL's strategic emphasis on defense indigenization, global market expansion, and operational excellence through R&D and digital transformation defines its long-term growth trajectory.",
+            "summary": "The report outlines Bharat Electronics Limited's (BEL) FY2025-26 performance, emphasizing growth in defense and non-defense segments, increased exports, and strategic investments in R&D and sustainability. Management highlighted a focus on indigenization, operational excellence, and expanding global market presence through partnerships and technological innovation. The document also details BEL's commitment to corporate governance, stakeholder engagement, and ESG practices.",
+            "bullets": [
+              "Strengthening core defense business while expanding non-defense and export markets.",
+              "Commitment to indigenization aligned with 'AtmaNirbhar Bharat' and 'Viksit Bharat' national goals.",
+              "Strategic investments in R&D and digital transformation to drive innovation and operational efficiency.",
+              "Focus on ESG practices, including net-zero emission targets and community development initiatives."
+            ]
+          }
+        },
+        {
+          "pass": 3,
+          "reason": "financial figure stated as fact '88%'",
+          "text": {
+            "executive_summary": "The report outlines Bharat Electronics Limited's (BEL) FY2025-26 performance, emphasizing strategic priorities such as strengthening core defense capabilities, expanding non-defense and export markets, and operational excellence. Management highlighted sustained growth in defense production, increased exports, and a focus on indigenous innovation aligned with national self-reliance goals. The report also details corporate social responsibility (CSR) initiatives in healthcare and education, along with governance frameworks and risk management practices.",
+            "key_points": [
+              "Strategic focus on defense electronics, with 88% revenue contribution from defense segments, alongside growth in non-defense and export markets.",
+              "Commitment to indigenous innovation through R&D investments, including AI policy guidelines and partnerships with research institutions.",
+              "ESG initiatives, including a roadmap to achieve Net Zero Scope 1 & 2 emissions by 2030 and recognition for cyber security and governance excellence.",
+              "Expansion of manufacturing and regional presence across India and overseas, supported by multiple production units and regional offices."
+            ],
+            "important_risks": [],
+            "key_takeaway": "BEL's strategic emphasis on defense electronics, indigenous innovation, and ESG practices underscores its positioning as a leader in India's defense sector while aligning with national self-reliance and sustainability goals.",
+            "summary": "The report outlines Bharat Electronics Limited's (BEL) FY2025-26 performance, emphasizing strategic priorities such as strengthening core defense capabilities, expanding non-defense and export markets, and operational excellence. Management highlighted sustained growth in defense production, increased exports, and a focus on indigenous innovation aligned with national self-reliance goals. The report also details corporate social responsibility (CSR) initiatives in healthcare and education, along with governance frameworks and risk management practices.",
+            "bullets": [
+              "Strategic focus on defense electronics, with 88% revenue contribution from defense segments, alongside growth in non-defense and export markets.",
+              "Commitment to indigenous innovation through R&D investments, including AI policy guidelines and partnerships with research institutions.",
+              "ESG initiatives, including a roadmap to achieve Net Zero Scope 1 & 2 emissions by 2030 and recognition for cyber security and governance excellence.",
+              "Expansion of manufacturing and regional presence across India and overseas, supported by multiple production units and regional offices."
+            ]
+          }
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 37143,
+      "completion_tokens": 2072,
+      "total_tokens": 39215,
+      "latency_sec": 163.0882,
+      "comparison": {
+        "reference_present": true,
+        "reference_schema_matches_replay": false,
+        "schema_mismatch_note": "Reference is LEGACY-shaped (summary/bullets/key_takeaway) but this replay uses the CURRENT schema. Field-level comparison is not meaningful here — replay as 'annual_report_summary_legacy' for the like-for-like reading.",
+        "candidate_compliance": "executive_summary: empty text",
+        "reference_compliance": null,
+        "candidate_key_point_count": 0,
+        "reference_key_point_count": 0,
+        "candidate_risk_count": 0,
+        "reference_risk_count": 0,
+        "candidate_chars": 0,
+        "reference_chars": 111,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The annual report for Bharat Electronics Limited (BEL) outlines the company's performance and strategic initiatives for the fiscal year 2025-26. Management highlighted a strong focus on innovation, sustainability, and expanding manufacturing capabilities, with significant investments in research and development. The report emphasized BEL's commitment to supporting India's defense sector while also addressing civilian market needs, showcasing a diverse product portfolio and a robust order book.",
+        "bullets": [
+          "Management emphasized a commitment to sustainability and reducing environmental impact.",
+          "The report highlighted significant investments in R&D to drive innovation.",
+          "Management stated a focus on expanding manufacturing capabilities and market presence.",
+          "BEL aims to enhance its role in both defense and civilian sectors.",
+          "The company reported a strong order book and growth in export sales."
+        ],
+        "key_takeaway": "Management underscored BEL's strategic focus on innovation and sustainability as key drivers for future growth.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-16T12:42:21.379287"
+      },
+      "case_meta": {
+        "benchmark_id": "AR_BEL_AR_30214_BEL_2025_2026_A_16199415_05082026205636",
+        "symbol": "BEL",
+        "company_name": "Bharat Electronics Limited",
+        "fiscal_year": "FY2025-26",
+        "filing_id": "AR_30214_BEL_2025_2026_A_16199415_05082026205636",
+        "doc_type": "annual_report"
+      },
+      "provenance": {
+        "reference_set": "LEGACY_REFERENCE",
+        "pipeline_version": "legacy_front_slice_pre_evidence_finder",
+        "input_type": "dual: legacy_front_slice + evidence_finder",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-16T12:42:21.379287",
+        "reference_prompt_version": "annual_report_summarizer@2026-08-16",
+        "reference_prompt_source_commit": "b9e40c4~1",
+        "reference_output_schema": [
+          "summary",
+          "bullets",
+          "key_takeaway"
+        ],
+        "current_pipeline_version": "evidence_finder@b9e40c4",
+        "current_prompt_version": "annual_report_summarizer@8bb3170",
+        "current_output_schema": [
+          "executive_summary",
+          "key_points",
+          "important_risks",
+          "key_takeaway"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "The stored reference PREDATES the Evidence Finder layer (reference 2026-08-16, Evidence Finder 2026-08-24).",
+          "Replaying as 'annual_report_summary_legacy' is like-for-like. Replaying as 'annual_report_summary' changes BOTH the input and the output schema, and is NOT a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "[Evidence chunk 23, page ~8]\n \nhe´efleYetefle he´ceeCe-he$e peejer keÀjvee, DeoeJeer G®eble Keelee keÀe oeJee / he´efleYetefle \nType of holder\nProcess to be followed\nThe forms for updating the above details/\nservice request are available at - https://bel-\nindia.in/investors/#generalinfo and https://\nipostatus.integratedregistry.in/KYCRegister.\naspx.\nDemat\nPlease contact your DP and register your email \naddress, KYC details, update of signature, \nnomination/ Cancellation of nomination, bank \naccount details etc in your demat account, as \nper the process advised by your DP.\n11.\t Members are requested to note that, dividends if not \nencashed for a consecutive period of 7 years from the \ndate of transfer to Unpaid Dividend Account of the \nCompany, are liable to be transferred to the Investor \nEducation and Protection Fund (‘IEPF’). The shares in \nrespect of such unclaimed dividends are also liable to be \ntransferred to the demat account of the IEPF Authority. \nIn view of this, Members are requested to claim their \ndividends from the Company, within the stipulated \ntimeline. The Members, whose unclaimed dividends/\nshares have been transferred to IEPF, may claim the \nsame by making an application to the IEPF Authority in \nForm No. IEPF-5 available on www.iepf.gov.in.\n\t\nDuring FY 2025-26, an unclaimed/unpaid amount \npertaining to the Final dividend 2017-18 and 1st \nInterim dividend 2018-19 were transferred to IEPF. The \nCompany has posted on its website www.bel-india.in on \na separa\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}

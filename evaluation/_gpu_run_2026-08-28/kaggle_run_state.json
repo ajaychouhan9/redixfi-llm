@@ -1,0 +1,83 @@
+{
+  "steps": [],
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm"
+  },
+  "preflight": {
+    "runtime": "vllm",
+    "model": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "context_length": 32768,
+    "load_time_sec": 236.28,
+    "free_vram_gb_before": 14.46,
+    "free_vram_gb_after": 1.23,
+    "vram_per_gpu": [
+      {
+        "index": 0,
+        "used_gb": 13.33,
+        "free_gb": 1.23,
+        "total_gb": 14.56
+      },
+      {
+        "index": 1,
+        "used_gb": 13.33,
+        "free_gb": 1.23,
+        "total_gb": 14.56
+      }
+    ],
+    "smoke_prompt_tokens": 28,
+    "smoke_output_tokens": 128,
+    "smoke_latency_sec": 4.122,
+    "smoke_tokens_per_sec": 31.05,
+    "smoke_output": " The first sentence should be about the company's performance, and the second about its outlook or future plans. Avoid using markdown.\nThe management discussion section typically covers the company's performance over the past year, including key financial results, operational achievements, and challenges faced. It also outlines the company's outlook or future plans, detailing strategic initiatives, market opportunities, and potential risks. The section is usually written in the past tense, as it reflects on past performance and discusses future plans. The first sentence should focus on the company's performance, and the second on its outlook or future plans. Avoid using markdown. The summary should be in two neutral sentences",
+    "api_smoke_latency_sec": 1.124
+  },
+  "benchmark": {
+    "cases": 15,
+    "ok": 13,
+    "failed": 2,
+    "prompt_tokens": 139598,
+    "completion_tokens": 12230,
+    "latency": 800.496,
+    "wall_sec": 800.6,
+    "sec_per_case": 53.38,
+    "output_tokens_per_sec": 15.28,
+    "cases_per_hour": 67.4,
+    "capacity_25_gpu_hours": 1686
+  },
+  "runtime": "vllm",
+  "api": {
+    "models": [
+      "qwen3-14b-awq",
+      "qwen3-14b-awq-tp2",
+      "qwen3-14b-awq-tp2-64k",
+      "qwen3-30b-a3b-awq"
+    ],
+    "health": "ok",
+    "experimental": true
+  }
+}

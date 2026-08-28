@@ -1,0 +1,126 @@
+{
+  "run_id": "20260828T101420Z",
+  "generated_at": "2026-08-28T10:14:20.642888+00:00",
+  "task": "concall_summary",
+  "fixture_task": "concall_summary",
+  "replayed_as": "concall_summary",
+  "model": "qwen3-14b-awq",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 1,
+    "max_model_len": 16384,
+    "is_moe": false
+  },
+  "backend": "echo",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "fixtures/sample_concall_summary.json",
+    "exported_at": "2026-08-28T10:12:25.577874+00:00",
+    "schema_version": 2,
+    "source": {
+      "synthetic": true,
+      "warning": "SYNTHETIC SAMPLE — invented text and invented reference outputs. Not from RedixFi production. Harness validation only; never cite results from this fixture as a model comparison.",
+      "exported_by": "LLM/scripts/make_sample_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0
+    },
+    "cases_total": 1,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "llm_project_commit": "b422751"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "json_repair_used": 0,
+    "mean_latency_sec": 0.0,
+    "total_prompt_tokens": 752,
+    "total_completion_tokens": 130,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "tone_label_agreement_rate": 0.0,
+    "invalid_tone_labels": 0,
+    "tone_confusion": {
+      "Positive->Neutral": 1
+    },
+    "mean_lexical_overlap": 0.4348
+  },
+  "results": [
+    {
+      "task": "concall_summary",
+      "fixture_id": "CC_SAMPLECO_CC-0001",
+      "ok": true,
+      "output": {
+        "summary": "Management reported on operating activity during the period. The document described commissioning progress at the company's facilities and management said demand from domestic customers remained the largest contributor to order intake. Management also described the sourcing programme as extended to further component categories during the quarter under review.",
+        "tone_label": "Neutral",
+        "tone_note": "Management described operating activity in even terms without emphasising either strength or weakness."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 752,
+      "completion_tokens": 130,
+      "total_tokens": 882,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Neutral",
+        "tone_label_agrees": false,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 361,
+        "reference_chars": 410,
+        "lexical_overlap": 0.4348,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Management reported that the Company commissioned a second line at its western facility during the quarter. The presentation described demand from domestic infrastructure customers as the largest contributor to order intake, and management noted that input cost pressure eased relative to the previous quarter. Management also described the local sourcing programme as extended to further component categories.",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasised commissioning progress and easing input costs in describing the quarter.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-20T09:15:00.000000"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_SAMPLECO_CC-0001",
+        "symbol": "SAMPLECO",
+        "company_name": "Sample Industries Limited",
+        "filing_id": "CC-0001",
+        "doc_type": "concall_transcript",
+        "doc_kind": "earnings concall transcript"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "concall_front_slice",
+        "input_type": "raw_transcript_text[:120000] front slice",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "concall_summarizer@8bb3170",
+        "reference_output_schema": [
+          "summary",
+          "tone_label",
+          "tone_note"
+        ],
+        "limitations": [
+          "SYNTHETIC — not production data."
+        ]
+      }
+    }
+  ]
+}

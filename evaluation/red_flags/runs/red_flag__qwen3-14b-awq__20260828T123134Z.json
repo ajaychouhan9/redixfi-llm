@@ -1,0 +1,4224 @@
+{
+  "run_id": "20260828T123134Z",
+  "generated_at": "2026-08-28T12:31:34.791481+00:00",
+  "task": "red_flag",
+  "fixture_task": "red_flag",
+  "replayed_as": "red_flag",
+  "model": "qwen3-14b-awq",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 1,
+    "max_model_len": 16384,
+    "is_moe": false
+  },
+  "backend": "echo",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "fixtures/red_flag_benchmark.json",
+    "exported_at": "2026-08-28T12:23:55.211206+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "chromadb annual_reports",
+      "available_positives": {
+        "auditor_qualification": 684,
+        "contingent_liability": 1144,
+        "related_party_transaction": 1754,
+        "promoter_pledge": 26
+      },
+      "available_negatives": 53305,
+      "strata": {
+        "auditor_qualification": 10,
+        "contingent_liability": 10,
+        "related_party_transaction": 10,
+        "promoter_pledge": 10,
+        "negative_unflagged": 20
+      },
+      "dropped_no_keyword_candidates": 0,
+      "sampling": "evenly-strided over sorted ids (deterministic), not first-N"
+    },
+    "cases_total": 60,
+    "cases_run": 60
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "llm_project_commit": "aad9946"
+  },
+  "summary": {
+    "cases": 60,
+    "generated_ok": 60,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 60,
+    "json_repair_used": 0,
+    "mean_latency_sec": 0.0,
+    "total_prompt_tokens": 44047,
+    "total_completion_tokens": 480,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "outcomes": {
+      "false_negative": 40,
+      "agree_no_flag": 20
+    },
+    "agreement_rate": 0.3333
+  },
+  "results": [
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 231,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the audit process and key audit matters related to the standalone financial statements, including the recognition of revenue from fixed price contracts and the judgments and estimates involved in this process."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ABB_AR_ABB_277",
+        "symbol": "ABB",
+        "company_name": "ABB India Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ABB_277",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 205,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the audit process and the key audit matters identified during the audit of the Consolidated Financial Statements, including revenue recognition and its susceptibility to misstatement."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ASIANPAINT_AR_ASIANPAINT_716",
+        "symbol": "ASIANPAINT",
+        "company_name": "Asian Paints Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ASIANPAINT_716",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 221,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses key audit matters related to revenue recognition in the context of the audit of consolidated financial statements, highlighting the significant risk and the auditor's attention required in this area."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_BRITANNIA_AR_BRITANNIA_334",
+        "symbol": "BRITANNIA",
+        "company_name": "Britannia Industries Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_BRITANNIA_334",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 270,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses key audit matters identified during the audit of the standalone financial statements, specifically focusing on the fair valuation of investments in other entities and the significant estimates and judgments involved in determining their fair value."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ETERNAL_AR_ETERNAL_428",
+        "symbol": "ETERNAL",
+        "company_name": "ETERNAL LIMITED",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ETERNAL_428",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 213,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the evaluation of the company's investment portfolio and the key audit matter related to the valuation and impairment determination of investments, which is a focus area in the audit process."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_HDFCBANK_AR_HDFCBANK_766",
+        "symbol": "HDFCBANK",
+        "company_name": "HDFC Bank Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_HDFCBANK_766",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 391,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the audit procedures related to the recognition of passenger revenue, identifying it as a key audit matter due to the complexity and judgment involved in the revenue recognition process. It outlines the assessment of the revenue recognition policy and the involvement of IT specialists in evaluating the effectiveness of internal controls over the Company's IT systems."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_INDIGO_AR_INDIGO_264",
+        "symbol": "INDIGO",
+        "company_name": "InterGlobe Aviation Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_INDIGO_264",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 244,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses a key audit matter related to the impairment of an investment in a subsidiary, highlighting the significant judgment involved in estimating future cash flows and determining the discount rate for the impairment assessment."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_LT_AR_LT_718",
+        "symbol": "LT",
+        "company_name": "Larsen & Toubro Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_LT_718",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 263,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the evaluation of the adequacy of provision for impairment of tangible and intangible assets, highlighting the management's assessment and the inherent uncertainties in oil and gas price assumptions that could lead to material misstatements."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ONGC_AR_ONGC_547",
+        "symbol": "ONGC",
+        "company_name": "Oil & Natural Gas Corporation Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ONGC_547",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 325,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the audit approach taken regarding the recognition and measurement of revenue from the transmission of power, highlighting key audit matters and the evaluation of internal controls. It mentions that the nature and extent of estimates made as per CERC Tariff Regulations are considered key audit matters."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_POWERGRID_AR_POWERGRID_688",
+        "symbol": "POWERGRID",
+        "company_name": "Power Grid Corporation of India Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_POWERGRID_688",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "auditor_qualification",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 237,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "auditor_qualification",
+        "risk_flag_summary": "The excerpt discusses the auditor's responsibilities and procedures related to the assessment of risks of material misstatement in the consolidated financial statements, including the management's assessment of going concern assumptions."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_TATAPOWER_AR_TATAPOWER_756",
+        "symbol": "TATAPOWER",
+        "company_name": "Tata Power Company Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_TATAPOWER_756",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 271,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the company's provisions for litigations and contingencies, indicating that provisions are estimated for present obligations that may require resource outflow. It also mentions the assessment of contingent liabilities based on significant judgments."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ABB_AR_ABB_312",
+        "symbol": "ABB",
+        "company_name": "ABB India Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ABB_312",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 182,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt includes a section titled 'Contingent Liabilities and Commitments' which indicates that there are performance bonds and other contingent liabilities as of specific dates."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ASIANPAINT_AR_ASIANPAINT_848",
+        "symbol": "ASIANPAINT",
+        "company_name": "Asian Paints Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ASIANPAINT_848",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 242,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses contingent liabilities, stating that a disclosure is made for possible or present obligations that may not require an outflow of resources, while no provision or disclosure is made if the likelihood of outflow is remote."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_BRITANNIA_AR_BRITANNIA_274",
+        "symbol": "BRITANNIA",
+        "company_name": "Britannia Industries Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_BRITANNIA_274",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 291,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses a class action lawsuit filed against the company and its subsidiaries, alleging conspiracy to violate competition laws, with potential liabilities that are currently unascertainable. It notes that no provision has been made in the financial statements for these claims."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_DRREDDY_AR_DRREDDY_783",
+        "symbol": "DRREDDY",
+        "company_name": "Dr. Reddy's Laboratories Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_DRREDDY_783",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 195,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt mentions that the preparation of financial statements requires management to make estimates regarding the reported amounts of assets and liabilities, including contingent liabilities."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_HDFCBANK_AR_HDFCBANK_600",
+        "symbol": "HDFCBANK",
+        "company_name": "HDFC Bank Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_HDFCBANK_600",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 178,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the reduction of amounts from contingent liabilities, specifically mentioning ₹86 crore and ₹1,068 crore that have been reduced upon resolution of disputes."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_INFY_AR_INFY_174",
+        "symbol": "INFY",
+        "company_name": "Infosys Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_INFY_174",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 128,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt mentions financial guarantees given as of March 31, 2025, which may indicate the presence of contingent liabilities."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_MANKIND_AR_MANKIND_503",
+        "symbol": "MANKIND",
+        "company_name": "Mankind Pharma Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_MANKIND_503",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 230,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the absence of contingent liabilities reported by the Company regarding tax demands raised by the Assessment Officer, as the matters are pending appeal and no demands were made upon completion of assessments."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ONGC_AR_ONGC_1293",
+        "symbol": "ONGC",
+        "company_name": "Oil & Natural Gas Corporation Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ONGC_1293",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 739,
+      "completion_tokens": 8,
+      "total_tokens": 748,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 285,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the assessment of contingent liabilities related to certain litigations, including land compensation and various claims. It highlights the judgment required in estimating these liabilities and the audit procedures performed to review their status and disclosures."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_POWERGRID_AR_POWERGRID_690",
+        "symbol": "POWERGRID",
+        "company_name": "Power Grid Corporation of India Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_POWERGRID_690",
+        "candidates": [
+          "auditor_qualification",
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "contingent_liability",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 189,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "contingent_liability",
+        "risk_flag_summary": "The excerpt discusses the preparation of consolidated financial statements and mentions the disclosures of contingent liabilities as part of the reported balances of assets and liabilities."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_TCS_AR_TCS_343",
+        "symbol": "TCS",
+        "company_name": "Tata Consultancy Services Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_TCS_343",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 216,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The listed entity has obtained prior approval of the Audit Committee for all related party transactions and provided detailed reasons regarding the approval status of transactions that did not receive prior approval."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ABB_AR_ABB_122",
+        "symbol": "ABB",
+        "company_name": "ABB India Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ABB_122",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 187,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The excerpt discusses related party transactions involving various entities that have significant influence or control over the company, as noted in the consolidated financial statements."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ADANIPOWER_AR_ADANIPOWER_841",
+        "symbol": "ADANIPOWER",
+        "company_name": "Adani Power Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ADANIPOWER_841",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 172,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The excerpt discusses the oversight of related party transactions by the Committee, including the approval and review of such transactions on an annual and quarterly basis."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_BAJFINANCE_AR_BAJFINANCE_288",
+        "symbol": "BAJFINANCE",
+        "company_name": "Bajaj Finance Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_BAJFINANCE_288",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 741,
+      "completion_tokens": 8,
+      "total_tokens": 749,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 300,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The Audit Committee approved all related party transactions in accordance with the Company’s Policy on Related Party Transactions and reviewed them quarterly. The transactions were conducted in the ordinary course of business and at arm’s length, with approvals granted only by independent directors."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_CIPLA_AR_CIPLA_391",
+        "symbol": "CIPLA",
+        "company_name": "Cipla Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_CIPLA_391",
+        "candidates": [
+          "auditor_qualification",
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 298,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The excerpt discusses various related party transactions between VE Commercial Vehicles Limited (VECV) and Volvo Group India Private Limited (VGIPL), including the purchase and sale of goods and services. It states that these transactions are at arm's length and in the ordinary course of business."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_EICHERMOT_AR_EICHERMOT_742",
+        "symbol": "EICHERMOT",
+        "company_name": "Eicher Motors Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_EICHERMOT_742",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 133,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The excerpt references Note 30 for related party transactions, indicating that there are transactions disclosed with related parties."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_HINDALCO_AR_HINDALCO_1460",
+        "symbol": "HINDALCO",
+        "company_name": "Hindalco Industries Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_HINDALCO_1460",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 139,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The excerpt mentions the approval of material related party transactions of subsidiaries of the Company through a postal ballot resolution."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_JIOFIN_AR_JIOFIN_154",
+        "symbol": "JIOFIN",
+        "company_name": "Jio Financial Services Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_JIOFIN_154",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 142,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The excerpt mentions the review of significant related party transactions as defined by the Audit Committee, which is submitted by management."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_MAZDOCK_AR_MAZDOCK_154",
+        "symbol": "MAZDOCK",
+        "company_name": "Mazagon Dock Shipbuilders Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_MAZDOCK_154",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 156,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The excerpt discusses various entities and joint ventures related to Powergrid, including disclosures as per Ind AS 24 regarding related party transactions."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_POWERGRID_AR_POWERGRID_609",
+        "symbol": "POWERGRID",
+        "company_name": "Power Grid Corporation of India Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_POWERGRID_609",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "related_party_transaction",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 195,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "related_party_transaction",
+        "risk_flag_summary": "The Corporate Governance and ESG Committee is responsible for overseeing the Company's policies and practices regarding related party transactions and ensuring compliance with related guidelines."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_SUNPHARMA_AR_SUNPHARMA_150",
+        "symbol": "SUNPHARMA",
+        "company_name": "Sun Pharmaceutical Industries Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_SUNPHARMA_150",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 217,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses the pledge of shares amounting to 51% of the total paid-up equity shares of the company, subject to compliance with specific regulations and a Non-Disclosure Undertaking for the remaining shares."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ADANIENT_AR_ADANIENT_926",
+        "symbol": "ADANIENT",
+        "company_name": "Adani Enterprises Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ADANIENT_926",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 212,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses the pledge of 51% of the total paid-up equity share capital as security for a term loan, along with a non-disposal undertaking for the remaining 49% shareholding held by the holding company."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ADANIGREEN_AR_ADANIGREEN_788",
+        "symbol": "ADANIGREEN",
+        "company_name": "Adani Green Energy Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ADANIGREEN_788",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 239,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses the shareholding of promoters, including details about the number of shares held and the percentage of shares pledged or encumbered to total shares. It also mentions changes in promoters' shareholding during the year."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_IRFC_AR_IRFC_264",
+        "symbol": "IRFC",
+        "company_name": "Indian Railway Finance Corporation Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_IRFC_264",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 214,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The Company has pledged 13,17,12,154 fully paid up equity shares of Jindal Paradip Port Limited, which constitutes up to 51% of the total Jindal Steel shareholding, as part of debt facilities sanctioned by lenders."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_JINDALSTEL_AR_JINDALSTEL_517",
+        "symbol": "JINDALSTEL",
+        "company_name": "JINDAL STEEL LIMITED",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_JINDALSTEL_517",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 128,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt mentions an exclusive pledge of shares and securities of Bharat Serums and Vaccines Limited acquired by the Company."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_MANKIND_AR_MANKIND_441",
+        "symbol": "MANKIND",
+        "company_name": "Mankind Pharma Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_MANKIND_441",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 184,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses security measures and covenants related to a project, including the personal guarantee of promoters and the pledge of shares as part of the collateral securities."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_PFC_AR_PFC_799",
+        "symbol": "PFC",
+        "company_name": "Power Finance Corporation Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_PFC_799",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 152,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The Company has pledged shares of subsidiaries and joint ventures with lenders for borrowings availed by the respective subsidiaries and joint ventures."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_TATAPOWER_AR_TATAPOWER_617",
+        "symbol": "TATAPOWER",
+        "company_name": "Tata Power Company Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_TATAPOWER_617",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 118,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt mentions a pledge of shares as part of the security for borrowings, indicating that shares are encumbered."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_TATAPOWER_AR_TATAPOWER_929",
+        "symbol": "TATAPOWER",
+        "company_name": "Tata Power Company Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_TATAPOWER_929",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 192,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses a first ranking exclusive pledge over shares held by Vedanta Limited in Hindustan Zinc Limited, which is intended to cover a loan with a specified minimum coverage ratio."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_VEDL_AR_VEDL_1233",
+        "symbol": "VEDL",
+        "company_name": "Vedanta Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_VEDL_1233",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 732,
+      "completion_tokens": 8,
+      "total_tokens": 741,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": "promoter_pledge",
+        "candidate_category": null,
+        "outcome": "false_negative",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 210,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": "promoter_pledge",
+        "risk_flag_summary": "The excerpt discusses a pledge of shares of Hindustan Zinc Limited (HZL) held by the company, which is part of the security for a financial facility. It mentions a minimum coverage ratio for the pledged shares."
+      },
+      "case_meta": {
+        "benchmark_id": "RF_VEDL_AR_VEDL_939",
+        "symbol": "VEDL",
+        "company_name": "Vedanta Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_VEDL_939",
+        "candidates": [
+          "promoter_pledge"
+        ],
+        "case_polarity": "positive"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 735,
+      "completion_tokens": 8,
+      "total_tokens": 743,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ADANIGREEN_AR_ADANIGREEN_1065",
+        "symbol": "ADANIGREEN",
+        "company_name": "Adani Green Energy Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ADANIGREEN_1065",
+        "candidates": [
+          "related_party_transaction"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ASIANPAINT_AR_ASIANPAINT_679",
+        "symbol": "ASIANPAINT",
+        "company_name": "Asian Paints Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ASIANPAINT_679",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_BAJAJFINSV_AR_BAJAJFINSV_334",
+        "symbol": "BAJAJFINSV",
+        "company_name": "Bajaj Finserv Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_BAJAJFINSV_334",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_BAJAJHLDNG_AR_BAJAJHLDNG_268",
+        "symbol": "BAJAJHLDNG",
+        "company_name": "Bajaj Holdings & Investment Limited",
+        "fiscal_year": "FY2025",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_BAJAJHLDNG_268",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_BAJFINANCE_AR_BAJFINANCE_435",
+        "symbol": "BAJFINANCE",
+        "company_name": "Bajaj Finance Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_BAJFINANCE_435",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_BAJFINANCE_AR_BAJFINANCE_488",
+        "symbol": "BAJFINANCE",
+        "company_name": "Bajaj Finance Limited",
+        "fiscal_year": "FY2026",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_BAJFINANCE_488",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_CIPLA_AR_CIPLA_507",
+        "symbol": "CIPLA",
+        "company_name": "Cipla Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_CIPLA_507",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_DRREDDY_AR_DRREDDY_586",
+        "symbol": "DRREDDY",
+        "company_name": "Dr. Reddy's Laboratories Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_DRREDDY_586",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_ETERNAL_AR_ETERNAL_486",
+        "symbol": "ETERNAL",
+        "company_name": "ETERNAL LIMITED",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_ETERNAL_486",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_GAIL_AR_GAIL_522",
+        "symbol": "GAIL",
+        "company_name": "GAIL (India) Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_GAIL_522",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_GODREJCP_AR_GODREJCP_432",
+        "symbol": "GODREJCP",
+        "company_name": "Godrej Consumer Products Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_GODREJCP_432",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_GRASIM_AR_GRASIM_922",
+        "symbol": "GRASIM",
+        "company_name": "Grasim Industries Limited",
+        "fiscal_year": "FY2025",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_GRASIM_922",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_HINDALCO_AR_HINDALCO_764",
+        "symbol": "HINDALCO",
+        "company_name": "Hindalco Industries Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_HINDALCO_764",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_INFY_AR_INFY_729",
+        "symbol": "INFY",
+        "company_name": "Infosys Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_INFY_729",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_JINDALSTEL_AR_JINDALSTEL_649",
+        "symbol": "JINDALSTEL",
+        "company_name": "JINDAL STEEL LIMITED",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_JINDALSTEL_649",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_JIOFIN_AR_JIOFIN_264",
+        "symbol": "JIOFIN",
+        "company_name": "Jio Financial Services Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_JIOFIN_264",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 739,
+      "completion_tokens": 8,
+      "total_tokens": 748,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_MAZDOCK_AR_MAZDOCK_223",
+        "symbol": "MAZDOCK",
+        "company_name": "Mazagon Dock Shipbuilders Limited",
+        "fiscal_year": "FY2024-25",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_MAZDOCK_223",
+        "candidates": [
+          "auditor_qualification",
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_MOTHERSON_AR_MOTHERSON_470",
+        "symbol": "MOTHERSON",
+        "company_name": "Samvardhana Motherson International Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_MOTHERSON_470",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_PFC_AR_PFC_439",
+        "symbol": "PFC",
+        "company_name": "Power Finance Corporation Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_PFC_439",
+        "candidates": [
+          "auditor_qualification"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    },
+    {
+      "task": "red_flag",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "risk_classified": true
+      },
+      "attempts": 1,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "model returned no category (genuine non-match)"
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 734,
+      "completion_tokens": 8,
+      "total_tokens": 742,
+      "latency_sec": 0.0002,
+      "comparison": {
+        "reference_present": true,
+        "reference_category": null,
+        "candidate_category": null,
+        "outcome": "agree_no_flag",
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_summary_chars": 0,
+        "reference_summary_chars": 0,
+        "summary_overlap": null
+      },
+      "reference": {
+        "risk_flag_type": null,
+        "risk_flag_summary": ""
+      },
+      "case_meta": {
+        "benchmark_id": "RF_PFC_AR_PFC_700",
+        "symbol": "PFC",
+        "company_name": "Power Finance Corporation Limited",
+        "fiscal_year": "FY2025-26",
+        "doc_type": "annual_report",
+        "chunk_id": "AR_PFC_700",
+        "candidates": [
+          "contingent_liability"
+        ],
+        "case_polarity": "negative"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "risk_flag_classifier@b9e40c4",
+        "input_type": "chromadb chunk text (annual_reports)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "risk_flag_classifier@b9e40c4",
+        "reference_output_schema": [
+          "risk_classified",
+          "risk_flag_type",
+          "risk_flag_summary"
+        ],
+        "keyword_prefilter": "RedixFi risk_flag_classifier.matched_categories (real)",
+        "production_risk_classified": true,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "A negative case means production's classifier RAN and confirmed nothing — a true negative, not missing data.",
+          "investor_calls chunks are excluded: only 2 of 2,622 carry a risk_flag_type and their metadata has no fiscal_year."
+        ]
+      }
+    }
+  ]
+}

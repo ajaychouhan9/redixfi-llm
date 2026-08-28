@@ -11,7 +11,10 @@ fixtures/*.jsonl
 !fixtures/.gitkeep
 
 # evaluation OUTPUT is normally transient and git-ignored...
-evaluation/**/runs/
+# NOTE the trailing /* — ignoring the DIRECTORY itself would make the
+# negations below unreachable (git cannot un-ignore a file inside an
+# ignored directory).
+evaluation/**/runs/*
 evaluation/**/*.json
 evaluation/**/*.md
 !evaluation/**/.gitkeep

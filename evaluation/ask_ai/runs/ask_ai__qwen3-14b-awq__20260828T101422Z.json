@@ -1,0 +1,131 @@
+{
+  "run_id": "20260828T101422Z",
+  "generated_at": "2026-08-28T10:14:22.116038+00:00",
+  "task": "ask_ai",
+  "fixture_task": "ask_ai",
+  "replayed_as": "ask_ai",
+  "model": "qwen3-14b-awq",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 1,
+    "max_model_len": 16384,
+    "is_moe": false
+  },
+  "backend": "echo",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "fixtures/sample_ask_ai.json",
+    "exported_at": "2026-08-28T10:12:25.577874+00:00",
+    "schema_version": 2,
+    "source": {
+      "synthetic": true,
+      "warning": "SYNTHETIC SAMPLE — invented text and invented reference outputs. Not from RedixFi production. Harness validation only; never cite results from this fixture as a model comparison.",
+      "exported_by": "LLM/scripts/make_sample_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0
+    },
+    "cases_total": 1,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "llm_project_commit": "b422751"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "json_repair_used": 0,
+    "mean_latency_sec": 0.0,
+    "total_prompt_tokens": 1176,
+    "total_completion_tokens": 40,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "refusal_agreement_rate": 0.0,
+    "mean_lexical_overlap": 0.1053
+  },
+  "results": [
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 1176,
+      "completion_tokens": 40,
+      "total_tokens": 1217,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 148,
+        "lexical_overlap": 0.1053,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "Management described the year as one focused on **consolidating manufacturing capacity**, according to the annual report excerpt in the fact packet.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "document_chunks",
+          "measured_signals"
+        ],
+        "source_citations": [
+          {
+            "type": "annual_report",
+            "label": "FY2024-25 · p8"
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_SAMPLECO_6a8ae0d241d8e26028edd77d",
+        "symbol": "SAMPLECO",
+        "question": "What did management say about manufacturing strategy?",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "document_chunks_omitted": true,
+        "limitations": [
+          "SYNTHETIC — not production data.",
+          "PACKET_RECONSTRUCTION_PARTIAL — the packet is rebuilt, never the historical input."
+        ]
+      }
+    }
+  ]
+}

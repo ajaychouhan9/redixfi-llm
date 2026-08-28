@@ -1,0 +1,129 @@
+{
+  "run_id": "20260828T101419Z",
+  "generated_at": "2026-08-28T10:14:19.186552+00:00",
+  "task": "annual_report_summary_legacy",
+  "fixture_task": "annual_report_summary",
+  "replayed_as": "annual_report_summary_legacy",
+  "model": "qwen3-14b-awq",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 1,
+    "max_model_len": 16384,
+    "is_moe": false
+  },
+  "backend": "echo",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "fixtures/sample_annual_report_summary.json",
+    "exported_at": "2026-08-28T10:12:25.577874+00:00",
+    "schema_version": 2,
+    "source": {
+      "synthetic": true,
+      "warning": "SYNTHETIC SAMPLE — invented text and invented reference outputs. Not from RedixFi production. Harness validation only; never cite results from this fixture as a model comparison.",
+      "exported_by": "LLM/scripts/make_sample_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0
+    },
+    "cases_total": 1,
+    "cases_run": 1
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "llm_project_commit": "b422751"
+  },
+  "summary": {
+    "cases": 1,
+    "generated_ok": 1,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 1,
+    "json_repair_used": 0,
+    "mean_latency_sec": 0.0,
+    "total_prompt_tokens": 672,
+    "total_completion_tokens": 127,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "mean_lexical_overlap": 0.25
+  },
+  "results": [
+    {
+      "task": "annual_report_summary_legacy",
+      "fixture_id": "AR_SAMPLECO_SAMPLE-0001",
+      "ok": true,
+      "output": {
+        "summary": "The report described the company's stated priorities across its operating segments. Management said it focused on capacity, governance and sustainability during the period.",
+        "bullets": [
+          "Management described a focus on capacity and operational resilience",
+          "The report stated continued investment in sustainability programmes",
+          "Management said governance practices were reviewed during the year"
+        ],
+        "key_takeaway": "The report centred on management's stated operating priorities for the period."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 672,
+      "completion_tokens": 127,
+      "total_tokens": 799,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "comparison_is_like_for_like": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_bullet_count": 3,
+        "reference_bullet_count": 3,
+        "candidate_chars": 454,
+        "reference_chars": 555,
+        "lexical_overlap": 0.25,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The annual report of Sample Industries Limited for FY2024-25 outlined management's focus on consolidating manufacturing capacity across its three reportable segments. Management said the local sourcing programme was extended to further component categories during the year.",
+        "bullets": [
+          "Management described a focus on consolidating manufacturing capacity",
+          "The report stated the local sourcing programme was extended",
+          "Commissioning work was described at two facilities"
+        ],
+        "key_takeaway": "The report centred on management's stated consolidation of manufacturing capacity and local sourcing.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-16T14:02:11.000000"
+      },
+      "case_meta": {
+        "benchmark_id": "AR_SAMPLECO_SAMPLE-0001",
+        "symbol": "SAMPLECO",
+        "company_name": "Sample Industries Limited",
+        "fiscal_year": "FY2024-25",
+        "filing_id": "SAMPLE-0001",
+        "doc_type": "annual_report"
+      },
+      "provenance": {
+        "reference_set": "LEGACY_REFERENCE",
+        "pipeline_version": "legacy_front_slice_pre_evidence_finder",
+        "input_type": "dual: legacy_front_slice + evidence_finder",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "annual_report_summarizer@2026-08-16",
+        "reference_output_schema": [
+          "summary",
+          "bullets",
+          "key_takeaway"
+        ],
+        "current_prompt_version": "annual_report_summarizer@8bb3170",
+        "limitations": [
+          "SYNTHETIC — not production data."
+        ]
+      }
+    }
+  ]
+}

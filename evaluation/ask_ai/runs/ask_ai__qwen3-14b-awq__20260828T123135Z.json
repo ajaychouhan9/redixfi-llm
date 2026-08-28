@@ -1,0 +1,4299 @@
+{
+  "run_id": "20260828T123135Z",
+  "generated_at": "2026-08-28T12:31:35.570567+00:00",
+  "task": "ask_ai",
+  "fixture_task": "ask_ai",
+  "replayed_as": "ask_ai",
+  "model": "qwen3-14b-awq",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 1,
+    "max_model_len": 16384,
+    "is_moe": false
+  },
+  "backend": "echo",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "fixtures/ask_ai_benchmark.json",
+    "exported_at": "2026-08-28T12:23:57.354256+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collections": [
+        "ask_log",
+        "ask_conversations"
+      ],
+      "population_size": 44,
+      "packet_rebuilt_via": "RedixFi core/ask.py::build_fact_packet (real)",
+      "embedding_enabled": false,
+      "skipped": [
+        {
+          "ask_log_id": "6a883226df08c294d1862af3",
+          "reason": "no assistant answer"
+        },
+        {
+          "ask_log_id": "6a87b9eed1d25d8d5fe8ae8d",
+          "reason": "no assistant answer"
+        },
+        {
+          "ask_log_id": "6a8739f65e18aee74f30e53f",
+          "reason": "no assistant answer"
+        }
+      ]
+    },
+    "cases_total": 30,
+    "cases_run": 30
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "llm_project_commit": "aad9946"
+  },
+  "summary": {
+    "cases": 30,
+    "generated_ok": 30,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_compliance_failures": 1,
+    "cases_with_reference": 30,
+    "json_repair_used": 0,
+    "mean_latency_sec": 0.0,
+    "total_prompt_tokens": 90688,
+    "total_completion_tokens": 1200,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "refusal_agreement_rate": 0.0,
+    "mean_lexical_overlap": 0.0106
+  },
+  "results": [
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2677,
+      "completion_tokens": 40,
+      "total_tokens": 2718,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 69,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "ABB's industry is Electronic Instr. & Controls (sector index: NIFTY).",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p118",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p183",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p18",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a89d6a0c0cd5dba51081b0d",
+        "symbol": "ABB",
+        "question": "composite score of ABB",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3481,
+      "completion_tokens": 40,
+      "total_tokens": 3522,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 129,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "TCS's composite score was **37** as of **2026-08-21**. This score decreased from **42** to **37**, reflecting a change of **-5**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-20T05:19:22.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p15",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p79",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p78",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a887220ac7462a28460af61",
+        "symbol": "TCS",
+        "question": "what's TCS's score",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3337,
+      "completion_tokens": 40,
+      "total_tokens": 3378,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 129,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "TCS's composite score was **37** as of **2026-08-21**. This score decreased from **42** to **37**, reflecting a change of **-5**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-20T05:19:22.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p91",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p91",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p106",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p58",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p1",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a8871f5ac7462a28460af60",
+        "symbol": "TCS",
+        "question": "What is the TCS anual report",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3025,
+      "completion_tokens": 40,
+      "total_tokens": 3065,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": "fabricated causal attribution 'due to' with no matched news event",
+        "candidate_chars": 64,
+        "reference_chars": 784,
+        "lexical_overlap": 0.0132,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The annual report excerpts provide qualitative strategic context for Bharat Electronics Limited (BEL). However, specific financial figures within these excerpts should not be treated as authoritative due to potential labeling inaccuracies from PDF table extraction. For precise financial data, refer to the structured fundamentals data provided above. \n\nKey themes from the excerpts include:\n- Commitment to integrity and ethical conduct through a Whistleblower Policy, which allows for confidential reporting of misconduct.\n- Details on management and key personnel changes, indicating ongoing governance and operational adjustments.\n\nFor further insights, the full annual report can be accessed [here](https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf).",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-21T05:23:04.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p210",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p197",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p45",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p149",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_BEL_6a884f14ac7462a28460af5e",
+        "symbol": "BEL",
+        "question": "BEL Anual report",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3471,
+      "completion_tokens": 40,
+      "total_tokens": 3512,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1109,
+        "lexical_overlap": 0.0103,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The annual report excerpts provide qualitative strategic context for ABB India Limited, emphasizing compliance with applicable laws and standards. It highlights the company's commitment to sustainability and innovation, encouraging open-mindedness and collaboration.\n\nThe concall summary from August 7, 2026, indicates that ABB India Limited reported a strong performance in Q2 2026, with a **50% year-on-year increase in orders** and a **21% rise in revenue**. The operational EBITA was **12.8%**, and profit after tax (PAT) grew by **8%**. The order backlog was reported at **INR 11,900 crores**, with significant contributions from sectors such as renewables, data centers, and infrastructure. Management noted challenges from rising material costs and forex volatility but expressed confidence in maintaining operational efficiency and profitability. An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings. The company was recognized as India's Most Sustainable Company in the Capital Goods sector, achieving an **85% reduction in GHG emissions**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a884e21ac7462a28460af5c",
+        "symbol": "ABB",
+        "question": "ABB anual report and concal summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3467,
+      "completion_tokens": 40,
+      "total_tokens": 3507,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 391,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "{'fiscal_year': 'FY2026', 'description': 'The annual report excerpts provide qualitative strategic context. ABB India Limited offers a wide-ranging portfolio of products, digital solutions, and services for electrification, including modular substations, distribution automation, and power protection. The company emphasizes compliance with applicable laws and standards in its operations.'}",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p183",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a884de9ac7462a28460af5b",
+        "symbol": "ABB",
+        "question": "ABB anual report",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2130,
+      "completion_tokens": 40,
+      "total_tokens": 2171,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 102,
+        "lexical_overlap": 0.0556,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "I can filter by what the data measures — directional research launches after our SEBI RA registration.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a884d70ac7462a28460af5a",
+        "symbol": "ABB",
+        "question": "ABB anual report and concall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2130,
+      "completion_tokens": 40,
+      "total_tokens": 2171,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 102,
+        "lexical_overlap": 0.0625,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "I couldn't put together a solid answer for that one — the fundamentals panel for ABB has more on this.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p138",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a88411ad24321550dd9e13a",
+        "symbol": "ABB",
+        "question": "ABB Annual report and concall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3472,
+      "completion_tokens": 40,
+      "total_tokens": 3512,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1307,
+        "lexical_overlap": 0.009,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "{'annual_report': {'fiscal_year': 'FY2026', 'description': 'The annual report excerpts provide qualitative strategic context. ABB India Limited offers a wide-ranging portfolio of products, digital solutions, and services for electrification, including modular substations, distribution automation, and power protection. The company emphasizes compliance with applicable laws and standards in its operations.'}, 'concall_summary': {'filing_date': '2026-08-07', 'highlights': ['ABB India Limited reported a **50% year-on-year increase** in orders and a **21% rise** in revenue.', 'The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**.', 'The order backlog stood at **INR 11,900 crores**, with no slow-moving orders.', 'Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure.', \"The company reported an **85% reduction** in GHG emissions and was recognized as India's Most Sustainable Company in the Capital Goods sector.\", 'Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability.', 'An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings.']}}",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p136",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883fe6d24321550dd9e139",
+        "symbol": "ABB",
+        "question": "ABB anual report and cancall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3472,
+      "completion_tokens": 40,
+      "total_tokens": 3512,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1307,
+        "lexical_overlap": 0.009,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "{'annual_report': {'fiscal_year': 'FY2026', 'description': 'The annual report excerpts provide qualitative strategic context. ABB India Limited offers a wide-ranging portfolio of products, digital solutions, and services for electrification, including modular substations, distribution automation, and power protection. The company emphasizes compliance with applicable laws and standards in its operations.'}, 'concall_summary': {'filing_date': '2026-08-07', 'highlights': ['ABB India Limited reported a **50% year-on-year increase** in orders and a **21% rise** in revenue.', 'The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**.', 'The order backlog stood at **INR 11,900 crores**, with no slow-moving orders.', 'Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure.', \"The company reported an **85% reduction** in GHG emissions and was recognized as India's Most Sustainable Company in the Capital Goods sector.\", 'Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability.', 'An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings.']}}",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p136",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883d4dd24321550dd9e138",
+        "symbol": "ABB",
+        "question": "ABB anual report and cancall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3472,
+      "completion_tokens": 40,
+      "total_tokens": 3512,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1188,
+        "lexical_overlap": 0.0093,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The annual report excerpts provide qualitative strategic context for ABB India Limited, emphasizing the company's commitment to sustainability and compliance with applicable laws and regulations. The report outlines the business activities, including a wide-ranging portfolio of products and services in electrification and motion, aimed at enabling safe, smart, and sustainable solutions.\n\nThe concall summary from August 7, 2026, highlights a strong performance in Q2 2026, with a **50% year-on-year increase in orders** and a **21% rise in revenue**. The operational EBITA was reported at **12.8%**, and profit after tax (PAT) grew by **8%**. The order backlog stood at **INR 11,900 crores**, with significant contributions from sectors such as renewables, data centers, and infrastructure. Management noted challenges from rising material costs and forex volatility but expressed confidence in maintaining operational efficiency. An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings. The company was recognized as India's Most Sustainable Company in the Capital Goods sector, achieving an **85% reduction in GHG emissions**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p136",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883ce1e725418ef7b76213",
+        "symbol": "ABB",
+        "question": "ABB anual report and cancall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3472,
+      "completion_tokens": 40,
+      "total_tokens": 3512,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1307,
+        "lexical_overlap": 0.009,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "{'annual_report': {'fiscal_year': 'FY2026', 'description': 'The annual report excerpts provide qualitative strategic context. ABB India Limited offers a wide-ranging portfolio of products, digital solutions, and services for electrification, including modular substations, distribution automation, and power protection. The company emphasizes compliance with applicable laws and standards in its operations.'}, 'concall_summary': {'filing_date': '2026-08-07', 'highlights': ['ABB India Limited reported a **50% year-on-year increase** in orders and a **21% rise** in revenue.', 'The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**.', 'The order backlog stood at **INR 11,900 crores**, with no slow-moving orders.', 'Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure.', \"The company reported an **85% reduction** in GHG emissions and was recognized as India's Most Sustainable Company in the Capital Goods sector.\", 'Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability.', 'An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings.']}}",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p136",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883c8ce725418ef7b76212",
+        "symbol": "ABB",
+        "question": "ABB anual report and cancall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3472,
+      "completion_tokens": 40,
+      "total_tokens": 3512,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 391,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "{'fiscal_year': 'FY2026', 'description': 'The annual report excerpts provide qualitative strategic context. ABB India Limited offers a wide-ranging portfolio of products, digital solutions, and services for electrification, including modular substations, distribution automation, and power protection. The company emphasizes compliance with applicable laws and standards in its operations.'}",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p136",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883c49e725418ef7b76211",
+        "symbol": "ABB",
+        "question": "ABB anual report and cancall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2130,
+      "completion_tokens": 40,
+      "total_tokens": 2171,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1716,
+        "lexical_overlap": 0.0244,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The data does not contain specific excerpts from ABB's annual report or concall summaries. However, it includes summaries from recent investor presentations and earnings calls:\n\n- **Earnings Call Summary (August 7, 2026)**:\n  - ABB India Limited reported a **50% year-on-year increase** in orders and a **21% rise** in revenue.\n  - Achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**.\n  - The order backlog stood at **INR 11,900 crores**, with no slow-moving orders.\n  - Significant contributions came from sectors such as renewables, data centers, and infrastructure.\n  - The company reported an **85% reduction** in GHG emissions and was recognized as India's Most Sustainable Company in the Capital Goods sector.\n  - An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings.\n\n- **Investor Presentation Summary (July 31, 2026)**:\n  - Reported a **50% increase** in orders received, totaling **INR 4,363 crore**, and a **21% rise** in revenue to **INR 3,559 crore** compared to Q2 CY2025.\n  - Highlighted robust demand across sectors like metals, mining, and cement, contributing to a significant order backlog of **INR 11,898 crore**.\n  - Profit after tax increased by **8%** to **INR 370 crore**, while operational EBITA rose by **23%**.\n  - Emphasized sustainability achievements, including an **85% reduction** in Scope 1 and 2 GHG emissions year-to-date compared to a 2019 baseline.\n  - Noted challenges from commodity price increases and currency fluctuations impacting profitability.\n\nThis information reflects ABB's recent performance and strategic focus, particularly on sustainability and operational efficiency.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          }
+        ],
+        "weight": 1
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883790bf04e117c8d2cfb8",
+        "symbol": "ABB",
+        "question": "ABB annual report and concall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2130,
+      "completion_tokens": 40,
+      "total_tokens": 2171,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1841,
+        "lexical_overlap": 0.0078,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The data includes summaries from recent investor calls for ABB India Limited, which provide insights into the company's performance and strategic focus:\n\n- **Earnings Call (August 7, 2026)**:\n  - ABB reported a **50% year-on-year increase** in orders and a **21% rise in revenue** for Q2 2026.\n  - The operational EBITA was **12.8%**, with profit after tax (PAT) growing by **8%**.\n  - The order backlog stood at **INR 11,900 crores**, with no slow-moving orders.\n  - Significant contributions came from sectors such as **renewables, data centers, and infrastructure**.\n  - The company achieved an **85% reduction in GHG emissions** and was recognized as **India's Most Sustainable Company** in the Capital Goods sector.\n  - An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings.\n  - Management expressed confidence in maintaining operational efficiency despite challenges from rising material costs and forex volatility.\n\n- **Investor Presentation (July 31, 2026)**:\n  - The presentation reiterated the **50% increase in orders** received, totaling **INR 4,363 crore**, and a **21% rise in revenue** to **INR 3,559 crore** compared to Q2 CY2025.\n  - The order backlog was noted at **INR 11,898 crore**, with robust demand across sectors including **metals, mining, and cement**.\n  - Profit after tax increased by **8%** to **INR 370 crore**, while operational EBITA rose by **23%**.\n  - ABB's commitment to sustainability was highlighted, achieving an **85% reduction in Scope 1 and 2 GHG emissions** year-to-date compared to a 2019 baseline.\n  - The company faced challenges from **commodity price increases** and **currency fluctuations** impacting profitability.\n\nThese summaries reflect ABB's strong performance and strategic focus on sustainability and operational efficiency.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          }
+        ],
+        "weight": 1
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883787bf04e117c8d2cfb7",
+        "symbol": "ABB",
+        "question": "ABB annual report and concall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3472,
+      "completion_tokens": 40,
+      "total_tokens": 3512,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1307,
+        "lexical_overlap": 0.009,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "{'annual_report': {'fiscal_year': 'FY2026', 'description': 'The annual report excerpts provide qualitative strategic context. ABB India Limited offers a wide-ranging portfolio of products, digital solutions, and services for electrification, including modular substations, distribution automation, and power protection. The company emphasizes compliance with applicable laws and standards in its operations.'}, 'concall_summary': {'filing_date': '2026-08-07', 'highlights': ['ABB India Limited reported a **50% year-on-year increase** in orders and a **21% rise** in revenue.', 'The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**.', 'The order backlog stood at **INR 11,900 crores**, with no slow-moving orders.', 'Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure.', \"The company reported an **85% reduction** in GHG emissions and was recognized as India's Most Sustainable Company in the Capital Goods sector.\", 'Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability.', 'An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings.']}}",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p136",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p204",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p161",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a8831f9df08c294d1862af2",
+        "symbol": "ABB",
+        "question": "ABB anual report and cancall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3468,
+      "completion_tokens": 40,
+      "total_tokens": 3508,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1762,
+        "lexical_overlap": 0.0078,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The **concall transcripts** for ABB India Limited provide insights into the company's performance and strategic focus:\n\n- **Earnings Call (August 7, 2026)**:\n  - Reported a **50% year-on-year increase** in orders and a **21% rise** in revenue.\n  - Achieved an operational EBITA of **12.8%** and an **8% growth** in profit after tax (PAT).\n  - Order backlog stood at **INR 11,900 crores**, with no slow-moving orders.\n  - Significant contributions noted from sectors such as **renewables, data centers, and infrastructure**.\n  - Emphasized commitment to **sustainability**, reporting an **85% reduction** in GHG emissions and recognition as **India's Most Sustainable Company** in the Capital Goods sector.\n  - Management expressed confidence in maintaining operational efficiency despite challenges from rising material costs and forex volatility.\n  - Declared an interim dividend of **INR 90 per share**, reflecting a **50% payout ratio** from normal earnings.\n\n- **Investor Presentation (July 31, 2026)**:\n  - Highlighted a **50% increase** in orders received, totaling **INR 4,363 crore**, and a **21% rise** in revenue to **INR 3,559 crore** compared to Q2 CY2025.\n  - Profit after tax increased by **8%** to **INR 370 crore**, while operational EBITA rose by **23%**.\n  - Noted robust demand across various sectors, contributing to a significant order backlog of **INR 11,898 crore**.\n  - Reiterated commitment to sustainability with an **85% reduction** in Scope 1 and 2 GHG emissions year-to-date compared to a 2019 baseline.\n  - Acknowledged challenges such as **commodity price increases** and **currency fluctuations** impacting profitability.\n\nBoth documents reflect a **positive tone**, emphasizing strong order growth and profitability improvements.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-06 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p321",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p136",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p253",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p251",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p251",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a86b6a168608f5c655ce679",
+        "symbol": "ABB",
+        "question": "ABB concal call data",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2861,
+      "completion_tokens": 40,
+      "total_tokens": 2901,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1762,
+        "lexical_overlap": 0.0078,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The **concall transcripts** for ABB India Limited provide insights into the company's performance and strategic focus:\n\n- **Earnings Call (August 7, 2026)**:\n  - Reported a **50% year-on-year increase** in orders and a **21% rise** in revenue.\n  - Achieved an operational EBITA of **12.8%** and an **8% growth** in profit after tax (PAT).\n  - Order backlog stood at **INR 11,900 crores**, with no slow-moving orders.\n  - Significant contributions noted from sectors such as **renewables, data centers, and infrastructure**.\n  - Emphasized commitment to **sustainability**, reporting an **85% reduction** in GHG emissions and recognition as **India's Most Sustainable Company** in the Capital Goods sector.\n  - Management expressed confidence in maintaining operational efficiency despite challenges from rising material costs and forex volatility.\n  - Declared an interim dividend of **INR 90 per share**, reflecting a **50% payout ratio** from normal earnings.\n\n- **Investor Presentation (July 31, 2026)**:\n  - Highlighted a **50% increase** in orders received, totaling **INR 4,363 crore**, and a **21% rise** in revenue to **INR 3,559 crore** compared to Q2 CY2025.\n  - Profit after tax increased by **8%** to **INR 370 crore**, while operational EBITA rose by **23%**.\n  - Noted robust demand across various sectors, contributing to a significant order backlog of **INR 11,898 crore**.\n  - Reiterated commitment to sustainability with an **85% reduction** in Scope 1 and 2 GHG emissions year-to-date compared to a 2019 baseline.\n  - Acknowledged challenges such as **commodity price increases** and **currency fluctuations** impacting profitability.\n\nBoth documents reflect a **positive tone**, emphasizing strong order growth and profitability improvements.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-20T05:19:22.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p79",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p78",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p16",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p15",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a86b68868608f5c655ce678",
+        "symbol": "TCS",
+        "question": "TCS  composite score",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3473,
+      "completion_tokens": 40,
+      "total_tokens": 3513,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1686,
+        "lexical_overlap": 0.0074,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "### Latest Concall\n- **Date**: August 7, 2026  \n- **Summary**: ABB India Limited reported a strong performance in its Q2 2026 earnings, with a **50% year-on-year increase in orders** and a **21% rise in revenue**. The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**. The order backlog stood at **INR 11,900 crores**, with no slow-moving orders. Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure. The company emphasized its commitment to sustainability, reporting an **85% reduction in GHG emissions** and recognition as India's Most Sustainable Company in the Capital Goods sector. Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability. An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings. The management noted ongoing efforts to adapt to market conditions and customer needs, particularly in Tier 2 and Tier 3 cities.\n- **Tone**: Positive\n\n### Latest Annual Report Excerpts\n- **Fiscal Year**: FY2026  \n- **Context**: The annual report provides qualitative strategic context, emphasizing that both financial and non-financial aspects are in accordance with applicable laws, regulations, and standards of the Republic of India. It highlights the company's commitment to sustainability and continuous improvement, inviting feedback and innovative solutions to support sustainable growth.  \n- **Source**: [Annual Report](https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf)",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-06 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p327",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p328",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p79",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 3
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a86a5d8468c28e72eb91c8c",
+        "symbol": "ABB",
+        "question": "latest concal cakk and anual report data",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2131,
+      "completion_tokens": 40,
+      "total_tokens": 2171,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1686,
+        "lexical_overlap": 0.0074,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "### Latest Concall\n- **Date**: August 7, 2026  \n- **Summary**: ABB India Limited reported a strong performance in its Q2 2026 earnings, with a **50% year-on-year increase in orders** and a **21% rise in revenue**. The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**. The order backlog stood at **INR 11,900 crores**, with no slow-moving orders. Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure. The company emphasized its commitment to sustainability, reporting an **85% reduction in GHG emissions** and recognition as India's Most Sustainable Company in the Capital Goods sector. Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability. An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings. The management noted ongoing efforts to adapt to market conditions and customer needs, particularly in Tier 2 and Tier 3 cities.\n- **Tone**: Positive\n\n### Latest Annual Report Excerpts\n- **Fiscal Year**: FY2026  \n- **Context**: The annual report provides qualitative strategic context, emphasizing that both financial and non-financial aspects are in accordance with applicable laws, regulations, and standards of the Republic of India. It highlights the company's commitment to sustainability and continuous improvement, inviting feedback and innovative solutions to support sustainable growth.  \n- **Source**: [Annual Report](https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf)",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-06 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p3",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p183",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          },
+          {
+            "type": "concall_transcript",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "symbol": "ABB",
+            "company_name": "ABB India Limited"
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a865bb2b87a007ed7251edd",
+        "symbol": "ABB",
+        "question": "latest concall and anual report of ABB",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2980,
+      "completion_tokens": 40,
+      "total_tokens": 3020,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1686,
+        "lexical_overlap": 0.0074,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "### Latest Concall\n- **Date**: August 7, 2026  \n- **Summary**: ABB India Limited reported a strong performance in its Q2 2026 earnings, with a **50% year-on-year increase in orders** and a **21% rise in revenue**. The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**. The order backlog stood at **INR 11,900 crores**, with no slow-moving orders. Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure. The company emphasized its commitment to sustainability, reporting an **85% reduction in GHG emissions** and recognition as India's Most Sustainable Company in the Capital Goods sector. Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability. An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings. The management noted ongoing efforts to adapt to market conditions and customer needs, particularly in Tier 2 and Tier 3 cities.\n- **Tone**: Positive\n\n### Latest Annual Report Excerpts\n- **Fiscal Year**: FY2026  \n- **Context**: The annual report provides qualitative strategic context, emphasizing that both financial and non-financial aspects are in accordance with applicable laws, regulations, and standards of the Republic of India. It highlights the company's commitment to sustainability and continuous improvement, inviting feedback and innovative solutions to support sustainable growth.  \n- **Source**: [Annual Report](https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf)",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p77",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a8658a3b87a007ed7251ed4",
+        "symbol": "TCS",
+        "question": "What's driving today's score change?",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3481,
+      "completion_tokens": 40,
+      "total_tokens": 3522,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 1686,
+        "lexical_overlap": 0.0074,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "### Latest Concall\n- **Date**: August 7, 2026  \n- **Summary**: ABB India Limited reported a strong performance in its Q2 2026 earnings, with a **50% year-on-year increase in orders** and a **21% rise in revenue**. The company achieved an operational EBITA of **12.8%** and a profit after tax (PAT) growth of **8%**. The order backlog stood at **INR 11,900 crores**, with no slow-moving orders. Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure. The company emphasized its commitment to sustainability, reporting an **85% reduction in GHG emissions** and recognition as India's Most Sustainable Company in the Capital Goods sector. Despite challenges from rising material costs and forex volatility, management expressed confidence in maintaining operational efficiency and profitability. An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings. The management noted ongoing efforts to adapt to market conditions and customer needs, particularly in Tier 2 and Tier 3 cities.\n- **Tone**: Positive\n\n### Latest Annual Report Excerpts\n- **Fiscal Year**: FY2026  \n- **Context**: The annual report provides qualitative strategic context, emphasizing that both financial and non-financial aspects are in accordance with applicable laws, regulations, and standards of the Republic of India. It highlights the company's commitment to sustainability and continuous improvement, inviting feedback and innovative solutions to support sustainable growth.  \n- **Source**: [Annual Report](https://nsearchives.nseindia.com/corporate/ABB_09042026184315_AnnualReportABBIndia2025.pdf)",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p15",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p79",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p78",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a865898b87a007ed7251ed2",
+        "symbol": "TCS",
+        "question": "what's TCS's score",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2979,
+      "completion_tokens": 40,
+      "total_tokens": 3019,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 122,
+        "lexical_overlap": 0.0526,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "I don't have promoters/management on file for INFY yet — that's just a data gap on our side, not a compliance restriction.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p77",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p83",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p92",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a85e6f0252e66cd52d9e66a",
+        "symbol": "TCS",
+        "question": "What drove today's score change?",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3331,
+      "completion_tokens": 40,
+      "total_tokens": 3371,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 44,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The composite score for TCS today is **34**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p15",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p78",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p81",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a85e6d5252e66cd52d9e668",
+        "symbol": "TCS",
+        "question": "TCS",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2869,
+      "completion_tokens": 40,
+      "total_tokens": 2910,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 45,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The composite score for INFY today is **41**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T11:12:35.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2025-26 · p128",
+            "url": "https://nsearchives.nseindia.com/corporate/INFY_30052026200807_SE_Integrated_Annual_Report_2025-26.pdf",
+            "symbol": "INFY",
+            "company_name": "Infosys Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2025-26 · p100",
+            "url": "https://nsearchives.nseindia.com/corporate/INFY_30052026200807_SE_Integrated_Annual_Report_2025-26.pdf",
+            "symbol": "INFY",
+            "company_name": "Infosys Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_INFY_6a85daa3b450ed7f2fe7733b",
+        "symbol": "INFY",
+        "question": "composite score of INFY",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2864,
+      "completion_tokens": 40,
+      "total_tokens": 2904,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 45,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The composite score for INFY today is **41**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a85da7eb450ed7f2fe7733a",
+        "symbol": "TCS",
+        "question": "what's the composite score today",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2864,
+      "completion_tokens": 40,
+      "total_tokens": 2904,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 44,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The composite score for TCS today is **34**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a85d998b450ed7f2fe77338",
+        "symbol": "TCS",
+        "question": "what's the composite score today",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2864,
+      "completion_tokens": 40,
+      "total_tokens": 2905,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 67,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "Composite score, price for TCS, 22 days (2026-07-21 to 2026-08-19).",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-18",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-12 – 2026-08-18",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p79",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p79",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p16",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p78",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p15",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a84a57fdf45b7f5fc339de7",
+        "symbol": "TCS",
+        "question": "Last 7 day composite score of tcs",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 3190,
+      "completion_tokens": 40,
+      "total_tokens": 3231,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 67,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "Composite score, price for TCS, 22 days (2026-07-21 to 2026-08-19).",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "education_content"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-12",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-03 – 2026-08-11",
+            "url": null
+          },
+          {
+            "type": "education_content",
+            "label": "RedixFi Knowledge Base",
+            "detail": null,
+            "url": null
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_PAYTM_6a7d7165de9dfa88dc924f0c",
+        "symbol": "PAYTM",
+        "question": "any new corporate event in last 7 days",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain the data needed to answer that.",
+        "refused": true,
+        "refusal_reason": "offline echo backend — no model was consulted",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "model": "qwen3-14b-awq",
+      "backend": "echo",
+      "prompt_tokens": 2523,
+      "completion_tokens": 40,
+      "total_tokens": 2564,
+      "latency_sec": 0.0,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 64,
+        "reference_chars": 67,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "Composite score, price for TCS, 22 days (2026-07-21 to 2026-08-19).",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-12",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-03 – 2026-08-11",
+            "url": null
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_PAYTM_6a7d7141de9dfa88dc924f0a",
+        "symbol": "PAYTM",
+        "question": "is there are any important news for paytm today",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      }
+    }
+  ]
+}

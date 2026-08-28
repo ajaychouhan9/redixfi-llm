@@ -1,0 +1,507 @@
+{
+  "run_id": "20260828T143804Z",
+  "generated_at": "2026-08-28T14:38:04.039929+00:00",
+  "task": "ask_ai",
+  "fixture_task": "ask_ai",
+  "replayed_as": "ask_ai",
+  "model": "qwen3-14b-awq-tp2",
+  "model_config": {
+    "registry_name": "qwen3-14b-awq-tp2",
+    "hf_repo": "Qwen/Qwen3-14B-AWQ",
+    "quantization": "awq",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-fixtures/ask_ai_sample15.json",
+    "exported_at": "2026-08-28T12:47:24.698890+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collections": [
+        "ask_log",
+        "ask_conversations"
+      ],
+      "population_size": 44,
+      "packet_rebuilt_via": "RedixFi core/ask.py::build_fact_packet (real)",
+      "embedding_enabled": false,
+      "skipped": [
+        {
+          "ask_log_id": "6a883226df08c294d1862af3",
+          "reason": "no assistant answer"
+        },
+        {
+          "ask_log_id": "6a87b9eed1d25d8d5fe8ae8d",
+          "reason": "no assistant answer"
+        },
+        {
+          "ask_log_id": "6a8739f65e18aee74f30e53f",
+          "reason": "no assistant answer"
+        }
+      ],
+      "subset_of": "ask_ai_benchmark.json",
+      "subset_reason": "first GPU run — small, diverse sample",
+      "parent_case_count": 30,
+      "selection": "Distinct symbols, and spread across reference answer length so both a"
+    },
+    "cases_total": 3,
+    "cases_run": 3
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "summary": {
+    "cases": 3,
+    "generated_ok": 3,
+    "generation_failures": 0,
+    "candidate_compliance_failures": 0,
+    "reference_backstop_artifacts": 1,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 3,
+    "json_repair_used": 3,
+    "mean_latency_sec": 32.048,
+    "total_prompt_tokens": 14922,
+    "total_completion_tokens": 2241,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "refusal_agreement_rate": 0.6667,
+    "mean_lexical_overlap": 0.1193
+  },
+  "results": [
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "TCS (NIFTYIT, Software & Programming) has a composite score of 53 as of 2026-08-28, up 4 points from the prior day and 16 points over five days. Key signals include a strengthened trend, increased volume participation, steady delivery (54.6% vs. 20-day average of 48.1%), and a higher RSI (53.4). The stock is trading below its 20DMA. Fundamentally, it reports a PE of 14.76 (below sector PE of 23.59), revenue of ₹72,275 crore (13.9% YoY growth), and PAT of ₹13,349 crore (4.6% YoY growth). Operating margins stand at 23.04%, down from an 8-quarter average. Promoter stake remains stable at 71.77%, while FII and MF holdings have declined over the last quarter. Recent news includes a report on variable pay structures and a deal with Porsche, though impacts are unclear. The July 2026 earnings call highlighted AI-driven growth and macroeconomic challenges.",
+        "refused": false,
+        "refusal_reason": null,
+        "causal_backstop": true
+      },
+      "attempts": 2,
+      "rejections": [
+        {
+          "pass": 1,
+          "reason": "validation: fabricated causal attribution 'due to' with no matched news event",
+          "text": {
+            "answer": "As of 2026-08-28, TCS (NIFTYIT, Software & Programming) has a composite score of **53**, up **4 points** from the prior day and **16 points** over the past 5 days. Key technical signals include a **strengthened trend**, **increased volume participation**, and **RSI moving higher** to 53.4, though it remains **below its 20DMA**. Fundamentally, TCS reports a **PE ratio of 14.76** (below its sector’s 23.59), **13.9% YoY revenue growth** (₹72,275 crore in Q2 2026), and **23.04% operating margins**, down slightly from prior quarters. Shareholding shows **stable promoter stakes (71.77%)** but **declining FII and MF holdings**. Recent investor calls highlighted **AI-driven revenue growth ($2.6B annualized)** and **contract wins ($9.5B TCV)**, though **operating margins dipped due to wage hikes**. No clear cause is identified for the composite score’s rise, and geopolitical risks remain a macro concern.",
+            "refused": false,
+            "refusal_reason": null
+          }
+        }
+      ],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 8721,
+      "completion_tokens": 1565,
+      "total_tokens": 10286,
+      "latency_sec": 63.864,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": false,
+        "reference_refused": false,
+        "refusal_agreement": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "reference_compliance_backstop_artifact": false,
+        "candidate_chars": 859,
+        "reference_chars": 44,
+        "lexical_overlap": 0.0405,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The composite score for TCS today is **34**.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-19",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-18T12:04:30.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p2",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p15",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p78",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2024-25 · p81",
+            "url": "https://nsearchives.nseindia.com/corporate/TCS_CORPCS_27052025232337_ARSEint27052025_signed.pdf",
+            "symbol": "TCS",
+            "company_name": "Tata Consultancy Services Limited"
+          }
+        ],
+        "weight": null
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_TCS_6a85e6d5252e66cd52d9e668",
+        "symbol": "TCS",
+        "question": "TCS",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      },
+      "evidence_excerpt": "{\"symbol\": \"TCS\", \"measured_signals\": {\"date\": \"2026-08-28\", \"composite_score\": 53, \"delta_1d\": 4, \"delta_5d\": 16, \"sector\": \"NIFTYIT\", \"industry\": \"Software & Programming\", \"signal_states\": [\"BELOW_20DMA\"], \"component_changes\": [{\"signal\": \"trend\", \"note\": \"trend strengthened\"}, {\"signal\": \"volume\", \"note\": \"volume participation increased\"}, {\"signal\": \"delivery\", \"note\": \"delivery held steady\"}, {\"signal\": \"rsi\", \"note\": \"RSI moved higher\"}, {\"signal\": \"sector\", \"note\": \"industry standing improved\"}, {\"signal\": \"pcr\", \"note\": \"options positioning shifted more call-heavy\"}, {\"signal\": \"pledge\", \"note\": \"promoter pledge unchanged\"}, {\"signal\": \"insider\", \"note\": \"insider filings unchanged\"}, {\"signal\": \"fii\", \"note\": \"FII flow backdrop unchanged\"}], \"signals\": {\"trend_10d_pct\": -0.8, \"volume_ratio_5d\": 0.66, \"delivery_pct\": 54.6, \"delivery_avg20\": 48.1, \"rsi_14\": 53.4, \"sector_rank\": 42, \"sector_count\": 93, \"pcr\": 0.99, \"pcr_available\": true, \"event_risk_5d\": false, \"pledge_pct\": 0.6, \"pledge_trend\": \"stable\"}}, \"fundamentals_derived\": {\"valuation\": {\"pe_ttm\": 14.76, \"pb\": 8.52, \"net_margin_ttm\": 18.05, \"roe_ttm\": 45.42, \"debt_to_equity\": 0.1, \"sector_pe\": 23.59, \"pe_vs_sector\": \"below\", \"dividend_yield_pct\": 2.67}, \"quarterly\": {\"latest_quarter_end\": \"2026-06-30\", \"revenue\": 72275.0, \"revenue_yoy_pct\": 13.93, \"revenue_qoq_pct\": 2.23, \"revenue_accel_quarters\": 4, \"pat\": 13349.0, \"pat_yoy_pct\": 4.62, \"opm_pct\": 23.04, \"opm_yoy_bps_change\": -144, \"opm_vs_8q_avg\": \"below\", \"eps\""
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not contain any retrieved excerpts or content related to BEL's annual report.",
+        "refused": true,
+        "refusal_reason": "No annual report content available in the provided data.",
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 4145,
+      "completion_tokens": 275,
+      "total_tokens": 4420,
+      "latency_sec": 17.723,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": true,
+        "reference_refused": false,
+        "refusal_agreement": false,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "reference_compliance_backstop_artifact": true,
+        "candidate_chars": 98,
+        "reference_chars": 784,
+        "lexical_overlap": 0.0513,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The annual report excerpts provide qualitative strategic context for Bharat Electronics Limited (BEL). However, specific financial figures within these excerpts should not be treated as authoritative due to potential labeling inaccuracies from PDF table extraction. For precise financial data, refer to the structured fundamentals data provided above. \n\nKey themes from the excerpts include:\n- Commitment to integrity and ethical conduct through a Whistleblower Policy, which allows for confidential reporting of misconduct.\n- Details on management and key personnel changes, indicating ongoing governance and operational adjustments.\n\nFor further insights, the full annual report can be accessed [here](https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf).",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "document_chunks"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-14 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-08-21T05:23:04.000000Z",
+            "url": null
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p210",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p197",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p45",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          },
+          {
+            "type": "annual_report",
+            "label": "Annual Report",
+            "detail": "FY2026 · p149",
+            "url": "https://nsearchives.nseindia.com/corporate/BEL_05082026203450_Lettersigned.pdf",
+            "symbol": "BEL",
+            "company_name": "Bharat Electronics Limited"
+          }
+        ],
+        "weight": 2
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_BEL_6a884f14ac7462a28460af5e",
+        "symbol": "BEL",
+        "question": "BEL Anual report",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      },
+      "evidence_excerpt": "{\"symbol\": \"BEL\", \"measured_signals\": {\"date\": \"2026-08-28\", \"composite_score\": 62, \"delta_1d\": -1, \"delta_5d\": 10, \"sector\": \"NIFTY\", \"industry\": \"Aerospace & Defense\", \"signal_states\": [\"ABOVE_20DMA\", \"SECTOR_STRONG\"], \"component_changes\": [{\"signal\": \"trend\", \"note\": \"trend held steady\"}, {\"signal\": \"volume\", \"note\": \"volume participation eased\"}, {\"signal\": \"delivery\", \"note\": \"delivery held steady\"}, {\"signal\": \"rsi\", \"note\": \"RSI held steady\"}, {\"signal\": \"sector\", \"note\": \"industry standing unchanged\"}, {\"signal\": \"pcr\", \"note\": \"options positioning shifted more call-heavy\"}, {\"signal\": \"pledge\", \"note\": \"promoter pledge unchanged\"}, {\"signal\": \"insider\", \"note\": \"insider filings unchanged\"}, {\"signal\": \"fii\", \"note\": \"FII flow backdrop unchanged\"}], \"signals\": {\"trend_10d_pct\": -0.09, \"volume_ratio_5d\": 0.63, \"delivery_pct\": 67.4, \"delivery_avg20\": 59.0, \"rsi_14\": 53.8, \"sector_rank\": 1, \"sector_count\": 9, \"pcr\": 0.84, \"pcr_available\": true, \"event_risk_5d\": false, \"pledge_pct\": 1.6, \"pledge_trend\": \"stable\"}}, \"fundamentals_derived\": {\"valuation\": {\"pe_ttm\": 49.02, \"pb\": 12.27, \"net_margin_ttm\": 21.4, \"roe_ttm\": 25.62, \"debt_to_equity\": 0.0, \"sector_pe\": 52.94, \"pe_vs_sector\": \"below\", \"dividend_yield_pct\": 0.65}, \"quarterly\": {\"latest_quarter_end\": \"2026-06-30\", \"revenue\": 5546.98, \"revenue_yoy_pct\": 24.94, \"revenue_qoq_pct\": -45.75, \"revenue_accel_quarters\": 1, \"pat\": 1054.34, \"pat_yoy_pct\": 8.7, \"opm_pct\": 22.14, \"opm_yoy_bps_change\": -303, \"opm_vs_8q_avg\": \"below"
+    },
+    {
+      "task": "ask_ai",
+      "fixture_id": "",
+      "ok": true,
+      "output": {
+        "answer": "The fact packet does not include the full annual report for ABB India Limited. However, recent concall summaries highlight strong Q2 2026 performance: **50% year-on-year order growth**, **21% revenue increase**, **12.8% operational EBITA**, and an **8% PAT growth**. Key themes included robust demand in renewables, data centers, and infrastructure, alongside sustainability achievements (85% GHG emission reduction). Challenges noted were rising material costs and forex volatility. An interim dividend of INR 90 per share was declared.",
+        "refused": false,
+        "refusal_reason": null,
+        "causal_backstop": true
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": true,
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 2056,
+      "completion_tokens": 401,
+      "total_tokens": 2457,
+      "latency_sec": 14.5556,
+      "comparison": {
+        "reference_present": true,
+        "candidate_refused": false,
+        "reference_refused": false,
+        "refusal_agreement": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "reference_compliance_backstop_artifact": false,
+        "candidate_chars": 537,
+        "reference_chars": 1841,
+        "lexical_overlap": 0.2662,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "answer": "The data includes summaries from recent investor calls for ABB India Limited, which provide insights into the company's performance and strategic focus:\n\n- **Earnings Call (August 7, 2026)**:\n  - ABB reported a **50% year-on-year increase** in orders and a **21% rise in revenue** for Q2 2026.\n  - The operational EBITA was **12.8%**, with profit after tax (PAT) growing by **8%**.\n  - The order backlog stood at **INR 11,900 crores**, with no slow-moving orders.\n  - Significant contributions came from sectors such as **renewables, data centers, and infrastructure**.\n  - The company achieved an **85% reduction in GHG emissions** and was recognized as **India's Most Sustainable Company** in the Capital Goods sector.\n  - An interim dividend of **INR 90 per share** was declared, reflecting a **50% payout ratio** from normal earnings.\n  - Management expressed confidence in maintaining operational efficiency despite challenges from rising material costs and forex volatility.\n\n- **Investor Presentation (July 31, 2026)**:\n  - The presentation reiterated the **50% increase in orders** received, totaling **INR 4,363 crore**, and a **21% rise in revenue** to **INR 3,559 crore** compared to Q2 CY2025.\n  - The order backlog was noted at **INR 11,898 crore**, with robust demand across sectors including **metals, mining, and cement**.\n  - Profit after tax increased by **8%** to **INR 370 crore**, while operational EBITA rose by **23%**.\n  - ABB's commitment to sustainability was highlighted, achieving an **85% reduction in Scope 1 and 2 GHG emissions** year-to-date compared to a 2019 baseline.\n  - The company faced challenges from **commodity price increases** and **currency fluctuations** impacting profitability.\n\nThese summaries reflect ABB's strong performance and strategic focus on sustainability and operational efficiency.",
+        "refused": false,
+        "model": "gpt-4o-mini",
+        "sources_used": [
+          "measured_signals",
+          "fundamentals_derived",
+          "signal_change_log",
+          "news_events",
+          "investor_calls"
+        ],
+        "source_citations": [
+          {
+            "type": "measured_signals",
+            "label": "RedixFi Signal Data",
+            "detail": "As of 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "fundamentals_derived",
+            "label": "RedixFi Fundamentals",
+            "detail": "Latest filed",
+            "url": null
+          },
+          {
+            "type": "signal_change_log",
+            "label": "RedixFi Signal History",
+            "detail": "2026-08-10 – 2026-08-21",
+            "url": null
+          },
+          {
+            "type": "news_events",
+            "label": "RedixFi News",
+            "detail": "2026-07-16T15:46:50.000000Z",
+            "url": null
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-08-07",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf",
+            "subject": "EARNINGS_CALL_TRANSCRIPT"
+          },
+          {
+            "type": "investor_calls",
+            "label": "Concall Transcript",
+            "detail": "2026-07-31",
+            "url": "https://nsearchives.nseindia.com/corporate/ABB_31072026181440_AnalystpptQ22026.pdf",
+            "subject": "INVESTOR_PRESENTATION"
+          }
+        ],
+        "weight": 1
+      },
+      "case_meta": {
+        "benchmark_id": "ASK_ABB_6a883787bf04e117c8d2cfb7",
+        "symbol": "ABB",
+        "question": "ABB annual report and concall summary",
+        "reconstruction_status": "PACKET_RECONSTRUCTION_PARTIAL"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "ask@8bb3170",
+        "input_type": "REBUILT fact_packet (NOT the historical packet)",
+        "reference_model": "gpt-4o-mini",
+        "reference_prompt_version": "ask@454a07a",
+        "reference_output_schema": [
+          "answer",
+          "refused",
+          "refusal_reason"
+        ],
+        "historical_retrieval_plan": null,
+        "document_chunks_omitted": true,
+        "packet_rebuild_log": null,
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "PACKET_RECONSTRUCTION_PARTIAL — ask_log stores no fact packet, so this one was REBUILT and is NOT the historical input.",
+          "measured_signals / signal_change_log / news_events / fundamentals_derived are read LIVE and have moved on since the question was asked.",
+          "document_chunks is EMPTY: the rebuild ran with no api_key, so no embedding call was made. The rebuilt packet is LEANER than the original.",
+          "retrieval_plan is absent on this row (telemetry only exists for rows written after 2026-08-27), so which sections production actually fetched cannot be confirmed."
+        ]
+      },
+      "evidence_excerpt": "{\"symbol\": \"ABB\", \"measured_signals\": null, \"fundamentals_derived\": null, \"signal_change_log\": [], \"news_events\": [{\"category\": \"none\", \"headline\": \"Ahead of Market: 10 things that will decide stock market action on Friday\", \"impact\": \"uncertain\", \"published_at\": \"2026-07-16T15:46:50.000000Z\", \"scope\": \"unknown\", \"severity\": \"low\"}, {\"category\": \"none\", \"headline\": \"ABB India shares surge 10%. What’s fuelling the rally?\", \"impact\": \"uncertain\", \"published_at\": \"2026-07-16T08:15:59.000000Z\", \"scope\": \"unknown\", \"severity\": \"low\"}], \"change_explanation\": null, \"investor_calls\": [{\"filing_date\": \"2026-08-07\", \"source_pdf_url\": \"https://nsearchives.nseindia.com/corporate/ABB_07082026105828_TranscriptofAnalystcallQ22026.pdf\", \"subject\": \"EARNINGS_CALL_TRANSCRIPT\", \"summary\": \"ABB India Limited reported a strong performance in its Q2 2026 earnings, with a 50% year-on-year increase in orders and a 21% rise in revenue. The company achieved an operational EBITA of 12.8% and a profit after tax (PAT) growth of 8%. The order backlog stood at INR 11,900 crores, with no slow-moving orders. Management highlighted significant contributions from sectors such as renewables, data centers, and infrastructure. The company also emphasized its commitment to sustainability, reporting an 85% reduction in GHG emissions and recognition as India's Most Sustainable Company in the Capital Goods sector. Despite challenges from rising material costs and forex volatility, management expressed confidence in m"
+    }
+  ]
+}
