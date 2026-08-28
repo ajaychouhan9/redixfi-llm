@@ -26,6 +26,20 @@ def build_backend(settings: Optional[Settings] = None) -> BaseBackend:
             timeout_sec=settings.request_timeout_sec,
         )
 
+    if backend == "transformers":
+        # In-process Transformers + AWQ. The T4-native fallback for when
+        # vLLM's CUDA-13 wheels cannot run on a CUDA-12.8 image. Loading is
+        # deliberately NOT done here: the caller times load() separately so a
+        # load failure is reported distinctly from a generation failure.
+        from ..models.registry import get_model_spec
+        from .transformers_backend import TransformersBackend
+        spec = get_model_spec(settings.model)
+        return TransformersBackend(
+            hf_repo=spec.hf_repo,
+            dtype=spec.dtype,
+            max_model_len=spec.max_model_len,
+        )
+
     if backend == "openai":
         if not settings.openai_api_key:
             raise RuntimeError(
@@ -39,4 +53,6 @@ def build_backend(settings: Optional[Settings] = None) -> BaseBackend:
             timeout_sec=settings.request_timeout_sec,
         )
 
-    raise ValueError(f"unknown LLM_BACKEND '{settings.backend}'. Use: echo | vllm | openai")
+    raise ValueError(
+        f"unknown LLM_BACKEND '{settings.backend}'. "
+        "Use: echo | vllm | transformers | openai")

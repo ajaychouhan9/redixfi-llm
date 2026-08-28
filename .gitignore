@@ -10,11 +10,17 @@ fixtures/*.json
 fixtures/*.jsonl
 !fixtures/.gitkeep
 
-# evaluation OUTPUT (model responses, comparison reports)
+# evaluation OUTPUT is normally transient and git-ignored...
 evaluation/**/runs/
 evaluation/**/*.json
 evaluation/**/*.md
 !evaluation/**/.gitkeep
+
+# ...EXCEPT the GPU RUN RESULTS, which are the deliverable a human reviews.
+# They contain no secrets (model outputs + already-exported reference text)
+# and losing them means re-spending metered GPU hours to recreate them.
+!evaluation/*/runs/*qwen3*
+!evaluation/_gpu_run_*/
 
 # Kaggle upload bundle — contains the fixtures, rebuild with
 # scripts/make_sample_subset.py + the tar command in the runbook
