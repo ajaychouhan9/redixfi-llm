@@ -388,6 +388,12 @@ def test_ministral_carries_no_rope_scaling_so_it_may_run():
     from app.models.registry import get_model_spec
     spec = get_model_spec("ministral3-14b-w4a16-tp2")
     assert "rope_scaling" not in spec.extra_vllm_args
-    assert spec.extra_vllm_args == {"limit_mm_per_prompt": {"image": 0}}
+    # Text-only workload on a vision-language model: image capacity must be
+    # zeroed, or vLLM profiles memory against dummy 1540px images on cards
+    # measured at only ~1.2 GB free after load.
+    assert spec.extra_vllm_args["limit_mm_per_prompt"] == {"image": 0}
+    # Tekken via mistral-common. The preflight ran without this and
+    # transformers warned that the chat template was being applied unsafely.
+    assert spec.extra_vllm_args["tokenizer_mode"] == "mistral"
     # 32k, matching qwen3-14b-awq-tp2 — a comparison must not differ by context
     assert spec.max_model_len == get_model_spec("qwen3-14b-awq-tp2").max_model_len
