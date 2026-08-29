@@ -1,0 +1,474 @@
+{
+  "run_id": "20260829T182629Z",
+  "generated_at": "2026-08-29T18:26:29.987852+00:00",
+  "task": "annual_report_summary",
+  "fixture_task": "annual_report_summary",
+  "replayed_as": "annual_report_summary",
+  "model": "ministral3-14b-w4a16-tp2",
+  "model_config": {
+    "registry_name": "ministral3-14b-w4a16-tp2",
+    "hf_repo": "cyankiwi/Ministral-3-14B-Instruct-2512-AWQ-4bit",
+    "quantization": "compressed-tensors",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "retry_policy": {
+    "name": "production",
+    "retry_temperature": 0.0,
+    "vary_seed": false,
+    "directive_notes": false,
+    "like_for_like_with_reference": true,
+    "description": "Exactly what RedixFi's summarizers do, and what gpt-4o-mini was measured under: every attempt deterministic, corrective note = the validator's own message."
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-evaluation-2026/annual_report_benchmark.json",
+    "exported_at": "2026-08-28T12:23:41.163189+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "annual_reports",
+      "reference_set": "LEGACY_REFERENCE (72 summaries written 2026-08-16)",
+      "population_size": 72,
+      "evidence_finder": "RedixFi data-pipeline/evidence_finder.py (real)",
+      "evidence_max_tokens": 20000,
+      "skipped": []
+    },
+    "cases_total": 20,
+    "cases_run": 2
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "compressed-tensors"
+  },
+  "summary": {
+    "cases": 2,
+    "generated_ok": 0,
+    "generation_failures": 2,
+    "candidate_compliance_failures": 2,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 2,
+    "structured_output_used": 2,
+    "json_repair_used": 0,
+    "guided_and_clean": 2,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 129.019,
+    "total_prompt_tokens": 87644,
+    "total_completion_tokens": 2538,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "mean_lexical_overlap": 0.0
+  },
+  "results": [
+    {
+      "task": "annual_report_summary",
+      "fixture_id": "",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'targets'",
+          "text": {
+            "executive_summary": "Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth amid global economic and geopolitical uncertainties. The company emphasized disciplined capital allocation, volume growth, and value-added product expansion across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating challenges like geopolitical tensions (e.g., U.S.-China tariffs) and climate-related supply chain disruptions. Management underscored its commitment to reducing production costs, enhancing automation, and advancing sustainability initiatives, including water stewardship and biodiversity conservation, to maintain competitiveness in a volatile market environment.",
+            "key_points": [
+              "Management prioritized cost optimization and operational efficiency, achieving record production volumes and expanding value-added product (VAP) share in aluminium and zinc, with targets to increase VAP share to 70% in FY2025-26.",
+              "The company’s zinc and aluminium businesses maintained leadership in global cost curves, driven by automation, higher ore grades, and operational excellence.",
+              "Geopolitical tensions, particularly U.S.-China trade conflicts, and climate-related disruptions (e.g., Panama Canal droughts) were identified as key risks to global supply chains, prompting Vedanta to focus on diversifying supplier networks and enhancing resilience.",
+              "Sustainability remained a strategic priority, with recognition for environmental initiatives, including water stewardship, GHG emission reductions, and biodiversity conservation efforts.",
+              "Financial performance was supported by strong operating cash flows, disciplined capital expenditure, and strategic actions like the HZL offer for sale, resulting in a net debt reduction despite increased gross debt."
+            ],
+            "important_risks": [
+              "Geopolitical tensions, particularly escalating U.S.-China tariffs and trade conflicts, could disrupt global supply chains and commodity markets, impacting Vedanta’s cost structure and revenue streams.",
+              "Climate-related disruptions, such as extreme weather events and reduced transit capacity (e.g., Panama Canal), may increase logistics costs and supply chain vulnerabilities.",
+              "Operational headwinds, including geotechnical challenges and equipment availability at key assets (e.g., Gamsberg zinc mine), could affect production volumes and cost efficiency.",
+              "Regulatory and legal uncertainties, including ongoing arbitration and litigation (e.g., Cairn’s profit petroleum dispute with the Government of India), pose financial and operational risks."
+            ],
+            "key_takeaway": "Vedanta’s FY2024-25 strategy centers on leveraging operational excellence, cost discipline, and sustainability to navigate global uncertainties while expanding its value-added product portfolio and maintaining financial resilience.",
+            "summary": "Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth amid global economic and geopolitical uncertainties. The company emphasized disciplined capital allocation, volume growth, and value-added product expansion across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating challenges like geopolitical tensions (e.g., U.S.-China tariffs) and climate-related supply chain disruptions. Management underscored its commitment to reducing production costs, enhancing automation, and advancing sustainability initiatives, including water stewardship and biodiversity conservation, to maintain competitiveness in a volatile market environment.",
+            "bullets": [
+              "Management prioritized cost optimization and operational efficiency, achieving record production volumes and expanding value-added product (VAP) share in aluminium and zinc, with targets to increase VAP share to 70% in FY2025-26.",
+              "The company’s zinc and aluminium businesses maintained leadership in global cost curves, driven by automation, higher ore grades, and operational excellence.",
+              "Geopolitical tensions, particularly U.S.-China trade conflicts, and climate-related disruptions (e.g., Panama Canal droughts) were identified as key risks to global supply chains, prompting Vedanta to focus on diversifying supplier networks and enhancing resilience.",
+              "Sustainability remained a strategic priority, with recognition for environmental initiatives, including water stewardship, GHG emission reductions, and biodiversity conservation efforts.",
+              "Financial performance was supported by strong operating cash flows, disciplined capital expenditure, and strategic actions like the HZL offer for sale, resulting in a net debt reduction despite increased gross debt."
+            ]
+          },
+          "raw_text": "{\"executive_summary\": \"Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth amid global economic and geopolitical uncertainties. The company emphasized disciplined capital allocation, volume growth, and value-added product expansion across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating challenges like geopolitical tensions (e.g., U.S.-China tariffs) and climate-related supply chain disruptions. Management underscored its commitment to reducing production costs, enhancing automation, and advancing sustainability initiatives, including water stewardship and biodiversity conservation, to maintain competitiveness in a volatile market environment.\", \"key_points\": [\"Management prioritized cost optimization and operational efficiency, achieving record production volumes and expanding value-added product (VAP) share in aluminium and zinc, with targets to increase VAP share to 70% in FY2025-26.\", \"The company’s zinc and aluminium businesses maintained leadership in global cost curves, driven by automation, higher ore grades, and operational excellence.\", \"Geopolitical tensions, particularly U.S.-China trade conflicts, and climate-related disruptions (e.g., Panama Canal droughts) were identified as key risks to global supply chains, prompting Vedanta to focus on diversifying supplier networks and enhancing resilience.\", \"Sustainability remained a strategic priority, with recognition for environmental initiatives, including water stewardship, GHG emission reductions, and biodiversity conservation efforts.\", \"Financial performance was supported by strong operating cash flows, disciplined capital expenditure, and strategic actions like the HZL offer for sale, resulting in a net debt reduction despite increased gross debt.\"], \"important_risks\": [\"Geopolitical tensions, particularly escalating U.S.-China tariffs and trade conflicts, could disrupt global supply chains and commodity markets, impacting Vedanta’s cost structure and revenue streams.\", \"Climate-related disruptions, such as extreme weather events and reduced transit capacity (e.g., Panama Canal), may increase logistics costs and supply chain vulnerabilities.\", \"Operational headwinds, including geotechnical challenges and equipment availability at key assets (e.g., Gamsberg zinc mine), could affect production volumes and cost efficiency.\", \"Regulatory and legal uncertainties, including ongoing arbitration and litigation (e.g., Cairn’s profit petroleum dispute with the Government of India), pose financial and operational risks.\"], \"key_takeaway\": \"Vedanta’s FY2024-25 strategy centers on leveraging operational excellence, cost discipline, and sustainability to navigate global uncertainties while expanding its value-added product portfolio and maintaining financial resilience.\"}"
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'targets'",
+          "text": {
+            "executive_summary": "Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating global geopolitical and economic uncertainties. Management emphasized disciplined capital allocation, volume growth, and value-added product expansion, particularly in zinc and aluminium, where domestic market share and production capacity were prioritized. The report also underscored the company’s commitment to sustainability, including water stewardship, biodiversity conservation, and renewable energy adoption, alongside efforts to enhance operational resilience in the face of trade tensions and climate-related disruptions.",
+            "key_points": [
+              "Management stated a focus on cost optimization and operational efficiency, including volume growth and value-added product expansion in zinc and aluminium, with domestic market share targets.",
+              "The company’s strategic priorities include disciplined capital allocation, automation, and digitization to maintain cost competitiveness in global commodity markets.",
+              "Sustainability initiatives were highlighted, including water stewardship, biodiversity conservation, and renewable energy adoption across operations.",
+              "Geopolitical and trade tensions, particularly between the U.S. and China, were noted as key risks to global supply chains and commodity markets.",
+              "The report emphasized India’s economic resilience, with domestic demand and infrastructure investments supporting growth in sectors like steel and power."
+            ],
+            "important_risks": [
+              "Geopolitical tensions, including U.S.-China trade conflicts and tariffs, were identified as potential disruptions to global supply chains and commodity prices.",
+              "Climate-related disruptions, such as extreme weather events and supply chain bottlenecks, were noted as risks to operational stability.",
+              "Volatility in commodity prices and currency fluctuations were cited as factors affecting financial performance.",
+              "Regulatory and legal challenges, including arbitration disputes and government policy changes, were highlighted as potential financial and operational risks."
+            ],
+            "key_takeaway": "The company’s strategic focus on cost efficiency, sustainability, and domestic market expansion was framed as critical to navigating global uncertainties and maintaining long-term growth.",
+            "summary": "Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating global geopolitical and economic uncertainties. Management emphasized disciplined capital allocation, volume growth, and value-added product expansion, particularly in zinc and aluminium, where domestic market share and production capacity were prioritized. The report also underscored the company’s commitment to sustainability, including water stewardship, biodiversity conservation, and renewable energy adoption, alongside efforts to enhance operational resilience in the face of trade tensions and climate-related disruptions.",
+            "bullets": [
+              "Management stated a focus on cost optimization and operational efficiency, including volume growth and value-added product expansion in zinc and aluminium, with domestic market share targets.",
+              "The company’s strategic priorities include disciplined capital allocation, automation, and digitization to maintain cost competitiveness in global commodity markets.",
+              "Sustainability initiatives were highlighted, including water stewardship, biodiversity conservation, and renewable energy adoption across operations.",
+              "Geopolitical and trade tensions, particularly between the U.S. and China, were noted as key risks to global supply chains and commodity markets.",
+              "The report emphasized India’s economic resilience, with domestic demand and infrastructure investments supporting growth in sectors like steel and power."
+            ]
+          },
+          "raw_text": "{\"executive_summary\": \"Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating global geopolitical and economic uncertainties. Management emphasized disciplined capital allocation, volume growth, and value-added product expansion, particularly in zinc and aluminium, where domestic market share and production capacity were prioritized. The report also underscored the company’s commitment to sustainability, including water stewardship, biodiversity conservation, and renewable energy adoption, alongside efforts to enhance operational resilience in the face of trade tensions and climate-related disruptions.\", \"key_points\": [\"Management stated a focus on cost optimization and operational efficiency, including volume growth and value-added product expansion in zinc and aluminium, with domestic market share targets.\", \"The company’s strategic priorities include disciplined capital allocation, automation, and digitization to maintain cost competitiveness in global commodity markets.\", \"Sustainability initiatives were highlighted, including water stewardship, biodiversity conservation, and renewable energy adoption across operations.\", \"Geopolitical and trade tensions, particularly between the U.S. and China, were noted as key risks to global supply chains and commodity markets.\", \"The report emphasized India’s economic resilience, with domestic demand and infrastructure investments supporting growth in sectors like steel and power.\"], \"important_risks\": [\"Geopolitical tensions, including U.S.-China trade conflicts and tariffs, were identified as potential disruptions to global supply chains and commodity prices.\", \"Climate-related disruptions, such as extreme weather events and supply chain bottlenecks, were noted as risks to operational stability.\", \"Volatility in commodity prices and currency fluctuations were cited as factors affecting financial performance.\", \"Regulatory and legal challenges, including arbitration disputes and government policy changes, were highlighted as potential financial and operational risks.\"], \"key_takeaway\": \"The company’s strategic focus on cost efficiency, sustainability, and domestic market expansion was framed as critical to navigating global uncertainties and maintaining long-term growth.\"}"
+        },
+        {
+          "pass": 3,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'targets'",
+          "text": {
+            "executive_summary": "Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating global geopolitical and economic uncertainties. Management emphasized disciplined capital allocation, volume growth, and value-added product expansion, particularly in zinc and aluminium, where domestic market share and production capacity were prioritized. The report also underscored the company’s commitment to sustainability, including water stewardship, biodiversity conservation, and renewable energy adoption, alongside efforts to enhance operational resilience in the face of trade tensions and climate-related disruptions.",
+            "key_points": [
+              "Management stated a focus on cost optimization and operational efficiency, including volume growth and value-added product expansion in zinc and aluminium, with domestic market share targets.",
+              "The company’s strategic priorities include disciplined capital allocation, automation, and digitization to maintain cost competitiveness in global commodity markets.",
+              "Sustainability initiatives were highlighted, including water stewardship, biodiversity conservation, and renewable energy adoption across operations.",
+              "Geopolitical and trade tensions, particularly between the U.S. and China, were noted as key risks to global supply chains and commodity markets.",
+              "The report emphasized India’s economic resilience, with domestic demand and infrastructure investments supporting growth in sectors like steel and zinc."
+            ],
+            "important_risks": [
+              "Geopolitical tensions, including U.S.-China trade conflicts and tariffs, were identified as potential disruptions to global supply chains and commodity prices.",
+              "Climate-related disruptions, such as extreme weather events and supply chain bottlenecks, were noted as risks to operational stability.",
+              "Volatility in commodity prices and currency fluctuations were cited as factors affecting financial performance.",
+              "Regulatory and legal challenges, including arbitration disputes and government policy changes, were highlighted as potential financial and operational risks."
+            ],
+            "key_takeaway": "The company’s strategic focus on cost efficiency, sustainability, and domestic market expansion was framed as critical to navigating global uncertainties and maintaining long-term growth.",
+            "summary": "Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating global geopolitical and economic uncertainties. Management emphasized disciplined capital allocation, volume growth, and value-added product expansion, particularly in zinc and aluminium, where domestic market share and production capacity were prioritized. The report also underscored the company’s commitment to sustainability, including water stewardship, biodiversity conservation, and renewable energy adoption, alongside efforts to enhance operational resilience in the face of trade tensions and climate-related disruptions.",
+            "bullets": [
+              "Management stated a focus on cost optimization and operational efficiency, including volume growth and value-added product expansion in zinc and aluminium, with domestic market share targets.",
+              "The company’s strategic priorities include disciplined capital allocation, automation, and digitization to maintain cost competitiveness in global commodity markets.",
+              "Sustainability initiatives were highlighted, including water stewardship, biodiversity conservation, and renewable energy adoption across operations.",
+              "Geopolitical and trade tensions, particularly between the U.S. and China, were noted as key risks to global supply chains and commodity markets.",
+              "The report emphasized India’s economic resilience, with domestic demand and infrastructure investments supporting growth in sectors like steel and zinc."
+            ]
+          },
+          "raw_text": "{\"executive_summary\": \"Vedanta Limited’s FY2024-25 annual report highlights a strategic focus on operational efficiency, cost optimization, and sustainable growth across its core businesses—aluminium, zinc, copper, and oil & gas—while navigating global geopolitical and economic uncertainties. Management emphasized disciplined capital allocation, volume growth, and value-added product expansion, particularly in zinc and aluminium, where domestic market share and production capacity were prioritized. The report also underscored the company’s commitment to sustainability, including water stewardship, biodiversity conservation, and renewable energy adoption, alongside efforts to enhance operational resilience in the face of trade tensions and climate-related disruptions.\", \"key_points\": [\"Management stated a focus on cost optimization and operational efficiency, including volume growth and value-added product expansion in zinc and aluminium, with domestic market share targets.\", \"The company’s strategic priorities include disciplined capital allocation, automation, and digitization to maintain cost competitiveness in global commodity markets.\", \"Sustainability initiatives were highlighted, including water stewardship, biodiversity conservation, and renewable energy adoption across operations.\", \"Geopolitical and trade tensions, particularly between the U.S. and China, were noted as key risks to global supply chains and commodity markets.\", \"The report emphasized India’s economic resilience, with domestic demand and infrastructure investments supporting growth in sectors like steel and zinc.\"], \"important_risks\": [\"Geopolitical tensions, including U.S.-China trade conflicts and tariffs, were identified as potential disruptions to global supply chains and commodity prices.\", \"Climate-related disruptions, such as extreme weather events and supply chain bottlenecks, were noted as risks to operational stability.\", \"Volatility in commodity prices and currency fluctuations were cited as factors affecting financial performance.\", \"Regulatory and legal challenges, including arbitration disputes and government policy changes, were highlighted as potential financial and operational risks.\"], \"key_takeaway\": \"The company’s strategic focus on cost efficiency, sustainability, and domestic market expansion was framed as critical to navigating global uncertainties and maintaining long-term growth.\"}"
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "ministral3-14b-w4a16-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 48032,
+      "completion_tokens": 1397,
+      "total_tokens": 49429,
+      "latency_sec": 149.9762,
+      "comparison": {
+        "reference_present": true,
+        "reference_schema_matches_replay": false,
+        "schema_mismatch_note": "Reference is LEGACY-shaped (summary/bullets/key_takeaway) but this replay uses the CURRENT schema. Field-level comparison is not meaningful here — replay as 'annual_report_summary_legacy' for the like-for-like reading.",
+        "candidate_compliance": "executive_summary: empty text",
+        "reference_compliance": null,
+        "candidate_key_point_count": 0,
+        "reference_key_point_count": 0,
+        "candidate_risk_count": 0,
+        "reference_risk_count": 0,
+        "candidate_chars": 0,
+        "reference_chars": 165,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The annual report for Vedanta Limited for FY 2025-26 outlines the company's strategic transformation into a leader in natural resources, energy, and technology, termed 'Vedanta 2.0'. Management emphasized a commitment to sustainability, operational excellence, and innovation, aiming to create long-term value for stakeholders. The report also highlights the company's focus on disciplined capital allocation, community engagement, and the importance of critical minerals in supporting India's growth and energy transition.",
+        "bullets": [
+          "Management stated a plan to enhance operational efficiency through digital transformation and innovation.",
+          "The report described ongoing investments in critical minerals to support India's energy transition.",
+          "Management emphasized a commitment to sustainability and community welfare as central to business strategy.",
+          "The report highlighted disciplined capital allocation to drive long-term growth and shareholder value.",
+          "Management outlined goals for achieving net carbon neutrality and water positivity by 2030."
+        ],
+        "key_takeaway": "Management articulated a vision for Vedanta 2.0, focusing on sustainability, innovation, and the strategic importance of critical minerals in driving India's growth.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-16T14:08:33.979590"
+      },
+      "case_meta": {
+        "benchmark_id": "AR_VEDL_AR_26570_VEDL_2024_2025_A_18062025151918",
+        "symbol": "VEDL",
+        "company_name": "Vedanta Limited",
+        "fiscal_year": "FY2024-25",
+        "filing_id": "AR_26570_VEDL_2024_2025_A_18062025151918",
+        "doc_type": "annual_report"
+      },
+      "provenance": {
+        "reference_set": "LEGACY_REFERENCE",
+        "pipeline_version": "legacy_front_slice_pre_evidence_finder",
+        "input_type": "dual: legacy_front_slice + evidence_finder",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-16T14:08:33.979590",
+        "reference_prompt_version": "annual_report_summarizer@2026-08-16",
+        "reference_prompt_source_commit": "b9e40c4~1",
+        "reference_output_schema": [
+          "summary",
+          "bullets",
+          "key_takeaway"
+        ],
+        "current_pipeline_version": "evidence_finder@b9e40c4",
+        "current_prompt_version": "annual_report_summarizer@8bb3170",
+        "current_output_schema": [
+          "executive_summary",
+          "key_points",
+          "important_risks",
+          "key_takeaway"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "The stored reference PREDATES the Evidence Finder layer (reference 2026-08-16, Evidence Finder 2026-08-24).",
+          "Replaying as 'annual_report_summary_legacy' is like-for-like. Replaying as 'annual_report_summary' changes BOTH the input and the output schema, and is NOT a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "[Evidence chunk 272, page ~77]\nr aggressive rate hikes. While \ninterest rate cuts have been limited, the more predictable \ninflation path has helped stabilize financial markets and \nlaid the foundation for a gradual economic recovery.\nHowever, this progress has been overshadowed by \nrenewed geopolitical and trade tensions, particularly \nbetween the United States and China. Early in the fiscal \nyear, the U.S. upheld steep tariffs on Chinese imports, \naveraging over 145%. In March 2025, U.S. also imposed \na 25% duty on all steel and aluminium products, citing \nnational security concerns. China responded with its own \nset of tariffs, some reaching 125%, triggering a sharp \ndecline in bilateral trade and causing ripple effects across \nglobal supply chains.\nA pivotal moment came in May 2025, when both nations \nagreed in Geneva to a 90-day suspension of tariffs \nexceeding 100%, aiming to de-escalate tensions and \nreopen dialogue. President Trump reduced tariffs on \nChinese goods to 30%, while China lowered its tariffs \non U.S. products to 10%. Despite this temporary truce, \ndeeper issues remain unresolved, particularly around \nU.S. export controls on advanced semiconductors and \nChina’s restrictions on rare earth minerals, both critical to \nhigh‑tech and automotive industries.\nHigh-level negotiations resumed in London in June, \nfocusing on technology transfer, export licensing, and the \nbroader tariff framework. Yet, the U.S. simultaneously \nproposed to raise steel and aluminium ta\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "annual_report_summary",
+      "fixture_id": "",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "financial figure stated as fact 'rs,'",
+          "text": {
+            "executive_summary": "Britannia Industries Limited’s FY2024-25 annual report emphasizes a strategic focus on resilience, innovation, and sustainability amid macroeconomic challenges. Management highlighted efforts to strengthen distribution networks, optimize supply chains, and drive consumer-centric innovation, particularly in premium bakery segments. The company also underscored its commitment to social responsibility, including nutrition programs and community health initiatives, while maintaining robust corporate governance and internal controls.",
+            "key_points": [
+              "Management emphasized resilience and innovation as core pillars, focusing on premiumization and consumer-centric product development.",
+              "Supply chain optimization and technology-driven distribution were prioritized to enhance operational efficiency.",
+              "Sustainability initiatives included energy-efficient manufacturing processes and a 3% reduction target in energy consumption across six factories.",
+              "Corporate governance was reinforced with a strong audit committee and adherence to SEBI regulations.",
+              "Social impact programs, such as the Britannia Nutrition Foundation, expanded to address malnutrition and health disparities in underserved communities."
+            ],
+            "important_risks": [
+              "Rising input costs for key commodities like wheat and edible oils pose a significant risk to pricing and margins.",
+              "Geopolitical tensions and global trade disruptions could impact international business operations.",
+              "Competitive pressure from both organized and unorganized segments may intensify pricing challenges.",
+              "Macroeconomic uncertainties, including inflation and currency fluctuations, could affect consumer demand and growth prospects."
+            ],
+            "key_takeaway": "The report underscores Britannia’s strategic focus on innovation, sustainability, and social responsibility as key differentiators in a challenging macroeconomic environment.",
+            "summary": "Britannia Industries Limited’s FY2024-25 annual report emphasizes a strategic focus on resilience, innovation, and sustainability amid macroeconomic challenges. Management highlighted efforts to strengthen distribution networks, optimize supply chains, and drive consumer-centric innovation, particularly in premium bakery segments. The company also underscored its commitment to social responsibility, including nutrition programs and community health initiatives, while maintaining robust corporate governance and internal controls.",
+            "bullets": [
+              "Management emphasized resilience and innovation as core pillars, focusing on premiumization and consumer-centric product development.",
+              "Supply chain optimization and technology-driven distribution were prioritized to enhance operational efficiency.",
+              "Sustainability initiatives included energy-efficient manufacturing processes and a 3% reduction target in energy consumption across six factories.",
+              "Corporate governance was reinforced with a strong audit committee and adherence to SEBI regulations.",
+              "Social impact programs, such as the Britannia Nutrition Foundation, expanded to address malnutrition and health disparities in underserved communities."
+            ]
+          },
+          "raw_text": "{\"executive_summary\": \"Britannia Industries Limited’s FY2024-25 annual report emphasizes a strategic focus on resilience, innovation, and sustainability amid macroeconomic challenges. Management highlighted efforts to strengthen distribution networks, optimize supply chains, and drive consumer-centric innovation, particularly in premium bakery segments. The company also underscored its commitment to social responsibility, including nutrition programs and community health initiatives, while maintaining robust corporate governance and internal controls.\", \"key_points\": [\"Management emphasized resilience and innovation as core pillars, focusing on premiumization and consumer-centric product development.\", \"Supply chain optimization and technology-driven distribution were prioritized to enhance operational efficiency.\", \"Sustainability initiatives included energy-efficient manufacturing processes and a 3% reduction target in energy consumption across six factories.\", \"Corporate governance was reinforced with a strong audit committee and adherence to SEBI regulations.\", \"Social impact programs, such as the Britannia Nutrition Foundation, expanded to address malnutrition and health disparities in underserved communities.\"], \"important_risks\": [\"Rising input costs for key commodities like wheat and edible oils pose a significant risk to pricing and margins.\", \"Geopolitical tensions and global trade disruptions could impact international business operations.\", \"Competitive pressure from both organized and unorganized segments may intensify pricing challenges.\", \"Macroeconomic uncertainties, including inflation and currency fluctuations, could affect consumer demand and growth prospects.\"], \"key_takeaway\": \"The report underscores Britannia’s strategic focus on innovation, sustainability, and social responsibility as key differentiators in a challenging macroeconomic environment.\"}"
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'targets'",
+          "text": {
+            "executive_summary": "Britannia Industries Limited’s FY2024-25 annual report emphasizes resilience, innovation, and sustainability as core strategic pillars. Management highlighted a focus on supply chain optimization, cost efficiency, and premiumization in product offerings to navigate economic challenges like inflation and subdued consumption. The company also underscored its commitment to social impact through initiatives like the Britannia Nutrition Foundation, which targets malnutrition and health outcomes in underserved communities.",
+            "key_points": [
+              "Management stated a commitment to quality, innovation, and sustainability as central to its strategy, aiming to build a 'future-ready' organization.",
+              "The report described a focus on supply chain optimization and technology-driven distribution to ensure product availability across urban and rural markets.",
+              "Britannia emphasized premiumization and consumer-centric innovation in its bakery segment, including product launches like Croissant and Marie Gold’s special editions.",
+              "The company outlined a strategic push for international expansion, particularly in GCC, Americas, and Africa, driven by e-commerce and localized manufacturing.",
+              "Social impact initiatives, such as the Britannia Nutrition Foundation, were highlighted, with programs targeting malnutrition, health, and hygiene in vulnerable communities."
+            ],
+            "important_risks": [
+              "The report noted risks from geopolitical tensions, rising input costs (e.g., wheat, edible oil), and competitive pressures in both organized and unorganized segments.",
+              "Inflationary pressures and currency fluctuations were identified as potential challenges to growth, particularly in rural markets.",
+              "The company acknowledged risks from fragmentation in the bakery segment due to increased competition from local and national players."
+            ],
+            "key_takeaway": "Britannia’s FY2024-25 strategy centers on balancing cost efficiency, premiumization, and social responsibility to navigate macroeconomic challenges while driving long-term growth.",
+            "summary": "Britannia Industries Limited’s FY2024-25 annual report emphasizes resilience, innovation, and sustainability as core strategic pillars. Management highlighted a focus on supply chain optimization, cost efficiency, and premiumization in product offerings to navigate economic challenges like inflation and subdued consumption. The company also underscored its commitment to social impact through initiatives like the Britannia Nutrition Foundation, which targets malnutrition and health outcomes in underserved communities.",
+            "bullets": [
+              "Management stated a commitment to quality, innovation, and sustainability as central to its strategy, aiming to build a 'future-ready' organization.",
+              "The report described a focus on supply chain optimization and technology-driven distribution to ensure product availability across urban and rural markets.",
+              "Britannia emphasized premiumization and consumer-centric innovation in its bakery segment, including product launches like Croissant and Marie Gold’s special editions.",
+              "The company outlined a strategic push for international expansion, particularly in GCC, Americas, and Africa, driven by e-commerce and localized manufacturing.",
+              "Social impact initiatives, such as the Britannia Nutrition Foundation, were highlighted, with programs targeting malnutrition, health, and hygiene in vulnerable communities."
+            ]
+          },
+          "raw_text": "{\"executive_summary\": \"Britannia Industries Limited’s FY2024-25 annual report emphasizes resilience, innovation, and sustainability as core strategic pillars. Management highlighted a focus on supply chain optimization, cost efficiency, and premiumization in product offerings to navigate economic challenges like inflation and subdued consumption. The company also underscored its commitment to social impact through initiatives like the Britannia Nutrition Foundation, which targets malnutrition and health outcomes in underserved communities.\", \"key_points\": [\"Management stated a commitment to quality, innovation, and sustainability as central to its strategy, aiming to build a 'future-ready' organization.\", \"The report described a focus on supply chain optimization and technology-driven distribution to ensure product availability across urban and rural markets.\", \"Britannia emphasized premiumization and consumer-centric innovation in its bakery segment, including product launches like Croissant and Marie Gold’s special editions.\", \"The company outlined a strategic push for international expansion, particularly in GCC, Americas, and Africa, driven by e-commerce and localized manufacturing.\", \"Social impact initiatives, such as the Britannia Nutrition Foundation, were highlighted, with programs targeting malnutrition, health, and hygiene in vulnerable communities.\"], \"important_risks\": [\"The report noted risks from geopolitical tensions, rising input costs (e.g., wheat, edible oil), and competitive pressures in both organized and unorganized segments.\", \"Inflationary pressures and currency fluctuations were identified as potential challenges to growth, particularly in rural markets.\", \"The company acknowledged risks from fragmentation in the bakery segment due to increased competition from local and national players.\"], \"key_takeaway\": \"Britannia’s FY2024-25 strategy centers on balancing cost efficiency, premiumization, and social responsibility to navigate macroeconomic challenges while driving long-term growth.\"}"
+        },
+        {
+          "pass": 3,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "financial figure stated as fact '3%'",
+          "text": {
+            "executive_summary": "Britannia Industries Limited’s FY2024-25 annual report emphasizes resilience, innovation, and sustainability as core strategic pillars. Management highlighted a focus on supply chain optimization, cost efficiency, and premiumization in product offerings to navigate economic challenges, including inflation and subdued consumption. The company also underscored its commitment to social impact through initiatives like the Britannia Nutrition Foundation, which expanded its reach to over 300,000 beneficiaries in FY2024-25, and a robust corporate governance framework aligned with SEBI regulations.",
+            "key_points": [
+              "Management stated a focus on **supply chain optimization** and **cost efficiency** to mitigate rising input costs and inflationary pressures.",
+              "The company emphasized **premiumization and innovation** in bakery products, including new formats like Croissant, to align with evolving consumer preferences.",
+              "Britannia’s **rural distribution expansion** and **route-to-market redefinition** were highlighted as key strategies to strengthen market reach.",
+              "The report detailed **sustainability efforts**, including a 3% reduction in energy consumption across six factories and initiatives to reduce carbon footprint.",
+              "Social impact programs, such as the **Britannia Nutrition Foundation**, were expanded to address malnutrition and health outcomes in underserved communities, reaching over 300,000 beneficiaries."
+            ],
+            "important_risks": [
+              "Management noted **geopolitical tensions** and **rising input costs** (e.g., wheat, edible oil) as potential risks to operational performance.",
+              "The company acknowledged **competitive intensity** in both organized and unorganized segments, which could pressure pricing and margins.",
+              "Inflationary pressures and **monsoon-dependent crop yields** were identified as risks to rural market growth and overall demand.",
+              "The report highlighted **geopolitical risks** in international markets, including the Middle East, as a challenge to global expansion plans."
+            ],
+            "key_takeaway": "Britannia’s FY2024-25 strategy centers on **supply chain resilience, premium product innovation, and sustainability-driven growth** to navigate macroeconomic challenges while maintaining its leadership in the Indian FMCG sector.",
+            "summary": "Britannia Industries Limited’s FY2024-25 annual report emphasizes resilience, innovation, and sustainability as core strategic pillars. Management highlighted a focus on supply chain optimization, cost efficiency, and premiumization in product offerings to navigate economic challenges, including inflation and subdued consumption. The company also underscored its commitment to social impact through initiatives like the Britannia Nutrition Foundation, which expanded its reach to over 300,000 beneficiaries in FY2024-25, and a robust corporate governance framework aligned with SEBI regulations.",
+            "bullets": [
+              "Management stated a focus on **supply chain optimization** and **cost efficiency** to mitigate rising input costs and inflationary pressures.",
+              "The company emphasized **premiumization and innovation** in bakery products, including new formats like Croissant, to align with evolving consumer preferences.",
+              "Britannia’s **rural distribution expansion** and **route-to-market redefinition** were highlighted as key strategies to strengthen market reach.",
+              "The report detailed **sustainability efforts**, including a 3% reduction in energy consumption across six factories and initiatives to reduce carbon footprint.",
+              "Social impact programs, such as the **Britannia Nutrition Foundation**, were expanded to address malnutrition and health outcomes in underserved communities, reaching over 300,000 beneficiaries."
+            ]
+          },
+          "raw_text": "{\"executive_summary\": \"Britannia Industries Limited’s FY2024-25 annual report emphasizes resilience, innovation, and sustainability as core strategic pillars. Management highlighted a focus on supply chain optimization, cost efficiency, and premiumization in product offerings to navigate economic challenges, including inflation and subdued consumption. The company also underscored its commitment to social impact through initiatives like the Britannia Nutrition Foundation, which expanded its reach to over 300,000 beneficiaries in FY2024-25, and a robust corporate governance framework aligned with SEBI regulations.\", \"key_points\": [\"Management stated a focus on **supply chain optimization** and **cost efficiency** to mitigate rising input costs and inflationary pressures.\", \"The company emphasized **premiumization and innovation** in bakery products, including new formats like Croissant, to align with evolving consumer preferences.\", \"Britannia’s **rural distribution expansion** and **route-to-market redefinition** were highlighted as key strategies to strengthen market reach.\", \"The report detailed **sustainability efforts**, including a 3% reduction in energy consumption across six factories and initiatives to reduce carbon footprint.\", \"Social impact programs, such as the **Britannia Nutrition Foundation**, were expanded to address malnutrition and health outcomes in underserved communities, reaching over 300,000 beneficiaries.\"], \"important_risks\": [\"Management noted **geopolitical tensions** and **rising input costs** (e.g., wheat, edible oil) as potential risks to operational performance.\", \"The company acknowledged **competitive intensity** in both organized and unorganized segments, which could pressure pricing and margins.\", \"Inflationary pressures and **monsoon-dependent crop yields** were identified as risks to rural market growth and overall demand.\", \"The report highlighted **geopolitical risks** in international markets, including the Middle East, as a challenge to global expansion plans.\"], \"key_takeaway\": \"Britannia’s FY2024-25 strategy centers on **supply chain resilience, premium product innovation, and sustainability-driven growth** to navigate macroeconomic challenges while maintaining its leadership in the Indian FMCG sector.\"}"
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "ministral3-14b-w4a16-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 39612,
+      "completion_tokens": 1141,
+      "total_tokens": 40753,
+      "latency_sec": 108.0623,
+      "comparison": {
+        "reference_present": true,
+        "reference_schema_matches_replay": false,
+        "schema_mismatch_note": "Reference is LEGACY-shaped (summary/bullets/key_takeaway) but this replay uses the CURRENT schema. Field-level comparison is not meaningful here — replay as 'annual_report_summary_legacy' for the like-for-like reading.",
+        "candidate_compliance": "executive_summary: empty text",
+        "reference_compliance": null,
+        "candidate_key_point_count": 0,
+        "reference_key_point_count": 0,
+        "candidate_risk_count": 0,
+        "reference_risk_count": 0,
+        "candidate_chars": 0,
+        "reference_chars": 141,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The annual report for FY 2024-25 from Britannia Industries Limited highlighted the company's resilience in navigating a challenging macroeconomic environment marked by inflation and fluctuating consumer demand. Management emphasized a commitment to quality, innovation, and sustainability, focusing on operational enhancements and technological advancements to strengthen their market position. The report also detailed strategic initiatives aimed at expanding distribution, enhancing consumer engagement, and integrating sustainability across operations, reinforcing Britannia's goal of becoming a 'Global Total Foods Company.'",
+        "bullets": [
+          "Management emphasized resilience and adaptability in operations.",
+          "Focus on quality, innovation, and sustainability as core values.",
+          "Strategic initiatives aimed at expanding distribution and consumer engagement.",
+          "Integration of technology and operational enhancements to drive efficiency.",
+          "Commitment to sustainability reflected in various ESG initiatives."
+        ],
+        "key_takeaway": "Britannia's management underscored a strong commitment to quality, innovation, and sustainability as foundational elements for future growth.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-16T13:58:05.488855"
+      },
+      "case_meta": {
+        "benchmark_id": "AR_BRITANNIA_AR_27040_BRITANNIA_2024_2025_A_19072025234802",
+        "symbol": "BRITANNIA",
+        "company_name": "Britannia Industries Limited",
+        "fiscal_year": "FY2024-25",
+        "filing_id": "AR_27040_BRITANNIA_2024_2025_A_19072025234802",
+        "doc_type": "annual_report"
+      },
+      "provenance": {
+        "reference_set": "LEGACY_REFERENCE",
+        "pipeline_version": "legacy_front_slice_pre_evidence_finder",
+        "input_type": "dual: legacy_front_slice + evidence_finder",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-16T13:58:05.488855",
+        "reference_prompt_version": "annual_report_summarizer@2026-08-16",
+        "reference_prompt_source_commit": "b9e40c4~1",
+        "reference_output_schema": [
+          "summary",
+          "bullets",
+          "key_takeaway"
+        ],
+        "current_pipeline_version": "evidence_finder@b9e40c4",
+        "current_prompt_version": "annual_report_summarizer@8bb3170",
+        "current_output_schema": [
+          "executive_summary",
+          "key_points",
+          "important_risks",
+          "key_takeaway"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "The stored reference PREDATES the Evidence Finder layer (reference 2026-08-16, Evidence Finder 2026-08-24).",
+          "Replaying as 'annual_report_summary_legacy' is like-for-like. Replaying as 'annual_report_summary' changes BOTH the input and the output schema, and is NOT a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "[Evidence chunk 2, page ~2]\nallows you to steady \nyourself amidst adversities, and come back \nstronger. Together, they form the foundation \nnot just for sport, but for life.\n- Avani Lekhara, Paralympic Shooter\nFind a Way or Make One\n\nContents\nCORPORATE OVERVIEW ………………..........................……………………….….…………..…...…......1-32\nSTATUTORY REPORTS\nBoard's Report ……………………………………………………………………………..............................33-68\nManagement Discussion and Analysis Report. …………………....………………................69-78\nCorporate Governance Report……………..…………...……………………………........................79-106\nBusiness Responsibility and Sustainability Report..….……………………….....….........107-158\nFINANCIAL STATEMENTS\nAuditor's Report and Standalone Financial Statements ………………..…..….…......159-244\nAuditor's Report and Consolidated Financial Statements...…...…………….……....245-330\nTen-Year Financial Statistics..…….………………………………….……………...........……….............331\n\nChallenges since Covid\nChanging Channel Landscape\nSlowdown in Consumption\nHigh Inﬂation\nFocus on the Basics\nMarketing\nElevate Brand\nExperience\nSales &\nDistribution\nRedefine\nRoute-To-Market\nSustainability\nReduce Carbon Footprint\nInnovation\nAgile Product Launches\nCost Efﬁciency\nAcross Value Chain\n\nStrengthened Distribution\nMar‘20\nMar‘21\nMar‘22\nMar‘23\nMar‘24\nMar‘25\nNumber of Outlets (in Lakhs)\nMar‘20\nMar‘21\nMar‘22\nMar‘23\nMar‘24\nMar‘25\nNumber of Rural Preferred Dealers (in Thousands)\nDirect Reach\nRural Distribution\nIncreased Service to\nHigh Potential Out\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}

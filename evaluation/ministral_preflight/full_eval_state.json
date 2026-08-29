@@ -1,0 +1,91 @@
+{
+  "steps": [],
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm"
+  },
+  "preflight": {
+    "runtime": "vllm",
+    "model": "ministral3-14b-w4a16-tp2",
+    "hf_repo": "cyankiwi/Ministral-3-14B-Instruct-2512-AWQ-4bit",
+    "quantization": "compressed-tensors",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "context_length": 32768,
+    "load_time_sec": 234.84,
+    "free_vram_gb_before": 14.46,
+    "free_vram_gb_after": 1.16,
+    "vram_per_gpu": [
+      {
+        "index": 0,
+        "used_gb": 13.41,
+        "free_gb": 1.16,
+        "total_gb": 14.56
+      },
+      {
+        "index": 1,
+        "used_gb": 13.39,
+        "free_gb": 1.17,
+        "total_gb": 14.56
+      }
+    ],
+    "smoke_prompt_tokens": 29,
+    "smoke_output_tokens": 32,
+    "smoke_latency_sec": 2.229,
+    "smoke_tokens_per_sec": 14.35,
+    "smoke_output": " The management discussion section typically outlined the company's past financial performance and current operational strategies. It also addressed future prospects and the key factors influencing the business environment.",
+    "chat_native": true,
+    "api_smoke_latency_sec": 0.417
+  },
+  "benchmark": {
+    "cases": 100,
+    "ok": 78,
+    "failed": 22,
+    "prompt_tokens": 1161938,
+    "completion_tokens": 52225,
+    "latency": 4183.579999999999,
+    "structured_output_used": 100,
+    "json_repair_used": 0,
+    "guided_and_clean": 100,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "wall_sec": 4184.0,
+    "sec_per_case": 41.84,
+    "output_tokens_per_sec": 12.48,
+    "cases_per_hour": 86.0,
+    "capacity_25_gpu_hours": 2151
+  },
+  "repo_dir": "/kaggle/working/LLM",
+  "runtime": "vllm",
+  "api": {
+    "models": [
+      "ministral3-14b-w4a16-tp2",
+      "qwen3-14b-awq",
+      "qwen3-14b-awq-tp2",
+      "qwen3-14b-awq-tp2-64k",
+      "qwen3-30b-a3b-awq"
+    ],
+    "health": "ok",
+    "experimental": true
+  }
+}

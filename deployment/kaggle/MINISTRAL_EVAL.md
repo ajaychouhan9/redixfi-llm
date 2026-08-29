@@ -100,11 +100,18 @@ bans **every** figure — "describe direction or theme in words only".
 | Qwen concall | **0 / 20** | |
 | Ministral concall | **15 / 20** | |
 
-Ministral writes `**bold**` almost everywhere despite the instruction, and
-readily emits percentages (`33%`, `70%`, `10%`, `1.01%`) that the prompt
-forbids outright. Its rejection reasons are dominated by
-`financial figure stated as fact` and forward-tense words
-(`targeting`, `targets`, `forecasting`, `targeted`, `expectations`).
+In annual_report, Ministral writes `**bold**` almost everywhere despite
+the instruction, and readily emits percentages (`33%`, `70%`, `10%`,
+`1.01%`) that the prompt forbids outright — rejection reasons there are
+dominated by `financial figure stated as fact` and forward-tense words.
+**Concall's validator never checks financial figures at all** (only
+annual_report does — see `concall_summary.validate()`), so its 15/20
+markdown cases are a pure instruction-following signal with no figure
+component; its rejections there are forward-tense words only
+(`targeting`, `targets`, `forecasting`, `targeted`, `expectations`). See
+`CONCALL_MARKDOWN_FAIRNESS.md` for the follow-up test isolating whether
+suppressing concall's markdown also closes its compliance gap (it does
+not — the two are independent failure modes for concall specifically).
 
 The markdown also corrupts the lexical-overlap triage number (0.0072 as
 measured) — `**word**` does not token-match `word`. That metric is
@@ -163,12 +170,15 @@ evidence.** The gaps are large, consistent, and in the costly direction.
 faster. If a second model is ever wanted for concall specifically, it is
 not ruled out.
 
-The cheapest next experiment, if the founder wants Ministral given a fair
-shot, is a single prompt line forbidding markdown — 18/20 of its
-annual-report outputs violate an instruction that is already in the
-prompt, and it costs one run to find out whether it can follow a stronger
-one. That is a fair-shot experiment, not a tuning advantage, provided the
-same prompt is given to both models.
+**UPDATE, follow-up test run (2026-08-29, concall only):** the one-line
+markdown fix was tried, on both models, at production settings. It fully
+suppressed Ministral's concall markdown (15/20 → 0/20, confirmed from raw
+text) but did not close the compliance gap (13/20 generated after, against
+15/20 before) — markdown and the forward-tense violations turned out to be
+independent failure modes for concall. See `CONCALL_MARKDOWN_FAIRNESS.md`
+for the full numbers. Whether the same test would move the annual_report
+number (where figures ARE checked and WERE found inside markdown, unlike
+concall) remains untested and out of scope for that follow-up.
 
 ---
 
@@ -183,3 +193,7 @@ same prompt is given to both models.
 
 Full eval alone: 4,184 s of generation (41.8 s/case) plus ~20 min of
 install, 9.7 GB download and load.
+
+Plus the markdown-fairness follow-up (concall only, both models — see
+`CONCALL_MARKDOWN_FAIRNESS.md`): +61.2 min. **Running total across
+Ministral work: ~163 min.**

@@ -22,7 +22,19 @@ evaluation/**/*.md
 # ...EXCEPT the GPU RUN RESULTS, which are the deliverable a human reviews.
 # They contain no secrets (model outputs + already-exported reference text)
 # and losing them means re-spending metered GPU hours to recreate them.
-!evaluation/*/runs/*qwen3*
+#
+# BUG FOUND 2026-08-29: this only allow-listed *qwen3*, so every Ministral
+# run file (preflight, full eval, markdown-fairness) was silently dropped by
+# `git add -A` across several commits whose messages claimed they were
+# committed. `git add` does not error on an ignored path, so nothing caught
+# it until a later check found the files missing from `git log`. Pattern is
+# now by DIRECTORY, not by a per-model filename fragment, so a THIRD model
+# cannot repeat this silently either.
+!evaluation/annual_report/runs/*
+!evaluation/concall/runs/*
+!evaluation/red_flags/runs/*
+!evaluation/ask_ai/runs/*
+!evaluation/ministral_preflight/*
 !evaluation/_gpu_run_*/
 
 # Kaggle upload bundle — contains the fixtures, rebuild with

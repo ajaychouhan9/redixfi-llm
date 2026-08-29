@@ -64,7 +64,11 @@ def _latest_runs(pattern: str, min_cases: int):
         # would show one model's number under a heading that reads as though
         # it covered the category, and the comparison would vanish.
         model = run.get("model", "?")
-        key = (f"{task}[{run['variant']['name']}]" if run.get("variant")
+        # The variant bucket needs the SAME model-keying fix: two models can
+        # run the identical variant (e.g. concall_markdown_fairness_v1), and
+        # without ::model the second model's run silently overwrote the
+        # first's row here too.
+        key = (f"{task}[{run['variant']['name']}]::{model}" if run.get("variant")
                else f"{task}::{model}")
         prev = bucket.get(key)
         # Rank by (run_id, has-regenerated-reference). The re-scored copy of
@@ -225,29 +229,36 @@ def main() -> None:
     # Prompt-variant runs, reported BESIDE the baseline, never instead of it.
     if variant_runs:
         L.append("## Prompt-variant runs (full fixture)\n")
-        L.append("> These use a NON-PRODUCTION system prompt. gpt-4o-mini achieved "
-                 "its result on the production prompt, so a variant number is not "
-                 "a like-for-like comparison — it shows what Qwen needs to get "
-                 "there. Read it against the baseline row above, not against "
-                 "gpt-4o-mini directly.\n")
-        L.append("| Variant | Task | Cases | Generated | Compliance fails | "
+        L.append("> These use a NON-PRODUCTION system prompt. The reference model "
+                 "achieved its result on the production prompt, so a variant number "
+                 "is not a like-for-like comparison against it — it shows what the "
+                 "candidate model needs to get there, or (for a fairness test run "
+                 "identically on two candidate models) how they compare to EACH "
+                 "OTHER under the same added instruction. Read it against the "
+                 "baseline row for the same model above, not against the reference.\n")
+        L.append("| Variant | Model | Task | Cases | Generated | Compliance fails | "
                  "Tone agreement | Sheet |")
-        L.append("|---|---|---|---|---|---|---|")
+        L.append("|---|---|---|---|---|---|---|---|")
         for key, (path, run) in sorted(variant_runs.items()):
             s = run.get("summary") or {}
             v = run.get("variant") or {}
             md = os.path.relpath(path.replace(".json", ".md"),
                                  os.path.dirname(args.out) or ".").replace(os.sep, "/")
-            L.append(f"| `{v.get('name')}` | {TASK_LABEL.get(run.get('task'), run.get('task'))} | "
+            L.append(f"| `{v.get('name')}` | `{run.get('model')}` | "
+                     f"{TASK_LABEL.get(run.get('task'), run.get('task'))} | "
                      f"{s.get('cases')} | {s.get('generated_ok')} | "
                      f"{s.get('candidate_compliance_failures')} | "
                      f"{s.get('tone_label_agreement_rate', '—')} | "
                      f"[{os.path.basename(md)}]({md}) |")
         L.append("")
+        seen_desc = set()
         for key, (path, run) in sorted(variant_runs.items()):
             v = run.get("variant") or {}
-            L.append(f"- **`{v.get('name')}`** (attempts {v.get('max_attempts')}, "
-                     f"retry policy `{v.get('retry_policy')}`): {v.get('description')}")
+            name = v.get("name")
+            if name not in seen_desc:
+                seen_desc.add(name)
+                L.append(f"- **`{name}`** (attempts {v.get('max_attempts')}, "
+                         f"retry policy `{v.get('retry_policy')}`): {v.get('description')}")
         L.append("")
 
     # Concall experiments, if present

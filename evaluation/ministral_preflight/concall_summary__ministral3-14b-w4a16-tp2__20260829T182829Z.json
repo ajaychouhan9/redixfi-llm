@@ -1,0 +1,283 @@
+{
+  "run_id": "20260829T182829Z",
+  "generated_at": "2026-08-29T18:28:29.367417+00:00",
+  "task": "concall_summary",
+  "fixture_task": "concall_summary",
+  "replayed_as": "concall_summary",
+  "model": "ministral3-14b-w4a16-tp2",
+  "model_config": {
+    "registry_name": "ministral3-14b-w4a16-tp2",
+    "hf_repo": "cyankiwi/Ministral-3-14B-Instruct-2512-AWQ-4bit",
+    "quantization": "compressed-tensors",
+    "dtype": "float16",
+    "tensor_parallel_size": 2,
+    "max_model_len": 32768,
+    "is_moe": false
+  },
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "retry_policy": {
+    "name": "production",
+    "retry_temperature": 0.0,
+    "vary_seed": false,
+    "directive_notes": false,
+    "like_for_like_with_reference": true,
+    "description": "Exactly what RedixFi's summarizers do, and what gpt-4o-mini was measured under: every attempt deterministic, corrective note = the validator's own message."
+  },
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-evaluation-2026/concall_benchmark.json",
+    "exported_at": "2026-08-28T12:23:05.734646+00:00",
+    "schema_version": 2,
+    "source": {
+      "exported_by": "LLM/scripts/export_fixtures.py",
+      "read_only": true,
+      "openai_calls_made": 0,
+      "redixfi_root": "/home/ubuntu/redixfi-backend",
+      "redixfi_commit": "a45b555",
+      "chroma_path": "/home/ubuntu/redixfi-backend/data/chroma_production",
+      "host": "redixfi-vnic",
+      "collection": "investor_calls",
+      "population_size": 4157,
+      "skipped": []
+    },
+    "cases_total": 20,
+    "cases_run": 2
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "llm_project_commit": "unknown"
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "compressed-tensors"
+  },
+  "summary": {
+    "cases": 2,
+    "generated_ok": 1,
+    "generation_failures": 1,
+    "candidate_compliance_failures": 1,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 2,
+    "structured_output_used": 2,
+    "json_repair_used": 0,
+    "guided_and_clean": 2,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 59.66,
+    "total_prompt_tokens": 43279,
+    "total_completion_tokens": 1291,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "tone_label_agreement_rate": 1.0,
+    "invalid_tone_labels": 0,
+    "tone_confusion": {
+      "Mixed->None": 1,
+      "Positive->Positive": 1
+    },
+    "mean_lexical_overlap": 0.1991
+  },
+  "results": [
+    {
+      "task": "concall_summary",
+      "fixture_id": "CC_BATAINDIA_106539458",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "Bata India Limited’s Q3 and FY '26 earnings call highlighted a 3% turnover growth, driven by elevated marketing spend and the zero-based merchandising (ZBM) project, now scaled to 400 stores. Management emphasized double-digit underlying PBT growth and improved margins, attributing these to initiatives like 'Customer First' and agent inventory rationalization. Key brands—Hush Puppies, Power, and Floatz—disproportionately drove growth, while the corner stores channel showed strong margin performance post-rationalization. The franchise network expanded to nearly 2,000 stores, with e-commerce (including the Bata app) contributing 14% of D2C sales. Management also addressed challenges like GST impacts, noting momentum recovery, and outlined plans to reimagine the product funnel and expand exports via FTAs. Inventory efficiencies improved by 11%, with sustainable reductions expected. The tone focused on operational improvements and strategic initiatives, with cautious optimism about future growth.",
+            "tone_label": "Mixed",
+            "tone_note": "Management balanced positive operational progress (e.g., ZBM expansion, margin growth) with acknowledgment of lingering challenges (e.g., GST impact, single-digit growth base)."
+          },
+          "raw_text": "{\"summary\": \"Bata India Limited’s Q3 and FY '26 earnings call highlighted a 3% turnover growth, driven by elevated marketing spend and the zero-based merchandising (ZBM) project, now scaled to 400 stores. Management emphasized double-digit underlying PBT growth and improved margins, attributing these to initiatives like 'Customer First' and agent inventory rationalization. Key brands—Hush Puppies, Power, and Floatz—disproportionately drove growth, while the corner stores channel showed strong margin performance post-rationalization. The franchise network expanded to nearly 2,000 stores, with e-commerce (including the Bata app) contributing 14% of D2C sales. Management also addressed challenges like GST impacts, noting momentum recovery, and outlined plans to reimagine the product funnel and expand exports via FTAs. Inventory efficiencies improved by 11%, with sustainable reductions expected. The tone focused on operational improvements and strategic initiatives, with cautious optimism about future growth.\", \"tone_label\": \"Mixed\", \"tone_note\": \"Management balanced positive operational progress (e.g., ZBM expansion, margin growth) with acknowledgment of lingering challenges (e.g., GST impact, single-digit growth base).\"}"
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "Bata India Limited’s Q3 and FY '26 earnings call highlighted a 3% turnover growth, driven by elevated marketing spend and the zero-based merchandising (ZBM) project, now scaled to 400 stores. Management emphasized double-digit underlying PBT growth and improved margins, attributing these to initiatives like 'Customer First' and agent inventory rationalization. Brand-specific growth was noted, particularly for Hush Puppies, Power, and Floatz, while the corner stores channel showed strong margin performance. The franchise network expanded to nearly 2,000 stores, and e-commerce grew significantly, with the Bata app contributing 14% of D2C sales. Management addressed concerns about growth by stressing the cumulative impact of marketing investments, ZBM, and product funnel reimagining. The GST impact was noted as partially structural, with momentum continuing. E-commerce, now mid-double digits in contribution, was described as margin-neutral at scale. Inventory efficiencies improved by 11%, with sustainable reductions expected. The company aims to expand exports, leveraging FTAs, and is targeting 1,000 franchise stores in the next couple of years. Challenges include attracting younger consumers and balancing in-house manufacturing with outsourcing, with a focus on technology-driven production.",
+            "tone_label": "Positive",
+            "tone_note": "Management emphasized growth momentum, operational improvements, and strategic initiatives like marketing spend and product innovation."
+          },
+          "raw_text": "{\"summary\": \"Bata India Limited’s Q3 and FY '26 earnings call highlighted a 3% turnover growth, driven by elevated marketing spend and the zero-based merchandising (ZBM) project, now scaled to 400 stores. Management emphasized double-digit underlying PBT growth and improved margins, attributing these to initiatives like 'Customer First' and agent inventory rationalization. Brand-specific growth was noted, particularly for Hush Puppies, Power, and Floatz, while the corner stores channel showed strong margin performance. The franchise network expanded to nearly 2,000 stores, and e-commerce grew significantly, with the Bata app contributing 14% of D2C sales. Management addressed concerns about growth by stressing the cumulative impact of marketing investments, ZBM, and product funnel reimagining. The GST impact was noted as partially structural, with momentum continuing. E-commerce, now mid-double digits in contribution, was described as margin-neutral at scale. Inventory efficiencies improved by 11%, with sustainable reductions expected. The company aims to expand exports, leveraging FTAs, and is targeting 1,000 franchise stores in the next couple of years. Challenges include attracting younger consumers and balancing in-house manufacturing with outsourcing, with a focus on technology-driven production.\", \"tone_label\": \"Positive\", \"tone_note\": \"Management emphasized growth momentum, operational improvements, and strategic initiatives like marketing spend and product innovation.\"}"
+        },
+        {
+          "pass": 3,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "Bata India Limited’s Q3 and FY '26 earnings call highlighted a 3% turnover growth, driven by elevated marketing spend and the zero-based merchandising (ZBM) project, now scaled to 400 stores. Management emphasized double-digit underlying PBT growth and improved margins, attributing these to initiatives like 'Customer First' and agent inventory rationalization. Brand-specific growth was noted, particularly for Hush Puppies, Power, and Floatz, while the corner stores channel showed strong margin performance. The franchise network expanded to nearly 2,000 stores, and e-commerce grew significantly, with the Bata app contributing 14% of D2C sales. Management addressed concerns about growth by citing marketing investments, ZBM, and product funnel reimagining as key drivers. The GST impact was noted as partially structural, with momentum continuing. E-commerce, now mid-double digits in contribution, was described as margin-neutral at scale. Inventory efficiencies improved by 11%, with sustainable reductions expected. The company aims to expand exports post-FTA, targeting significant growth over the next 2-3 years. Challenges include attracting younger consumers and balancing in-house manufacturing with outsourcing, with a focus on technology-driven production.",
+            "tone_label": "Positive",
+            "tone_note": "Management emphasized growth momentum, margin improvements, and strategic initiatives like marketing spend and product funnel reimagining."
+          },
+          "raw_text": "{\"summary\": \"Bata India Limited’s Q3 and FY '26 earnings call highlighted a 3% turnover growth, driven by elevated marketing spend and the zero-based merchandising (ZBM) project, now scaled to 400 stores. Management emphasized double-digit underlying PBT growth and improved margins, attributing these to initiatives like 'Customer First' and agent inventory rationalization. Brand-specific growth was noted, particularly for Hush Puppies, Power, and Floatz, while the corner stores channel showed strong margin performance. The franchise network expanded to nearly 2,000 stores, and e-commerce grew significantly, with the Bata app contributing 14% of D2C sales. Management addressed concerns about growth by citing marketing investments, ZBM, and product funnel reimagining as key drivers. The GST impact was noted as partially structural, with momentum continuing. E-commerce, now mid-double digits in contribution, was described as margin-neutral at scale. Inventory efficiencies improved by 11%, with sustainable reductions expected. The company aims to expand exports post-FTA, targeting significant growth over the next 2-3 years. Challenges include attracting younger consumers and balancing in-house manufacturing with outsourcing, with a focus on technology-driven production.\", \"tone_label\": \"Positive\", \"tone_note\": \"Management emphasized growth momentum, margin improvements, and strategic initiatives like marketing spend and product funnel reimagining.\"}"
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "ministral3-14b-w4a16-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 35259,
+      "completion_tokens": 858,
+      "total_tokens": 36117,
+      "latency_sec": 81.7734,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": null,
+        "tone_label_agrees": null,
+        "tone_label_valid": false,
+        "candidate_compliance": "empty text",
+        "reference_compliance": null,
+        "candidate_chars": 0,
+        "reference_chars": 970,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Bata India Limited's earnings conference call on February 13, 2026, highlighted a turnover growth of 3% for the quarter, attributed to the implementation of a zero-based merchandising project across 400 stores and increased marketing expenditures. Management noted improvements in key metrics such as inventory freshness and turnaround times. The company reported a double-digit underlying PBT growth of 10%, with significant contributions from brands like Hush Puppies and Power. The franchise network expanded to nearly 2,000 outlets, and e-commerce sales grew, with 14% of direct-to-consumer business coming from a newly launched app. Management acknowledged challenges in achieving double-digit growth aspirations but emphasized ongoing initiatives in marketing, product development, and channel expansion to drive future growth. The discussion also touched on the impact of GST on sales and the company's strategy to enhance brand relevance among younger consumers.",
+        "tone_label": "Mixed",
+        "tone_note": "Management reported growth and improvements while acknowledging challenges in achieving higher growth rates.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T22:10:20.652330"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_BATAINDIA_106539458",
+        "symbol": "BATAINDIA",
+        "company_name": "Bata India Limited",
+        "filing_id": "106539458",
+        "doc_type": "concall_transcript",
+        "doc_kind": "earnings concall transcript"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "concall_front_slice",
+        "input_type": "raw_transcript_text[:120000] front slice",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-25T22:10:20.652330",
+        "reference_prompt_version": "concall_summarizer@8bb3170",
+        "reference_output_schema": [
+          "summary",
+          "tone_label",
+          "tone_note"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "None material: concall_summarizer.py has NOT been rewired through Evidence Finder, so the code path that produced this reference is the code path that exists today. The input is exactly reproducible and this is a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "BATA INDIA LIMITED \nCIN: L19201WB1931PLC007261 \nRegistered Office: 27B, Camac Street, 1st Floor, Kolkata-700016, West Bengal II Tel.: (033) 22895796 II Fax: (033) 22895748 \nE-mail: in-customer.service@bata.com II Website: www.bata.in \n \n      February 18, 2026 \n \nThe Manager, CRD \nBSE Limited \nP J Towers, Dalal Street, Fort, \nMumbai - 400001 \nThe Manager, Listing Department \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor,  \nPlot No. C-1, Block G, BKC, Bandra (E), \nMumbai - 400051     \n \nThe Secretary \nThe \nCalcutta \nStock \nExchange \nLimited \n7, Lyons Range, \nKolkata - 700001 \nBSE Security Code: 500043 \nNSE Symbol: BATAINDIA  \nCSE Scrip Code: 10000003  \n \nDear Sir/Madam, \n \nSubject: Post Earnings Call  \nThis is further to our letters dated January 28, 2026, February 12, 2026 and February 13, 2026, on the captioned \nsubject. \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015, we \nare enclosing herewith the transcript of the Post Earnings Call (Group Call) held on Friday, February 13, 2026. \nThe above information shall also be made available on Company’s website viz., www.bata.in  \nThis is for your information and records. \n \nThanking you, \nYours faithfully, \nFor BATA INDIA LIMITED \n \n  \nNITIN BAGARIA \nAVP – Company Secretary & Compliance Officer \n \n \nEncl.: As above \nDigitally signed by NITIN BAGARIA\n\nPage 1 of 14 \n \n \nBata India Limited \nQ3 and FY '26 Earnings Conference Call \nFebruary 13, 2026 \n \n \n \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary",
+      "fixture_id": "CC_SUNTECK_106596830",
+      "ok": true,
+      "output": {
+        "summary": "Sunteck Realty Limited’s investor presentation for Q4 and full-year FY26 reported strong financial and operational growth. Revenue rose to Rs. 339 crore in Q4FY26 (65% YoY growth) and Rs. 1,124 crore in FY26 (32% YoY growth), with EBITDA and PAT also increasing by 41% and 25% YoY, respectively. EBITDA margins stood at 29% in Q4FY26 and 27% for FY26, while PAT margins were 19% and 18%, respectively. Pre-sales grew to Rs. 1,064 crore in Q4FY26 and Rs. 3,157 crore in FY26, up 22% and 25% YoY, respectively, with collections at Rs. 432 crore and Rs. 1,433 crore, respectively. The company highlighted a net cash flow surplus of Rs. 552 crore (48% YoY growth) and a net debt-to-equity ratio of 0.06x. Sunteck emphasized its strong foothold in the Mumbai Metropolitan Region (MMR), strategic acquisitions (50+ million sq. ft., GDV of Rs. 41,030 crore), and expanding annuity income portfolio (Rs. 300+ crore in rentals). The presentation also noted successful equity partnerships, including a Rs. 750 crore joint investment platform with IFC-World Bank Group, and sustainability achievements such as a 99 GRESB score and inclusion in the Dow Jones Sustainability Index (ESG score of 78).",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasized robust revenue, EBITDA, and PAT growth, alongside strong operational metrics like pre-sales and collections, while highlighting strategic acquisitions and sustainability accolades."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "ministral3-14b-w4a16-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 8020,
+      "completion_tokens": 433,
+      "total_tokens": 8453,
+      "latency_sec": 37.5469,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1186,
+        "reference_chars": 865,
+        "lexical_overlap": 0.3981,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Sunteck Realty Limited reported its financial results for Q4 and the full year FY26, highlighting a revenue increase to approximately Rs. 339 crore in Q4FY26 and Rs. 1,124 crore for FY26, representing year-on-year growth of 65% and 32%, respectively. EBITDA also saw significant growth, reaching around Rs. 97 crore in Q4FY26 and Rs. 305 crore for FY26, up 41% and 64% YoY. The company reported a PAT of Rs. 63 crore in Q4FY26 and Rs. 202 crore for FY26, marking increases of 25% and 34% YoY. Operationally, pre-sales grew to Rs. 1,064 crore in Q4FY26 and Rs. 3,157 crore for FY26, with collections at Rs. 432 crore and Rs. 1,433 crore, respectively. The company maintained a strong net debt to equity ratio of 0.06x and reported a net cash flow surplus of Rs. 552 crore, up 48% YoY. Sunteck emphasized its strong market position and successful equity partnerships.",
+        "tone_label": "Positive",
+        "tone_note": "Management highlighted strong financial and operational growth metrics.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T21:40:50.881258"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_SUNTECK_106596830",
+        "symbol": "SUNTECK",
+        "company_name": "Sunteck Realty Limited",
+        "filing_id": "106596830",
+        "doc_type": "concall_transcript",
+        "doc_kind": "investor presentation"
+      },
+      "provenance": {
+        "reference_set": "CURRENT_PIPELINE",
+        "pipeline_version": "concall_front_slice",
+        "input_type": "raw_transcript_text[:120000] front slice",
+        "reference_model": "gpt-4o-mini",
+        "reference_generated_at": "2026-08-25T21:40:50.881258",
+        "reference_prompt_version": "concall_summarizer@8bb3170",
+        "reference_output_schema": [
+          "summary",
+          "tone_label",
+          "tone_note"
+        ],
+        "redixfi_commit_at_export": "a45b555",
+        "limitations": [
+          "None material: concall_summarizer.py has NOT been rewired through Evidence Finder, so the code path that produced this reference is the code path that exists today. The input is exactly reproducible and this is a like-for-like comparison."
+        ]
+      },
+      "evidence_excerpt": "Sunteck Realty Ltd. \n                   \n \n5th Floor, Sunteck Centre, 37-40 Subhash Road, Vile Parle (East), Mumbai 400057. Tel: +91 22 4287 7800 Fax: +91 22 4287 7890  \nWebsite: www.sunteckindia.com CIN: L32100MH1981PLC025346 Email Id: cosec@sunteckindia.com  \n  Date: 22nd April, 2026 \n \nNational Stock Exchange of India Ltd \nExchange Plaza, Plot no. C/1, G Block, \nBandra-Kurla Complex, Bandra (East),  \nMumbai - 400 051 \nSymbol: SUNTECK \nBSE Limited \nPhiroze Jeejeebhoy Tower, \nDalal Street, \nMumbai - 400 001 \nScrip Code: 512179 \n \nSub: Investor Presentation on Q4 and Full Year FY26 Results \n \nDear Sir/Madam, \n \nPlease find enclosed the Investor Presentation with regard to the Financial Results of the Company for the \nquarter and year ended 31st March, 2026. \n \nThe Investor Presentation shall also be placed on the Company’s website. \n \nThis is for your information and records. \n \nYours sincerely, \nFor Sunteck Realty Limited \n \n \n \nRachana Hingarajia \nCompany Secretary \n(ACS No.: 23202) \nEncl: a/a \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \nRachana \nVipul \nHingarajia\nDigitally signed by \nRachana Vipul \nHingarajia \nDate: 2026.04.22 \n14:22:38 +05'30'\n\nSunteck Realty Limited\nInvestor Presentation\nQ4 & Full Year FY26 \nApril 2026\nNSE: SUNTECK | BSE: 512179 | Bloomberg: SRIN: IN  | Reuters: SUNT.NS / SUNT.BO \n\nDisclaimer\nBy attending the meeting where this presentation is made and any additional material is provided (“Presentation”) or by reading the Presentation, you (“Recipient”),\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}
