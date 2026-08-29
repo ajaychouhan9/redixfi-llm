@@ -30,6 +30,8 @@ from ..prompts.annual_report_summary import (
     build_user_content,
 )
 from .base import TaskResult, parse_json_object
+from .retry_policy import (PRODUCTION_POLICY, RetryPolicy,
+                           build_corrective_note)
 
 TASK_NAME = "annual_report_summary"
 
@@ -92,6 +94,7 @@ def run(
     temperature: float = 0.0,
     max_tokens: int = 1024,
     seed: Optional[int] = 0,
+    policy: RetryPolicy = PRODUCTION_POLICY,
 ) -> TaskResult:
     result = TaskResult(task=TASK_NAME, fixture_id=str(fixture.get("fixture_id") or ""), ok=False)
 
@@ -104,30 +107,39 @@ def run(
 
     for attempt in range(1, MAX_ATTEMPTS + 1):
         result.attempts = attempt
+        # Retries sample differently so they can actually differ; attempt 1
+        # is untouched. See retry_policy's docstring for the measured
+        # repetition this fixes. Both values are recorded on each rejection
+        # so "the retry really did differ" stays checkable from the run JSON.
+        attempt_temperature = policy.temperature_for(attempt, temperature)
+        attempt_seed = policy.seed_for(attempt, seed)
         request = GenerationRequest(
             messages=[
                 Message("system", SYSTEM_PROMPT),
                 Message("user", build_user_content(fixture, corrective_note)),
             ],
             model=model,
-            temperature=temperature,
+            temperature=attempt_temperature,
             max_tokens=max_tokens,
-            seed=seed,
+            seed=attempt_seed,
             json_mode=True,
             json_schema=schema,
         )
+        sampling = {"temperature": attempt_temperature, "seed": attempt_seed}
         generation = backend.generate(request)
         result.absorb(generation)
 
         if not generation.ok:
-            rejections.append({"pass": attempt, "reason": f"llm_exception: {generation.error}"})
+            rejections.append({"pass": attempt, "sampling": sampling,
+                               "reason": f"llm_exception: {generation.error}"})
             corrective_note = "the previous attempt failed to reach the model — retry"
             continue
 
         parsed, repaired, parse_error = parse_json_object(generation.text)
         result.json_repair_used = result.json_repair_used or repaired
         if parsed is None:
-            rejections.append({"pass": attempt, "reason": f"invalid_json: {parse_error}",
+            rejections.append({"pass": attempt, "sampling": sampling,
+                               "reason": f"invalid_json: {parse_error}",
                                "text": generation.text[:500]})
             corrective_note = "the previous attempt was not valid JSON"
             continue
@@ -140,8 +152,11 @@ def run(
             result.rejections = rejections
             return result
 
-        rejections.append({"pass": attempt, "reason": bad, "text": out})
-        corrective_note = bad
+        rejections.append({"pass": attempt, "sampling": sampling,
+                           "reason": bad, "text": out,
+                           "raw_text": generation.text})
+        corrective_note = build_corrective_note(bad, out, ['executive_summary', 'key_takeaway', 'key_points', 'important_risks'],
+                                                policy=policy)
 
     # Same posture as RedixFi: no placeholder on total failure.
     result.rejections = rejections

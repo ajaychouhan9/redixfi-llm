@@ -47,11 +47,14 @@ from typing import Any, Dict, List, Optional
 from ..compliance.validators import FORWARD_TENSE_RE
 from ..inference.base import Backend, GenerationRequest, Message
 from ..prompts import concall_summary as prod_prompt
+from ..prompts import concall_summary_steered as steered_prompt
 from ..prompts import concall_summary_variant as variant_prompt
 from ..schemas.output_schemas import schema_for_task
 from ..tasks.base import TaskResult, parse_json_object
 # The REAL judging logic — imported, never reimplemented.
 from ..tasks.concall_summary import TASK_NAME, _normalize, validate
+from ..tasks.retry_policy import (IMPROVED_POLICY, PRODUCTION_POLICY,
+                                  RetryPolicy, build_corrective_note)
 
 
 @dataclass
@@ -60,6 +63,8 @@ class Variant:
     system_prompt: str
     max_attempts: int
     description: str
+    # Defaults to production so a variant varies ONLY what it names.
+    policy: RetryPolicy = PRODUCTION_POLICY
 
 
 def production_variant() -> Variant:
@@ -95,6 +100,34 @@ def fewshot_variant() -> Variant:
     )
 
 
+def retry_policy_variant() -> Variant:
+    return Variant(
+        name="retry_policy_improved",
+        system_prompt=prod_prompt.SYSTEM_PROMPT,
+        max_attempts=prod_prompt.MAX_ATTEMPTS,      # 3, as production
+        description=("Production prompt and production retry budget — only the "
+                     "retry MECHANICS change: retries sample at a non-zero "
+                     "temperature with a shifted seed, and get a directive note "
+                     "quoting the rejected clause. Isolates the retry-loop fix "
+                     "from any prompt change."),
+        policy=IMPROVED_POLICY,
+    )
+
+
+def steered_variant(policy: RetryPolicy = IMPROVED_POLICY) -> Variant:
+    return Variant(
+        name=steered_prompt.VARIANT_NAME,
+        system_prompt=steered_prompt.SYSTEM_PROMPT,
+        max_attempts=prod_prompt.MAX_ATTEMPTS,      # 3, as production
+        description=("Content-preference steering: report period results first "
+                     "and abstract forward guidance into attributed past-tense "
+                     "framings harvested from real gpt-4o-mini output. Layered "
+                     "on the improved retry policy, so its delta is measured "
+                     "against retry_policy_improved, not against the baseline."),
+        policy=policy,
+    )
+
+
 def run_variant(
     backend: Backend,
     fixture: Dict[str, Any],
@@ -117,14 +150,19 @@ def run_variant(
 
     for attempt in range(1, variant.max_attempts + 1):
         result.attempts = attempt
+        # Attempt 1 is always the caller's deterministic settings; only
+        # retries vary, and only under a policy that says so.
+        attempt_temperature = variant.policy.temperature_for(attempt, temperature)
+        attempt_seed = variant.policy.seed_for(attempt, seed)
         request = GenerationRequest(
             messages=[
                 Message("system", variant.system_prompt),
                 Message("user", prod_prompt.build_user_content(fixture, corrective_note)),
             ],
-            model=model, temperature=temperature, max_tokens=max_tokens,
-            seed=seed, json_mode=True, json_schema=schema,
+            model=model, temperature=attempt_temperature, max_tokens=max_tokens,
+            seed=attempt_seed, json_mode=True, json_schema=schema,
         )
+        sampling = {"temperature": attempt_temperature, "seed": attempt_seed}
         generation = backend.generate(request)
         result.absorb(generation)
 
@@ -158,12 +196,15 @@ def run_variant(
         # "cannot find a compliant formulation at all".
         rejections.append({
             "pass": attempt,
+            "sampling": sampling,
             "reason": bad,
             "text": out,
+            "raw_text": generation.text,
             "raw_output_chars": len(generation.text or ""),
             "forward_tense_hits": _forward_hits(out),
         })
-        corrective_note = bad
+        corrective_note = build_corrective_note(bad, out, ["summary", "tone_note"],
+                                                policy=variant.policy)
 
     result.rejections = rejections
     result.error = f"failed validation after {variant.max_attempts} attempts"

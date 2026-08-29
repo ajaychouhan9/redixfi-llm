@@ -6,6 +6,7 @@ fixture provenance and this project's git commit.
 """
 from __future__ import annotations
 
+import inspect
 import json
 import os
 import platform
@@ -20,6 +21,7 @@ from ..tasks import annual_report_summary_legacy as task_ar_legacy
 from ..tasks import ask_ai as task_ask
 from ..tasks import concall_summary as task_cc
 from ..tasks import red_flag as task_rf
+from ..tasks.retry_policy import PRODUCTION_POLICY, RetryPolicy
 from . import compare as compare_mod
 from .fixtures import FixtureSet
 
@@ -60,11 +62,17 @@ def run_evaluation(
     progress: Optional[Callable[[int, int, str], None]] = None,
     replay_as: Optional[str] = None,
     gpu: Optional[Dict[str, Any]] = None,
+    policy: RetryPolicy = PRODUCTION_POLICY,
 ) -> Dict[str, Any]:
     """`replay_as` selects which runner interprets the fixture. It defaults
     to the fixture's own task; the annual-report fixture also accepts
     "annual_report_summary_legacy" to replay the pre-Evidence-Finder
-    contract its reference was actually produced under."""
+    contract its reference was actually produced under.
+
+    `policy` controls retry mechanics only, and defaults to production's, so
+    every earlier run remains reproducible. It is recorded in the run JSON:
+    a result obtained under a non-production policy is NOT like-for-like
+    with gpt-4o-mini's and must not be read as one."""
     task = replay_as or fixtures.task
     allowed = fixtures.replayable_as()
     if task not in allowed:
@@ -81,9 +89,13 @@ def run_evaluation(
     for index, case in enumerate(cases, start=1):
         if progress:
             progress(index, len(cases), str(case.get("benchmark_id") or case.get("fixture_id")))
+        # Only the summarization runners take a retry policy; red_flag and
+        # ask_ai are out of scope for this change and keep their signature.
+        extra = ({"policy": policy}
+                 if "policy" in inspect.signature(runner).parameters else {})
         result = runner(
             backend, case, model,
-            temperature=temperature, max_tokens=max_tokens, seed=seed,
+            temperature=temperature, max_tokens=max_tokens, seed=seed, **extra,
         )
         row = result.to_dict()
         row["comparison"] = compare_mod.compare(task, case, result.output)
@@ -140,6 +152,16 @@ def run_evaluation(
         "model_config": model_config,
         "backend": getattr(backend, "name", "unknown"),
         "sampling": {"temperature": temperature, "max_tokens": max_tokens, "seed": seed},
+        # Retry mechanics are part of what produced this result, so they are
+        # recorded next to it rather than left implicit.
+        "retry_policy": {
+            "name": policy.name,
+            "retry_temperature": policy.retry_temperature,
+            "vary_seed": policy.vary_seed,
+            "directive_notes": policy.directive_notes,
+            "like_for_like_with_reference": policy.name == PRODUCTION_POLICY.name,
+            "description": policy.description,
+        },
         "fixture": {
             "path": fixtures.path,
             "exported_at": fixtures.exported_at,
