@@ -47,6 +47,7 @@ from typing import Any, Dict, List, Optional
 from ..compliance.validators import FORWARD_TENSE_RE
 from ..inference.base import Backend, GenerationRequest, Message
 from ..prompts import concall_summary as prod_prompt
+from ..prompts import concall_summary_markdown_fairness as markdown_prompt
 from ..prompts import concall_summary_steered as steered_prompt
 from ..prompts import concall_summary_variant as variant_prompt
 from ..schemas.output_schemas import schema_for_task
@@ -125,6 +126,27 @@ def steered_variant(policy: RetryPolicy = IMPROVED_POLICY) -> Variant:
                      "on the improved retry policy, so its delta is measured "
                      "against retry_policy_improved, not against the baseline."),
         policy=policy,
+    )
+
+
+def markdown_fairness_variant() -> Variant:
+    """ONE line added to the production prompt, forbidding markdown
+    explicitly. PRODUCTION_POLICY, hardcoded — this is deliberately NOT
+    combined with the retry-sampling fix or with content steering, so any
+    change in outcome is attributable to the one added line alone, applied
+    identically to whichever model is running."""
+    return Variant(
+        name=markdown_prompt.VARIANT_NAME,
+        system_prompt=markdown_prompt.SYSTEM_PROMPT,
+        max_attempts=prod_prompt.MAX_ATTEMPTS,      # 3, as production
+        description=("Production prompt plus ONE explicit line forbidding "
+                     "markdown/asterisks/bold. Production retry policy — no "
+                     "sampling variation, no directive notes, no content "
+                     "steering. Isolates whether a stronger markdown "
+                     "instruction alone changes behaviour, and whether "
+                     "forbidden-figure violations found inside markdown "
+                     "persist once the markdown itself is suppressed."),
+        policy=PRODUCTION_POLICY,
     )
 
 

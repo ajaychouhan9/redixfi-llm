@@ -240,6 +240,14 @@ def main():
                          "deterministic) and is the only like-for-like setting. "
                          "'improved' varies sampling on retries and sends a "
                          "directive corrective note — see app/tasks/retry_policy.py")
+    ap.add_argument("--concall-markdown-fairness", action="store_true",
+                    help="RUNS ONLY THIS PHASE, skipping the main --jobs loop "
+                         "entirely: the 20-case concall_benchmark.json fixture "
+                         "with ONE line added forbidding markdown, at "
+                         "PRODUCTION retry policy, for whichever --model is "
+                         "loaded. For the markdown-instruction-following "
+                         "fairness test between models — see "
+                         "app/prompts/concall_summary_markdown_fairness.py")
     ap.add_argument("--concall-steered", action="store_true",
                     help="after the benchmark, re-run the FULL concall fixture "
                          "with the content-steering prompt, so its contribution "
@@ -652,6 +660,61 @@ def main():
     if args.skip_benchmark:
         print(f"\n[{elapsed()}] --skip-benchmark set. Deployment verified; "
               "no benchmark run.")
+        _save()
+        return
+
+    if args.concall_markdown_fairness:
+        # RUNS ONLY THIS PHASE. Deliberately bypasses the main --jobs loop —
+        # the baseline concall numbers for both models already exist from
+        # the head-to-head eval, so re-running them here would just spend
+        # GPU time re-measuring something already known. This kernel run is
+        # the "after" half of a before/after fairness test, nothing else.
+        head(10, "CONCALL MARKDOWN-FAIRNESS TEST (one phase only)")
+        from app.evaluation import compare as compare_mod
+        from app.evaluation import fixtures as fx
+        from app.evaluation import report as report_mod
+        from app.evaluation.runner import save_run
+        from app.experiments.concall_variants import (
+            markdown_fairness_variant, run_variant_evaluation)
+
+        variant = markdown_fairness_variant()
+        print(f"  variant: {variant.name}", flush=True)
+        print(f"  {variant.description}", flush=True)
+        print(f"  policy : {variant.policy.name} (hardcoded — this test is "
+              "isolated to the ONE added prompt line)", flush=True)
+
+        fixture_path = os.path.join(args.fixtures, "concall_benchmark.json")
+        if not os.path.exists(fixture_path):
+            die(10, f"concall_benchmark.json not found under {args.fixtures}")
+        fs = fx.load(fixture_path)
+        print(f"  fixture: {fixture_path}  ({len(fs.cases)} cases)", flush=True)
+
+        t0 = time.time()
+        run = run_variant_evaluation(
+            backend, fs, args.model, variant, temperature=0.0, max_tokens=1024,
+            seed=0, limit=args.limit_per_task,
+            gpu=dict(STATE["gpu"], **{"context_length": spec.max_model_len,
+                                      "quantization": spec.quantization}),
+            progress=lambda i, n, bid: print(f"    [{i}/{n}] {bid}", flush=True))
+        wall = time.time() - t0
+
+        outdir = "evaluation/concall/runs"
+        os.makedirs(outdir, exist_ok=True)
+        outp = os.path.join(outdir, f"concall_summary__markdown_fairness__"
+                                    f"{args.model}__{run['run_id']}.json")
+        with open(outp, "w", encoding="utf-8") as fh:
+            json.dump(run, fh, ensure_ascii=False, indent=2, default=str)
+        report_mod.save(run, outp.replace(".json", ".md"),
+                        max_cases=len(run["results"]))
+
+        s = run["summary"]
+        for k, v in s.items():
+            print(f"      {k:34s} {v}")
+        STATE["benchmark"] = dict(s, variant=variant.name,
+                                  wall_sec=round(wall, 1))
+        print(f"\n  wrote {outp}")
+        print(f"  wrote {outp.replace('.json', '.md')}")
+        print(f"\n  TOTAL GPU TIME   : {elapsed()}")
         _save()
         return
 
