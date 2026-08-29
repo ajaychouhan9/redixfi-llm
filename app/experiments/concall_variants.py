@@ -211,6 +211,81 @@ def run_variant(
     return result
 
 
+def run_variant_evaluation(
+    backend: Backend,
+    fixtures: Any,
+    model: str,
+    variant: Variant,
+    *,
+    temperature: float = 0.0,
+    max_tokens: int = 1024,
+    seed: Optional[int] = 0,
+    limit: Optional[int] = None,
+    progress: Optional[Any] = None,
+    gpu: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Run a variant over a WHOLE fixture set and emit the same run shape
+    `run_evaluation` produces, so a variant result renders through the same
+    review sheet and is directly comparable to the baseline.
+
+    The comparison and aggregation are the real ones, imported — a variant
+    is never scored by anything the baseline was not scored by."""
+    from datetime import datetime, timezone
+
+    from ..evaluation import compare as compare_mod
+
+    cases = fixtures.cases[:limit] if limit else fixtures.cases
+    rows: List[Dict[str, Any]] = []
+
+    for index, case in enumerate(cases, start=1):
+        bid = str(case.get("benchmark_id") or case.get("fixture_id"))
+        if progress:
+            progress(index, len(cases), bid)
+        result = run_variant(backend, case, model, variant,
+                             temperature=temperature, max_tokens=max_tokens,
+                             seed=seed)
+        row = result.to_dict()
+        # Scored as concall_summary, not as the variant's decorated task
+        # name, so the comparator and aggregator behave identically.
+        row["comparison"] = compare_mod.compare(TASK_NAME, case, result.output)
+        row["reference"] = case.get("reference")
+        row["case_meta"] = {k: case.get(k) for k in
+                            ("benchmark_id", "symbol", "company_name",
+                             "filing_date", "doc_kind") if k in case}
+        evidence = case.get("input_text") or ""
+        if evidence:
+            row["evidence_excerpt"] = evidence[:1500] + (
+                "\n\n… truncated for review; full text is in the fixture …"
+                if len(evidence) > 1500 else "")
+        rows.append(row)
+
+    return {
+        "run_id": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "task": TASK_NAME,
+        "variant": {
+            "name": variant.name,
+            "description": variant.description,
+            "max_attempts": variant.max_attempts,
+            "retry_policy": variant.policy.name,
+            "prompt_is_production": variant.system_prompt == prod_prompt.SYSTEM_PROMPT,
+        },
+        "model": model,
+        "backend": getattr(backend, "name", "unknown"),
+        "sampling": {"temperature": temperature, "max_tokens": max_tokens,
+                     "seed": seed},
+        "gpu": gpu,
+        "like_for_like_with_reference": (
+            variant.system_prompt == prod_prompt.SYSTEM_PROMPT
+            and variant.policy is PRODUCTION_POLICY
+            and variant.max_attempts == prod_prompt.MAX_ATTEMPTS),
+        "fixture": {"path": fixtures.path, "cases_total": len(fixtures.cases),
+                    "cases_run": len(cases)},
+        "summary": compare_mod.aggregate(TASK_NAME, rows),
+        "results": rows,
+    }
+
+
 def _forward_hits(out: Dict[str, Any]) -> Dict[str, List[str]]:
     """Every forward-tense trigger in the rejected output, with context —
     the raw material for judging whether the model is stuck on one phrase."""

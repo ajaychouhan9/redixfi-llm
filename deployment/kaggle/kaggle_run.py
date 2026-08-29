@@ -233,6 +233,17 @@ def main():
                          "'annual_report_benchmark.json:annual_report_summary,"
                          "red_flag_benchmark.json:red_flag'. Omit for the "
                          "default 15-case sample.")
+    ap.add_argument("--retry-policy", default="production",
+                    choices=("production", "improved"),
+                    help="retry mechanics for the main benchmark. 'production' "
+                         "matches RedixFi and gpt-4o-mini exactly (every attempt "
+                         "deterministic) and is the only like-for-like setting. "
+                         "'improved' varies sampling on retries and sends a "
+                         "directive corrective note — see app/tasks/retry_policy.py")
+    ap.add_argument("--concall-steered", action="store_true",
+                    help="after the benchmark, re-run the FULL concall fixture "
+                         "with the content-steering prompt, so its contribution "
+                         "is separable from the retry-policy change")
     ap.add_argument("--concall-experiment", action="store_true",
                     help="after the benchmark, run the concall fix variants "
                          "(baseline / retries=6 / few-shot prompt) against the "
@@ -669,6 +680,16 @@ def main():
         print(f"  --jobs override: {[(f, t) for f, t, _ in jobs]}", flush=True)
     else:
         jobs = DEFAULT_JOBS
+    from app.tasks.retry_policy import IMPROVED_POLICY, PRODUCTION_POLICY
+    retry_policy = (IMPROVED_POLICY if args.retry_policy == "improved"
+                    else PRODUCTION_POLICY)
+    print(f"  retry policy: {retry_policy.name} — {retry_policy.description}",
+          flush=True)
+    if retry_policy is not PRODUCTION_POLICY:
+        print("  NOTE: results under a non-production retry policy are NOT "
+              "like-for-like with gpt-4o-mini, which was measured under "
+              "production mechanics.", flush=True)
+
     bench_start = time.time()
     totals = {"cases": 0, "ok": 0, "failed": 0,
               "prompt_tokens": 0, "completion_tokens": 0, "latency": 0.0,
@@ -689,7 +710,7 @@ def main():
 
         run = run_evaluation(
             backend, fs, args.model, temperature=0.0, max_tokens=1024, seed=0,
-            limit=per_task,
+            limit=per_task, policy=retry_policy,
             replay_as=task, gpu=dict(STATE["gpu"], **{
                 "context_length": spec.max_model_len,
                 "quantization": spec.quantization}),
@@ -738,6 +759,45 @@ def main():
         output_tokens_per_sec=round(tps, 2),
         cases_per_hour=round(3600 / per_case, 1) if per_case else 0,
         capacity_25_gpu_hours=round(25 * 3600 / per_case) if per_case else 0)
+
+    # -- 10a2: full-fixture concall re-run with content steering -----------
+    # Run on the SAME 20 cases as the main benchmark, so the steering's
+    # contribution is separable from the retry-policy change: the main run
+    # gives (production prompt + policy), this gives (steered prompt +
+    # policy), and the difference is the prompt alone.
+    if args.concall_steered and concall_fixture_path:
+        head("10a2", "CONCALL RE-RUN WITH CONTENT STEERING (same model)")
+        from app.experiments.concall_variants import (run_variant_evaluation,
+                                                      steered_variant)
+        variant = steered_variant(policy=retry_policy)
+        print(f"  variant: {variant.name}  (attempts={variant.max_attempts}, "
+              f"policy={variant.policy.name})", flush=True)
+        print(f"  {variant.description}", flush=True)
+        print("  NOT like-for-like with gpt-4o-mini: it achieved its result "
+              "on the PRODUCTION prompt.", flush=True)
+        steer_start = time.time()
+        fs_cc = fx.load(concall_fixture_path)
+        srun = run_variant_evaluation(
+            backend, fs_cc, args.model, variant, temperature=0.0,
+            max_tokens=1024, seed=0, limit=per_task,
+            gpu=dict(STATE["gpu"], **{"context_length": spec.max_model_len,
+                                      "quantization": spec.quantization}),
+            progress=lambda i, n, bid: print(f"    [{i}/{n}] {bid}", flush=True))
+        spath = os.path.join(OUTDIR_FOR["concall_summary"],
+                             f"concall_summary__steered__{args.model}__"
+                             f"{srun['run_id']}.json")
+        os.makedirs(os.path.dirname(spath), exist_ok=True)
+        with open(spath, "w", encoding="utf-8") as fh:
+            json.dump(srun, fh, ensure_ascii=False, indent=2, default=str)
+        report_mod.save(srun, spath.replace(".json", ".md"),
+                        max_cases=len(srun["results"]))
+        for k, v in srun["summary"].items():
+            print(f"      {k:34s} {v}")
+        STATE["concall_steered"] = dict(
+            srun["summary"], variant=variant.name,
+            wall_sec=round(time.time() - steer_start, 1))
+        print(f"      review sheet -> {spath.replace('.json', '.md')}",
+              flush=True)
 
     # -- 10b: concall fix experiments, on the SAME loaded model ------------
     if args.concall_experiment:
