@@ -59,7 +59,13 @@ def _latest_runs(pattern: str, min_cases: int):
             continue
         task = run.get("task")
         bucket = variants if run.get("variant") else best
-        key = f"{task}[{run['variant']['name']}]" if run.get("variant") else task
+        # Key by MODEL as well as task. Without this, a second model's run is
+        # newer and silently displaces the first's row — the headline table
+        # would show one model's number under a heading that reads as though
+        # it covered the category, and the comparison would vanish.
+        model = run.get("model", "?")
+        key = (f"{task}[{run['variant']['name']}]" if run.get("variant")
+               else f"{task}::{model}")
         prev = bucket.get(key)
         # Rank by (run_id, has-regenerated-reference). The re-scored copy of
         # a run shares its run_id, so without the second term the tie breaks
@@ -133,25 +139,29 @@ def main() -> None:
              "This applies to every before/after number in this index.\n")
 
     L.append("## What ran\n")
-    L.append("| Category | Cases | Generated | Compliance fails (Qwen) | "
+    L.append("| Category | Model | Cases | Generated | Compliance fails | "
              "Guided / repaired | Sheet |")
-    L.append("|---|---|---|---|---|---|")
-    for task, (path, run) in sorted(runs.items()):
+    L.append("|---|---|---|---|---|---|---|")
+    for key, (path, run) in sorted(runs.items()):
+        task = run.get("task")
         s = run.get("summary") or {}
         # Forward slashes: markdown links must not carry Windows separators,
         # and these sheets are read on GitHub as often as locally.
         md = os.path.relpath(path.replace(".json", ".md"),
                              os.path.dirname(args.out) or ".").replace(os.sep, "/")
-        L.append(f"| {TASK_LABEL.get(task, task)} | {s.get('cases')} | "
+        L.append(f"| {TASK_LABEL.get(task, task)} | `{run.get('model')}` | {s.get('cases')} | "
                  f"{s.get('generated_ok')} | {s.get('candidate_compliance_failures')} | "
                  f"{s.get('guided_and_clean', '—')} / {s.get('json_repair_used', '—')} | "
                  f"[{os.path.basename(md)}]({md}) |")
     L.append("")
 
     # Per-category objective roll-up + reading order
-    for task, (path, run) in sorted(runs.items()):
+    for key, (path, run) in sorted(runs.items()):
+        task = run.get("task")
         s = run.get("summary") or {}
-        L.append(f"## {TASK_LABEL.get(task, task)}\n")
+        # Model in the heading: two models now share every task heading, and
+        # an unlabelled section would read as the category's only result.
+        L.append(f"## {TASK_LABEL.get(task, task)} — `{run.get('model')}`\n")
 
         if task == "annual_report_summary":
             src = run.get("reference_source")
