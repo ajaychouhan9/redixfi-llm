@@ -484,3 +484,95 @@ def test_recording_backend_is_transparent_and_captures_raw_text():
     assert entry["json_schema_sent"] is True
     assert entry["user_prompt_chars"] == 3000
     assert len(entry["user_prompt_tail"]) <= 1200
+
+
+# --------------------------------------------------------------------------
+# chat-native prompt path (Mistral/Tekken) vs rendered-string path (Qwen)
+# --------------------------------------------------------------------------
+"""Qwen's numbers were all produced by rendering the chat template to a
+string and calling llm.generate(). If that path ever silently changed, every
+existing Qwen result would stop being comparable. Ministral needs the other
+path, because the Ministral preflight logged that
+`MistralCommonBackend.apply_chat_template(..., tokenize=False)` is unsafe.
+
+These pin both, and pin that the prompt TEXT is the same either way — the
+flag must not become a way to give one model a better prompt."""
+
+
+class _FakeOut:
+    def __init__(self, text="{}"):
+        self.outputs = [type("C", (), {"text": text, "token_ids": [1, 2],
+                                       "finish_reason": "stop"})()]
+        self.prompt_token_ids = [1, 2, 3]
+
+
+class _RecordingLLM:
+    def __init__(self):
+        self.generate_calls, self.chat_calls = [], []
+
+    def get_tokenizer(self):
+        class T:
+            def apply_chat_template(self, messages, tokenize=False,
+                                    add_generation_prompt=True):
+                return "RENDERED:" + "|".join(m["content"] for m in messages)
+        return T()
+
+    def generate(self, prompts, params):
+        self.generate_calls.append(prompts)
+        return [_FakeOut()]
+
+    def chat(self, messages, params, use_tqdm=True):
+        self.chat_calls.append(messages)
+        return [_FakeOut()]
+
+
+def _req():
+    from app.inference.base import GenerationRequest, Message
+    return GenerationRequest(
+        messages=[Message("system", "SYS"), Message("user", "USER")],
+        model="m", temperature=0.0, max_tokens=16, seed=0)
+
+
+def test_default_path_renders_a_string_and_calls_generate(stub_vllm):
+    """The path every Qwen number was produced on. Must not drift."""
+    from app.inference.vllm_inprocess import VLLMInProcessBackend
+    llm = _RecordingLLM()
+    backend = VLLMInProcessBackend(llm, "qwen-like")
+    assert backend.chat_native is False
+    backend.generate(_req())
+    assert len(llm.generate_calls) == 1 and not llm.chat_calls
+    assert llm.generate_calls[0][0].startswith("RENDERED:")
+
+
+def test_chat_native_path_calls_chat_and_never_prerenders(stub_vllm):
+    from app.inference.vllm_inprocess import VLLMInProcessBackend
+    llm = _RecordingLLM()
+    backend = VLLMInProcessBackend(llm, "ministral-like", chat_native=True)
+    backend.generate(_req())
+    assert len(llm.chat_calls) == 1 and not llm.generate_calls
+    assert llm.chat_calls[0] == [{"role": "system", "content": "SYS"},
+                                 {"role": "user", "content": "USER"}]
+
+
+def test_both_paths_carry_identical_prompt_text(stub_vllm):
+    """The flag changes ENCODING, never content. If it ever changed the text,
+    a model comparison would be measuring two different prompts."""
+    from app.inference.vllm_inprocess import VLLMInProcessBackend
+    a, b = _RecordingLLM(), _RecordingLLM()
+    VLLMInProcessBackend(a, "x").generate(_req())
+    VLLMInProcessBackend(b, "y", chat_native=True).generate(_req())
+    rendered = a.generate_calls[0][0]
+    chatted = " ".join(m["content"] for m in b.chat_calls[0])
+    for fragment in ("SYS", "USER"):
+        assert fragment in rendered and fragment in chatted
+
+
+def test_structured_outputs_still_applied_on_the_chat_path(stub_vllm):
+    """Guided decoding must not be lost by switching paths — the preflight's
+    6/6 guided result depends on it reaching the engine either way."""
+    from app.inference.vllm_inprocess import VLLMInProcessBackend
+    req = _req()
+    req.json_schema = {"type": "object", "properties": {}}
+    backend = VLLMInProcessBackend(_RecordingLLM(), "z", chat_native=True)
+    params, mode = backend._structured_outputs(req)
+    assert mode == "json_schema" and params is not None

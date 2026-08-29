@@ -38,12 +38,39 @@ from .base import BaseBackend, GenerationRequest, GenerationResult
 class VLLMInProcessBackend(BaseBackend):
     name = "vllm-inprocess"
 
-    def __init__(self, llm: Any, model_name: str) -> None:
+    def __init__(self, llm: Any, model_name: str, chat_native: bool = False) -> None:
         """`llm` is an already-constructed `vllm.LLM`. Construction (and its
         timing) stays with the caller so a load failure is reported
-        distinctly from a generation failure."""
+        distinctly from a generation failure.
+
+        `chat_native` routes generation through `llm.chat()` instead of
+        rendering the template ourselves and calling `llm.generate()`.
+
+        WHY THIS EXISTS, AND WHY IT IS NOT A TUNING ADVANTAGE
+        -----------------------------------------------------
+        `_render_prompt` calls `apply_chat_template(tokenize=False)` and
+        feeds the resulting STRING to `generate()`. That is correct for a
+        model with an HF Jinja chat template (Qwen), and it is what produced
+        every Qwen number so far — so it must not change, or those numbers
+        stop being comparable.
+
+        It is NOT correct for a Mistral model using the Tekken tokenizer.
+        The Ministral preflight logged: "MistralCommonBackend.
+        apply_chat_template(..., tokenize=False) is unsafe and may lead to
+        unexpected behavior". Rendering to a string and re-encoding can
+        produce a different token sequence than the model expects, which on
+        a compliance benchmark reads as a quality failure when it is really
+        a formatting failure.
+
+        `llm.chat()` hands the messages to vLLM, which applies whatever
+        templating that model's tokenizer mode requires. So this flag does
+        not give either model a better prompt — it gives each model ITS OWN
+        prompt, in the form that model expects. The prompt TEXT is identical
+        either way.
+        """
         self._llm = llm
         self.model_name = model_name
+        self.chat_native = chat_native
         # Recorded so a result can never be read without knowing which
         # grammar backend produced it ('auto' resolves to xgrammar or a
         # fallback at request time).
@@ -118,7 +145,8 @@ class VLLMInProcessBackend(BaseBackend):
     def _generate(self, request: GenerationRequest) -> GenerationResult:
         from vllm import SamplingParams
 
-        prompt = self._render_prompt(request)
+        messages = [{"role": m.role, "content": m.content} for m in request.messages]
+        prompt = None if self.chat_native else self._render_prompt(request)
         structured, so_mode = self._structured_outputs(request)
 
         kwargs = dict(
@@ -140,7 +168,12 @@ class VLLMInProcessBackend(BaseBackend):
             params = SamplingParams(**kwargs)
             structured, so_mode = None, None
         started = time.perf_counter()
-        outs = self._llm.generate([prompt], params)
+        if self.chat_native:
+            # vLLM applies the model's own templating (mistral-common for a
+            # Tekken tokenizer). Same messages, same text — correct encoding.
+            outs = self._llm.chat(messages, params, use_tqdm=False)
+        else:
+            outs = self._llm.generate([prompt], params)
         latency = time.perf_counter() - started
 
         if not outs or not outs[0].outputs:

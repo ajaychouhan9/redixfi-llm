@@ -571,7 +571,15 @@ def main():
 
     if runtime == "vllm":
         from app.inference.vllm_inprocess import VLLMInProcessBackend
-        backend = VLLMInProcessBackend(llm, args.model)
+        # A model whose tokenizer is not an HF Jinja template must be driven
+        # through llm.chat(), or vLLM re-encodes a string we rendered and the
+        # model receives tokens it does not expect. Same prompt text either
+        # way — see VLLMInProcessBackend's docstring.
+        chat_native = spec.extra_vllm_args.get("tokenizer_mode") == "mistral"
+        backend = VLLMInProcessBackend(llm, args.model, chat_native=chat_native)
+        print(f"  prompt path  : {'llm.chat() — model-native templating' if chat_native else 'apply_chat_template + generate()'}",
+              flush=True)
+        STATE["preflight"]["chat_native"] = chat_native
         ok("wrapped the in-process vLLM engine (no second load)")
     else:
         ok("using the in-process Transformers backend")
