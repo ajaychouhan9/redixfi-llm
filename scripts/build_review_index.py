@@ -1,0 +1,198 @@
+#!/usr/bin/env python3
+"""Build a single entry-point index over the expanded review runs.
+
+WHY
+---
+The expanded run produces one review sheet per category, each with dozens
+of cases. A reviewer opening a 60-case red-flag sheet has no cheap way to
+see which cases are worth reading first, or which comparisons are even
+valid. This builds the front page: what ran, what the objective signals
+say, which cases disagree with gpt-4o-mini, and — importantly — which
+comparisons carry a known caveat.
+
+It computes NOTHING about quality. It ranks by disagreement and by
+objective flags only, so a reviewer spends their attention where the two
+models actually differ. Every quality judgement stays in the blank tables
+inside the sheets themselves.
+
+    python scripts/build_review_index.py --out evaluation/REVIEW_INDEX.md
+"""
+from __future__ import annotations
+
+import argparse
+import glob
+import json
+import os
+import sys
+from datetime import datetime, timezone
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+TASK_LABEL = {
+    "annual_report_summary": "Annual Report (current pipeline)",
+    "annual_report_summary_legacy": "Annual Report (legacy replay — like-for-like)",
+    "concall_summary": "Concall",
+    "red_flag": "Red Flag",
+    "ask_ai": "Ask AI (out of scope for Qwen migration)",
+}
+
+
+def _latest_runs(pattern: str, min_cases: int):
+    """Newest run per task, ignoring tiny smoke runs and echo runs."""
+    best = {}
+    for path in sorted(glob.glob(pattern)):
+        if os.path.basename(path).startswith("concall_experiments"):
+            continue
+        try:
+            run = json.load(open(path, encoding="utf-8"))
+        except Exception:
+            continue
+        if run.get("backend") == "echo":
+            continue
+        if len(run.get("results") or []) < min_cases:
+            continue
+        task = run.get("task")
+        prev = best.get(task)
+        if prev is None or run.get("run_id", "") > prev[1].get("run_id", ""):
+            best[task] = (path, run)
+    return best
+
+
+def _disagreements(task: str, run: dict):
+    """Cases where Qwen and gpt-4o-mini differ on an OBJECTIVE, closed-set
+    field. Not a quality judgement — a reading-order aid."""
+    out = []
+    for row in run.get("results") or []:
+        c = row.get("comparison") or {}
+        meta = row.get("case_meta") or {}
+        bid = meta.get("benchmark_id") or row.get("fixture_id")
+        if not row.get("ok"):
+            out.append((bid, f"GENERATION FAILED — {row.get('error')}"))
+        elif task == "red_flag" and c.get("outcome") not in ("agree", "agree_no_flag"):
+            out.append((bid, f"category {c.get('outcome')}: "
+                             f"ref={c.get('reference_category')} "
+                             f"qwen={c.get('candidate_category')}"))
+        elif task == "concall_summary" and c.get("tone_label_agrees") is False:
+            out.append((bid, f"tone: ref={c.get('reference_tone_label')} "
+                             f"qwen={c.get('candidate_tone_label')}"))
+        elif c.get("candidate_compliance"):
+            out.append((bid, f"compliance: {c.get('candidate_compliance')}"))
+    return out
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--glob", default="evaluation/*/runs/*.json")
+    ap.add_argument("--min-cases", type=int, default=5,
+                    help="ignore smoke runs below this size")
+    ap.add_argument("--out", default="evaluation/REVIEW_INDEX.md")
+    args = ap.parse_args()
+
+    runs = _latest_runs(args.glob, args.min_cases)
+    if not runs:
+        print("no qualifying runs found")
+        return
+
+    L = []
+    L.append("# Expanded review — index\n")
+    L.append("> **EXPERIMENTAL / NOT PRODUCTION.** Nothing here scores quality. "
+             "The tables below carry only mechanically-checkable signals and a "
+             "suggested reading order; every quality judgement lives in the "
+             "blank HUMAN REVIEW NOTES tables inside the per-case sheets.\n")
+    L.append(f"_Generated {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC_\n")
+
+    L.append("## What ran\n")
+    L.append("| Category | Cases | Generated | Compliance fails (Qwen) | "
+             "Guided / repaired | Sheet |")
+    L.append("|---|---|---|---|---|---|")
+    for task, (path, run) in sorted(runs.items()):
+        s = run.get("summary") or {}
+        # Forward slashes: markdown links must not carry Windows separators,
+        # and these sheets are read on GitHub as often as locally.
+        md = os.path.relpath(path.replace(".json", ".md"),
+                             os.path.dirname(args.out) or ".").replace(os.sep, "/")
+        L.append(f"| {TASK_LABEL.get(task, task)} | {s.get('cases')} | "
+                 f"{s.get('generated_ok')} | {s.get('candidate_compliance_failures')} | "
+                 f"{s.get('guided_and_clean', '—')} / {s.get('json_repair_used', '—')} | "
+                 f"[{os.path.basename(md)}]({md}) |")
+    L.append("")
+
+    # Per-category objective roll-up + reading order
+    for task, (path, run) in sorted(runs.items()):
+        s = run.get("summary") or {}
+        L.append(f"## {TASK_LABEL.get(task, task)}\n")
+
+        if task == "annual_report_summary":
+            L.append("> ⚠️ **Known caveat — the comparison is NOT like-for-like.** "
+                     "Production holds no current-schema gpt-4o-mini annual-report "
+                     "output: all 72 stored summaries are legacy-schema, written "
+                     "2026-08-16, and 0 documents carry `evidence_tokens`. So the "
+                     "reference differs from this replay in BOTH input and output "
+                     "schema. Judge Qwen's output on its own merits against the "
+                     "evidence; do not read the side-by-side as a score. See "
+                     "`deployment/kaggle/ANNUAL_REPORT_REFERENCE_SCHEMA.md`.\n")
+
+        cfg = run.get("model_config") or {}
+        L.append(f"- Model: `{run.get('model')}` "
+                 f"(ctx {cfg.get('max_model_len')}, {cfg.get('quantization')}, "
+                 f"TP={cfg.get('tensor_parallel_size')})")
+        L.append(f"- Run id: `{run.get('run_id')}`")
+        for key in ("cases", "generated_ok", "generation_failures",
+                    "candidate_compliance_failures", "reference_compliance_failures",
+                    "guided_and_clean", "json_repair_used",
+                    "tone_label_agreement_rate", "agreement_rate", "outcomes"):
+            if key in s:
+                L.append(f"- {key}: **{s[key]}**")
+        L.append("")
+
+        dis = _disagreements(task, run)
+        L.append(f"### Read these first — {len(dis)} case(s) where the models "
+                 f"differ or a check failed\n")
+        if not dis:
+            L.append("_None. Qwen matched gpt-4o-mini on every objective signal "
+                     "in this category. That is not the same as matching on "
+                     "quality — the sheets still need reading._\n")
+        else:
+            L.append("| Case | What differs |")
+            L.append("|---|---|")
+            for bid, why in dis:
+                L.append(f"| `{bid}` | {why} |")
+            L.append("")
+
+    # Concall experiments, if present
+    exp_paths = sorted(glob.glob("evaluation/concall/runs/concall_experiments__*.json"))
+    if exp_paths:
+        exp = json.load(open(exp_paths[-1], encoding="utf-8"))
+        L.append("## Concall fix experiments\n")
+        L.append(f"Repair targets: {exp.get('targets')}\n")
+        L.append("| Variant | Attempts budget | Repaired |")
+        L.append("|---|---|---|")
+        for name, v in (exp.get("variants") or {}).items():
+            L.append(f"| `{name}` | {v.get('attempts_budget')} | "
+                     f"{v.get('passed')}/{v.get('of')} |")
+        L.append("")
+        L.append("> A variant that passes on a **different prompt** or a **larger "
+                 "retry budget** has not matched gpt-4o-mini like-for-like — "
+                 "gpt-4o-mini achieved its result on the production prompt at 3 "
+                 "attempts. If the few-shot variant closes the gap, the fair "
+                 "remedy is adopting that prompt in RedixFi for both models, not "
+                 "keeping it as a Qwen-only crutch.\n")
+
+    L.append("## How to review\n")
+    L.append("1. Start with the *Read these first* lists above — that is where "
+             "the two models actually diverge.\n"
+             "2. Open the per-category sheet and fill in the HUMAN REVIEW NOTES "
+             "table for those cases.\n"
+             "3. Then sample a handful of agreeing cases, to check that agreement "
+             "reflects genuine quality rather than both models being vague.\n"
+             "4. Record a verdict per category. A small sample cannot establish "
+             "production-readiness however good the output looks.\n")
+
+    os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+    with open(args.out, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(L))
+    print(f"wrote {args.out}  ({len(runs)} categories)")
+
+
+if __name__ == "__main__":
+    main()
