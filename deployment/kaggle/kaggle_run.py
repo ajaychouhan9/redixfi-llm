@@ -696,7 +696,12 @@ def main():
             progress=lambda i, n, bid: print(f"    [{i}/{n}] {bid}", flush=True))
 
         jpath = save_run(run, outdir)
-        report_mod.save(run, jpath.replace(".json", ".md"), max_cases=25)
+        # EVERY case, not the default 25. The review sheet IS the
+        # deliverable a human judges quality from; silently omitting 35 of
+        # 60 red-flag cases would hand back a partial review that looks
+        # complete.
+        report_mod.save(run, jpath.replace(".json", ".md"),
+                        max_cases=len(run["results"]))
 
         s = run["summary"]
         totals["cases"] += s["cases"]
