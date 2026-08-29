@@ -432,9 +432,20 @@ def main():
     print(f"  quantization : {spec.quantization}   dtype: {spec.dtype}")
     print(f"  tensor par.  : {spec.tensor_parallel_size}")
     print(f"  context      : {spec.max_model_len}")
-    if spec.extra_vllm_args:
-        die(4, f"{args.model} carries rope-scaling args ({spec.extra_vllm_args}); "
+    # The thing this phase must refuse is ROPE SCALING — YaRN silently changes
+    # what is being measured and can degrade long-context quality, so a model
+    # carrying it must never run here unnoticed. The check used to reject ANY
+    # extra_vllm_args, which was fine while rope_scaling was the only one that
+    # existed, and became wrong the moment a model needed an unrelated arg
+    # (Ministral's limit_mm_per_prompt). Name the hazard instead of banning the
+    # field it happened to live in.
+    _ROPE_KEYS = {"rope_scaling", "rope_theta", "hf_overrides"}
+    rope_args = {k: v for k, v in spec.extra_vllm_args.items() if k in _ROPE_KEYS}
+    if rope_args:
+        die(4, f"{args.model} carries rope-scaling args ({rope_args}); "
                "this phase is explicitly 32K WITHOUT YaRN")
+    if spec.extra_vllm_args:
+        print(f"  extra args   : {spec.extra_vllm_args}  (no rope scaling — allowed)")
 
     free_before = torch.cuda.mem_get_info(0)[0] / 1024**3
     backend = None

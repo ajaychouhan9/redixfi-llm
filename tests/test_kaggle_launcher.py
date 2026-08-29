@@ -343,3 +343,51 @@ def test_jobs_flag_and_experiment_flag_exist(kr):
     # An unknown task must be rejected rather than silently producing an
     # empty run after the model-load cost is already spent.
     assert "--jobs task" in src and "unknown" in src
+
+
+# --------------------------------------------------------------------------
+# The rope-scaling guard must name the hazard, not ban the field
+# --------------------------------------------------------------------------
+"""A real preflight died at STEP 4 with "carries rope-scaling args
+({'limit_mm_per_prompt': {'image': 0}})". The guard rejected ANY entry in
+`extra_vllm_args`, which was indistinguishable from a rope-scaling check
+while rope_scaling was the only arg any model used — and became wrong the
+moment a model needed an unrelated one. These pin both directions so the
+guard cannot be quietly loosened into uselessness, nor re-broadened."""
+
+import re as _re
+
+
+def _guard_source(kr):
+    src = open(kr.__file__ if hasattr(kr, "__file__") else _KR_PATH,
+               encoding="utf-8").read()
+    return src
+
+
+def test_rope_guard_matches_on_rope_keys_not_on_any_extra_arg(kr):
+    """The rejection set must be a named list of rope keys."""
+    src = open(kr.__file__, encoding="utf-8").read()
+    assert "_ROPE_KEYS" in src, "guard should name the hazard explicitly"
+    m = _re.search(r"_ROPE_KEYS\s*=\s*\{([^}]*)\}", src)
+    assert m, "expected a _ROPE_KEYS set literal"
+    keys = set(_re.findall(r'"([^"]+)"', m.group(1)))
+    assert "rope_scaling" in keys, "rope_scaling must still be blocked"
+    assert "limit_mm_per_prompt" not in keys, (
+        "an unrelated engine arg must not be treated as rope scaling")
+
+
+def test_yarn_model_still_carries_rope_scaling_and_would_be_blocked():
+    """The 64k YaRN entry is the thing the guard exists for; if it ever stops
+    declaring rope_scaling, the guard silently protects nothing."""
+    from app.models.registry import get_model_spec
+    spec = get_model_spec("qwen3-14b-awq-tp2-64k")
+    assert "rope_scaling" in spec.extra_vllm_args
+
+
+def test_ministral_carries_no_rope_scaling_so_it_may_run():
+    from app.models.registry import get_model_spec
+    spec = get_model_spec("ministral3-14b-w4a16-tp2")
+    assert "rope_scaling" not in spec.extra_vllm_args
+    assert spec.extra_vllm_args == {"limit_mm_per_prompt": {"image": 0}}
+    # 32k, matching qwen3-14b-awq-tp2 — a comparison must not differ by context
+    assert spec.max_model_len == get_model_spec("qwen3-14b-awq-tp2").max_model_len
