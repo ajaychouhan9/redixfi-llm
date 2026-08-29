@@ -399,3 +399,88 @@ def test_aggregate_separates_guided_clean_from_guided_repaired():
     assert s["guided_but_repaired"] == 1
     assert s["unguided"] == 1
     assert s["json_repair_used"] == 2
+
+
+# --------------------------------------------------------------------------
+# Concall fix experiments — only prompt/retries may vary
+# --------------------------------------------------------------------------
+def test_variants_reuse_the_real_judging_logic():
+    """The whole value of the experiment is attributability. If a variant
+    quietly used its own normalize/validate, a 'fix' could be an artifact of
+    looser judging rather than better output."""
+    from app.experiments import concall_variants as cv
+    from app.tasks import concall_summary as real
+
+    assert cv.validate is real.validate
+    assert cv._normalize is real._normalize
+
+
+def test_variant_definitions_change_exactly_one_thing_each():
+    from app.experiments import concall_variants as cv
+    from app.prompts import concall_summary as prod
+
+    base = cv.production_variant()
+    assert base.system_prompt == prod.SYSTEM_PROMPT
+    assert base.max_attempts == prod.MAX_ATTEMPTS
+
+    retries = cv.retries_variant(6)
+    assert retries.system_prompt == prod.SYSTEM_PROMPT   # prompt held constant
+    assert retries.max_attempts == 6
+
+    fewshot = cv.fewshot_variant()
+    assert fewshot.max_attempts == prod.MAX_ATTEMPTS      # budget held constant
+    assert fewshot.system_prompt != prod.SYSTEM_PROMPT
+
+
+def test_variant_prompt_extends_production_verbatim():
+    """The variant must be production + additions, never a rewrite — a
+    rewrite would change far more than the one thing under test."""
+    from app.prompts import concall_summary as prod
+    from app.prompts import concall_summary_variant as var
+    assert var.SYSTEM_PROMPT.startswith(prod.SYSTEM_PROMPT)
+
+
+def test_fewshot_examples_themselves_pass_the_validator():
+    """Showing the model non-compliant text labelled RIGHT would actively
+    teach the failure this variant exists to fix."""
+    import re
+    from app.compliance.validators import summarizer_violation
+    from app.prompts import concall_summary_variant as var
+
+    for line in var._REAL_COMPLIANT_EXAMPLES.split("\n"):
+        line = re.sub(r"\s*\[[A-Z]+\]\s*$", "", line).strip()
+        if line:
+            assert summarizer_violation(line) is None, f"bad exemplar: {line}"
+
+
+def test_production_prompt_vendored_copy_is_untouched_by_the_variant():
+    """The variant module must not mutate the vendored production prompt —
+    that copy is drift-guarded against RedixFi's real source."""
+    import importlib
+    from app.prompts import concall_summary as prod
+    before = prod.SYSTEM_PROMPT
+    importlib.import_module("app.prompts.concall_summary_variant")
+    assert prod.SYSTEM_PROMPT == before
+
+
+def test_recording_backend_is_transparent_and_captures_raw_text():
+    from app.inference.recording import RecordingBackend
+
+    inner = EchoBackend()
+    rec = RecordingBackend(inner, tag="t1")
+    # Must impersonate the wrapped backend, or runs would be labelled
+    # "recording" instead of the real runtime.
+    assert rec.name == inner.name
+
+    from app.prompts.concall_summary import SYSTEM_PROMPT
+    req = GenerationRequest(messages=[Message("system", SYSTEM_PROMPT),
+                                      Message("user", "x" * 3000)],
+                            model="echo", json_schema=schema_for_task("concall_summary"))
+    result = rec.generate(req)
+    assert result.text                      # passthrough unchanged
+    assert len(rec.transcript) == 1
+    entry = rec.transcript[0]
+    assert entry["raw_output"] == result.text          # verbatim, untruncated
+    assert entry["json_schema_sent"] is True
+    assert entry["user_prompt_chars"] == 3000
+    assert len(entry["user_prompt_tail"]) <= 1200

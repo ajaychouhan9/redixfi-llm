@@ -318,3 +318,28 @@ def test_main_guards_chdir_with_an_explicit_existence_check(kr):
     assert "os.path.isdir(repo_dir)" in before_chdir, (
         "main() no longer verifies repo_dir exists immediately before chdir'ing into it"
     )
+
+
+# --------------------------------------------------------------------------
+# --jobs override / --concall-experiment (expanded review runs)
+# --------------------------------------------------------------------------
+def test_default_job_set_is_unchanged_when_jobs_not_passed(kr):
+    """The expanded-run flags must not alter the default 15-case path —
+    that path produced results already reported to the founder."""
+    import inspect
+    src = inspect.getsource(kr.main)
+    assert "DEFAULT_JOBS" in src
+    for f in ("annual_report_sample15.json", "concall_sample15.json",
+              "red_flag_sample15.json", "ask_ai_sample15.json"):
+        assert f in src, f"default job set lost {f}"
+    assert "jobs = DEFAULT_JOBS" in src, "default branch missing"
+
+
+def test_jobs_flag_and_experiment_flag_exist(kr):
+    import inspect
+    src = inspect.getsource(kr.main)
+    assert '"--jobs"' in src
+    assert '"--concall-experiment"' in src
+    # An unknown task must be rejected rather than silently producing an
+    # empty run after the model-load cost is already spent.
+    assert "--jobs task" in src and "unknown" in src

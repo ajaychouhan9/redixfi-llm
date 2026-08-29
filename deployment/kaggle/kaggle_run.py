@@ -227,6 +227,16 @@ def main():
                          "hardware before committing quota to the full set")
     ap.add_argument("--limit-per-task", type=int, default=None,
                     help="cap cases per benchmark (--smoke implies 1)")
+    ap.add_argument("--jobs", default=None,
+                    help="override the benchmark set as comma-separated "
+                         "FIXTURE_FILE:TASK pairs, e.g. "
+                         "'annual_report_benchmark.json:annual_report_summary,"
+                         "red_flag_benchmark.json:red_flag'. Omit for the "
+                         "default 15-case sample.")
+    ap.add_argument("--concall-experiment", action="store_true",
+                    help="after the benchmark, run the concall fix variants "
+                         "(baseline / retries=6 / few-shot prompt) against the "
+                         "cases that failed, reusing the SAME loaded model")
     ap.add_argument("--server-timeout", type=int, default=1800)
     args = ap.parse_args()
 
@@ -630,17 +640,44 @@ def main():
     from app.evaluation import report as report_mod
     from app.evaluation.runner import run_evaluation, save_run
 
-    jobs = [
+    # DEFAULT: the 15-case sample, unchanged. --jobs overrides it for the
+    # expanded review runs, so the default path stays byte-identical.
+    DEFAULT_JOBS = [
         ("annual_report_sample15.json", "annual_report_summary", "evaluation/annual_report/runs"),
         ("concall_sample15.json",       "concall_summary",       "evaluation/concall/runs"),
         ("red_flag_sample15.json",      "red_flag",              "evaluation/red_flags/runs"),
         ("ask_ai_sample15.json",        "ask_ai",                "evaluation/ask_ai/runs"),
     ]
+    OUTDIR_FOR = {
+        "annual_report_summary": "evaluation/annual_report/runs",
+        "annual_report_summary_legacy": "evaluation/annual_report/runs",
+        "concall_summary": "evaluation/concall/runs",
+        "red_flag": "evaluation/red_flags/runs",
+        "ask_ai": "evaluation/ask_ai/runs",
+    }
+    if args.jobs:
+        jobs = []
+        for spec_str in args.jobs.split(","):
+            parts = spec_str.strip().split(":")
+            if len(parts) != 2:
+                die(10, f"--jobs entry {spec_str!r} must be FIXTURE_FILE:TASK")
+            fname, task = parts
+            if task not in OUTDIR_FOR:
+                die(10, f"--jobs task {task!r} unknown; expected one of "
+                        f"{sorted(OUTDIR_FOR)}")
+            jobs.append((fname, task, OUTDIR_FOR[task]))
+        print(f"  --jobs override: {[(f, t) for f, t, _ in jobs]}", flush=True)
+    else:
+        jobs = DEFAULT_JOBS
     bench_start = time.time()
     totals = {"cases": 0, "ok": 0, "failed": 0,
               "prompt_tokens": 0, "completion_tokens": 0, "latency": 0.0,
               "structured_output_used": 0, "json_repair_used": 0,
               "guided_and_clean": 0, "guided_but_repaired": 0, "unguided": 0}
+    # benchmark_id -> fixture, for whichever concall cases fail. The
+    # experiment phase re-tests exactly those, on this same loaded model.
+    concall_failures: Dict[str, Any] = {}
+    concall_fixture_path = None
 
     for fname, task, outdir in jobs:
         path = os.path.join(args.fixtures, fname)
@@ -675,6 +712,18 @@ def main():
             print(f"      {k:34s} {v}")
         print(f"      review sheet -> {jpath.replace('.json', '.md')}")
 
+        if task == "concall_summary":
+            concall_fixture_path = path
+            by_id = {c.get("benchmark_id"): c for c in fs.cases}
+            for row in run["results"]:
+                if not row.get("ok"):
+                    bid = (row.get("case_meta") or {}).get("benchmark_id")
+                    if bid in by_id:
+                        concall_failures[bid] = by_id[bid]
+            if concall_failures:
+                print(f"      concall failures captured for the experiment "
+                      f"phase: {sorted(concall_failures)}", flush=True)
+
     bench_time = time.time() - bench_start
     tps = totals["completion_tokens"] / bench_time if bench_time else 0
     per_case = bench_time / totals["cases"] if totals["cases"] else 0
@@ -684,6 +733,70 @@ def main():
         output_tokens_per_sec=round(tps, 2),
         cases_per_hour=round(3600 / per_case, 1) if per_case else 0,
         capacity_25_gpu_hours=round(25 * 3600 / per_case) if per_case else 0)
+
+    # -- 10b: concall fix experiments, on the SAME loaded model ------------
+    if args.concall_experiment:
+        head("10b", "CONCALL FIX EXPERIMENTS (same model, no reload)")
+        from app.experiments.concall_variants import (
+            fewshot_variant, production_variant, retries_variant, run_variant)
+
+        if not concall_failures:
+            print("  No concall failures in this run — nothing to repair.",
+                  flush=True)
+            print("  NOTE: that is itself a finding. A previously reported "
+                  "2/3 failure that does not reproduce points at run-to-run "
+                  "variance, not a fixed defect. Do not read it as 'fixed'.",
+                  flush=True)
+            STATE["concall_experiment"] = {"failures_to_repair": 0,
+                                           "note": "no failures reproduced"}
+        else:
+            targets = sorted(concall_failures)
+            print(f"  Repair targets ({len(targets)}): {targets}", flush=True)
+            print("  Held constant across variants: schema, normalize, "
+                  "validate, parse. Only prompt / retry budget vary.\n",
+                  flush=True)
+
+            variants = [retries_variant(6), fewshot_variant()]
+            exp: Dict[str, Any] = {"targets": targets, "variants": {}}
+
+            for variant in variants:
+                print(f"  --- variant: {variant.name} "
+                      f"(attempts={variant.max_attempts}) ---", flush=True)
+                print(f"      {variant.description}", flush=True)
+                passed, rows = 0, []
+                for bid in targets:
+                    r = run_variant(backend, concall_failures[bid], args.model,
+                                    variant)
+                    passed += 1 if r.ok else 0
+                    rows.append(r.to_dict() | {"benchmark_id": bid,
+                                               "rejections": r.rejections})
+                    status = "PASS" if r.ok else f"FAIL ({r.error})"
+                    print(f"      {bid:<30} attempts={r.attempts} {status}",
+                          flush=True)
+                    if not r.ok:
+                        for rj in r.rejections:
+                            hits = rj.get("forward_tense_hits") or {}
+                            flat = [h for v in hits.values() for h in v]
+                            print(f"         pass {rj.get('pass')}: "
+                                  f"{str(rj.get('reason'))[:90]}", flush=True)
+                            for h in flat[:2]:
+                                print(f"           > {h[:150]}", flush=True)
+                exp["variants"][variant.name] = {
+                    "attempts_budget": variant.max_attempts,
+                    "description": variant.description,
+                    "passed": passed, "of": len(targets), "rows": rows,
+                }
+                print(f"      => {passed}/{len(targets)} repaired\n", flush=True)
+
+            STATE["concall_experiment"] = exp
+            outp = os.path.join("evaluation", "concall", "runs",
+                                f"concall_experiments__{args.model}__"
+                                f"{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}.json")
+            os.makedirs(os.path.dirname(outp), exist_ok=True)
+            with open(outp, "w", encoding="utf-8") as fh:
+                json.dump(exp, fh, indent=2, default=str)
+            print(f"  experiment detail -> {outp}", flush=True)
+        _save()
 
     head(11, "SUMMARY")
     print(f"  cases            : {totals['ok']}/{totals['cases']} generated "
