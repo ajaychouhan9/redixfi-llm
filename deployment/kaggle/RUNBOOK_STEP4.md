@@ -63,27 +63,67 @@ rejection rule.
 reported — the goal is to make repair unnecessary and *prove* it, not to
 hide it.
 
+## ⚠️ FIXED SINCE THE LAST ATTEMPT — read before running
+
+The previous attempt at this re-run reached step 4 and died with
+`ModuleNotFoundError: No module named 'app'`. Root cause: the manual
+staging cell below (`tar xzf ... -C /kaggle/working/LLM`) assumed the
+dataset bundled a `llm_project.tar.gz`. The actual dataset
+(`redixfi-llm-evaluation-2026`) mounts an **already-extracted**
+`llm_project/` directory at a **nested** path
+(`/kaggle/input/datasets/ajaychouhan9/redixfi-llm-evaluation-2026/llm_project`),
+so `tar xzf` found nothing to extract, `/kaggle/working/LLM` stayed empty,
+and nothing caught that until the first `from app...` import three steps
+later.
+
+`kaggle_run.py` no longer trusts a hardcoded path or a prior staging step.
+It now **auto-locates** its own project root (checking a concrete file,
+`app/models/registry.py`, not just "the directory exists"), and if that
+root turns out to be on a read-only `/kaggle/input` mount, it **copies
+itself** to `/kaggle/working/LLM` automatically before doing anything that
+needs to write. No staging cell is required — and even if you run the
+staging cell anyway (harmless), a repeat of the empty-directory failure
+would no longer go undetected in the way it did before.
+
 ## THE NEXT ACTION — the 15-case re-run
 
-**No code change was needed to enable this.** `kaggle_run.py` uses the
-`*_sample15.json` fixtures by default (no flag required) — `--smoke` is
-opt-in only and limits each category to 1 case. Omitting it, as below,
-already runs the full 15 (AR 3 / concall 3 / red_flag 6 / ask_ai 3) — the
-**exact same 15 cases, from the exact same fixture files**, as the original
-2026-08-28 evaluation. That identity is what makes this a genuine
-like-for-like re-measurement rather than a new sample.
+`kaggle_run.py` uses the `*_sample15.json` fixtures by default (no flag
+required) — `--smoke` is opt-in only and limits each category to 1 case.
+Omitting it, as below, already runs the full 15 (AR 3 / concall 3 /
+red_flag 6 / ask_ai 3) — the **exact same 15 cases, from the exact same
+fixture files**, as the original 2026-08-28 evaluation. That identity is
+what makes this a genuine like-for-like re-measurement rather than a new
+sample.
+
+**One cell — finds the script wherever the dataset actually mounted it,
+so this does not depend on getting the dataset name or path shape right:**
 
 ```python
-!mkdir -p /kaggle/working/LLM
-!tar xzf /kaggle/input/redixfi-llm-fixtures/llm_project.tar.gz -C /kaggle/working/LLM
+import glob, subprocess, sys
+
+hits = glob.glob("/kaggle/input/**/deployment/kaggle/kaggle_run.py", recursive=True)
+assert hits, "kaggle_run.py not found under /kaggle/input — is the dataset attached?"
+script = hits[0]
+fixtures_root = script.split("/llm_project/")[0]
+print("script  :", script)
+print("fixtures:", fixtures_root)
+
+rc = subprocess.run([sys.executable, script, "--fixtures", fixtures_root]).returncode
+print("exit code:", rc)
 ```
+
+If you'd rather paste an explicit path once you know it (e.g. after
+checking the notebook's Input panel), this is equivalent and slightly
+faster to start — the script auto-detects its own location either way:
 
 ```python
-!python /kaggle/working/LLM/deployment/kaggle/kaggle_run.py \
-    --fixtures /kaggle/input/redixfi-llm-fixtures
+!python /kaggle/input/datasets/ajaychouhan9/redixfi-llm-evaluation-2026/llm_project/deployment/kaggle/kaggle_run.py \
+    --fixtures /kaggle/input/datasets/ajaychouhan9/redixfi-llm-evaluation-2026
 ```
 
-Download before the session ends:
+Download before the session ends (the script prints the exact `cd` target
+for this, since it now varies — copy it from the run's own STOPPING
+message rather than assuming `/kaggle/working/LLM`):
 
 ```python
 !cd /kaggle/working/LLM && zip -r /kaggle/working/eval_results.zip evaluation/

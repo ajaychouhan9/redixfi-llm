@@ -20,19 +20,33 @@ DESIGN RULES THIS SCRIPT OBEYS
 * On OOM it prints the documented ladder and stops for a human decision.
 * It runs 15 cases and stops. It will not touch the remaining 115.
 * GPU wall-clock is tracked and reported throughout.
+* The project location is AUTO-DETECTED (see _find_project_root below) — it
+  no longer assumes a manual staging command ran first, and no longer
+  trusts a hardcoded /kaggle/working/LLM path. A prior run reached step 4
+  with `ModuleNotFoundError: No module named 'app'` because that staging
+  command silently extracted nothing when the dataset's layout changed.
 
-USAGE — paste into a Kaggle notebook cell:
+USAGE — paste into a Kaggle notebook cell. Run it straight from wherever
+the attached dataset mounts it; no staging cell is required first:
 
-    !python /kaggle/working/LLM/deployment/kaggle/kaggle_run.py \
-        --fixtures /kaggle/input/redixfi-llm-fixtures
+    !python /kaggle/input/<your-dataset>/llm_project/deployment/kaggle/kaggle_run.py \
+        --fixtures /kaggle/input/<your-dataset>
+
+(If the dataset happens to be mounted read-only under /kaggle/input, the
+script copies itself to /kaggle/working/LLM automatically before doing
+anything that needs to write — benchmark results are written there, not
+back into the read-only mount.)
 
 Add --skip-benchmark to do deployment + preflight only.
+Add --repo-dir <path> only to override auto-detection.
 """
 from __future__ import annotations
 
 import argparse
+import glob
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -94,9 +108,111 @@ def sh(cmd, check=True, quiet=False):
 
 
 # ---------------------------------------------------------------------------
+# PROJECT LOCATION — never trust a hardcoded staging path.
+#
+# A prior run reached STEP 4 with `ModuleNotFoundError: No module named
+# 'app'`. Root cause: this script used to unconditionally
+# `sys.path.insert(0, "/kaggle/working/LLM")` and `os.chdir()` there,
+# trusting that a manual `tar xzf ... -C /kaggle/working/LLM` cell in the
+# runbook had staged the project first. When the dataset's shape changed
+# (an already-extracted `llm_project/` directory instead of a
+# `llm_project.tar.gz`), that staging command silently extracted nothing —
+# `/kaggle/working/LLM` existed (from `mkdir -p`) but was EMPTY. Steps 1-3
+# (CUDA check, GPU detection, runtime install) never import `app`, so
+# nothing caught this until step 4's first `from app...` import, three
+# steps and several minutes of log output away from the actual cause.
+#
+# Fixed the way the Step 3 mount-path guessing bug was fixed: stop
+# hardcoding a path and locate the real one instead, verifying with a
+# concrete file check rather than "the directory exists".
+# ---------------------------------------------------------------------------
+_MARKER = os.path.join("app", "models", "registry.py")
+# Module-level so tests can monkeypatch them to a temp directory instead of
+# real /kaggle/... paths, which do not exist off Kaggle.
+_INPUT_PREFIX = "/kaggle/input"
+_STAGING_DIR = "/kaggle/working/LLM"
+_SEARCH_BASES = ("/kaggle/input", "/kaggle/working")
+
+
+def _has_app(path) -> bool:
+    return bool(path) and os.path.isfile(os.path.join(path, _MARKER))
+
+
+def _find_project_root(explicit: str) -> str:
+    """Returns a directory confirmed to contain the `app` package, or None.
+
+    Tries, in order: an explicit `--repo-dir` (validated, not trusted
+    blindly), this script's own location (`kaggle_run.py` lives at
+    `<root>/deployment/kaggle/kaggle_run.py`, so two parents up IS the
+    root whenever the script runs in place), the documented staging path,
+    then a recursive search under _SEARCH_BASES as a last resort — the
+    same "find it, don't guess it" fix that solved the Step 3
+    dataset-mount-path problem.
+    """
+    if explicit:
+        if _has_app(explicit):
+            return os.path.abspath(explicit)
+        warn(f"--repo-dir {explicit!r} has no {_MARKER} — ignoring it and searching")
+
+    here_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    for candidate in (here_root, _STAGING_DIR):
+        if _has_app(candidate):
+            return os.path.abspath(candidate)
+
+    for base in _SEARCH_BASES:
+        for hit in sorted(glob.glob(os.path.join(base, "**", _MARKER), recursive=True)):
+            found = hit[: -(len(_MARKER) + 1)]
+            return os.path.abspath(found)
+
+    return None
+
+
+def _resolve_project_root(explicit: str) -> str:
+    """Finds the project, copies it to a writable location if it is on a
+    read-only Kaggle input mount, and re-verifies AFTER the copy — so a
+    bad copy fails here with a clear message, not three steps later on the
+    first `from app...` import."""
+    root = _find_project_root(explicit)
+    if root is None:
+        die(0, "could not locate the llm_project directory anywhere",
+            f"Looked for {_MARKER} under:\n"
+            f"  --repo-dir (if given): {explicit!r}\n"
+            f"  this script's own location (two parents up)\n"
+            f"  {_STAGING_DIR}\n"
+            f"  a recursive search under {', '.join(_SEARCH_BASES)}\n\n"
+            "This means the dataset was not attached, or its internal layout "
+            "changed again. Check the notebook's Input panel and adjust "
+            "--fixtures / --repo-dir to match — do not restage blindly.")
+
+    # /kaggle/input is READ-ONLY. The benchmark step writes results under
+    # evaluation/*/runs using paths relative to os.chdir(root), so running
+    # in place would fail with a read-only-filesystem error the first time
+    # anything tries to save. Copy once, up front, rather than discovering
+    # this mid-benchmark after weight download and model load already
+    # spent the real GPU time.
+    if root.startswith(_INPUT_PREFIX):
+        writable = _STAGING_DIR
+        print(f"  {root} is on a read-only input mount — copying to {writable}",
+              flush=True)
+        if os.path.isdir(writable):
+            shutil.rmtree(writable)
+        shutil.copytree(root, writable)
+        root = writable
+
+    if not _has_app(root):
+        die(0, f"copied project to {root} but {_MARKER} is still missing",
+            f"contents: {os.listdir(root) if os.path.isdir(root) else '(not a directory)'}")
+
+    return root
+
+
+# ---------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--repo-dir", default="/kaggle/working/LLM")
+    ap.add_argument("--repo-dir", default=None,
+                    help="path to llm_project. Auto-detected by default — "
+                         "see _find_project_root(); only pass this to force "
+                         "a specific location.")
     ap.add_argument("--fixtures", default="/kaggle/input/redixfi-llm-fixtures")
     ap.add_argument("--model", default="qwen3-14b-awq-tp2",
                     help="32K, TP=2, no YaRN — the approved config for this phase")
@@ -114,8 +230,41 @@ def main():
     ap.add_argument("--server-timeout", type=int, default=1800)
     args = ap.parse_args()
 
-    sys.path.insert(0, args.repo_dir)
-    os.chdir(args.repo_dir)
+    repo_dir = _resolve_project_root(args.repo_dir)
+    sys.path.insert(0, repo_dir)
+    os.chdir(repo_dir)
+    print(f"[{elapsed()}] project root: {repo_dir}", flush=True)
+    STATE["repo_dir"] = repo_dir
+
+    # Verify import ACTUALLY works from here, before anything else runs —
+    # this is what turns a ModuleNotFoundError three steps from now into a
+    # clear failure at the very first opportunity.
+    try:
+        import app.models.registry  # noqa: F401
+    except ImportError as exc:
+        die(0, f"app package still not importable from {repo_dir} after path setup",
+            f"{type(exc).__name__}: {exc}")
+    ok("app package imports cleanly from the resolved project root")
+
+    # Same principle applied to --fixtures: a wrong path here does NOT
+    # raise later — the benchmark loop (step 10) only `warn()`s and skips a
+    # category whose file is missing, which would otherwise let a
+    # mis-mounted dataset "succeed" with zero cases in every category,
+    # burning the model-load GPU cost for a run that measured nothing.
+    # Checked here, before that cost is spent, unless the benchmark itself
+    # is being skipped.
+    if not args.skip_benchmark:
+        expected = ["annual_report_sample15.json", "concall_sample15.json",
+                    "red_flag_sample15.json", "ask_ai_sample15.json"]
+        missing = [f for f in expected
+                  if not os.path.isfile(os.path.join(args.fixtures, f))]
+        if missing:
+            hits = sorted(glob.glob(os.path.join("/kaggle/input", "**", expected[0]),
+                                    recursive=True))
+            die(0, f"--fixtures {args.fixtures!r} is missing {missing}",
+                "Found matching files elsewhere:\n  " +
+                ("\n  ".join(hits) if hits else "(none found under /kaggle/input either)"))
+        ok(f"all 4 sample15 fixtures found under {args.fixtures}")
 
     # -- 1 ------------------------------------------------------------------
     head(1, "ENVIRONMENT + CUDA")
@@ -548,7 +697,7 @@ def main():
 
     print("\n  STOPPING AS INSTRUCTED. The remaining 115 cases were NOT run.")
     print("  Download before the session ends:")
-    print("    !cd /kaggle/working/LLM && zip -r /kaggle/working/eval_results.zip "
+    print(f"    !cd {repo_dir} && zip -r /kaggle/working/eval_results.zip "
           "evaluation/ && cp /kaggle/working/kaggle_run_state.json /kaggle/working/")
     # The API runs on a daemon thread and the engine lives in this process,
     # so returning from main() releases the GPU. Nothing to terminate.
