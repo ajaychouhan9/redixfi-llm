@@ -38,8 +38,14 @@ TASK_LABEL = {
 
 
 def _latest_runs(pattern: str, min_cases: int):
-    """Newest run per task, ignoring tiny smoke runs and echo runs."""
-    best = {}
+    """Newest run per task, ignoring tiny smoke runs and echo runs.
+
+    A PROMPT-VARIANT run carries the same `task` as the baseline it is
+    compared against, so without separating them the newest variant would
+    silently displace the production-prompt result in this index — and the
+    headline table would then report a number that was not obtained on the
+    production prompt. Variants are keyed separately and labelled."""
+    best, variants = {}, {}
     for path in sorted(glob.glob(pattern)):
         if os.path.basename(path).startswith("concall_experiments"):
             continue
@@ -52,10 +58,20 @@ def _latest_runs(pattern: str, min_cases: int):
         if len(run.get("results") or []) < min_cases:
             continue
         task = run.get("task")
-        prev = best.get(task)
-        if prev is None or run.get("run_id", "") > prev[1].get("run_id", ""):
-            best[task] = (path, run)
-    return best
+        bucket = variants if run.get("variant") else best
+        key = f"{task}[{run['variant']['name']}]" if run.get("variant") else task
+        prev = bucket.get(key)
+        # Rank by (run_id, has-regenerated-reference). The re-scored copy of
+        # a run shares its run_id, so without the second term the tie breaks
+        # by filename and the index would show the SUPERSEDED scoring — the
+        # one compared against legacy-schema stubs.
+        rank = (run.get("run_id", ""), 1 if run.get("reference_source") else 0)
+        prev_rank = ((prev[1].get("run_id", ""),
+                      1 if prev[1].get("reference_source") else 0)
+                     if prev else None)
+        if prev is None or rank > prev_rank:
+            bucket[key] = (path, run)
+    return best, variants
 
 
 def _disagreements(task: str, run: dict):
@@ -88,8 +104,8 @@ def main() -> None:
     ap.add_argument("--out", default="evaluation/REVIEW_INDEX.md")
     args = ap.parse_args()
 
-    runs = _latest_runs(args.glob, args.min_cases)
-    if not runs:
+    runs, variant_runs = _latest_runs(args.glob, args.min_cases)
+    if not runs and not variant_runs:
         print("no qualifying runs found")
         return
 
@@ -123,14 +139,36 @@ def main() -> None:
         L.append(f"## {TASK_LABEL.get(task, task)}\n")
 
         if task == "annual_report_summary":
-            L.append("> ⚠️ **Known caveat — the comparison is NOT like-for-like.** "
-                     "Production holds no current-schema gpt-4o-mini annual-report "
-                     "output: all 72 stored summaries are legacy-schema, written "
-                     "2026-08-16, and 0 documents carry `evidence_tokens`. So the "
-                     "reference differs from this replay in BOTH input and output "
-                     "schema. Judge Qwen's output on its own merits against the "
-                     "evidence; do not read the side-by-side as a score. See "
-                     "`deployment/kaggle/ANNUAL_REPORT_REFERENCE_SCHEMA.md`.\n")
+            src = run.get("reference_source")
+            if src:
+                L.append("> ✅ **Reference regenerated — the comparison is now "
+                         f"schema-matched.** Production holds no current-schema "
+                         f"annual-report output, so the reference was regenerated "
+                         f"with `{src.get('model')}` on the CURRENT prompt from the "
+                         f"SAME evidence block Qwen received, under production retry "
+                         f"mechanics (cost ${src.get('cost_usd_actual')}). Both sides "
+                         "now differ only by model. The reference is a REPLAY, not "
+                         "the text production actually stored — production stored "
+                         "nothing in this schema.\n")
+            else:
+                L.append("> ⚠️ **Known caveat — the comparison is NOT like-for-like.** "
+                         "Production holds no current-schema gpt-4o-mini annual-report "
+                         "output: all 72 stored summaries are legacy-schema, written "
+                         "2026-08-16, and 0 documents carry `evidence_tokens`. So the "
+                         "reference differs from this replay in BOTH input and output "
+                         "schema. Judge Qwen's output on its own merits against the "
+                         "evidence; do not read the side-by-side as a score. See "
+                         "`deployment/kaggle/ANNUAL_REPORT_REFERENCE_SCHEMA.md`.\n")
+
+        rp = run.get("retry_policy")
+        if rp and not rp.get("like_for_like_with_reference"):
+            L.append(f"> ⚠️ **Retry policy `{rp.get('name')}` — NOT like-for-like.** "
+                     "gpt-4o-mini was measured under production retry mechanics "
+                     "(every attempt deterministic, descriptive corrective note). "
+                     "This run varied sampling on retries and sent a directive note. "
+                     "The fair remedy, if this is what closes the gap, is adopting "
+                     "it in RedixFi for both models — not treating it as a "
+                     "Qwen-only crutch.\n")
 
         cfg = run.get("model_config") or {}
         L.append(f"- Model: `{run.get('model')}` "
@@ -158,6 +196,34 @@ def main() -> None:
             for bid, why in dis:
                 L.append(f"| `{bid}` | {why} |")
             L.append("")
+
+    # Prompt-variant runs, reported BESIDE the baseline, never instead of it.
+    if variant_runs:
+        L.append("## Prompt-variant runs (full fixture)\n")
+        L.append("> These use a NON-PRODUCTION system prompt. gpt-4o-mini achieved "
+                 "its result on the production prompt, so a variant number is not "
+                 "a like-for-like comparison — it shows what Qwen needs to get "
+                 "there. Read it against the baseline row above, not against "
+                 "gpt-4o-mini directly.\n")
+        L.append("| Variant | Task | Cases | Generated | Compliance fails | "
+                 "Tone agreement | Sheet |")
+        L.append("|---|---|---|---|---|---|---|")
+        for key, (path, run) in sorted(variant_runs.items()):
+            s = run.get("summary") or {}
+            v = run.get("variant") or {}
+            md = os.path.relpath(path.replace(".json", ".md"),
+                                 os.path.dirname(args.out) or ".").replace(os.sep, "/")
+            L.append(f"| `{v.get('name')}` | {TASK_LABEL.get(run.get('task'), run.get('task'))} | "
+                     f"{s.get('cases')} | {s.get('generated_ok')} | "
+                     f"{s.get('candidate_compliance_failures')} | "
+                     f"{s.get('tone_label_agreement_rate', '—')} | "
+                     f"[{os.path.basename(md)}]({md}) |")
+        L.append("")
+        for key, (path, run) in sorted(variant_runs.items()):
+            v = run.get("variant") or {}
+            L.append(f"- **`{v.get('name')}`** (attempts {v.get('max_attempts')}, "
+                     f"retry policy `{v.get('retry_policy')}`): {v.get('description')}")
+        L.append("")
 
     # Concall experiments, if present
     exp_paths = sorted(glob.glob("evaluation/concall/runs/concall_experiments__*.json"))
