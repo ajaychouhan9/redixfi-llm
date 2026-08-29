@@ -1,0 +1,795 @@
+{
+  "targets": [
+    "CC_KANPRPLA_106607445",
+    "CC_KIRIINDUS_106747935",
+    "CC_MANYAVAR_106711176",
+    "CC_PNB_106702450",
+    "CC_SDBL_106655906"
+  ],
+  "variants": {
+    "retries_6": {
+      "attempts_budget": 6,
+      "description": "Production prompt, larger retry budget. Cheapest possible fix. Tests whether the model CAN produce a compliant answer and simply needs more attempts, versus being unable to find one at all.",
+      "passed": 2,
+      "of": 5,
+      "rows": [
+        {
+          "task": "concall_summary[retries_6]",
+          "fixture_id": "CC_KANPRPLA_106607445",
+          "ok": false,
+          "output": {},
+          "attempts": 6,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Kanpur Plastipack Limited (KANPRPLA) presented its financial results for Q4 FY26, highlighting growth in total income, EBITDA, and net profit compared to previous periods. The company reported a 7.26% year-over-year (Y-o-Y) increase in total income to \u20b918,505 lakh, with a 20.67% Y-o-Y rise in EBITDA to \u20b92,556 lakh and a 24.70% Y-o-Y increase in net profit to \u20b91,492 lakh. For the full year, total income grew by 26.98% to \u20b973,132 lakh, EBITDA increased by 42.11% to \u20b97,770 lakh, and net profit rose by 76.39% to \u20b94,080 lakh. The company emphasized its integrated manufacturing model, global presence in over 60 countries, and strategic initiatives such as capacity expansion, sustainability efforts, and diversification into premium products like high-performance PP yarn and non-woven fabrics. Key milestones included the acquisition of Valex Ventures Ltd (UK) and a joint venture with Essegomma S.p.A. (Italy). The presentation noted a shift toward higher-margin, value-added products and a focus on B2C markets through OEM and brand partnerships. The company also highlighted its commitment to renewable energy, with nearly 50% of energy sourced from solar power, and initiatives like zero liquid discharge and rainwater harvesting. The document stated plans for new capacity additions, including a 6,000 MT p/a expansion in the FIBC division by May 2026 and a new non-woven facility expected to commence commercial production in September 2026. The company reiterated its focus on disciplined diversification, capital allocation, and maintaining strong financial discipline while expanding into new markets and product segments.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation emphasized growth in financial metrics, strategic expansions, and positive initiatives like sustainability and diversification into high-margin products."
+              },
+              "raw_output_chars": 1862,
+              "forward_tense_hits": {
+                "summary": [
+                  "... the FIBC division by May 2026 and a new non-woven facility expected to commence commercial production in September 2026. The co..."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's financial performance and strategic initiatives. Financial highlights include a total income of \u20b918,505 lakh for Q4 FY26, reflecting a 7.26% year-over-year growth, with EBITDA at \u20b92,556 lakh, up 20.67% YoY. Net profit reached \u20b91,492 lakh, a 24.70% increase YoY. The presentation emphasizes the company's core focus on FIBC manufacturing, with 70% of revenue from exports, primarily to Europe. Strategic initiatives include capacity expansion in FIBC, a new automated roll management system, and a dedicated trading warehouse. The company also highlights sustainability efforts, including solar energy usage and zero liquid discharge. Diversification into premium PP yarn and non-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has acquired Valex Ventures Ltd (UK) and formed a 50:50 joint venture with Essegomma S.p.A. (Italy). The presentation also notes a shift in product mix toward higher-margin, value-added solutions and a focus on global market expansion.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial growth, strategic expansions, and positive diversification efforts."
+              },
+              "raw_output_chars": 1306,
+              "forward_tense_hits": {
+                "summary": [
+                  "...on-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has a..."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's financial performance and strategic initiatives. Financial highlights include a total income of \u20b918,505 lakh for Q4 FY26, reflecting a 7.26% year-over-year growth, with EBITDA at \u20b92,556 lakh, up 20.67% YoY. Net profit reached \u20b91,492 lakh, a 24.70% increase YoY. The presentation emphasizes the company's core focus on FIBC manufacturing, with 70% of revenue from exports, primarily to Europe. Strategic initiatives include capacity expansion in FIBC, a new automated roll management system, and a dedicated trading warehouse. The company also highlights sustainability efforts, including solar energy usage and zero liquid discharge. Diversification into premium PP yarn and non-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has acquired Valex Ventures Ltd (UK) and formed a 50:50 joint venture with Essegomma S.p.A. (Italy). The presentation also notes a shift in product mix toward higher-margin, value-added solutions and a focus on global market expansion.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial growth, strategic expansions, and positive diversification efforts."
+              },
+              "raw_output_chars": 1306,
+              "forward_tense_hits": {
+                "summary": [
+                  "...on-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has a..."
+                ]
+              }
+            },
+            {
+              "pass": 4,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's financial performance and strategic initiatives. Financial highlights include a total income of \u20b918,505 lakh for Q4 FY26, reflecting a 7.26% year-over-year growth, with EBITDA at \u20b92,556 lakh, up 20.67% YoY. Net profit reached \u20b91,492 lakh, a 24.70% increase YoY. The presentation emphasizes the company's core focus on FIBC manufacturing, with 70% of revenue from exports, primarily to Europe. Strategic initiatives include capacity expansion in FIBC, a new automated roll management system, and a dedicated trading warehouse. The company also highlights sustainability efforts, including solar energy usage and zero liquid discharge. Diversification into premium PP yarn and non-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has acquired Valex Ventures Ltd (UK) and formed a 50:50 joint venture with Essegomma S.p.A. (Italy). The presentation also notes a shift in product mix toward higher-margin, value-added solutions and a focus on global market expansion.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial growth, strategic expansions, and positive diversification efforts."
+              },
+              "raw_output_chars": 1306,
+              "forward_tense_hits": {
+                "summary": [
+                  "...on-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has a..."
+                ]
+              }
+            },
+            {
+              "pass": 5,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's financial performance and strategic initiatives. Financial highlights include a total income of \u20b918,505 lakh for Q4 FY26, reflecting a 7.26% year-over-year growth, with EBITDA at \u20b92,556 lakh, up 20.67% YoY. Net profit reached \u20b91,492 lakh, a 24.70% increase YoY. The presentation emphasizes the company's core focus on FIBC manufacturing, with 70% of revenue from exports, primarily to Europe. Strategic initiatives include capacity expansion in FIBC, a new automated roll management system, and a dedicated trading warehouse. The company also highlights sustainability efforts, including solar energy usage and zero liquid discharge. Diversification into premium PP yarn and non-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has acquired Valex Ventures Ltd (UK) and formed a 50:50 joint venture with Essegomma S.p.A. (Italy). The presentation also notes a shift in product mix toward higher-margin, value-added solutions and a focus on global market expansion.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial growth, strategic expansions, and positive diversification efforts."
+              },
+              "raw_output_chars": 1306,
+              "forward_tense_hits": {
+                "summary": [
+                  "...on-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has a..."
+                ]
+              }
+            },
+            {
+              "pass": 6,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's financial performance and strategic initiatives. Financial highlights include a total income of \u20b918,505 lakh for Q4 FY26, reflecting a 7.26% year-over-year growth, with EBITDA at \u20b92,556 lakh, up 20.67% YoY. Net profit reached \u20b91,492 lakh, a 24.70% increase YoY. The presentation emphasizes the company's core focus on FIBC manufacturing, with 70% of revenue from exports, primarily to Europe. Strategic initiatives include capacity expansion in FIBC, a new automated roll management system, and a dedicated trading warehouse. The company also highlights sustainability efforts, including solar energy usage and zero liquid discharge. Diversification into premium PP yarn and non-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has acquired Valex Ventures Ltd (UK) and formed a 50:50 joint venture with Essegomma S.p.A. (Italy). The presentation also notes a shift in product mix toward higher-margin, value-added solutions and a focus on global market expansion.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial growth, strategic expansions, and positive diversification efforts."
+              },
+              "raw_output_chars": 1306,
+              "forward_tense_hits": {
+                "summary": [
+                  "...on-woven fabrics is underway, with a new non-woven facility expected to commence production in September 2026. The company has a..."
+                ]
+              }
+            }
+          ],
+          "error": "failed validation after 6 attempts",
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 34695,
+          "completion_tokens": 1985,
+          "total_tokens": 36680,
+          "latency_sec": 86.8079,
+          "benchmark_id": "CC_KANPRPLA_106607445"
+        },
+        {
+          "task": "concall_summary[retries_6]",
+          "fixture_id": "CC_KIRIINDUS_106747935",
+          "ok": true,
+          "output": {
+            "summary": "Kiri Industries Limited's Q1 FY27 earnings conference call highlighted progress on its integrated copper and fertilizer project, which moved into a structured construction phase with capital from the company's strengthened financial position. The dyes, dyes intermediates, and basic chemicals business saw improved pricing and margins, driven by higher average selling prices and effective cost pass-through. Standalone revenue reached INR 295 crore, up 63% YoY, with standalone EBITDA at INR 17 crore. Consolidated revenue was INR 312 crore, up 55% YoY, and consolidated EBITDA stood at INR 37 crore. The company emphasized disciplined execution of projects and maintaining pricing discipline. Management addressed concerns about dividend declarations, stating no decision had been made yet, and outlined plans for phased commissioning of copper facilities starting in FY28. Financial closure for the copper project was not yet achieved, with over 50% of required commitments secured. The company also discussed its engagement with international mining companies for raw material sourcing and the potential for future growth in value-added copper products. Management noted that the company's focus remains on capital deployment for growth and project execution, with no immediate plans to declare dividends.",
+            "tone_label": "Neutral",
+            "tone_note": "The summary presents factual updates and responses without overtly positive or negative language."
+          },
+          "attempts": 4,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Kiri Industries Limited's Q1 FY27 earnings conference call highlighted progress on its integrated copper and fertilizer project, now in a structured construction phase with key infrastructure developments underway. The company reported standalone revenue of INR 295 crore, a 63% YoY growth, driven by improved pricing in dyes, intermediates, and basic chemicals. Standalone EBITDA was INR 17 crore with a 5.86% margin, while consolidated EBITDA reached INR 37 crore (7.84% margin), supported by other income of INR 286 crore. Management emphasized disciplined execution of the copper project, with downstream facilities expected to commission in phases by FY28-FY29. The company noted that 60% of its dye and chemical capacity was utilized, with potential for higher revenue if capacity utilization improves. Regarding dividends, no decision had been made yet, though management acknowledged shareholder concerns. The copper project requires INR 12,000 crore in capital, with 50% of funding commitments secured. Financial closure is expected within the next few months. The company also discussed its 40% stake in Lonsen Kiri, noting that value addition occurs at the joint venture level. Management reiterated that the copper business's revenue is projected to peak in FY30, with debt repayment starting in 2029. The call concluded with management thanking participants and offering contact details for further inquiries.",
+                "tone_label": "Neutral",
+                "tone_note": "The summary presents factual updates on financial performance, project progress, and management responses without overtly positive or negative language."
+              },
+              "raw_output_chars": 1631,
+              "forward_tense_hits": {
+                "summary": [
+                  "...execution of the copper project, with downstream facilities expected to commission in phases by FY28-FY29. The company noted tha...",
+                  "...th 50% of funding commitments secured. Financial closure is expected within the next few months. The company also discussed its ..."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'targeting'",
+              "text": {
+                "summary": "Kiri Industries Limited reported Q1 FY27 results with standalone revenue of INR 295 crore, a 63% YoY increase, driven by improved pricing in dyes, intermediates, and basic chemicals. Standalone EBITDA was INR 17 crore (5.86% margin), while consolidated revenue reached INR 312 crore (55% YoY growth). The company highlighted progress on its integrated copper and fertilizer project, entering construction phase with capital from its strengthened financial position. Downstream copper facilities are planned for phased commissioning, with tube production targeting Q1 FY28 and refinery by Q3 FY29. Management emphasized disciplined execution and capital prudence, noting that 40% of the project's capital is equity-funded. Dividends were not declared, with management prioritizing growth over returns. The company faces challenges in securing long-term copper concentrate supply and resolving legal disputes over the MCB Copper-Gold project. Management acknowledged uncertainties in revenue projections for FY28 and FY29, with cash flow expected to ramp up from 2027-28 onwards. The dyes business showed improved margins, with standalone material margin at 31.9% compared to 23.5% in Q1 FY26. The company also discussed plans for value-added copper products and potential equity financing options for future projects.",
+                "tone_label": "Mixed",
+                "tone_note": "The document presents both positive developments in project progress and revenue growth alongside challenges such as legal disputes, uncertain revenue projections, and reliance on external factors like raw material supply and market conditions."
+              },
+              "raw_output_chars": 1615,
+              "forward_tense_hits": {
+                "summary": [
+                  "... are planned for phased commissioning, with tube production targeting Q1 FY28 and refinery by Q3 FY29. Management emphasized disc...",
+                  "...es in revenue projections for FY28 and FY29, with cash flow expected to ramp up from 2027-28 onwards. The dyes business showed i..."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'will'",
+              "text": {
+                "summary": "Kiri Industries Limited reported Q1 FY27 results with standalone revenue of INR 295 crore, a 63% YoY increase, driven by improved pricing in dyes, intermediates, and basic chemicals. Standalone EBITDA was INR 17 crore (5.86% margin), while consolidated revenue reached INR 312 crore (55% YoY growth). The company emphasized progress on its integrated copper and fertilizer project, with construction underway and downstream facilities planned for FY28 and FY29. Management highlighted improved material margins from pricing discipline and cost pass-through, though input costs remain a challenge. The copper project requires INR 12,000 crore in capital, with phased commissioning of tube and rod plants by mid-2027. Financial closure is ongoing, with over 50% of debt commitments secured. Dividends were not declared, with management prioritizing growth over returns. The company also discussed long-term sourcing agreements for copper concentrate and ongoing legal disputes affecting the MCB Copper-Gold project. Management reiterated plans to expand into agrochemicals in Odisha but noted execution will follow existing projects. The discussion concluded with management thanking participants and offering contact details for further inquiries.",
+                "tone_label": "Neutral",
+                "tone_note": "The summary presents factual data and management statements without overtly positive or negative language."
+              },
+              "raw_output_chars": 1407,
+              "forward_tense_hits": {
+                "summary": [
+                  "... to expand into agrochemicals in Odisha but noted execution will follow existing projects. The discussion concluded with man..."
+                ]
+              }
+            }
+          ],
+          "error": null,
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 50237,
+          "completion_tokens": 1266,
+          "total_tokens": 51503,
+          "latency_sec": 65.8368,
+          "benchmark_id": "CC_KIRIINDUS_106747935"
+        },
+        {
+          "task": "concall_summary[retries_6]",
+          "fixture_id": "CC_MANYAVAR_106711176",
+          "ok": true,
+          "output": {
+            "summary": "Vedant Fashions Limited's July 2026 investor presentation highlights its position as a leading Indian wedding and celebration wear brand, emphasizing its multi-brand portfolio, pan-India presence, and technology-driven supply chain. The document reports Q1 FY27 financial performance, including a 3.4% growth in retail sales, 3.8% domestic SSSG, 7.2% revenue growth, and a 14.7% increase in PAT with a 26.7% margin. The presentation outlines growth strategies such as retail expansion, brand marketing, and disciplined acquisitions. It also details the company's history, brand portfolio, and key financial metrics over recent fiscal years. The document includes disclaimers about forward-looking statements and provides definitions for industry-specific terms. The tone of the document is neutral, focusing on factual reporting of performance and strategic initiatives without speculative or directional language.",
+            "tone_label": "Neutral",
+            "tone_note": "The document presents factual data and strategic initiatives without speculative or directional language."
+          },
+          "attempts": 4,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'targeting'",
+              "text": {
+                "summary": "Vedant Fashions Limited, through its investor presentation dated July 25, 2026, outlined its business operations, market position, and financial performance. The company, headquartered in Kolkata and incorporated in 2002, is a leading player in the Indian wedding and celebration wear market, offering products for men, women, and children across multiple price points. It highlighted its extensive retail network, including 501 EBOs (Exclusive Brand Outlets) across 205 Indian cities, along with SIS (Shop-in-shops) and international stores. The presentation emphasized the company's unique business model, which combines an asset-light approach with a no-discount policy for its Manyavar brand. Financial highlights included a 3.4% growth in retail sales (sale of customers' products) and a 7.2% increase in revenue from operations during Q1 FY27 compared to the same period in FY26. The company reported a gross margin of 65.7% and a PAT (Profit After Tax) margin of 26.7%, reflecting strong operational efficiency. Strategic initiatives included brand expansion, retail network growth, and marketing campaigns aimed at enhancing brand visibility and customer engagement. The document also detailed the company's diversified brand portfolio, including Manyavar, Mohey, Twamev, and Diwas, each targeting different segments of the market. The presentation concluded with a review of the company's long-term financial performance, showing consistent growth in revenue, gross profit, and PAT over the years.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation emphasized strong financial performance, growth in key metrics, and strategic initiatives, reflecting a positive outlook."
+              },
+              "raw_output_chars": 1702,
+              "forward_tense_hits": {
+                "summary": [
+                  "...rtfolio, including Manyavar, Mohey, Twamev, and Diwas, each targeting different segments of the market. The presentation conclude..."
+                ],
+                "tone_note": [
+                  "...y metrics, and strategic initiatives, reflecting a positive outlook...."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'outlook'",
+              "text": {
+                "summary": "Vedant Fashions Limited, through its investor presentation dated July 25, 2026, outlined its business operations and financial performance for the quarter ended June 30, 2026. The presentation highlighted the company's position as a market leader in Indian wedding and celebration wear, with a diversified brand portfolio catering to men, women, and children across various price points. Key strengths included its asset-light franchisee-led distribution model, technology-driven supply chain, and strong financial metrics such as industry-leading gross margins (65.7%) and PAT margins (26.7%) in Q1 FY27. The company reported a 3.4% growth in retail sales and a 3.8% increase in domestic same-store sales growth (SSSG) compared to the same period in the previous fiscal year. Financial highlights included a 7.2% increase in revenue from operations and a 14.7% growth in PAT. The presentation also detailed the company's growth strategy, including retail expansion, brand enhancement, and disciplined acquisitions. The document emphasized the company's strong corporate governance, experienced leadership, and extensive pan-India presence through its EBO network. Additionally, Vedant Fashions showcased its marketing initiatives, brand campaigns, and awards, reinforcing its market position and growth trajectory.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation emphasized strong financial performance, market leadership, and growth strategies, reflecting a positive outlook."
+              },
+              "raw_output_chars": 1501,
+              "forward_tense_hits": {
+                "tone_note": [
+                  "...et leadership, and growth strategies, reflecting a positive outlook...."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forbidden word 'predictions'",
+              "text": {
+                "summary": "Vedant Fashions Limited's July 2026 investor presentation highlights its position as a leading Indian wedding and celebration wear brand, emphasizing its multi-brand portfolio, pan-India presence, and technology-driven supply chain. The document reports Q1 FY27 financial performance, including a 3.4% growth in retail sales, 3.8% domestic SSSG, 7.2% revenue growth, and a 14.7% increase in PAT with a 26.7% margin. The presentation outlines growth strategies such as retail expansion, brand marketing, and disciplined acquisitions. It also details the company's extensive EBO network, brand campaigns, and historical financial metrics showing consistent revenue and profit growth over the past few years. The document includes awards and accolades, as well as a glossary of key terms. The presentation does not provide forward-looking guidance or predictions, focusing instead on past performance and current strategies.",
+                "tone_label": "Neutral",
+                "tone_note": "The document presents factual data and strategic initiatives without overtly positive or negative language."
+              },
+              "raw_output_chars": 1083,
+              "forward_tense_hits": {}
+            }
+          ],
+          "error": null,
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 29539,
+          "completion_tokens": 1104,
+          "total_tokens": 30643,
+          "latency_sec": 44.4456,
+          "benchmark_id": "CC_MANYAVAR_106711176"
+        },
+        {
+          "task": "concall_summary[retries_6]",
+          "fixture_id": "CC_PNB_106702450",
+          "ok": false,
+          "output": {},
+          "attempts": 6,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'target'",
+              "text": {
+                "summary": "Punjab National Bank (PNB) reported its unaudited financial results for Q1 FY2027, highlighting strong performance across key metrics. Net profit surged by 213.6% year-over-year (YoY) to \u20b95,253 crore, driven by a 6.2% YoY increase in operating profit and a 17.2% YoY rise in net interest income. Return on assets (ROA) stood at 1.04%, while book value per share (tangible) rose to \u20b9108.58. Asset quality improved, with gross NPA down 100 bps YoY to 2.78% and net NPA at 0.28%, below the 0.3% guidance. Credit growth reached 12.7% YoY, outperforming the 12%-13% guidance, while deposit growth was 8.5% YoY, slightly below the 9%-10% target. CASA share remained at 36.7%, below the 38% guidance. Digital initiatives, including PNB One and WhatsApp banking, saw significant growth in user base and transactions. The bank also emphasized ESG efforts, including green financing and sustainability targets. Capital adequacy improved, with CRAR at 18.13% as of June 2026. The document outlines guidance for FY2027, including credit growth of 12%-13% and NPA targets below 2.5% for gross and 0.3% for net.",
+                "tone_label": "Positive",
+                "tone_note": "The document emphasizes strong financial performance, improved asset quality, and progress in digital and ESG initiatives, reflecting a positive outlook."
+              },
+              "raw_output_chars": 1308,
+              "forward_tense_hits": {
+                "summary": [
+                  "...hile deposit growth was 8.5% YoY, slightly below the 9%-10% target. CASA share remained at 36.7%, below the 38% guidance. Digi...",
+                  "...d ESG efforts, including green financing and sustainability targets. Capital adequacy improved, with CRAR at 18.13% as of June ...",
+                  "...ance for FY2027, including credit growth of 12%-13% and NPA targets below 2.5% for gross and 0.3% for net...."
+                ],
+                "tone_note": [
+                  "...gress in digital and ESG initiatives, reflecting a positive outlook...."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'target'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit rising 213.6% year-over-year to \u20b95,253 crore, operating profit up 6.2% YoY to \u20b97,519 crore, and return on assets at 1.04%. Business growth was robust, with global business up 10.2% YoY to \u20b92.998 trillion, driven by 12.7% growth in global advances and 8.5% in deposits. Asset quality improved, with gross NPA down 100 bps YoY to 2.78% and net NPA at 0.28%, below the 0.3% guidance. Capital adequacy stood at 14.52%, with CET-1 at 14.52%. Digital initiatives showed progress, including 365 million PNB One activated users and 357 billion digital transactions. ESG efforts included green financing, sustainability awards, and a net-zero target by 2060. Guidance for FY2027 included credit growth of 12-13% and deposit growth of 9-10%, though actual deposit growth in Q1 was 8.5%.",
+                "tone_label": "Positive",
+                "tone_note": "The document emphasizes strong financial results, improved asset quality, and progress in digital and ESG initiatives."
+              },
+              "raw_output_chars": 1080,
+              "forward_tense_hits": {
+                "summary": [
+                  "...uded green financing, sustainability awards, and a net-zero target by 2060. Guidance for FY2027 included credit growth of 12-1..."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'targets'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit rising 213.6% year-over-year to \u20b95,253 crore and operating profit increasing 6.2% YoY to \u20b97,519 crore. Business growth was robust, with global business up 10.2% YoY and domestic deposits growing 8.6% YoY. Asset quality improved, with gross NPA down 100 bps YoY to 0.28% and net NPA at 0.28%. Capital adequacy remained strong, with CRAR at 18.13% and CET-1 ratio at 14.52%. Digital initiatives showed progress, with PNB One activated users reaching 365 lakh and digital transactions hitting \u20b9357 crore. ESG efforts included green financing initiatives and sustainability awards. Guidance for FY2027 targets credit growth of 12-13% and deposit growth of 9-10%, though actual deposit growth in Q1 was 8.5%.",
+                "tone_label": "Positive",
+                "tone_note": "The document emphasizes strong financial results, improved asset quality, and progress in digital and ESG initiatives."
+              },
+              "raw_output_chars": 1007,
+              "forward_tense_hits": {
+                "summary": [
+                  "... initiatives and sustainability awards. Guidance for FY2027 targets credit growth of 12-13% and deposit growth of 9-10%, though..."
+                ]
+              }
+            },
+            {
+              "pass": 4,
+              "reason": "forward-tense word 'target'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit rising 213.6% year-over-year to \u20b95,253 crore, operating profit up 6.2% YoY to \u20b97,519 crore, and return on assets at 1.04%. Business growth was robust, with global business up 10.2% YoY to \u20b92.998 trillion, driven by 12.7% growth in global advances and 8.5% in deposits. Asset quality improved, with gross NPA down 100 bps YoY to 2.78% and net NPA at 0.28%, below the 0.3% guidance. Capital adequacy stood at 14.52%, with CET-1 at 14.52%. Digital initiatives showed progress, including 365 million PNB One activated users and 357 billion digital transactions. ESG efforts included green financing, sustainability awards, and a target to achieve net zero emissions by 2060. Guidance for FY2027 included credit growth of 12-13% and deposit growth of 9-10%, though actual deposit growth in Q1 was 8.5%.",
+                "tone_label": "Positive",
+                "tone_note": "The document emphasizes strong financial results, improved asset quality, and progress in digital and ESG initiatives."
+              },
+              "raw_output_chars": 1101,
+              "forward_tense_hits": {
+                "summary": [
+                  "...orts included green financing, sustainability awards, and a target to achieve net zero emissions by 2060. Guidance for FY2027 ..."
+                ]
+              }
+            },
+            {
+              "pass": 5,
+              "reason": "forward-tense word 'targets'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit rising 213.6% year-over-year to \u20b95,253 crore and operating profit increasing 6.2% YoY to \u20b97,519 crore. Business growth was robust, with global business up 10.2% YoY and domestic deposits growing 8.6% YoY. Asset quality improved, with gross NPA down 100 bps YoY to 0.28% and net NPA at 0.28%. Capital adequacy remained strong, with CRAR at 18.13% and CET-1 ratio at 14.52%. Digital initiatives showed progress, with PNB One activated users reaching 365 lakh and digital transactions hitting \u20b9357 crore. ESG efforts included green financing initiatives and sustainability awards. Guidance for FY2027 targets credit growth of 12-13% and deposit growth of 9-10%, though actual deposit growth in Q1 was 8.5%.",
+                "tone_label": "Positive",
+                "tone_note": "The document emphasizes strong financial results, improved asset quality, and progress in digital and ESG initiatives."
+              },
+              "raw_output_chars": 1007,
+              "forward_tense_hits": {
+                "summary": [
+                  "... initiatives and sustainability awards. Guidance for FY2027 targets credit growth of 12-13% and deposit growth of 9-10%, though..."
+                ]
+              }
+            },
+            {
+              "pass": 6,
+              "reason": "forward-tense word 'target'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit rising 213.6% year-over-year to \u20b95,253 crore, operating profit up 6.2% YoY to \u20b97,519 crore, and return on assets at 1.04%. Business growth was robust, with global business up 10.2% YoY to \u20b92.998 trillion, driven by 12.7% growth in global advances and 8.5% in deposits. Asset quality improved, with gross NPA down 100 bps YoY to 2.78% and net NPA at 0.28%, below the 0.3% guidance. Capital adequacy stood at 14.52%, with CET-1 at 14.52%. Digital initiatives showed progress, including 365 million PNB One activated users and 357 billion digital transactions. ESG efforts included green financing, sustainability awards, and a target to achieve net zero emissions by 2060. Guidance for FY2027 included credit growth of 12-13% and deposit growth of 9-10%, though actual deposit growth in Q1 was 8.5%.",
+                "tone_label": "Positive",
+                "tone_note": "The document emphasizes strong financial results, improved asset quality, and progress in digital and ESG initiatives."
+              },
+              "raw_output_chars": 1101,
+              "forward_tense_hits": {
+                "summary": [
+                  "...orts included green financing, sustainability awards, and a target to achieve net zero emissions by 2060. Guidance for FY2027 ..."
+                ]
+              }
+            }
+          ],
+          "error": "failed validation after 6 attempts",
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 125985,
+          "completion_tokens": 1899,
+          "total_tokens": 127884,
+          "latency_sec": 239.9514,
+          "benchmark_id": "CC_PNB_106702450"
+        },
+        {
+          "task": "concall_summary[retries_6]",
+          "fixture_id": "CC_SDBL_106655906",
+          "ok": false,
+          "output": {},
+          "attempts": 6,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited (SDBL) reported a challenging FY26, with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores, driven by operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Beer volumes dropped 20% to 187.19 lakh cases, while IMFL business grew 32% to 15.03 lakh cases. Management cited inflationary pressures on inputs like glass, aluminum, and barley as industry-wide challenges. Despite this, the company maintained healthy cash flows and is working on license renewal for the Bhopal plant, with optimism about improved market conditions in Karnataka post-policy changes. The greenfield UP brewery project, with a capacity of 1 crore cases annually, is nearing commercial operations, expected to contribute 15-20 lakh cases in FY27. Management guided revenue for FY27 between INR1,400-1,500 crores, contingent on Bhopal's restart. The company emphasized cost optimization and premiumization to mitigate margin pressures. Investors raised concerns about delayed license resolution, credit rating downgrades, and proactive communication, to which management reiterated confidence in resolving issues and improving governance.",
+                "tone_label": "Mixed",
+                "tone_note": "The document presents both challenges like revenue decline and operational disruptions, alongside positive developments such as the UP plant's progress and confidence in resolving the Bhopal license issue."
+              },
+              "raw_output_chars": 1503,
+              "forward_tense_hits": {
+                "summary": [
+                  "...f 1 crore cases annually, is nearing commercial operations, expected to contribute 15-20 lakh cases in FY27. Management guided r..."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited reported a challenging FY26 with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases due to operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. However, the IMFL business grew 32% to 15.03 lakh cases. The company noted industry-wide inflationary pressures on inputs like glass bottles and barley, which impacted margins. Despite these challenges, it maintained healthy cash flows and is working on license renewal for the Bhopal facility. The greenfield UP brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Management guided revenue for FY27 to INR1,400-1,500 crores, assuming Bhopal resumes operations. They emphasized cost optimization and premiumization to mitigate margin pressures. The company also discussed plans to leverage returnable glass bottles and improve market share in Karnataka post-policy changes. Investors were assured that the Bhopal license issue is under active resolution, with no long-term operational impact anticipated.",
+                "tone_label": "Mixed",
+                "tone_note": "The document acknowledges significant challenges and setbacks while also highlighting strategic initiatives and cautious optimism about future recovery."
+              },
+              "raw_output_chars": 1404,
+              "forward_tense_hits": {
+                "summary": [
+                  "... brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Managem..."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited reported a challenging FY26 with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases due to operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. However, the IMFL business grew 32% to 15.03 lakh cases. The company noted industry-wide inflationary pressures on inputs like glass bottles and barley, which impacted margins. Despite these challenges, it maintained healthy cash flows and is working on license renewal for the Bhopal facility. The greenfield UP brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Management guided revenue for FY27 to INR1,400-1,500 crores, assuming Bhopal resumes operations. They emphasized cost optimization and premiumization to mitigate margin pressures. The company also discussed plans to leverage returnable glass bottles and improve market share in Karnataka post-policy changes. Investors were assured that the Bhopal license issue is under active resolution, with no long-term operational impact anticipated.",
+                "tone_label": "Mixed",
+                "tone_note": "The document acknowledges significant challenges and setbacks while also highlighting strategic initiatives and cautious optimism about future recovery."
+              },
+              "raw_output_chars": 1404,
+              "forward_tense_hits": {
+                "summary": [
+                  "... brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Managem..."
+                ]
+              }
+            },
+            {
+              "pass": 4,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited reported a challenging FY26 with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases due to operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. However, the IMFL business grew 32% to 15.03 lakh cases. The company noted industry-wide inflationary pressures on inputs like glass bottles and barley, which impacted margins. Despite these challenges, it maintained healthy cash flows and is working on license renewal for the Bhopal facility. The greenfield UP brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Management guided revenue for FY27 to INR1,400-1,500 crores, assuming Bhopal resumes operations. They emphasized cost optimization and premiumization to mitigate margin pressures. The company also discussed plans to leverage returnable glass bottles and improve market share in Karnataka post-policy changes. Investors were assured that the Bhopal license issue is under active resolution, with no long-term operational impact anticipated.",
+                "tone_label": "Mixed",
+                "tone_note": "The document acknowledges significant challenges and setbacks while also highlighting strategic initiatives and cautious optimism about future recovery."
+              },
+              "raw_output_chars": 1404,
+              "forward_tense_hits": {
+                "summary": [
+                  "... brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Managem..."
+                ]
+              }
+            },
+            {
+              "pass": 5,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited reported a challenging FY26 with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases due to operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. However, the IMFL business grew 32% to 15.03 lakh cases. The company noted industry-wide inflationary pressures on inputs like glass bottles and barley, which impacted margins. Despite these challenges, it maintained healthy cash flows and is working on license renewal for the Bhopal facility. The greenfield UP brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Management guided revenue for FY27 to INR1,400-1,500 crores, assuming Bhopal resumes operations. They emphasized cost optimization and premiumization to mitigate margin pressures. The company also discussed plans to leverage returnable glass bottles and improve market share in Karnataka post-policy changes. Investors were assured that the Bhopal license issue is under active resolution, with no long-term operational impact anticipated.",
+                "tone_label": "Mixed",
+                "tone_note": "The document acknowledges significant challenges and setbacks while also highlighting strategic initiatives and cautious optimism about future recovery."
+              },
+              "raw_output_chars": 1404,
+              "forward_tense_hits": {
+                "summary": [
+                  "... brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Managem..."
+                ]
+              }
+            },
+            {
+              "pass": 6,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited reported a challenging FY26 with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases due to operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. However, the IMFL business grew 32% to 15.03 lakh cases. The company noted industry-wide inflationary pressures on inputs like glass bottles and barley, which impacted margins. Despite these challenges, it maintained healthy cash flows and is working on license renewal for the Bhopal facility. The greenfield UP brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Management guided revenue for FY27 to INR1,400-1,500 crores, assuming Bhopal resumes operations. They emphasized cost optimization and premiumization to mitigate margin pressures. The company also discussed plans to leverage returnable glass bottles and improve market share in Karnataka post-policy changes. Investors were assured that the Bhopal license issue is under active resolution, with no long-term operational impact anticipated.",
+                "tone_label": "Mixed",
+                "tone_note": "The document acknowledges significant challenges and setbacks while also highlighting strategic initiatives and cautious optimism about future recovery."
+              },
+              "raw_output_chars": 1404,
+              "forward_tense_hits": {
+                "summary": [
+                  "... brewery project is on schedule, with commercial operations expected to start soon, aiming to boost production capacity. Managem..."
+                ]
+              }
+            }
+          ],
+          "error": "failed validation after 6 attempts",
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 68494,
+          "completion_tokens": 1825,
+          "total_tokens": 70319,
+          "latency_sec": 134.7751,
+          "benchmark_id": "CC_SDBL_106655906"
+        }
+      ]
+    },
+    "concall_fewshot_v1": {
+      "attempts_budget": 3,
+      "description": "Production prompt plus worked examples of compliant forward-looking phrasing, harvested verbatim from production gpt-4o-mini output that passed this exact validator.",
+      "passed": 1,
+      "of": 5,
+      "rows": [
+        {
+          "task": "concall_summary[concall_fewshot_v1]",
+          "fixture_id": "CC_KANPRPLA_106607445",
+          "ok": false,
+          "output": {},
+          "attempts": 3,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'outlook'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's financial performance and strategic initiatives. For the quarter ended March 31, 2026, consolidated total income was INR 18,505 lakh, reflecting a 7.26% year-over-year growth, while standalone total income was INR 18,310 lakh, up 6.17% YoY. EBITDA for the consolidated entity reached INR 2,556 lakh, a 20.67% YoY increase, and standalone EBITDA was INR 2,506 lakh, up 18.62% YoY. Net profit for the consolidated entity was INR 1,492 lakh, a 24.70% YoY increase, while standalone net profit was INR 1,453 lakh, up 21.91% YoY. The presentation highlights key strategic milestones, including the acquisition of Valex Ventures Ltd (UK), a 50:50 joint venture with Essegomma S.p.A. (Italy), and expansion into technical textiles and value-added product segments. The company also emphasizes sustainability initiatives, such as solar power usage covering nearly 50% of energy needs, zero liquid discharge, and fully recyclable product designs. Capacity expansion projects, including a new FIBC manufacturing unit and a modern roll management system, are underway. The company is also expanding its B2C presence through premium PP yarn and non-woven fabrics, aiming to diversify revenue streams and reduce cyclicality. The presentation notes that FIBC remains the core growth engine, with a focus on regulated markets and export-led growth. The company plans to leverage premium PP yarn and non-woven fabrics for high-value consumer applications and access B2C markets through OEM and brand partnerships.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial performance, strategic expansions, and sustainability initiatives, indicating a positive outlook."
+              },
+              "raw_output_chars": 1799,
+              "forward_tense_hits": {
+                "tone_note": [
+                  "...ions, and sustainability initiatives, indicating a positive outlook...."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 highlights the company's focus on expanding its FIBC (Flexible Intermediate Bulk Container) business, which remains its core growth engine. The company reported a 7.26% year-over-year increase in total income to INR 18,505 lakh and a 20.67% increase in EBITDA to INR 2,556 lakh. Net profit rose by 24.70% to INR 1,492 lakh. The presentation noted a 26.98% year-over-year growth in total income for the full year FY26. Key strategic initiatives include capacity expansion in the FIBC division, a new automated roll management system, and the establishment of a trading warehouse. The company also emphasized its sustainability efforts, including solar power usage and zero liquid discharge. The presentation outlined plans to diversify into non-woven fabrics and premium PP yarn for B2C applications, with a new facility expected to commence commercial production in September 2026. The company highlighted its global presence, with exports to over 60 countries and a strong repeat business rate from long-standing customers. The presentation also mentioned the acquisition of Valex Ventures Ltd (UK) and a joint venture with Essegomma S.p.A. (Italy) to strengthen its international footprint. The company's financial performance showed improved margins, with EBITDA margin increasing to 13.81% and net profit margin to 8.06% for Q4 FY26. The presentation included a detailed financial snapshot, showing growth in both consolidated and standalone financials. The company's product mix indicated a strong focus on FIBCs, with a significant portion of revenue coming from this segment. The presentation concluded with a roadmap for future growth, emphasizing disciplined diversification, capital allocation, and expansion into high-margin, sustainability-driven applications.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation emphasized growth in financial metrics, strategic expansions, and positive outlook on diversification and sustainability initiatives."
+              },
+              "raw_output_chars": 2059,
+              "forward_tense_hits": {
+                "summary": [
+                  "...d premium PP yarn for B2C applications, with a new facility expected to commence commercial production in September 2026. The co..."
+                ],
+                "tone_note": [
+                  "...th in financial metrics, strategic expansions, and positive outlook on diversification and sustainability initiatives...."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's financial performance, strategic initiatives, and operational highlights. Financial results show a total income of INR 73,132 lakh for FY26, reflecting a 26.98% year-over-year growth. EBITDA reached INR 7,770 lakh, a 42.11% increase compared to FY25, with a margin of 10.62%. Net profit amounted to INR 4,080 lakh, a 76.39% rise year-over-year, and basic EPS stood at INR 17.4. The presentation highlights key strategic milestones, including the acquisition of Valex Ventures Ltd (UK), a 50:50 joint venture with Essegomma S.p.A. (Italy), and expansion into technical textiles and value-added product segments. Capacity expansion projects, such as the FIBC division's Unit 3, are underway, with construction expected to be completed by May 2026. The company also emphasizes sustainability initiatives, including solar power generation, zero liquid discharge, and rainwater harvesting. The presentation notes a shift in product mix toward higher-margin, premium applications and diversification into non-woven fabrics, with commercial production expected to commence in September 2026. The company's export footprint has been strengthened across key geographies, and it aims to leverage premium PP yarn and non-woven fabrics for high-value consumer applications through OEM and brand partnerships. The presentation also includes a detailed breakdown of revenue and EBITDA trends, product mix, and export destinations.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial growth, strategic expansions, and sustainability initiatives, indicating a positive outlook."
+              },
+              "raw_output_chars": 1713,
+              "forward_tense_hits": {
+                "summary": [
+                  "...the FIBC division's Unit 3, are underway, with construction expected to be completed by May 2026. The company also emphasizes su...",
+                  "...fication into non-woven fabrics, with commercial production expected to commence in September 2026. The company's export footpri..."
+                ],
+                "tone_note": [
+                  "...ions, and sustainability initiatives, indicating a positive outlook...."
+                ]
+              }
+            }
+          ],
+          "error": "failed validation after 3 attempts",
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 18364,
+          "completion_tokens": 1276,
+          "total_tokens": 19640,
+          "latency_sec": 62.7669,
+          "benchmark_id": "CC_KANPRPLA_106607445"
+        },
+        {
+          "task": "concall_summary[concall_fewshot_v1]",
+          "fixture_id": "CC_KIRIINDUS_106747935",
+          "ok": false,
+          "output": {},
+          "attempts": 3,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Kiri Industries Limited reported Q1 FY27 earnings, highlighting progress on its integrated copper and fertilizer project, which is in the construction phase with key infrastructure developments underway. The company noted improved pricing for dyes and intermediates due to global supply constraints and environmental regulations in China, though input costs remained a challenge. Standalone material margins rose to 31.9%, driven by favorable pricing differentials. Revenue from operations reached INR 295 crore, up 63% YoY, with consolidated revenue at INR 312 crore, up 55% YoY. EBITDA stood at INR 17 crore (standalone) and INR 37 crore (consolidated). The company emphasized disciplined execution of projects and maintaining pricing discipline. Management addressed concerns about dividend policy, stating no current decision to declare dividends, focusing instead on growth. The copper project is expected to begin operations in Q1 FY28, with full commissioning by Q3 FY29. Financial closure is ongoing, with over 50% of required funding secured. The company also discussed its 40% stake in Lonsen Kiri, noting that value addition occurs at the joint venture level. Management highlighted plans for value-added copper products and ongoing discussions with mining companies for long-term copper concentrate sourcing. The company remains focused on capital deployment for growth while managing debt obligations, with repayment expected to start in 2029.",
+                "tone_label": "Neutral",
+                "tone_note": "The summary reflects a balanced presentation of operational progress, financial performance, and strategic initiatives without overtly positive or negative emphasis."
+              },
+              "raw_output_chars": 1678,
+              "forward_tense_hits": {
+                "summary": [
+                  "...ividends, focusing instead on growth. The copper project is expected to begin operations in Q1 FY28, with full commissioning by ...",
+                  "... for growth while managing debt obligations, with repayment expected to start in 2029...."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Kiri Industries Limited reported Q1 FY27 earnings, highlighting progress on its integrated copper and fertilizer project, which moved into a structured construction phase with capital deployment from the group's strengthened financial position. The company noted improved pricing for dyes, dyes intermediates, and basic chemicals, supported by tighter global supply and environmental compliance in China, though input cost pressures persisted. Standalone material margins rose to 31.9%, driven by favorable pricing differentials. Revenue from operations reached INR 295 crore, up 63% YoY, with standalone EBITDA at INR 17 crore. Consolidated revenue was INR 312 crore, up 55% YoY, and EBITDA stood at INR 37 crore. The company emphasized disciplined execution of the copper and fertilizer projects, with phased commissioning of downstream facilities starting in FY28. Management addressed concerns about dividend policy, stating no current decision to declare dividends, and outlined capital allocation for growth. The copper project requires INR 12,000 crore in total capital, with phased deployment over two years. Revenue from copper operations is expected to be captured in FY29-30, with debt repayment starting in 2029. The company also discussed challenges with the MCB Copper-Gold project, including shareholder disputes and litigation, and noted ongoing efforts to secure long-term copper concentrate sourcing. Management highlighted the potential for higher revenue and profitability from the dyes business with improved capacity utilization and pricing, though profitability remains constrained by operational and tax considerations. The company remains focused on executing its strategic roadmap and managing capital prudently.",
+                "tone_label": "Mixed",
+                "tone_note": "The document presents both positive developments in project progress and revenue growth, alongside challenges such as input cost pressures, litigation issues, and concerns about dividend policy."
+              },
+              "raw_output_chars": 1987,
+              "forward_tense_hits": {
+                "summary": [
+                  "...eployment over two years. Revenue from copper operations is expected to be captured in FY29-30, with debt repayment starting in ..."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Kiri Industries Limited reported Q1 FY27 earnings, highlighting progress on its integrated copper and fertilizer project, which moved into a structured construction phase with capital deployment from the group's strengthened financial position. The company noted improved pricing for dyes, dyes intermediates, and basic chemicals, supported by tighter global supply and environmental compliance in China, though input cost pressures persisted. Standalone material margins rose to 31.9%, driven by favorable pricing differentials. Revenue from operations reached INR 295 crore, up 63% YoY, with standalone EBITDA at INR 17 crore. Consolidated revenue was INR 312 crore, up 55% YoY, and EBITDA stood at INR 37 crore. The company emphasized disciplined execution of the copper and fertilizer projects, with phased commissioning of downstream facilities starting in FY28. Management addressed concerns about dividend declarations, stating no decision had been made yet, and outlined plans for phased capital deployment, with financial closure expected within months. The copper project's first revenue is expected in Q1 FY28, with full operational capacity targeted by FY30. Management also discussed challenges with the MCB Copper-Gold project, including shareholder disputes and litigation, and noted ongoing discussions about potential equity financing for the project.",
+                "tone_label": "Mixed",
+                "tone_note": "The document presents both positive developments in project progress and revenue growth, alongside challenges such as input cost pressures, litigation issues, and uncertainty around dividend declarations."
+              },
+              "raw_output_chars": 1627,
+              "forward_tense_hits": {
+                "summary": [
+                  "...plans for phased capital deployment, with financial closure expected within months. The copper project's first revenue is expect...",
+                  "...pected within months. The copper project's first revenue is expected in Q1 FY28, with full operational capacity targeted by FY30...",
+                  "...enue is expected in Q1 FY28, with full operational capacity targeted by FY30. Management also discussed challenges with the MCB ..."
+                ]
+              }
+            }
+          ],
+          "error": "failed validation after 3 attempts",
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 38698,
+          "completion_tokens": 1046,
+          "total_tokens": 39744,
+          "latency_sec": 110.2491,
+          "benchmark_id": "CC_KIRIINDUS_106747935"
+        },
+        {
+          "task": "concall_summary[concall_fewshot_v1]",
+          "fixture_id": "CC_MANYAVAR_106711176",
+          "ok": true,
+          "output": {
+            "summary": "Vedant Fashions Limited, through its investor presentation dated July 25, 2026, outlined its business operations, market position, and financial performance. The company, headquartered in Kolkata and incorporated in 2002, operates as a leading provider of Indian wedding and celebration wear for men, women, and children under its Manyavar, Mohey, Twamev, and Mebaz brands. The presentation highlighted its extensive retail network, including 501 EBOs (Exclusive Brand Outlets) across 205 Indian cities, along with SIS (Shop-in-shops) and international stores. Key financial highlights for Q1 FY27 included a 3.4% growth in retail sales, a 3.8% increase in domestic SSSG (Same-Store Sales Growth), a 7.2% rise in revenue from operations, and a 14.7% increase in PAT (Profit After Tax) with a PAT margin of 26.7%. The company emphasized its unique business model, technology-driven supply chain, and strong brand presence. It also outlined growth strategies, including retail expansion, brand marketing, and disciplined acquisitions. The presentation included details on its brand portfolio, marketing initiatives, and a long-term growth trajectory with industry-leading margins and cash generation. The company noted its awards and accolades, including recognition for marketing campaigns and employer branding.",
+            "tone_label": "Positive",
+            "tone_note": "The presentation emphasized strong financial performance, growth in key metrics, and confidence in the company's market position and strategies."
+          },
+          "attempts": 1,
+          "rejections": [],
+          "error": null,
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 7711,
+          "completion_tokens": 329,
+          "total_tokens": 8040,
+          "latency_sec": 35.0578,
+          "benchmark_id": "CC_MANYAVAR_106711176"
+        },
+        {
+          "task": "concall_summary[concall_fewshot_v1]",
+          "fixture_id": "CC_PNB_106702450",
+          "ok": false,
+          "output": {},
+          "attempts": 3,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'outlook'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit increasing by 213.6% year-over-year to \u20b95,253 crore and operating profit rising by 6.2% YoY to \u20b97,519 crore. The bank reported a 10.2% YoY growth in global business, with global deposits and advances rising by 8.5% and 12.7% respectively. Asset quality improved, with gross NPA declining by 100 bps YoY to 0.28% and net NPA dropping by 3 bps YoY to 0.28%. The bank's capital adequacy ratio (CRAR) stood at 14.58%, up 99 bps YoY. Digital initiatives showed progress, with PNB One activated users reaching 365 lakh and digital transactions hitting \u20b9357 crore in Q1 FY27. The bank also emphasized its ESG efforts, including green financing and sustainability initiatives. Management noted challenges from geopolitical uncertainties and inflationary pressures but expressed confidence in the bank's resilience. Guidance for FY2027 includes credit growth of 12-13%, deposit growth of 9-10%, and maintaining a CASA share of 38%.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial performance, improved asset quality, and progress in digital and ESG initiatives, indicating a positive outlook."
+              },
+              "raw_output_chars": 1265,
+              "forward_tense_hits": {
+                "tone_note": [
+                  "...gress in digital and ESG initiatives, indicating a positive outlook...."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'targets'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit increasing by 213.6% year-over-year to \u20b95,253 crore and operating profit rising by 6.2% YoY to \u20b97,519 crore. The bank reported a 10.2% YoY growth in global business, with global deposits and advances rising by 8.5% and 12.7% respectively. Asset quality improved, with gross NPA declining by 100 bps YoY to 0.28% and net NPA at 0.28%, down 3 bps YoY. The bank's capital adequacy ratio (CRAR) stood at 14.52%, up from 12.52% a year earlier. Digital initiatives showed progress, with PNB One activated users reaching 365 lakh and digital transactions hitting \u20b9357 crore in Q1 FY27. The bank also emphasized its ESG initiatives, including green financing and sustainability efforts. Management noted challenges from geopolitical uncertainties and inflationary pressures but expressed confidence in the bank's resilience. Guidance for FY2027 included targets for credit growth of 12%-13%, deposit growth of 9%-10%, and maintaining a CASA share of 38%.",
+                "tone_label": "Positive",
+                "tone_note": "The presentation highlights strong financial performance, improved asset quality, and progress in digital and ESG initiatives, indicating a positive tone."
+              },
+              "raw_output_chars": 1286,
+              "forward_tense_hits": {
+                "summary": [
+                  "...ence in the bank's resilience. Guidance for FY2027 included targets for credit growth of 12%-13%, deposit growth of 9%-10%, and..."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'targets'",
+              "text": {
+                "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit increasing by 213.6% year-over-year to \u20b95,253 crore and operating profit rising by 6.2% YoY to \u20b97,519 crore. The bank reported a 10.2% YoY growth in global business, with global deposits and advances rising by 8.5% and 12.7% respectively. Asset quality improved, with gross NPA declining by 100 bps YoY to 0.28% and net NPA dropping by 3 bps YoY to 0.28%. The bank's capital adequacy ratio (CRAR) stood at 14.52%, with CET-1 at 14.52%. Digital initiatives showed progress, including 365 lakh PNB One activated users and 357 crore digital transactions in Q1 FY27. The bank also emphasized ESG initiatives, including green financing and sustainability efforts. Management noted challenges from geopolitical uncertainties and inflationary pressures but expressed confidence in the bank's resilience. Guidance for FY2027 included targets for credit growth of 12%-13%, deposit growth of 9%-10%, and maintaining a CASA share of 38%.",
+                "tone_label": "Mixed",
+                "tone_note": "The document acknowledges challenges such as geopolitical uncertainties and inflationary pressures while highlighting strong financial performance and resilience."
+              },
+              "raw_output_chars": 1271,
+              "forward_tense_hits": {
+                "summary": [
+                  "...ence in the bank's resilience. Guidance for FY2027 included targets for credit growth of 12%-13%, deposit growth of 9%-10%, and..."
+                ]
+              }
+            }
+          ],
+          "error": "failed validation after 3 attempts",
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 64009,
+          "completion_tokens": 990,
+          "total_tokens": 64999,
+          "latency_sec": 214.2183,
+          "benchmark_id": "CC_PNB_106702450"
+        },
+        {
+          "task": "concall_summary[concall_fewshot_v1]",
+          "fixture_id": "CC_SDBL_106655906",
+          "ok": false,
+          "output": {},
+          "attempts": 3,
+          "rejections": [
+            {
+              "pass": 1,
+              "reason": "forward-tense word 'expected'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited (SDBL) reported a challenging FY2026, with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases, while IMFL business grew 32% to 15.03 lakh cases. Management attributed the decline to operational disruptions at the Bhopal facility, subdued demand in key markets like Karnataka and Odisha, and industry-wide inflationary pressures on inputs such as glass, aluminum, and barley. Despite these challenges, the company maintained healthy cash flows and is working on resolving the Bhopal license issue, with a renewed excise policy in Karnataka expected to improve competitiveness. The greenfield brewery in Uttar Pradesh (UP) is on track for commercial operations, with expected production of 15-20 lakh cases in FY2027. Management guided revenue for FY2027 between INR1,400 crores and INR1,500 crores, contingent on Bhopal's resolution. EBITDA margins for FY2027 were estimated at around 10%. The company emphasized cost optimization and premiumization to mitigate margin pressures. Investors were assured that the Bhopal plant would resume operations soon, with plans to recover lost market share in Madhya Pradesh and Karnataka. The UP plant's full capacity is 1 crore cases annually, with a 2-3 year ramp-up period. Management also noted ongoing efforts to improve compliance and governance, including appointing a dedicated compliance officer.",
+                "tone_label": "Mixed",
+                "tone_note": "The document highlights both challenges such as revenue decline and operational disruptions, as well as positive steps like the UP plant progress and confidence in resolving the Bhopal license issue."
+              },
+              "raw_output_chars": 1723,
+              "forward_tense_hits": {
+                "summary": [
+                  "...al license issue, with a renewed excise policy in Karnataka expected to improve competitiveness. The greenfield brewery in Uttar...",
+                  "...ar Pradesh (UP) is on track for commercial operations, with expected production of 15-20 lakh cases in FY2027. Management guided..."
+                ]
+              }
+            },
+            {
+              "pass": 2,
+              "reason": "forward-tense word 'expects'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited (SDBL) reported a challenging FY2026, with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases, while IMFL business grew 32% to 15.03 lakh cases. Management attributed the decline to temporary disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Input costs for glass, aluminum, barley, and logistics remained under pressure, impacting margins. Despite this, the company maintained healthy cash flows and is working on license renewal for the Bhopal facility. The greenfield brewery in Uttar Pradesh (UP) is on track for commercial operations, with INR250 crores invested in the project. Management set a goal of achieving revenue between INR1,400 crores and INR1,500 crores for FY2027, contingent on resolving the Bhopal license issue and the UP plant's performance. The company also noted improved market share in Tamil Nadu and expects better results in Karnataka following excise duty rationalization. Management emphasized cost optimization and premiumization to mitigate margin pressures and expressed confidence in recovering lost market share in Madhya Pradesh once the Bhopal plant resumes operations. The company highlighted plans to appoint a dedicated compliance officer to prevent future regulatory issues.",
+                "tone_label": "Mixed",
+                "tone_note": "The summary reflects both challenges faced in FY2026 and management's confidence in future recovery and growth initiatives."
+              },
+              "raw_output_chars": 1565,
+              "forward_tense_hits": {
+                "summary": [
+                  "... company also noted improved market share in Tamil Nadu and expects better results in Karnataka following excise duty rationali..."
+                ]
+              }
+            },
+            {
+              "pass": 3,
+              "reason": "forward-tense word 'expects'",
+              "text": {
+                "summary": "Som Distilleries & Breweries Limited (SDBL) reported a challenging FY2026, with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA falling to INR89.7 crores. Beer volumes dropped 20% to 187.19 lakh cases, while IMFL business grew 32% to 15.03 lakh cases. Management attributed the decline to temporary disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Input costs for glass, aluminum, barley, and logistics remained under pressure, impacting margins across the industry. Despite this, the company maintained healthy cash flows and is working on license renewal for the Bhopal facility, with management expressing confidence in a favorable resolution. The greenfield brewery in Uttar Pradesh is on track for commercial operations, with INR250 crores invested in the project. For FY2027, management guided toward revenue between INR1,400 crores and INR1,500 crores, contingent on Bhopal's license resolution and improved market conditions. The company also noted improved offtake trends in Karnataka following excise duty rationalization and expects volume recovery in key regions. Management emphasized cost optimization and premiumization initiatives to mitigate margin pressures. Regarding FY2028, management deferred providing guidance due to ongoing macroeconomic uncertainties and inflationary pressures on key inputs.",
+                "tone_label": "Mixed",
+                "tone_note": "The document highlights both challenges such as revenue decline and operational disruptions, alongside management's confidence in resolving issues and future growth plans."
+              },
+              "raw_output_chars": 1610,
+              "forward_tense_hits": {
+                "summary": [
+                  "...ends in Karnataka following excise duty rationalization and expects volume recovery in key regions. Management emphasized cost ..."
+                ]
+              }
+            }
+          ],
+          "error": "failed validation after 3 attempts",
+          "json_repair_used": false,
+          "structured_output_used": true,
+          "structured_output_mode": "json_schema",
+          "model": "qwen3-14b-awq-tp2",
+          "backend": "vllm-inprocess",
+          "prompt_tokens": 35263,
+          "completion_tokens": 1099,
+          "total_tokens": 36362,
+          "latency_sec": 101.8275,
+          "benchmark_id": "CC_SDBL_106655906"
+        }
+      ]
+    }
+  }
+}
