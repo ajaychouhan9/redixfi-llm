@@ -249,3 +249,72 @@ def test_main_validates_fixtures_before_expensive_steps(kr):
         "fixtures existence is not checked before step 1 in main()"
     )
     assert "args.skip_benchmark" in src.split("STEP 1")[0]
+
+
+# --------------------------------------------------------------------------
+# Regression: the EXACT reported failure — stale-code chdir into a path
+# that was never created.
+# --------------------------------------------------------------------------
+def test_never_chdirs_into_a_nonexistent_working_dir_with_the_reported_dataset(
+    tmp_path, monkeypatch,
+):
+    """Reproduces the founder's exact report, literally:
+
+      dataset path : /kaggle/input/datasets/ajaychouhan9/
+                      redixfi-llm-evaluation-2026/llm_project
+      failure      : FileNotFoundError: No such file or directory:
+                      '/kaggle/working/LLM'
+
+    Critically, /kaggle/working/LLM is NOT created anywhere in this test —
+    no `mkdir -p` step, matching the current runbook's self-locating one-cell
+    invocation, which stages nothing. If _resolve_project_root ever again
+    returned an unresolved/hardcoded path instead of the located one, this
+    test would fail with FileNotFoundError on the os.chdir call below, the
+    same way the real run did.
+    """
+    fake_input = tmp_path / "kaggle" / "input"
+    nested = (fake_input / "datasets" / "ajaychouhan9" /
+             "redixfi-llm-evaluation-2026" / "llm_project")
+    _make_project(str(nested))
+
+    working = tmp_path / "kaggle" / "working"
+    working.mkdir(parents=True)
+    staging_dir = working / "LLM"
+    assert not staging_dir.exists(), "test setup error: staging dir must NOT pre-exist"
+
+    isolated = _load_isolated_copy(tmp_path, name="isolated_regression")
+    monkeypatch.setattr(isolated, "_INPUT_PREFIX", str(fake_input))
+    monkeypatch.setattr(isolated, "_STAGING_DIR", str(staging_dir))
+    monkeypatch.setattr(isolated, "_SEARCH_BASES", (str(fake_input), str(working)))
+
+    # No --repo-dir passed, exactly like the runbook's one-liner cell.
+    resolved = isolated._resolve_project_root(None)
+
+    # The actual assertion this whole bug is about: the resolved path must
+    # exist BEFORE anything tries to chdir into it.
+    assert os.path.isdir(resolved), (
+        f"_resolve_project_root returned {resolved!r}, which does not exist — "
+        "this is precisely the condition that caused the reported "
+        "FileNotFoundError"
+    )
+    os.chdir(resolved)  # must not raise
+
+    # And it must have landed in the writable staging dir (copied off the
+    # read-only-shaped input mount), not stayed on the "read-only" nested
+    # dataset path.
+    assert os.path.abspath(resolved) == os.path.abspath(str(staging_dir))
+    assert isolated._has_app(resolved)
+
+
+def test_main_guards_chdir_with_an_explicit_existence_check(kr):
+    """Defense in depth: even though _resolve_project_root cannot currently
+    return a nonexistent path, main() must not hand a bare os.chdir() a
+    value it has not itself verified — a future regression (or, as
+    happened, code drift between what's committed and what actually runs
+    on Kaggle) must die() with a clear message, not a raw traceback."""
+    import inspect
+    src = inspect.getsource(kr.main)
+    before_chdir = src.split("os.chdir(repo_dir)")[0]
+    assert "os.path.isdir(repo_dir)" in before_chdir, (
+        "main() no longer verifies repo_dir exists immediately before chdir'ing into it"
+    )

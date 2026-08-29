@@ -231,6 +231,25 @@ def main():
     args = ap.parse_args()
 
     repo_dir = _resolve_project_root(args.repo_dir)
+
+    # Belt-and-suspenders: _resolve_project_root() cannot currently return a
+    # path that doesn't exist (every branch either verifies a marker file
+    # first or shutil.copytree's one into existence), but a bare os.chdir()
+    # on a bad path raises a raw, undiagnosable FileNotFoundError — exactly
+    # what happened when a STALE kaggle_run.py (predating this whole
+    # auto-detection fix) was executed from an old dataset snapshot and fell
+    # through to its old hardcoded `args.repo_dir` default of
+    # "/kaggle/working/LLM", which nothing had created. Checking explicitly
+    # here means ANY future regression of that kind — including "the code
+    # running on Kaggle is not actually this version" — dies with a clear,
+    # actionable message instead of a bare traceback three lines in.
+    if not os.path.isdir(repo_dir):
+        die(0, f"resolved project root does not exist: {repo_dir}",
+            "This should be impossible given the current _resolve_project_root() "
+            "logic. If you see this, the code actually executing on Kaggle is "
+            "NOT this version of kaggle_run.py — re-clone/re-upload the latest "
+            "commit rather than reusing a cached dataset or notebook copy.")
+
     sys.path.insert(0, repo_dir)
     os.chdir(repo_dir)
     print(f"[{elapsed()}] project root: {repo_dir}", flush=True)

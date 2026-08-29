@@ -48,3 +48,8 @@ venv/
 .vscode/
 .idea/
 *.log
+
+# kaggle_run.py's _save() fallback writes here when /kaggle/working is
+# unavailable (e.g. a local test exercising die() on a dev machine) —
+# debris, never a deliverable.
+/kaggle_run_state.json
