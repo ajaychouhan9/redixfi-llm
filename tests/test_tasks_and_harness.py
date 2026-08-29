@@ -375,7 +375,19 @@ def test_registry_never_offers_bfloat16_to_a_t4():
         assert spec.dtype == "float16", (
             f"{name} requests {spec.dtype}; T4 (Turing) has no bf16 datapath"
         )
-        assert spec.quantization == "awq", f"{name} must be quantized to fit 16 GB cards"
+        # The rule is "low-bit enough to fit a 16 GB card AND executable on
+        # Turing", not "literally AutoAWQ". compressed-tensors int4 qualifies:
+        # its W4A16 scheme reports get_min_capability()==75 in vLLM 0.28.0,
+        # commented "Turing and up". Anything outside this set (fp8, nvfp4,
+        # modelopt) needs Ampere+ and must not reach a T4 run.
+        assert spec.quantization in ("awq", "gptq", "compressed-tensors"), (
+            f"{name} uses {spec.quantization!r}; must be a low-bit method that "
+            "fits 16 GB cards and runs on compute capability 7.5"
+        )
+        assert spec.max_model_len <= 65536, (
+            f"{name} asks for {spec.max_model_len} context; KV cache on two "
+            "16 GB cards cannot back that"
+        )
 
 
 def test_registry_serve_args_are_well_formed():
