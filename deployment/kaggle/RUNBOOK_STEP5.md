@@ -197,21 +197,101 @@ was set.
 
 ### RESULTS
 
-_Filled in when the run lands. Baselines to beat: annual_report **17/20
-generated, 3 compliance failures**; concall **15/20 generated, 5 compliance
-failures, tone agreement 0.7333**._
+| Run | Generated | Compliance fails | Tone agreement |
+|---|---|---|---|
+| annual_report **baseline** | 17 / 20 | 3 | — |
+| annual_report **+ retry fix** | **18 / 20** | **2** | — |
+| concall **baseline** | 15 / 20 | 5 | 0.7333 |
+| concall **+ retry fix** | **17 / 20** | **3** | 0.7059 |
+| concall **+ retry fix + steering** | **14 / 20** | **6** | 0.7857 |
+
+GPU: **68.9 min** of generation (44.9 benchmark + 24.0 steered), 77 min
+total kernel wall time including install and model load. 67.3 s/case.
+`json_repair_used` 0/40, `guided_and_clean` 40/40 — guided decoding held.
+
+### ⚠️ The finding that governs how to read the table above
+
+**Generation on this hardware is not reproducible run-to-run, even at
+`temperature=0` with a fixed seed.** Attempt 1 uses identical settings and
+an identical prompt in every run, so it should be byte-identical. It is
+not. Re-running the same fixtures:
+
+| | attempt-1 output differed | attempt-1 pass/fail **flipped** |
+|---|---|---|
+| annual_report | 4 / 20 | **1** |
+| concall | 7 / 20 | **3** |
+
+The likely cause is continuous batching and non-deterministic reduction
+order across the two T4s, not the sampling settings.
+
+**So the improvements — annual report +1, concall +2 — sit inside the
+noise floor of the measurement.** They are the right direction, and they
+are not evidence of a real gain at n=20. Anyone reading `17 → 18` as "the
+fix works" is reading noise. Establishing a real effect needs repeated
+runs, or a larger fixture, or both.
+
+`CC_ALKYLAMINE` illustrates this directly: it passed on attempt 1 in the
+baseline and failed on attempt 1 in the re-test, under identical settings.
+That regression is nondeterminism, not the change.
+
+### What IS established, independent of the counts
+
+The mechanism does what it was built to do, confirmed from recorded raw
+generations rather than assumed:
+
+* Attempt 1 recorded `temperature=0.0, seed=0`; attempt 2 recorded
+  `temperature=0.4, seed=1000`, exactly as designed.
+* Retry text is genuinely different — similarity 0.04–0.36 across sampled
+  cases, against the 1.000 identical regenerations seen in the baseline.
+* The directive note is obeyed literally. AR_BAJFINANCE attempt 1 wrote
+  *"a 22% increase in consolidated AUM to C 509,975 crore"*; after the note
+  quoted that clause, attempt 2 wrote *"crossing a major milestone in
+  consolidated AUM"* — figure removed, meaning kept.
+
+### Content steering (change 3) made things WORSE — reported as measured
+
+17 → 14 generated, 4 newly failing against 1 repaired. That is a larger
+delta than the noise floor in the unfavourable direction, so unlike the
+improvements it is unlikely to be pure noise. Tone agreement did rise
+(0.7059 → 0.7857) and latency rose 13 s/case on the longer prompt.
+
+The steering partly worked: SIGACHI produced *"the Dahej-2 capacity
+expansion is progressing on schedule, aiming to elevate total MCC capacity
+to 30,000 MTPA"* — almost exactly the taught exemplar. It then tripped
+`target` elsewhere in the same summary.
+
+**Leading hypothesis — negation priming.** Forbidden-word mentions in the
+system prompt track with failures in the wrong direction:
+
+| Prompt | Chars | Forbidden-word mentions | Result |
+|---|---|---|---|
+| production | 2,370 | 14 | 15/20 → 17/20 with retry fix |
+| `concall_fewshot_v1` | 3,920 | 27 | repaired 1 of 5 |
+| `concall_steered_v2` | 5,709 | 28 | **14/20** |
+
+Every prompt that teaches the rule by *naming* the banned vocabulary and
+showing WRONG examples appears to raise that vocabulary's probability.
+This is correlational across three prompts at n=20 with known
+nondeterminism — a hypothesis, not a result. The testable next version
+teaches **only** the positive constructions and never enumerates a
+forbidden word.
 
 ---
 
-## Known next refinement, if annual report does not move
+## Next steps, in the order the evidence supports them
 
-All 3 annual-report failures are the **financial-figure** rule
-(`22%`, `19%`, `rs,`), not forward tense. That rule bans the *quantity
-itself* — the prompt's own remedy is "describe direction or theme in words
-only" — and the regenerated gpt-4o-mini references comply by staying
-entirely qualitative.
+1. **Establish the noise floor properly** before trusting any further
+   delta: run the same fixture 3× unchanged and record the spread. Every
+   conclusion below depends on knowing it.
+2. **Positive-only steering prompt** — the priming hypothesis is the
+   clearest lead and is cheap to test.
+3. **Financial-figure directive note.** Both remaining annual-report
+   failures are that rule (`rs,`, `22%`), not forward tense. It bans the
+   quantity itself; the prompt's own remedy is "describe direction or
+   theme in words only", and the regenerated gpt-4o-mini references comply
+   by staying entirely qualitative. The note currently gives a generic
+   "remove that term" instead of that specific remedy.
 
-The directive note currently gives a generic "remove that term" for this
-case rather than the prompt's specific remedy. If the annual-report number
-does not move, that is the first thing to fix, and it is a prompt-side
-change, not a model verdict.
+None of this makes either category production-ready, and this document
+does not claim it. That judgement is the founder's after reading the
+sheets.

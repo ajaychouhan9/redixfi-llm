@@ -116,6 +116,21 @@ def main() -> None:
              "suggested reading order; every quality judgement lives in the "
              "blank HUMAN REVIEW NOTES tables inside the per-case sheets.\n")
     L.append(f"_Generated {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC_\n")
+    L.append("> ## ⚠️ Read this before comparing any two runs\n"
+             ">\n"
+             "> **Generation on this hardware is NOT reproducible run-to-run, "
+             "even at `temperature=0` with a fixed seed.** Measured directly by "
+             "re-running the same fixtures with identical settings: attempt-1 "
+             "output differed on **4 of 20** annual-report cases and **7 of 20** "
+             "concall cases, and the attempt-1 pass/fail verdict itself flipped "
+             "on **1** annual-report and **3** concall cases. The likely cause is "
+             "continuous batching and non-deterministic reduction order across "
+             "the two T4s, not the sampling settings.\n"
+             ">\n"
+             "> **Consequence: at n=20, a difference of ±1–3 cases between runs "
+             "is inside the noise floor and must not be read as an improvement "
+             "or a regression.** Only larger, repeated differences carry signal. "
+             "This applies to every before/after number in this index.\n")
 
     L.append("## What ran\n")
     L.append("| Category | Cases | Generated | Compliance fails (Qwen) | "

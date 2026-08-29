@@ -1,21 +1,26 @@
-# Evaluation review sheet — concall_summary
+# Review sheet — concall_summary
 
-> **EXPERIMENTAL / NOT PRODUCTION.** Nothing here is evidence that the candidate model is fit for use. The objective columns below are mechanical checks; every quality judgement is left blank for a human reviewer, by design.
+> **EXPERIMENTAL / NOT PRODUCTION.** This file is evidence for a human to review, not a verdict. No quality score is computed anywhere in it, and no LLM judge was used. The candidate model is NOT declared better or worse than gpt-4o-mini by this tooling.
+
+> ⚠️ **`echo` backend — NO MODEL WAS CONSULTED.** These results validate the harness only and are not a model comparison.
 
 ## Run configuration
 
-- **Model:** `qwen3-14b-awq`
-- **Weights:** `Qwen/Qwen3-14B-AWQ` (quantization: `awq`, dtype: `float16`, TP: 1, max_model_len: 16384)
-- **Backend:** `echo`
-- **Sampling:** temperature=0.0, max_tokens=1024, seed=0
-- **Fixture:** `fixtures/sample_concall_summary.json` (exported 2026-08-28T10:12:25.577874+00:00)
-- **Cases run:** 1 of 1
-- **LLM project commit:** `b422751`
-- **Run id:** `20260828T101420Z` (2026-08-28T10:14:20.642888+00:00)
+| | |
+|---|---|
+| Model | `qwen3-14b-awq` |
+| Weights | `Qwen/Qwen3-14B-AWQ` |
+| Quantization / dtype | `awq` / `float16` |
+| Tensor parallel | 1 |
+| Context length | 16384 |
+| Backend | `echo` |
+| Sampling | temperature=0.0, max_tokens=1024, seed=0 |
+| Fixture | `fixtures/sample_concall_summary.json` |
+| Cases | 1 of 1 |
+| Run id | `20260828T101420Z` (2026-08-28T10:14:20.642888+00:00) |
+| LLM project commit | `b422751` |
 
-> ⚠️ **This run used the `echo` backend.** No model was consulted. These results validate the harness only and must never be read as a model comparison.
-
-## Objective signals (mechanical, no judgement)
+## Objective signals (mechanical only — no judgement)
 
 | Metric | Value |
 |---|---|
@@ -35,49 +40,91 @@
 | tone_confusion | Positive->Neutral=1 |
 | mean_lexical_overlap | 0.4348 |
 
-## Side-by-side cases
+## Cases
 
-### 1. `SAMPLECO` — fixture `CC_SAMPLECO_CC-0001`
+---
 
-**REFERENCE (production, gpt-4o-mini)** — refused=None
+### Case 1 — `CC_SAMPLECO_CC-0001`
 
-_(empty)_
+#### SOURCE / EVIDENCE
 
-**CANDIDATE** — refused=None
+- **Symbol:** SAMPLECO
+- **Company:** Sample Industries Limited
+- **Filing id:** CC-0001
+- **Doc type:** concall_transcript
+- **Doc kind:** earnings concall transcript
 
-_(empty)_
+- **Reference pipeline:** `concall_front_slice` · model `gpt-4o-mini` · prompt `concall_summarizer@8bb3170`
+- **Recorded limitations:**
+  - SYNTHETIC — not production data.
 
-**Compliance —** candidate: ✅ pass · reference: ✅ pass
+#### OLD — GPT-4o-mini OUTPUT (production reference)
 
-**Lexical overlap:** 0.4348 _(triage aid only — not a quality score)_
+**tone_label:** `Positive`
 
-**Human review** — fill this in:
+**summary**
 
-| Criterion | Reference (OpenAI) | Candidate | Notes |
-|---|---|---|---|
-| factual correctness |  |  |  |
-| numerical accuracy |  |  |  |
-| financial terminology |  |  |  |
-| evidence grounding |  |  |  |
-| hallucination (none = good) |  |  |  |
-| completeness |  |  |  |
-| relevance |  |  |  |
-| reasoning quality |  |  |  |
-| source/citation correctness |  |  |  |
-| risk identification accuracy |  |  |  |
-| consistency |  |  |  |
-| formatting |  |  |  |
-| usefulness to an investor |  |  |  |
+Management reported that the Company commissioned a second line at its western facility during the quarter. The presentation described demand from domestic infrastructure customers as the largest contributor to order intake, and management noted that input cost pressure eased relative to the previous quarter. Management also described the local sourcing programme as extended to further component categories.
+
+**tone_note**
+
+Management emphasised commissioning progress and easing input costs in describing the quarter.
+
+#### NEW — QWEN OUTPUT (`qwen3-14b-awq`)
+
+**tone_label:** `Neutral`
+
+**summary**
+
+Management reported on operating activity during the period. The document described commissioning progress at the company's facilities and management said demand from domestic customers remained the largest contributor to order intake. Management also described the sourcing programme as extended to further component categories during the quarter under review.
+
+**tone_note**
+
+Management described operating activity in even terms without emphasising either strength or weakness.
+
+#### OBJECTIVE VALIDATION
+
+| Check | Result |
+|---|---|
+| Generation succeeded | ✅ yes |
+| Attempts used | 1 |
+| Compliance — **Qwen** | ✅ PASS |
+| Compliance — reference (gpt-4o-mini) | ✅ PASS |
+| tone_label — reference | `Positive` |
+| tone_label — Qwen | `Neutral` |
+| tone_label valid (closed set) | ✅ |
+| tone_label agrees | ❌ no |
+| Lexical overlap | 0.4348 _(triage aid, NOT a score)_ |
+| Output shape | unguided, but output parsed cleanly |
+| Structured mode | `none` |
+| Latency | 0.0 s |
+| Input / output tokens | 752 / 130 |
+| Tokens/sec (output) | 0.0 |
+
+#### HUMAN REVIEW NOTES
+
+| Dimension | What to look for | Qwen | Reference | Notes |
+|---|---|---|---|---|
+| **factual quality** | Are the stated facts correct against the source? |  |  |  |
+| **evidence grounding** | Is every claim traceable to the supplied evidence? |  |  |  |
+| **completeness** | Are the important points from the evidence covered? |  |  |  |
+| **hallucination** | Anything asserted that is NOT in the evidence? (none = good) |  |  |  |
+| **numerical accuracy** | Any figure stated, and is it right? (AR: figures are forbidden) |  |  |  |
+| **readability** | Would an investor find it clear and usable? |  |  |  |
+| **compliance** | Beyond the regex: any forward-looking or advice-like tone? |  |  |  |
+
+**Case verdict (ACCEPTABLE / NOT ACCEPTABLE / INCONCLUSIVE):** ______
 
 
 ---
 
-## Reviewer verdict
+## Overall reviewer verdict
 
-After completing the tables above, record ONE of:
+Fill this in only AFTER completing the per-case tables above.
 
-- **ACCEPTABLE** — quality is close enough to production to justify a narrow, reversible pilot on one workload.
-- **NOT ACCEPTABLE** — name the specific failure mode.
-- **INCONCLUSIVE** — say what additional cases would settle it.
+- **Verdict (ACCEPTABLE / NOT ACCEPTABLE / INCONCLUSIVE):** ______
+- **If NOT ACCEPTABLE — the specific failure mode:** ______
+- **If INCONCLUSIVE — what additional cases would settle it:** ______
+- **Reviewer:** ______   **Date:** ______
 
-Verdict: _______   Reviewer: _______   Date: _______
+This was a small sample. It cannot establish production-readiness regardless of how good the outputs look.

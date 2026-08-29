@@ -1,21 +1,26 @@
-# Evaluation review sheet — annual_report_summary_legacy
+# Review sheet — annual_report_summary_legacy
 
-> **EXPERIMENTAL / NOT PRODUCTION.** Nothing here is evidence that the candidate model is fit for use. The objective columns below are mechanical checks; every quality judgement is left blank for a human reviewer, by design.
+> **EXPERIMENTAL / NOT PRODUCTION.** This file is evidence for a human to review, not a verdict. No quality score is computed anywhere in it, and no LLM judge was used. The candidate model is NOT declared better or worse than gpt-4o-mini by this tooling.
+
+> ⚠️ **`echo` backend — NO MODEL WAS CONSULTED.** These results validate the harness only and are not a model comparison.
 
 ## Run configuration
 
-- **Model:** `qwen3-14b-awq`
-- **Weights:** `Qwen/Qwen3-14B-AWQ` (quantization: `awq`, dtype: `float16`, TP: 1, max_model_len: 16384)
-- **Backend:** `echo`
-- **Sampling:** temperature=0.0, max_tokens=1024, seed=0
-- **Fixture:** `fixtures/sample_annual_report_summary.json` (exported 2026-08-28T10:12:25.577874+00:00)
-- **Cases run:** 1 of 1
-- **LLM project commit:** `b422751`
-- **Run id:** `20260828T101419Z` (2026-08-28T10:14:19.186552+00:00)
+| | |
+|---|---|
+| Model | `qwen3-14b-awq` |
+| Weights | `Qwen/Qwen3-14B-AWQ` |
+| Quantization / dtype | `awq` / `float16` |
+| Tensor parallel | 1 |
+| Context length | 16384 |
+| Backend | `echo` |
+| Sampling | temperature=0.0, max_tokens=1024, seed=0 |
+| Fixture | `fixtures/sample_annual_report_summary.json` |
+| Cases | 1 of 1 |
+| Run id | `20260828T101419Z` (2026-08-28T10:14:19.186552+00:00) |
+| LLM project commit | `b422751` |
 
-> ⚠️ **This run used the `echo` backend.** No model was consulted. These results validate the harness only and must never be read as a model comparison.
-
-## Objective signals (mechanical, no judgement)
+## Objective signals (mechanical only — no judgement)
 
 | Metric | Value |
 |---|---|
@@ -32,51 +37,95 @@
 | quality_verdict | NOT COMPUTED — requires human review, by design |
 | mean_lexical_overlap | 0.25 |
 
-## Side-by-side cases
+## Cases
 
-### 1. `SAMPLECO` — fixture `AR_SAMPLECO_SAMPLE-0001`
+---
 
-**Fiscal year:** FY2024-25
+### Case 1 — `AR_SAMPLECO_SAMPLE-0001`
 
-**REFERENCE (production, gpt-4o-mini)** — refused=None
+#### SOURCE / EVIDENCE
 
-_(empty)_
+- **Symbol:** SAMPLECO
+- **Company:** Sample Industries Limited
+- **Fiscal year:** FY2024-25
+- **Filing id:** SAMPLE-0001
+- **Doc type:** annual_report
 
-**CANDIDATE** — refused=None
+- **Reference pipeline:** `legacy_front_slice_pre_evidence_finder` · model `gpt-4o-mini` · prompt `annual_report_summarizer@2026-08-16`
+- **Recorded limitations:**
+  - SYNTHETIC — not production data.
 
-_(empty)_
+#### OLD — GPT-4o-mini OUTPUT (production reference)
 
-**Compliance —** candidate: ✅ pass · reference: ✅ pass
+**summary**
 
-**Lexical overlap:** 0.25 _(triage aid only — not a quality score)_
+The annual report of Sample Industries Limited for FY2024-25 outlined management's focus on consolidating manufacturing capacity across its three reportable segments. Management said the local sourcing programme was extended to further component categories during the year.
 
-**Human review** — fill this in:
+**bullets**
 
-| Criterion | Reference (OpenAI) | Candidate | Notes |
-|---|---|---|---|
-| factual correctness |  |  |  |
-| numerical accuracy |  |  |  |
-| financial terminology |  |  |  |
-| evidence grounding |  |  |  |
-| hallucination (none = good) |  |  |  |
-| completeness |  |  |  |
-| relevance |  |  |  |
-| reasoning quality |  |  |  |
-| source/citation correctness |  |  |  |
-| risk identification accuracy |  |  |  |
-| consistency |  |  |  |
-| formatting |  |  |  |
-| usefulness to an investor |  |  |  |
+- Management described a focus on consolidating manufacturing capacity
+- The report stated the local sourcing programme was extended
+- Commissioning work was described at two facilities
+
+**key_takeaway**
+
+The report centred on management's stated consolidation of manufacturing capacity and local sourcing.
+
+#### NEW — QWEN OUTPUT (`qwen3-14b-awq`)
+
+**summary**
+
+The report described the company's stated priorities across its operating segments. Management said it focused on capacity, governance and sustainability during the period.
+
+**bullets**
+
+- Management described a focus on capacity and operational resilience
+- The report stated continued investment in sustainability programmes
+- Management said governance practices were reviewed during the year
+
+**key_takeaway**
+
+The report centred on management's stated operating priorities for the period.
+
+#### OBJECTIVE VALIDATION
+
+| Check | Result |
+|---|---|
+| Generation succeeded | ✅ yes |
+| Attempts used | 1 |
+| Compliance — **Qwen** | ✅ PASS |
+| Compliance — reference (gpt-4o-mini) | ✅ PASS |
+| Lexical overlap | 0.25 _(triage aid, NOT a score)_ |
+| Output shape | unguided, but output parsed cleanly |
+| Structured mode | `none` |
+| Latency | 0.0 s |
+| Input / output tokens | 672 / 127 |
+| Tokens/sec (output) | 0.0 |
+
+#### HUMAN REVIEW NOTES
+
+| Dimension | What to look for | Qwen | Reference | Notes |
+|---|---|---|---|---|
+| **factual quality** | Are the stated facts correct against the source? |  |  |  |
+| **evidence grounding** | Is every claim traceable to the supplied evidence? |  |  |  |
+| **completeness** | Are the important points from the evidence covered? |  |  |  |
+| **hallucination** | Anything asserted that is NOT in the evidence? (none = good) |  |  |  |
+| **numerical accuracy** | Any figure stated, and is it right? (AR: figures are forbidden) |  |  |  |
+| **readability** | Would an investor find it clear and usable? |  |  |  |
+| **compliance** | Beyond the regex: any forward-looking or advice-like tone? |  |  |  |
+
+**Case verdict (ACCEPTABLE / NOT ACCEPTABLE / INCONCLUSIVE):** ______
 
 
 ---
 
-## Reviewer verdict
+## Overall reviewer verdict
 
-After completing the tables above, record ONE of:
+Fill this in only AFTER completing the per-case tables above.
 
-- **ACCEPTABLE** — quality is close enough to production to justify a narrow, reversible pilot on one workload.
-- **NOT ACCEPTABLE** — name the specific failure mode.
-- **INCONCLUSIVE** — say what additional cases would settle it.
+- **Verdict (ACCEPTABLE / NOT ACCEPTABLE / INCONCLUSIVE):** ______
+- **If NOT ACCEPTABLE — the specific failure mode:** ______
+- **If INCONCLUSIVE — what additional cases would settle it:** ______
+- **Reviewer:** ______   **Date:** ______
 
-Verdict: _______   Reviewer: _______   Date: _______
+This was a small sample. It cannot establish production-readiness regardless of how good the outputs look.
