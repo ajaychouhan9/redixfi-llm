@@ -42,11 +42,12 @@ get there. Both facts are worth knowing; conflating them is not.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from ..compliance.validators import FORWARD_TENSE_RE
 from ..inference.base import Backend, GenerationRequest, Message
 from ..prompts import concall_summary as prod_prompt
+from ..prompts import concall_summary_fewshot_bank as fewshot_bank_prompt
 from ..prompts import concall_summary_markdown_fairness as markdown_prompt
 from ..prompts import concall_summary_steered as steered_prompt
 from ..prompts import concall_summary_variant as variant_prompt
@@ -66,6 +67,14 @@ class Variant:
     description: str
     # Defaults to production so a variant varies ONLY what it names.
     policy: RetryPolicy = PRODUCTION_POLICY
+    # Every prior variant here varied only the SYSTEM prompt, using
+    # prod_prompt.build_user_content(fixture, corrective_note) unconditionally
+    # for the user message. Retrieved few-shot examples are dynamic PER CASE
+    # content, which belongs in the user message, not a static system string
+    # — so this is a hook, not a second system-prompt mechanism. None means
+    # "use production's user-content builder", so every existing variant's
+    # behaviour is unchanged by this field's addition.
+    user_content_fn: Optional[Callable[[Dict[str, Any], Optional[str]], str]] = None
 
 
 def production_variant() -> Variant:
@@ -184,6 +193,47 @@ def markdown_fairness_variant() -> Variant:
     )
 
 
+def fewshot_bank_variant(
+    bank_entries: List[Dict[str, Any]],
+    policy: RetryPolicy = IMPROVED_POLICY,
+    max_attempts: Optional[int] = None,
+    k: int = 2,
+) -> Variant:
+    """Retrieval-augmented few-shot: the SYSTEM prompt is UNMODIFIED
+    production; the user message gets 1-2 REAL prior validated examples,
+    retrieved by similarity from `bank_entries`, prepended before the
+    current case. No forbidden vocabulary is named anywhere in this
+    variant — a deliberate contrast with every other prompt change tried
+    this session, all of which named forbidden words or added rules.
+
+    `bank_entries` is passed in (not loaded internally) so the caller
+    controls exactly which snapshot of the bank is used — important for a
+    leave-one-out test, where the SAME bank is reused per case but the
+    current case's own id is excluded at retrieval time inside
+    `build_variant_user_content`, not by pre-filtering the bank here.
+
+    Defaults to IMPROVED_POLICY and max_attempts=None (falls back to
+    production's 3) so this can be composed with the retry-budget fix if
+    desired, or tested against the production retry budget alone — the
+    caller decides which comparison this run is meant to isolate."""
+    return Variant(
+        name=fewshot_bank_prompt.VARIANT_NAME,
+        system_prompt=fewshot_bank_prompt.SYSTEM_PROMPT,   # == production, unmodified
+        max_attempts=max_attempts or prod_prompt.MAX_ATTEMPTS,
+        description=(f"Production SYSTEM prompt, completely unmodified. Only "
+                     f"the user message differs: up to {k} REAL validated "
+                     "prior successes, retrieved by jaccard similarity from "
+                     "the accumulating example bank, prepended before the "
+                     "current document. No forbidden vocabulary is named "
+                     "anywhere — the examples are positive demonstrations "
+                     "only, testing a mechanism different from every other "
+                     "prompt change tried this session."),
+        policy=policy,
+        user_content_fn=lambda fixture, note: fewshot_bank_prompt.build_variant_user_content(
+            fixture, bank_entries, note, k=k),
+    )
+
+
 def run_variant(
     backend: Backend,
     fixture: Dict[str, Any],
@@ -210,10 +260,13 @@ def run_variant(
         # retries vary, and only under a policy that says so.
         attempt_temperature = variant.policy.temperature_for(attempt, temperature)
         attempt_seed = variant.policy.seed_for(attempt, seed)
+        user_content = (variant.user_content_fn(fixture, corrective_note)
+                        if variant.user_content_fn is not None
+                        else prod_prompt.build_user_content(fixture, corrective_note))
         request = GenerationRequest(
             messages=[
                 Message("system", variant.system_prompt),
-                Message("user", prod_prompt.build_user_content(fixture, corrective_note)),
+                Message("user", user_content),
             ],
             model=model, temperature=attempt_temperature, max_tokens=max_tokens,
             seed=attempt_seed, json_mode=True, json_schema=schema,

@@ -1,0 +1,282 @@
+[
+  {
+    "benchmark_id": "CC_BATAINDIA_106539458",
+    "added_at": "2026-08-30T05:31:20.235268+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Bata India Limited BATAINDIA earnings concall transcript BATA INDIA LIMITED \nCIN: L19201WB1931PLC007261 \nRegistered Office: 27B, Camac Street, 1st Floor, Kolkata-700016, West Bengal II Tel.: (033) 22895796 II Fax: (033) 22895748 \nE-mail: in-customer.service@bata.com II Website: www.bata.in \n \n      February 18, 2026 \n \nThe Manager, CRD \nBSE Limited \nP J Towers, Dalal Street, Fort, \nMumbai - 400001 \nThe Manager, Listing Department \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor,  \nPlot No. C-1, Block G, BKC, Bandra (E), \nMumbai - 400051     \n \nThe Secretary \nThe \nCalcutta \nStock \nExchange \nLimited \n7, Lyons Range, \nKolkata - 700001 \nBSE Security Code: 500043 \nNSE Symbol: BATAINDIA  \nCSE Scrip Code: 10000003  \n \nDear Sir/Madam, \n \nSubject: Post Earnings Call  \nThis is further to our letters dated January 28, 2026, February 12,",
+    "output": {
+      "summary": "Bata India Limited reported 3% turnover growth in Q3 FY26, driven by elevated marketing spend and the zero-based merchandising (ZBM) project, which now operates in 400 stores. Key metrics showed double-digit margin growth, with improvements in inventory freshness and store resupply efficiency. The company noted strong performance from Hush Puppies, Power, and Floatz brands, while the MBO channel showed renewed growth after prior challenges. Franchise expansion is nearing 2,000 stores, and e-commerce growth accelerated, with 14% of D2C sales through the Bata app. Management emphasized ongoing initiatives like product funnel reimagining, inventory optimization, and digital marketing shifts to social influencers. Concerns were raised about younger consumer recall and inventory sustainability, but management highlighted structural improvements and long-term growth strategies. The discussion concluded with no forward-looking guidance provided.",
+      "tone_label": "Neutral",
+      "tone_note": "The summary presents factual outcomes and management statements without overtly positive or negative language."
+    }
+  },
+  {
+    "benchmark_id": "CC_SUNTECK_106596830",
+    "added_at": "2026-08-30T05:31:20.249857+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Sunteck Realty Limited SUNTECK investor presentation Sunteck Realty Ltd. \n                   \n \n5th Floor, Sunteck Centre, 37-40 Subhash Road, Vile Parle (East), Mumbai 400057. Tel: +91 22 4287 7800 Fax: +91 22 4287 7890  \nWebsite: www.sunteckindia.com CIN: L32100MH1981PLC025346 Email Id: cosec@sunteckindia.com  \n  Date: 22nd April, 2026 \n \nNational Stock Exchange of India Ltd \nExchange Plaza, Plot no. C/1, G Block, \nBandra-Kurla Complex, Bandra (East),  \nMumbai - 400 051 \nSymbol: SUNTECK \nBSE Limited \nPhiroze Jeejeebhoy Tower, \nDalal Street, \nMumbai - 400 001 \nScrip Code: 512179 \n \nSub: Investor Presentation on Q4 and Full Year FY26 Results \n \nDear Sir/Madam, \n \nPlease find enclosed the Investor Presentation with regard to the Financial Results of the Company for the \nquarter and year ended 31st March, 2026. \n \nThe Investor Presentation sha",
+    "output": {
+      "summary": "Sunteck Realty Limited's Q4 and full year FY26 investor presentation highlights strong financial and operational performance. Revenue grew to ~Rs. 339 cr in Q4FY26 and ~Rs. 1,124 cr in FY26, up 65% and 32% YoY respectively. EBITDA increased to ~Rs. 97 cr in Q4FY26 and ~Rs. 305 cr in FY26, up 41% and 64% YoY. PAT rose to ~Rs. 63 cr in Q4FY26 and ~Rs. 202 cr in FY26, up 25% and 34% YoY. EBITDA and PAT margins remained strong at 29% and 19% in Q4FY26. Pre-sales reached ~Rs. 1,064 cr in Q4FY26 and ~Rs. 3,157 cr in FY26, up 22% and 25% YoY. Collections stood at ~Rs. 432 cr in Q4FY26 and ~Rs. 1,433 cr in FY26, up 39% and 14% YoY. The company reported a net cash flow surplus of ~Rs 552 cr, up 48% YoY, and a net debt-to-equity ratio of 0.06x. Key strengths include a strong foothold in the Mumbai Metropolitan Region (MMR), well-timed capital allocation with acquisitions of ~50 mn sq ft and GDV of ~Rs 41,030 cr, an expanding annuity income portfolio with ~Rs 300 cr+ in rentals and potential capital value creation of up to ~Rs 5,000 cr, and successful equity partnerships with entities like IFC-World Bank Group, Kotak Fund, and Ajay Piramal Group. The company also emphasized its strong financial performance, AA credit rating from India Ratings (Fitch), and sustainability achievements, including a GRESB score of 99 and a 5-star rating, as well as a DJSI ESG score of 78. The presentation also detailed project-specific financials, balance sheet details, and ESG initiatives.",
+      "tone_label": "Positive",
+      "tone_note": "The document emphasizes strong financial growth, operational performance, and strategic strengths, indicating a positive tone."
+    }
+  },
+  {
+    "benchmark_id": "CC_KANPRPLA_106607445",
+    "added_at": "2026-08-30T05:31:20.276093+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 4,
+    "was_hard_case": true,
+    "retrieval_text": "Kanpur Plastipack Limited KANPRPLA investor presentation Manufacturers & Exporters: \nFlexible Intermediate Bulk Container (FIBC) I PP Multifilament Yarn I UV Master Batches I Fabrics I CPP Films \nCIN: L25209UP1971PLC003444 \n \n \n \nD-19,20 Panki Industrial Area, \nKanpur-208022, India\n+91(512) 2691113-116\ninfo@kanplas.com\nwww.kanplas.com\nMay 02, 2026 \nBSE Limited \nPhiroze Jeejeebhoy Towers,  \nDalal Street, \nMumbai 400 001 \n \nScrip Code: 507779 \nNational Stock Exchange of India Limited \nExchange Plaza, Plot No. C/1, \nG Block, Bandra – Kurla Complex,  \nBandra (East), Mumbai 400 051 \n \nTrading Symbol: KANPRPLA \n \nSub:- Intimation under Regulation 30 of the SEBI (Listing Obligations and Disclosure \nRequirements) Regulations, 2015 - Investor Presentation on Financial Results for the Quarter and \nFinancial Year ended March 31, 2026. \n \nDear Sir, \n \nPursu",
+    "output": {
+      "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 highlights the company's status as an integrated industrial packaging and technical textile manufacturer with a global presence across 60+ countries. The document outlines key financial results, showing a 26.98% year-over-year increase in total income to Rs. 73,132 lakh and a 42.11% rise in EBITDA to Rs. 7,770 lakh. The presentation emphasizes the company's core focus on FIBC (Flexible Intermediate Bulk Containers) as the primary growth driver, with 70% of revenue coming from exports, particularly in Europe. Strategic initiatives include the acquisition of Valex Ventures Ltd (UK), a joint venture with Essegomma S.p.A. (Italy), and expansion into technical textiles and non-woven fabrics. The company also details sustainability efforts, including solar energy usage and zero liquid discharge. The presentation notes the completion of a new FIBC manufacturing unit at Unit 3, Gajner Road, with 10% of its capacity already achieved ahead of schedule, and ongoing construction of a modern roll management system and a dedicated trading warehouse. The document also mentions the planned commencement of commercial production at the greenfield non-woven facility in September 2026, though this is not explicitly tied to financial results for the period. The company's financial snapshot shows improved margins across consolidated and standalone operations, with net profit rising significantly year-over-year. The presentation concludes with forward-looking strategies focused on diversification, premium product lines, and sustainability-driven growth.",
+      "tone_label": "Positive",
+      "tone_note": "The presentation emphasizes growth in financial metrics, strategic expansions, and sustainability initiatives."
+    }
+  },
+  {
+    "benchmark_id": "CC_COROMANDEL_106614369",
+    "added_at": "2026-08-30T05:31:20.311403+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Coromandel International Limited COROMANDEL investor presentation Ref. No: 2026-27/008 \n \n  May 08, 2026 \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor, \nBandra-Kurla Complex, \nBandra (E), Mumbai 400 051 \nSymbol: COROMANDEL \nBSE Limited, \nPhiroze Jeejeebhoy Towers, \nDalal Street, \nMumbai 400 001.p \nScrip Code: 506395 \n \nDear Sir / Madam,  \n \nSub \n: \nInvestor Presentation of Conference Call to discuss the Q4FY26 results to be held on May \n8, 2026 \nThis is further to our letter(s) ref no. 2026-27/005 dated May 05, 2026 regarding Conference Call to discuss \nfinancial results of the Company for the quarter ended March 31, 2026. \n \nIn this regard, we wish to inform that the Investor presentation to be made at the Conference Call scheduled \ntoday i.e., May 8, 2026 at 02:30 PM (IST) has been uploaded on the website of the Company at \nhttps",
+    "output": {
+      "summary": "The investor presentation for Coromandel International Limited's conference call discussing Q4FY26 results, scheduled for May 8, 2026 at 02:30 PM IST, has been uploaded to the company's website as required by SEBI regulations. The document confirms the submission of this presentation to the National Stock Exchange of India and BSE Limited, with the request that the submission be recorded. The presentation itself is not included in the text provided, only the notice of its availability and the compliance filing.",
+      "tone_label": "Neutral",
+      "tone_note": "The document provides factual information about the submission and availability of the investor presentation without expressing positive or negative sentiment."
+    }
+  },
+  {
+    "benchmark_id": "CC_ALKYLAMINE_106620224",
+    "added_at": "2026-08-30T05:31:20.343329+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Alkyl Amines Chemicals Limited ALKYLAMINE earnings concall transcript May 13, 2026 \n \nTo,  \nBSE Limited \nP. J. Towers, Dalal Street,  \nMumbai - 400 001  \nSCRIP CODE: 506767  \n \n \nThe NaƟonal Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex,  \nBandra - (E), Mumbai - 400 051 \nSYMBOL: ALKYLAMINE \nDear Sir / Madam, \n \nSubject: Transcript of Conference Call held on May 6, 2026 with investors and analyst on financial \nperformance of Q4FY26 \n \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, \n2015, we are enclosing herewith the transcript of the Conference Call held on Wednesday, May 6, \n2026 at 3.00 p.m. (IST) with investors and analyst on financial performance of Q4FY26. \n \nThe said transcript will also be made available at the website of the Company at www.alkylamines.com \nunder Investor Re",
+    "output": {
+      "summary": "The earnings call for Alkyl Amines Chemicals Limited on May 6, 2026, discussed the company's Q4FY26 financial performance. Management noted that both revenue and profit remained flat compared to the previous year, with minor fluctuations of around 1%. The company faced challenges in sourcing ammonia, particularly in March, but managed to maintain operations through inventory. However, ongoing geopolitical tensions, such as the war affecting supply chains, remain a concern. Demand for products has not significantly declined, as customers absorb higher prices due to the relatively minor cost of the company's products in their overall expenses. Volume growth was flat, with a slight decline in both price and volume. The company is working on a new project in Kurkumbh, slightly delayed to the next quarter, but the economics remain unchanged. Management expressed cautious optimism about future growth, citing potential benefits from reduced Chinese competition and improved margins. However, uncertainties remain regarding the duration of current price levels and the impact of new competitors entering the methylamine market. The company is also exploring R&D initiatives for new products but has not yet announced specifics. Overall, the company is navigating a challenging environment with a focus on maintaining market share and managing supply chain disruptions.",
+      "tone_label": "Mixed",
+      "tone_note": "The tone is mixed as the document acknowledges both challenges and cautious optimism, highlighting uncertainties and potential benefits."
+    }
+  },
+  {
+    "benchmark_id": "CC_AARTIDRUGS_106626214",
+    "added_at": "2026-08-30T05:31:20.374698+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Aarti Drugs Limited AARTIDRUGS investor presentation Ref: ADL/SE/2026-27/11 \n        May 16, 2026 \n \nTo, \nListing/ Compliance Department \nBSE Limited \nPhiroze Jeejeebhoy Towers,  \nDalal Street,  \nMumbai – 400 001 \nBSE CODE: 524348 \nTo, \nListing/ Compliance Department \nNational Stock Exchange of India Limited, \n“Exchange Plaza”, Plot No. C/1, \nG Block Bandra - Kurla Complex,  \nBandra (East), Mumbai – 400051 \nNSE SYMBOL: AARTIDRUGS \nDear Sir/Madam, \n       \nRef:   Regulation 30 of SEBI (Listing Obligations and Disclosure \nRequirements) Regulations, 2015. \n \nSub:  Investor Presentation \n \nPlease find attached herewith Q4 & FY26 Investor Presentation. \n \nKindly take the same on record. \n \nThanking you, \nYours faithfully, \nFOR AARTI DRUGS LIMITED \n \n \nRUSHIKESH DEOLE  \nCOMPANY SECRETARY & COMPLIANCE OFFICER \nICSI M. No.: F12932 \n \n \n \nRUSHIKESH \n",
+    "output": {
+      "summary": "Aarti Drugs Limited's Q4 and FY26 investor presentation highlights a 6% year-on-year revenue growth to Rs. 721.1 crore, with EBITDA flat at Rs. 96.6 crore and a margin decline of 60 bps to 13.4%. Sequentially, Q4 FY26 saw a 20% revenue increase and 72% EBITDA growth, driven by the Sayakha facility's operational scale-up and improved product mix. The company reported a 16% increase in PAT to Rs. 194.9 crore, with a margin improvement of 60 bps to 7.6%. The presentation details a diversified business with API contributing 77% of sales, supported by strong regulatory approvals and a focus on regulated and export markets. Strategic initiatives include backward integration, capacity expansion, and R&D investments, with plans to enhance margin resilience and profitability. The balance sheet shows strong cash flow generation, with net operating cash flow of Rs. 1,549 crore and a debt-to-equity ratio of 0.44. The company emphasizes its leadership in API manufacturing, global regulatory compliance, and expansion into formulations and oncology products.",
+      "tone_label": "Neutral",
+      "tone_note": "The presentation provides factual financial and operational updates without overtly positive or negative language."
+    }
+  },
+  {
+    "benchmark_id": "CC_INDIQUBE_106632356",
+    "added_at": "2026-08-30T05:31:20.407278+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Indiqube Spaces Limited INDIQUBE investor presentation Indiqube Spaces Limited  \n(formerly known as Indiqube Spaces Private Limited, Innovent Spaces Private Limited)                                 nfo@indiqube.com  \nRegistered and Corporate Office:                                                                                                                                   www.indiqube.com \nPlot # 53, Careernet Campus, Kariyammanna Agrahara Road, Devarabisanahalli,                                                   +91 9900092210 \nOuter Ring Road, Bangalore, Karnataka, India, 560103                                                                                                 \nCIN - L45400KA2015PLC133523                                                                                                                                    \n     ",
+    "output": {
+      "summary": "Indiqube Spaces Limited's investor presentation for FY26 highlights strong financial performance, with total income of ₹1,491 crore, a 37% YoY revenue growth, and a 145% increase in PAT to ₹125 crore. EBITDA margins improved to 21%, and operating cashflows reached ₹304 crore. The company expanded to 17 cities, managing 9.66 million sq.ft. of office space with 88% steady-state occupancy. Key operational highlights include adding 28,000 seats and strengthening its presence in PAN India. The presentation also details IGAAP-equivalent financials, emphasizing profitability and resilience amid geopolitical and AI-related uncertainties. Management emphasized disciplined expansion, operational strength, and long-term growth opportunities. The document addresses investor questions on lease liabilities, lock-in periods with landlords, and the impact of Ind AS accounting adjustments on financials.",
+      "tone_label": "Positive",
+      "tone_note": "The document emphasizes strong financial growth, operational expansion, and resilience amid challenges, with management expressing confidence in long-term opportunities."
+    }
+  },
+  {
+    "benchmark_id": "CC_TVSELECT_106638347",
+    "added_at": "2026-08-30T05:31:20.437384+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "TVS Electronics Limited TVSELECT investor presentation TVS Electronics Limited \n       “Arihant E-Park”, No.117/1, 9th Floor, L.B. Road, Adyar, Chennai – 600 020. Tel.: +91-44-42005200 \n     Registered Office: Harita Towers, 2nd Floor, No.119, St. Mary’s Road, Abhiramapuram, Chennai- 600 018 \n     Corporate Identity Number: L30007TN1995PLC032941 \n     E-mail id: webmaster@tvs-e.in Website: www.tvs-e.in \n \n \n \n \n \n \n \n \n \n24th May 2026 \n \n \nBSE Limited \nPhiroze Jeejeebhoy Towers \nDalal Street \nMumbai - 400 001 \nScrip Code - 532513 \n \nNational Stock Exchange of India Limited Exchange \nPlaza, 5th Floor \nPlot No. C/1 G Block \nBandra - Kurla Complex, Bandra - (E) \nMumbai - 400 051 \nScrip Symbol - TVSELECT \n \n \nDear Sir/ Madam, \n \nSub: Earnings Presentation – Q4- FY26/ FY26 \n \nPursuant to Regulation 30(2) and other respective Regulations of SEBI (Li",
+    "output": {
+      "summary": "TVS Electronics Limited's Q4-FY26 earnings presentation highlights revenue growth across its segments. The Products and Solutions Group (PSG) reported revenue of INR 804 Mn in Q4-FY26, a 2.3% increase from Q3-FY26 and 3.0% year-over-year (Y-o-Y) growth for FY26. Customer Support Services (CSS) revenue rose to INR 370 Mn in Q4-FY26, a 5.7% increase from Q3-FY26 and 12.7% Y-o-Y growth for FY26. Overall revenue for Q4-FY26 was INR 1,174 Mn, up 3.3% Q-o-Q and 2.4% Y-o-Y, with FY26 revenue reaching INR 4,552 Mn, a 5.7% Y-o-Y increase. EBITDA for Q4-FY26 was INR 70 Mn, with a margin of 5.96%, up 24 basis points (Bps) Q-o-Q and 413 Bps Y-o-Y. FY26 EBITDA was INR 195 Mn, with a margin of 4.28%, up 172 Bps from FY25. The company noted improved margins due to better product mix and TCM initiatives. The balance sheet showed a debt-to-equity ratio of 0.43x as of FY26, with total liabilities at INR 1,866 Mn and equity at INR 959 Mn. The stock price as of March 31, 2026, was INR 360.5, with a market cap of INR 6,723.4 Mn. The presentation included forward-looking statements with disclaimers about risks and uncertainties.",
+      "tone_label": "Neutral",
+      "tone_note": "The document presents factual financial and operational data without overtly positive or negative language."
+    }
+  },
+  {
+    "benchmark_id": "CC_KUANTUM_106643553",
+    "added_at": "2026-08-30T05:31:20.468486+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Kuantum Papers Limited KUANTUM investor presentation 27.05.2026 \nBSE Limited                                             \nPhiroze Jeejeebhoy Towers                      \nDalal Street                                               \nMumbai 400 001                                       \nScrip Code: 532937     \nScrip ID: KUANTUM                                \nNational Stock Exchange of India Limited \nExchange Plaza \nPlot No. C/1, G Block,                                           \nBandra-Kurla Complex, Bandra (East)                   \nMumbai 400 051 \nTrading Symbol: KUANTUM \n \n \nReg: Earnings Presentation – Disclosure under Regulation 30 of SEBI (Listing \nObligations and Disclosure Requirements) Regulations, 2015 \n \nDear Sir/Madam, \n \nPursuant to Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please f",
+    "output": {
+      "summary": "The investor presentation for Kuantum Papers Limited (KUANTUM) for Q4-FY26 outlines the company's operational and financial performance, strategic initiatives, and key strengths. Operational income for FY26 was INR 10,932 Mn, a slight decline from FY25, while EBITDA fell to 14.8% from 21.9% due to lower net sales realization (NSR) and rising costs. Quarterly operational income for Q4-FY26 was INR 3,009 Mn, with EBITDA margins improving to 15.9% from 13.6% in Q3-FY26 despite market challenges. The company reported a net profit of INR 420 Mn for FY26, down from INR 1,152 Mn in FY25, with PAT margins at 3.84%. Key operational updates include the completion of Paper Machine 2 rebuild, progress on the Displacement Digester System (DDS) project, and the installation of a Syncro Sheeter. Strategic initiatives focus on plant expansion, sustainability, and leveraging Industry 4.0 technologies. The company also highlighted its Social Farm Forestry program, adding 854 acres in Q4-FY26. Financial highlights show a net debt-to-equity ratio of 0.66x and a market capitalization of INR 5,767.3 Mn as of 31 March 2026. The presentation includes forward-looking statements with disclaimers about risks and uncertainties.",
+      "tone_label": "Neutral",
+      "tone_note": "The document presents factual operational and financial data alongside strategic initiatives without overtly positive or negative language."
+    }
+  },
+  {
+    "benchmark_id": "CC_SIGACHI_106649351",
+    "added_at": "2026-08-30T05:31:20.509254+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Sigachi Industries Limited SIGACHI investor presentation To \n \n \n \n \n \n \n \n                    Date: May 30, 2026 \n \nThe Manager \nBSE Limited \nP. J. Towers, Dalal Street \nMumbai-400001(BSE \nScrip Code: 543389) \nThe Manager \nNational Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex \nBandra (E), Mumbai- 400051 \n(NSE Symbol: SIGACHI) \n \n \n \nDear Sir/Madam, \n \nSub: Investor Presentation for Q4 FY 2025-26 \n \n \nPursuant to Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) 2015, \nand with reference to the subject cited, please find enclosed the Investor Presentation for Q4 \nFY 2025-26. The same is also uploaded on the website of the Company  www.sigachi.com  \n \nRequest you to kindly take the same on record. \n \nThanking You, \n \nYours faithfully \nFor Sigachi Industries Limited \n \n \n \nVivek Kumar \nCompany Secreta",
+    "output": {
+      "summary": "The investor presentation for Q4 FY2025-26 by Sigachi Industries Limited outlines operational and financial highlights, emphasizing strategic growth initiatives and competitive advantages. Management noted that FY26 concluded with operational continuity, strengthened customer relationships, and a reinforced long-term growth strategy. The Dahej-2 capacity expansion is progressing, aiming to increase total MCC capacity to 30,000 MTPA. A new API R&D Center in Hyderabad is fully operational, supporting API portfolio growth. Financially, Q4 FY26 revenue was Rs. 1,219 Mn, with an EBITDA of Rs. 154 Mn and a PAT of Rs. 76 Mn. The presentation reported a 5-year revenue CAGR of 19.92% and EBITDA CAGR of 6.74%. Guidance for FY27 includes achieving revenue of Rs. 6,500–6,750 Mn, an EBITDA margin of 18–20%, and >65% capacity utilization post-Dahej-2 ramp-up. The document also highlighted ESG performance, including waste recycling rates and CSR initiatives. The tone of the presentation emphasized resilience and strategic positioning despite financial challenges in FY26.",
+      "tone_label": "Mixed",
+      "tone_note": "The presentation acknowledged financial challenges in FY26 while highlighting strategic progress and growth initiatives."
+    }
+  },
+  {
+    "benchmark_id": "CC_SDBL_106655906",
+    "added_at": "2026-08-30T05:31:20.540835+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 4,
+    "was_hard_case": true,
+    "retrieval_text": "Som Distilleries & Breweries Limited SDBL earnings concall transcript SOM DISTILLERIES AND BREWERIES LIMITED \nRegistered Office: I-A, Zee Plaza, Arjun Nagar, Safdarjung Enclave, Kamal Cinema Road, New Delhi - 110029 \nPhone: +91-11-26169909, 26169712  Fax: +91-11-26195897 \nCorporate Office: SOM House, 23, Zone II, M.P. Nagar, Bhopal, Madhya Pradesh – 462011 \nPhone: +91-755-4278827, 4271271  Fax: +91-755-2557470 \nEmail : compliance@somindia.com   Website: www.somindia.com \nCIN : L74899DL1993PLC052787   \n \n         \n(BSE : 507514, NSE : SDBL) \n \n    \n \nSDBL/BSE/NSE/2026 \n \n \n \n \n \n                      5.06.2026 \n \nTo, \nThe Manager, \nDy. General Manager, \nListing Department, \nDepartment of Corporate Services, \nNATIONAL \nSTOCK \nEXCHANGE \nOF \nINDIA LIMITED \nBSE LIMITED, \n‘Exchange Plaza’ C-1, Block G, \nFirst Floor, P.J. Towers, \nBandra-Kurla Complex, Bandra (E), ",
+    "output": {
+      "summary": "Som Distilleries & Breweries Limited reported a challenging FY26 with consolidated revenue declining 14.8% to INR1,233 crores and EBITDA at INR89.7 crores, driven by operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Beer volumes fell 20% to 187.19 lakh cases, while IMFL business grew 32% to 15.03 lakh cases. Management highlighted ongoing efforts to resolve the Bhopal license issue and noted improved offtake trends in Karnataka post-excise duty rationalization. The company also mentioned the greenfield UP brewery project, with INR250 crores invested, is on track for commercial operations, which are anticipated to strengthen North India presence. Despite inflationary pressures on inputs, the company maintained a healthy balance sheet with a debt-to-equity ratio of 0.30x. For FY27, management guided toward revenue of INR1,400-1,500 crores, assuming Bhopal resumes operations and UP plant contributions. The company emphasized cost optimization and premiumization to mitigate margin pressures.",
+      "tone_label": "Mixed",
+      "tone_note": "The summary reflects both challenges faced in FY26 and cautious optimism for FY27 based on management's guidance."
+    }
+  },
+  {
+    "benchmark_id": "CC_PNB_106702450",
+    "added_at": "2026-08-30T05:31:20.576208+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 2,
+    "was_hard_case": true,
+    "retrieval_text": "Punjab National Bank PNB investor presentation E] r>nb\nJ(Z1p S?\nAmrit Mahotsav\n'B\npab one\n#JunOweftpp\n...the name you can BANK upon!\nShare Department, Board & Coordination Division, Head Office Plot No.4 Sector IO, Dwarka,\nNew Delhi-llO075, \nE-mail: hQ sa@lpnb,benk,in\nScrip Code: PNB\nNational Stock Exchange of India Limited\n“Exchange Plaza'\nBandra – Kurla Complex, Bandra (E)\nMumbai – 400 051\nScrip Code: 532461\nBSE Limited\n1 st Floor, Phiroze Jeejeebhoy Towers\nDalaI Street\nMumbai – 400 001\nDate: 18.07.2026\nDear Sir (s),\nReg.: Analyst Presentation on Unaudited (Reviewed) Financial Results for the\nQuarter ended on 30th June, 2026\nPursuant to Regulation 30 read with Clause 15 of Para A of Part A of Schedule III of\nthe SEBI (LODR) Regulations, 2015, please find enclosed Analyst Presentation on the\nUnaudited (Reviewed) Financial Results of t",
+    "output": {
+      "summary": "The investor presentation for Punjab National Bank (PNB) for Q1 FY2027 highlights strong financial performance, with net profit rising 213.6% YoY to ₹5,253 crore, driven by a 67 bps increase in ROA to 1.04% and a 17.2% YoY rise in operating profit. Business growth was robust, with global business up 10.2% YoY and domestic deposits growing 8.5% YoY. Asset quality improved, with gross NPA down 100 bps YoY to 2.78% and net NPA at 0.28%. Capital adequacy remained strong, with CRAR at 14.52%. Digital initiatives showed progress, including 365 lakh PNB One activated users and 357 crore digital transactions. ESG efforts included green financing and sustainability awards. Guidance for FY2027 included credit growth of 12-13% and deposit growth of 9-10%, though actuals for June 2026 showed deposit growth at 8.5%.",
+      "tone_label": "Mixed",
+      "tone_note": "The tone is mixed as the document highlights strong financial performance and digital progress but also notes that deposit growth fell short of the guidance for FY2027."
+    }
+  },
+  {
+    "benchmark_id": "CC_MANYAVAR_106711176",
+    "added_at": "2026-08-30T05:31:20.607461+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 3,
+    "was_hard_case": true,
+    "retrieval_text": "Vedant Fashions Limited MANYAVAR investor presentation Vedant Fashions Limited  \nRegistered Office: 19, Canal South Road, Paridhan Garment Park, SDF-1. 4th Floor, A501-A502, Kolkata: 700015, Phone: +91 3361255353 \nEmail: info@vedantfashions.com | Website: www.vedantfashions.com | CIN: L51311WB2002PLC094677 \n \n \nJuly 25, 2026 \n \n \nTo,  \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor, Plot No. C-1, \nBandra Kurla Complex, Bandra (E), \nMumbai – 400051 \n \nTo,  \nBSE Limited \n \n \n \n \nPhiroze Jeejeebhoy Towers \n \n \nDalal Street, Fort, \nMumbai – 400001 \nNSE Symbol: MANYAVAR \n \nBSE Scrip Code: 543463 \n \nMadam / Sir, \n \nSub : \nSubmission of Investor Presentation–July 2026 | Vedant Fashions Limited (the ‘Company’) \nRef : \nDisclosure under Regulation 30 of the Securities and Exchange Board of India (Listing \nObligations and Disclosure ",
+    "output": {
+      "summary": "The investor presentation for Vedant Fashions Limited (MANYAVAR) outlines the company's financial performance and strategic initiatives for Q1 FY27. The document states that retail sales grew by 3.4% compared to Q1 FY26, with domestic same-store sales growth (SSSG) increasing by 3.8%. Revenue from operations rose by 7.2%, and the company maintained a strong gross margin of 65.7%. Profit after tax (PAT) increased by 14.7% year-over-year, with a PAT margin of 26.7%. The presentation highlights the company's extensive retail presence, including 501 EBOs across 205 cities, and its diversified brand portfolio catering to men, women, and children. Strategic initiatives include up-selling, cross-selling, and retail expansion both within and outside India. The document also mentions awards and accolades received by the company, including recognition for marketing campaigns and business performance. The company emphasizes its unique business model, technology-driven supply chain, and strong corporate governance. The presentation includes details on key financial metrics, brand campaigns, and future growth strategies.",
+      "tone_label": "Positive",
+      "tone_note": "The tone is positive as the document highlights strong financial performance, growth in key metrics, and recognition through awards."
+    }
+  },
+  {
+    "benchmark_id": "CC_GOCOLORS_106717019",
+    "added_at": "2026-08-30T05:31:20.632316+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Go Fashion (India) Limited GOCOLORS investor presentation July 30, 2026 \n \nBSE Limited \nScrip Code: 543401 \nNational Stock Exchange of India Ltd. \nTrading Symbol: GOCOLORS \n \nDear Sir/Madam, \n \nSub: Investor Presentation for Q1 FY 2027 - Regulation 30 of SEBI (Listing Obligations and \nDisclosure Requirements) Regulations, 2015. \n \nWith reference to the above captioned subject, please find enclosed Investor Presentation for Q1 FY 27. \n \nThe aforesaid Investor Presentation is also being disseminated on company’s website at \nhttps://www.gocolors.com/investor-relations. \n \nThis is for your information and record. \n \nThanking You, \nFor Go Fashion (India) Limited \n \n \n \n \nGayathri Kethar \nCompany Secretary & Compliance Officer \n \n \n \n \nGAYATHR\nI KETHAR\nDigitally signed by \nGAYATHRI KETHAR \nDate: 2026.07.30 \n13:53:47 +05'30'\n\nInvestor Presentation\nJuly ",
+    "output": {
+      "summary": "Go Fashion (India) Limited's Q1 FY27 investor presentation highlights a 2% YoY revenue growth to Rs. 161 crores, with gross profit rising 2% to Rs. 50 crores and a 62.9% gross margin, though down 10 bps. Profit after tax increased 4% to Rs. 8 crores, but online revenue remained flat at Rs. 140 crores. The company closed 66 stores, reducing retail space by 7,016 sq. ft., while expanding larger EBO stores (700+ sq. ft.) to enhance in-store experience. EBITDA before exceptional items was Rs. 67.4 crores (down 2% YoY) with a 30.3% margin, but EBITDA fell 11% to Rs. 60.9 crores after a Rs. 6.5 crore exceptional expense from store closures. Working capital days were 24.7, and cash flow from operations was Rs. 25.4 crores. The company reported 751 EBOs across 195 cities, with a focus on Tier 2 and 3 cities, and plans to nearly double retail area over five years. The product portfolio includes 58% churidar and leggings, with non-leggings products now contributing ~70% of revenue. The presentation notes a 14.0% EBITDA margin (Q1 FY27) due to increased marketing spend, and a 2.3% marketing expense ratio compared to 1.5% in Q1 FY26. The company emphasizes its strong unit economics, efficient supply chain, and expansion strategies, including online growth and technology adoption. Historical financials show revenue growth from Rs. 401 crores in FY22 to Rs. 838 crores in FY26, with PAT rising from Rs. 35.6 crores to Rs. 59.2 crores. RoCE and RoE were 10.8% and 7.9% in Q1 FY27, respectively, with cash reserves at Rs. 202 crores. The company's strategy includes expanding EBOs, leveraging online channels, and enhancing brand visibility through partnerships and advertising.",
+      "tone_label": "Neutral",
+      "tone_note": "The presentation provides factual financial and operational updates without overtly positive or negative language."
+    }
+  },
+  {
+    "benchmark_id": "CC_UNIMECH_106722740",
+    "added_at": "2026-08-30T05:31:20.664095+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 2,
+    "was_hard_case": true,
+    "retrieval_text": "Unimech Aerospace and Manufacturing Limited UNIMECH investor presentation August 03, 2026 \nTo,  \nNational Stock Exchange of India Ltd. \nSymbol: UNIMECH \nBSE Limited \nScrip Code: 544322 \n \nSub: \nIntimation of Investor Presentation \nDear Sir/Ma’am, \nIn continuation to our letter dated July 29, 2026, pursuant to Regulation 30 of the SEBI (Listing \nObligations and Disclosure Requirements) Regulations, 2015, we hereby enclose the copy of \nEarnings Presentation on un-audited Financial Results of the Company for the quarter ended June \n30, 2026, which is being placed on the Company’s website, for the Earnings Conference Call \nscheduled on Tuesday, August 04, 2026. \n \nThanking You,  \nYours Faithfully,  \n \nFor Unimech Aerospace and Manufacturing Limited \n \n \nRashmi Gupta \nCompany Secretary & Compliance Officer \nM. No: A25382 \n \n \nEncl: Annexure-A \n \nRASHMI \nGUPTA\nDigital",
+    "output": {
+      "summary": "Unimech Aerospace and Manufacturing Limited reported strong financial performance in Q1 FY27, with revenue reaching ₹1,076.2 million, a 71% year-over-year increase, and EBITDA of ₹392.5 million, up 98% YoY. The company highlighted strategic acquisitions, including the Hobel Bellows acquisition completed in April 2026, and signed long-term agreements with key partners like FACC. Operational highlights included a 36.5% EBITDA margin, up 5% YoY, and a robust order book of ₹2,803 million as of June 30, 2026. Management emphasized expanding into aerospace, semiconductor, and energy sectors, with growing customer engagement and qualification-led growth initiatives. The presentation noted improved capacity utilization and confidence in FY27 growth driven by serial production transitions and sustained margin discipline. Financial metrics showed a 46% increase in PAT and a 46% rise in EPS. The company outlined strategic pillars focusing on global manufacturing expansion, technology investment, and diversification into high-growth sectors.",
+      "tone_label": "Positive",
+      "tone_note": "The document emphasizes strong revenue and EBITDA growth, successful strategic acquisitions, and expanding market opportunities, reflecting a positive tone."
+    }
+  },
+  {
+    "benchmark_id": "CC_RATEGAIN_106728376",
+    "added_at": "2026-08-30T05:31:20.697798+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Rategain Travel Technologies Limited RATEGAIN investor presentation Corporate Office Address: Plot No. 3,4,5, Club 125, Tower A, 4th Floor \nSector – 125 Noida – 201301, Uttar Pradesh India \nRegistered Office Address: M-140, Greater Kailash, Part-II, Delhi-110048 \nTel: +91 120 5057000 \nCIN: L72900DL2012PLC244966 \nWebsite: www.rategain.com \nE-mail: help@rategain.com \n \n \nAugust 06, 2026 \n \nTo, \nNational Stock Exchange of India Limited \n(NSE: RATEGAIN) \n \nBSE Limited \n(BSE: 543417) \n \nSubject: Investor Presentation on the Un-Audited (Standalone and Consolidated) Financial \nResults of the Company for the Quarter ended June 30, 2026 \n \nDear Sir/Ma’am, \n \nPursuant to Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find enclosed herewith Investor Presentation on Un-Audited \n(Standalone and Consolidated) Financial",
+    "output": {
+      "summary": "The investor presentation for Rategain Travel Technologies Limited (RATEGAIN) for Q1 FY2027 highlights robust financial growth, with operating revenue increasing by 187.6% year-over-year to INR 785.0 crore. Adjusted EBITDA grew by 289.3% to INR 193.4 crore, and adjusted PAT rose by 148.8% to INR 116.8 crore. The company emphasized its AI-driven platform, which supports guest acquisition, retention, and revenue expansion through services like DaaS, Martech, and Distribution. Key business updates include strong operating margins, a 95.3% increase in revenue per employee post-Sojern integration, and a 47.3% rise in employee headcount. The presentation also outlined strategic partnerships, product innovations, and a diversified revenue mix with 79.1% from subscription and hybrid models. Financial metrics show sustained profitability, with free cash flow conversion at 78.8% and a net cash position of INR 255.6 crore. The company noted challenges related to deferred deal considerations from the Sojern acquisition, impacting adjusted EBITDA and PAT. Management highlighted confidence in operational efficiency and growth, with a focus on AI integration, customer expansion, and geographic diversification.",
+      "tone_label": "Positive",
+      "tone_note": "The presentation emphasizes strong financial growth, operational efficiency, and confidence in AI-driven strategies."
+    }
+  },
+  {
+    "benchmark_id": "CC_EMAMILTD_106734041",
+    "added_at": "2026-08-30T05:31:20.726843+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Emami Limited EMAMILTD earnings concall transcript 10th August, 2026 \n \nThe Manager – Listing \nNational Stock Exchange of India Ltd. \nExchange Plaza, Plot No. C/1, Block – G \nBandra Kurla Complex, Bandra (E) \nMumbai – 400 051 \nScrip Code: EMAMILTD \nThe Manager – Listing \nBSE Limited \nPhiroze Jeejeebhoy Towers \nDalal Street \n \n \n \n \nMumbai – 400 001 \n \n   \n     \nScrip Code: 531162 \n \nSub: Transcript of Investor’s Conference Call of the Company for Q1 FY 27 – Financial Results \nDear Sir/ Madam, \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find enclosed herewith the transcript of the Conference Call with \nAnalysts / Investors held on 4th August, 2026, post declaration of the Unaudited Financial \nResults (Standalone & Consolidated) for the quarter ended 30th June, 2026.  \nT",
+    "output": {
+      "summary": "In the Q1 FY27 earnings call, Emami Limited reported consolidated revenue growth of 15% to INR1,039 crores, driven by a 20% increase in domestic business and 11% growth in the Hair and Scalp Care category. The Skin Care segment grew by 3%, with Talcum powder showing high single-digit growth despite regional summer season variations. Healthcare revenue rose by 2%, with the OTC portfolio growing in high teens and strategic investments contributing 18% of domestic business, showing 61% like-to-like growth. International business declined by 12% due to West Asia conflicts, but management expressed confidence in recovery. Profitability faced challenges from inflationary pressures and cost increases, though EBITDA grew by 6% to INR226 crores. Strategic initiatives include supply chain optimization, AI deployment for sales, and data analytics platforms. The strategic investment portfolio, including Axiom and IncNut, showed strong growth but with varying margins, aiming for EBITDA neutrality. Management emphasized diversification, cost control, and confidence in future growth despite near-term headwinds.",
+      "tone_label": "Positive",
+      "tone_note": "The document highlights strong revenue growth, strategic initiatives, and confidence in future recovery despite challenges."
+    }
+  },
+  {
+    "benchmark_id": "CC_JNKINDIA_106738190",
+    "added_at": "2026-08-30T05:31:20.759590+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "JNK India Limited JNKINDIA investor presentation JNK India Limited \n(Formerly known as JNK India Private Limited) \nCIN: L29268MH2010PLC204223 \n \n203 to 206, Centrum, Plot No. C-3, S.G. Barve Road, Wagle Estate,  \nThane (W) – 400604, Maharashtra, INDIA Tel : 91-22-68858000 \nEmail: admin@jnkindia.com Website: www.jnkindia.com \n \n  Date: August 11, 2026 \nTo,  \nBSE Limited, \nThe General Manager,  \nDepartment of Listing Operations,  \nPhiroze Jeejeebhoy Towers,  \nDalal Street, Mumbai – 400 001 \nTo,  \nNational Stock Exchange of India Limited, \nThe Manager, Listing Department, \nExchange Plaza, C-1, Block-G,  \nBandra Kurla Complex, Bandra (East), \nMumbai – 400 051 \nScrip code: 544167 \nSecurity Symbol: JNKINDIA \n \nDear Sir/Madam, \nSub.: Q1FY27 Investor Presentation \n \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requir",
+    "output": {
+      "summary": "JNK India Limited's Q1FY27 investor presentation highlights strong financial performance, with Total Income growing by 80.6% YoY to Rs. 186.0 cr, EBITDA increasing by 3.1x to Rs. 21.9 cr, and PAT rising by 8.5x to Rs. 9.6 cr. The company maintained an EBITDA margin of 11.8%, reflecting disciplined growth. The order book stood at Rs 1,801 cr as of June 30, 2026, with a bidding pipeline of Rs. ~6,000 cr across domestic and international markets. Management emphasized diversification into offshore, metals & minerals, and renewable energy, with JNK Chemdist contributing to renewable energy projects like green hydrogen. The company noted an isolated export order cancellation due to technical approval issues but highlighted no material costs. Financial data for prior periods was reclassified for consistency. Strategic initiatives include expanding global presence, enhancing technology capabilities through joint ventures, and focusing on operational excellence and sustainable growth.",
+      "tone_label": "Positive",
+      "tone_note": "The presentation emphasizes strong financial growth, robust order inflows, and strategic expansion into new markets and technologies."
+    }
+  },
+  {
+    "benchmark_id": "CC_FINOPB_106742828",
+    "added_at": "2026-08-30T05:31:20.797775+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 1,
+    "was_hard_case": false,
+    "retrieval_text": "Fino Payments Bank Limited FINOPB investor presentation Fino Payments Bank Limited \nRegistered Office: Mindspace Juinagar, Plot No Gen 2/1/F, Tower 1, 8th Floor, TTC Industrial Area, MIDC Shirwane, Juinagar, Navi Mumbai  \n- 400 706 | CIN: L65100MH2007PLC171959 | Tel: (+91 22) 7104 7000 | Website: www.fino.bank.in | Email: cs@fino.bank.in  \n \nAugust 13, 2026 \n \nBSE Limited \nP.J. Towers, \nDalal Street,  \nMumbai- 400 001 \n \n(Scrip Code: 543386) \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor, Plot No. C/1, G \nBlock, Bandra - Kurla Complex,  \nBandra (E), Mumbai - 400 051 \n \n(Symbol: FINOPB) \n \nDear Sir/Madam, \n \nSub: Investor Presentation under Regulation 30 of the Securities and Exchange Board of \nIndia (Listing Obligations and Disclosure Requirements) Regulations, 2015 (“SEBI \nListing Regulations”)  \n \nPursuant to Regulation ",
+    "output": {
+      "summary": "The investor presentation for Fino Payments Bank Limited (FINOPB) for Q1 FY27 highlights key business updates and financial performance. Management reported a 42.8% net revenue margin, driven by higher contributions from the CASA business segment. Average total deposits rose 12% YoY to ₹2,772 crores, with digitally active customers increasing by 22% YoY to 64.6 lakh. Referral loan disbursements surged 214% YoY to ₹628 crores, accounting for ~50% of total referral loans disbursed in FY26. The bank is progressing toward becoming a Small Finance Bank (SFB), with LOS & LMS identified and a consultant partnered for the transition. Financial highlights include a 32% YoY revenue growth to ₹306.9 crores, a 30% YoY increase in EBITDA to ₹43.1 crores, and a 12% YoY rise in average CASA balances. However, the bank reported a net loss of ₹13.7 crores for the quarter. Operational efficiency metrics show a 2.5x increase in throughput per employee, and the bank maintains a low-cost liability franchise with a cost of funds at 1.4%. The presentation also outlines the SFB timeline, with end-to-end process validation and readiness assessment planned for Q3’27 and submission of final readiness to the RBI by Q1’28. The bank's digital footprint, including UPI throughput and digitally active users, continues to grow, though revenue from non-digital transactions remains limited. The presentation notes ongoing challenges, including a decline in digital throughput YoY and a net loss for the quarter, while emphasizing progress in SFB readiness and customer acquisition.",
+      "tone_label": "Mixed",
+      "tone_note": "The document presents both positive financial metrics and operational progress alongside challenges such as a net loss and declining digital throughput."
+    }
+  },
+  {
+    "benchmark_id": "CC_KIRIINDUS_106747935",
+    "added_at": "2026-08-30T05:31:20.829972+00:00",
+    "run_id": "20260830T041530Z",
+    "model": "qwen3-14b-awq-tp2",
+    "attempts_used": 5,
+    "was_hard_case": true,
+    "retrieval_text": "Kiri Industries Limited KIRIINDUS earnings concall transcript CIN No.: L24231GJ1998PLC034094 \n \nDate: August 18, 2026 \n \nTo,\nBSE Limited \nPhiroze Jeejeebhoy Towers,  \nDalal Street, Mumbai- 400 001 \nScrip Code: 532967 \nTo,\nNational Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex, \nBandra (E), Mumbai - 400 051 \nScrip ID - KIRIINDUS \n \nDear Sir/Madam, \n \nSub: Submission of Transcript for Q1-FY27 Earnings Conference call \n \nIn compliance with Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find attached herewith the Transcript of Q1-FY27 Earnings Conference \nCall held on Thursday, August 13, 2026 at 10:30 A.M. \n \nThe Transcript of Q1-FY27 Earnings Conference Call is also available on website of the Company \nat www.kiriindustries.com. \n \nYou are kindly requested to take note of the s",
+    "output": {
+      "summary": "Kiri Industries Limited reported Q1 FY27 results with a 63% year-on-year revenue growth to INR 295 crore on a standalone basis, driven by improved pricing in dyes, intermediates, and basic chemicals. Standalone EBITDA was INR 17 crore with a 5.86% margin, while consolidated revenue reached INR 312 crore with an EBITDA of INR 37 crore. Management highlighted progress on the integrated copper and fertilizer project, now in structured construction with capital from the company's strengthened financial position. Downstream copper facilities are planned for phased commissioning, with the copper tube plant to be operational in Q1 FY28 and the refinery by Q3 FY29, as management indicated. The company emphasized disciplined execution of projects and improving margins through pricing discipline and cost pass-through. Management addressed shareholder concerns about dividends, stating no current decision to declare them but emphasizing growth-focused capital allocation. Financial closure for the copper project remains ongoing, with over 50% of debt commitments secured. The company also discussed plans for value-added copper products and long-term sourcing agreements for raw materials, while noting challenges in achieving full capacity utilization in existing chemical operations. Management reiterated confidence in the long-term strategic roadmap and ongoing project timelines.",
+      "tone_label": "Positive",
+      "tone_note": "The document emphasizes progress on key projects, improved financial performance, and confidence in future growth strategies."
+    }
+  }
+]

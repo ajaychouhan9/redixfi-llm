@@ -14,6 +14,7 @@ import subprocess
 from datetime import datetime, timezone
 from typing import Any, Callable, Dict, List, Optional
 
+from .. import example_bank
 from ..inference.base import Backend
 from ..models.registry import get_model_spec
 from ..tasks import annual_report_summary as task_ar
@@ -63,6 +64,8 @@ def run_evaluation(
     replay_as: Optional[str] = None,
     gpu: Optional[Dict[str, Any]] = None,
     policy: RetryPolicy = PRODUCTION_POLICY,
+    record_to_bank: bool = True,
+    bank_dir: str = example_bank.BANK_DIR,
 ) -> Dict[str, Any]:
     """`replay_as` selects which runner interprets the fixture. It defaults
     to the fixture's own task; the annual-report fixture also accepts
@@ -72,13 +75,25 @@ def run_evaluation(
     `policy` controls retry mechanics only, and defaults to production's, so
     every earlier run remains reproducible. It is recorded in the run JSON:
     a result obtained under a non-production policy is NOT like-for-like
-    with gpt-4o-mini's and must not be read as one."""
+    with gpt-4o-mini's and must not be read as one.
+
+    `record_to_bank`: every `ok=True` result from a REAL (non-echo) backend
+    is appended to `app/example_bank.py`'s accumulating store — this is
+    what makes the bank grow automatically across future runs rather than
+    needing a manual bootstrap each time. Default True; tests and offline
+    rehearsals against the echo backend never write real examples anyway
+    (gated below), but this flag exists to opt out explicitly when a run
+    should not affect the bank (e.g. a deliberately-degraded experiment
+    whose outputs should not be treated as good exemplars)."""
     task = replay_as or fixtures.task
     allowed = fixtures.replayable_as()
     if task not in allowed:
         raise ValueError(
             f"fixture task '{fixtures.task}' cannot be replayed as '{task}'; "
             f"allowed: {allowed}")
+    # Generated up front (not at the end, where it used to be built) so it
+    # can be attached to bank entries recorded DURING the loop below.
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     runner = TASK_RUNNERS.get(task)
     if runner is None:
         raise ValueError(f"no runner for task '{task}'")
@@ -126,6 +141,22 @@ def run_evaluation(
             row["evidence_excerpt"] = evidence[:1500] + suffix
         rows.append(row)
 
+        # Accumulate REAL validated successes into the example bank. Gated
+        # on: result.ok (the SAME pass/fail gate the task's own validator
+        # already applied — nothing here re-judges quality), a non-echo
+        # backend (an offline rehearsal must never contaminate the bank with
+        # synthetic text), the caller's opt-in, and a task the bank actually
+        # supports (ask_ai and the legacy AR replay are not covered).
+        if (record_to_bank and result.ok
+                and getattr(backend, "name", "") != "echo"
+                and task in ("concall_summary", "annual_report_summary", "red_flag")):
+            example_bank.record_result(
+                task, case, result.output,
+                attempts_used=result.attempts or 1,
+                model=model, run_id=run_id,
+                bank_dir=bank_dir,
+            )
+
     try:
         spec = get_model_spec(model)
         model_config: Dict[str, Any] = {
@@ -143,7 +174,11 @@ def run_evaluation(
         model_config = {"registry_name": None, "served_model_id": model}
 
     return {
-        "run_id": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
+        # Reuses the SAME run_id computed before the loop (not a fresh
+        # timestamp here) — otherwise bank entries recorded during the loop
+        # would carry a different run_id than the run JSON they came from,
+        # breaking traceability between the two.
+        "run_id": run_id,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "task": task,
         "fixture_task": fixtures.task,
