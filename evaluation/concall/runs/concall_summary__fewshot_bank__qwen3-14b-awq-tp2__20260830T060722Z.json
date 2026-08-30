@@ -1,0 +1,1342 @@
+{
+  "run_id": "20260830T060722Z",
+  "generated_at": "2026-08-30T06:07:22.269632+00:00",
+  "task": "concall_summary",
+  "variant": {
+    "name": "concall_fewshot_bank_v1",
+    "description": "Production SYSTEM prompt, completely unmodified. Only the user message differs: up to 2 REAL validated prior successes, retrieved by jaccard similarity from the accumulating example bank, prepended before the current document. No forbidden vocabulary is named anywhere — the examples are positive demonstrations only, testing a mechanism different from every other prompt change tried this session.",
+    "max_attempts": 3,
+    "retry_policy": "improved",
+    "prompt_is_production": true
+  },
+  "model": "qwen3-14b-awq-tp2",
+  "backend": "vllm-inprocess",
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "seed": 0
+  },
+  "gpu": {
+    "count": 2,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "vram_gb": 14.56,
+        "compute_capability": "7.5",
+        "supports_bf16": false
+      }
+    ],
+    "name": "Tesla T4",
+    "total_vram_gb": 29.12,
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "runtime": "vllm",
+    "context_length": 32768,
+    "quantization": "awq"
+  },
+  "like_for_like_with_reference": false,
+  "fixture": {
+    "path": "/kaggle/input/datasets/ajaychouhan9/redixfi-llm-evaluation-2026/concall_benchmark.json",
+    "cases_total": 20,
+    "cases_run": 20
+  },
+  "summary": {
+    "cases": 20,
+    "generated_ok": 17,
+    "generation_failures": 3,
+    "candidate_compliance_failures": 3,
+    "reference_backstop_artifacts": 0,
+    "reference_compliance_failures": 0,
+    "cases_with_reference": 20,
+    "structured_output_used": 20,
+    "json_repair_used": 0,
+    "guided_and_clean": 20,
+    "guided_but_repaired": 0,
+    "unguided": 0,
+    "mean_latency_sec": 67.04,
+    "total_prompt_tokens": 312015,
+    "total_completion_tokens": 11724,
+    "quality_verdict": "NOT COMPUTED — requires human review, by design",
+    "tone_label_agreement_rate": 0.7647,
+    "invalid_tone_labels": 0,
+    "tone_confusion": {
+      "Mixed->Mixed": 2,
+      "Positive->Positive": 8,
+      "Neutral->Neutral": 3,
+      "Mixed->None": 2,
+      "Mixed->Negative": 1,
+      "Neutral->Mixed": 1,
+      "Mixed->Positive": 1,
+      "Positive->Mixed": 1,
+      "Positive->None": 1
+    },
+    "mean_lexical_overlap": 0.2345
+  },
+  "results": [
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_BATAINDIA_106539458",
+      "ok": true,
+      "output": {
+        "summary": "The earnings call for Bata India Limited (BATAINDIA) for Q3 and FY '26 outlines the company's performance and strategic initiatives. Management reported a 3% turnover growth for the quarter, driven by the zero-based merchandising (ZBM) project, which has expanded to 400 stores and is showing double-digit margin improvements. Marketing spend has increased significantly, with double-digit growth in marketing investments, contributing to improved sales performance. Key brands like Hush Puppies, Power, and Floatz have driven disproportionate growth. The MBO channel, which had been under pressure, has seen a significant turnaround with growth and strong margin performance. Franchise expansion is ongoing, with the company nearing 2,000 stores, and the KRO network has expanded to over 2,000 outlets. E-commerce growth is robust, with 14% of D2C sales coming through the Bata app. Inventory efficiency improvements have led to a 11% reduction in inventory, with sustainable practices in place. The company is focusing on product innovation, store renovations, and digital marketing to attract younger consumers and enhance the customer experience. Strategic initiatives include expanding the ZBM project, reimagining the product funnel, and increasing exports through a dedicated sourcing hub. The company is also rationalizing contract manufacturing partners to improve efficiency and quality control. While growth has been modest, management highlights ongoing efforts to drive momentum and achieve double-digit growth in the future.",
+        "tone_label": "Mixed",
+        "tone_note": "The document presents both positive developments such as growth in key metrics, margin improvements, and strategic initiatives alongside challenges like modest growth and the need for continued efforts to achieve double-digit growth."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 11476,
+      "completion_tokens": 355,
+      "total_tokens": 11831,
+      "latency_sec": 64.1923,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": "Mixed",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1538,
+        "reference_chars": 970,
+        "lexical_overlap": 0.3377,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Bata India Limited's earnings conference call on February 13, 2026, highlighted a turnover growth of 3% for the quarter, attributed to the implementation of a zero-based merchandising project across 400 stores and increased marketing expenditures. Management noted improvements in key metrics such as inventory freshness and turnaround times. The company reported a double-digit underlying PBT growth of 10%, with significant contributions from brands like Hush Puppies and Power. The franchise network expanded to nearly 2,000 outlets, and e-commerce sales grew, with 14% of direct-to-consumer business coming from a newly launched app. Management acknowledged challenges in achieving double-digit growth aspirations but emphasized ongoing initiatives in marketing, product development, and channel expansion to drive future growth. The discussion also touched on the impact of GST on sales and the company's strategy to enhance brand relevance among younger consumers.",
+        "tone_label": "Mixed",
+        "tone_note": "Management reported growth and improvements while acknowledging challenges in achieving higher growth rates.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T22:10:20.652330"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_BATAINDIA_106539458",
+        "symbol": "BATAINDIA",
+        "company_name": "Bata India Limited",
+        "filing_date": "2026-02-18",
+        "doc_kind": "earnings concall transcript"
+      },
+      "evidence_excerpt": "BATA INDIA LIMITED \nCIN: L19201WB1931PLC007261 \nRegistered Office: 27B, Camac Street, 1st Floor, Kolkata-700016, West Bengal II Tel.: (033) 22895796 II Fax: (033) 22895748 \nE-mail: in-customer.service@bata.com II Website: www.bata.in \n \n      February 18, 2026 \n \nThe Manager, CRD \nBSE Limited \nP J Towers, Dalal Street, Fort, \nMumbai - 400001 \nThe Manager, Listing Department \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor,  \nPlot No. C-1, Block G, BKC, Bandra (E), \nMumbai - 400051     \n \nThe Secretary \nThe \nCalcutta \nStock \nExchange \nLimited \n7, Lyons Range, \nKolkata - 700001 \nBSE Security Code: 500043 \nNSE Symbol: BATAINDIA  \nCSE Scrip Code: 10000003  \n \nDear Sir/Madam, \n \nSubject: Post Earnings Call  \nThis is further to our letters dated January 28, 2026, February 12, 2026 and February 13, 2026, on the captioned \nsubject. \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015, we \nare enclosing herewith the transcript of the Post Earnings Call (Group Call) held on Friday, February 13, 2026. \nThe above information shall also be made available on Company’s website viz., www.bata.in  \nThis is for your information and records. \n \nThanking you, \nYours faithfully, \nFor BATA INDIA LIMITED \n \n  \nNITIN BAGARIA \nAVP – Company Secretary & Compliance Officer \n \n \nEncl.: As above \nDigitally signed by NITIN BAGARIA\n\nPage 1 of 14 \n \n \nBata India Limited \nQ3 and FY '26 Earnings Conference Call \nFebruary 13, 2026 \n \n \n \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_SUNTECK_106596830",
+      "ok": true,
+      "output": {
+        "summary": "Sunteck Realty Limited's investor presentation for Q4 and FY26 results highlights strong financial and operational performance. Revenue grew by 65% YoY to ~Rs. 339 cr in Q4FY26 and 32% YoY to ~Rs. 1,124 cr in FY26. EBITDA increased by 41% YoY to ~Rs. 97 cr in Q4FY26 and 64% YoY to ~Rs. 305 cr in FY26. PAT rose by 25% YoY to ~Rs. 63 cr in Q4FY26 and 34% YoY to ~Rs. 202 cr in FY26. EBITDA and PAT margins remained strong at 29% and 19% respectively in Q4FY26. Pre-sales grew by 22% YoY to ~Rs. 1,064 cr in Q4FY26 and 25% YoY to ~Rs. 3,157 cr in FY26. Collections increased by 39% YoY to ~Rs. 432 cr in Q4FY26 and 14% YoY to ~Rs. 1,433 cr in FY26. The company reported a net cash flow surplus of ~Rs 552 cr, up 48% YoY. The net debt to equity ratio stands at 0.06x. Key strengths include a strong foothold in the Mumbai Metropolitan Region (MMR), well-timed capital allocation with acquisitions of ~50 mn sq ft and GDV of ~Rs 41,030 cr, expanding annuity income portfolio with ~Rs 300 cr+ rental income and potential capital value creation of up to ~Rs 5,000 cr, and successful equity partnerships with entities like IFC-World Bank Group, Kotak Fund, and Ajay Piramal Group. The company also received high ESG scores, including a GRESB score of 99 and a 5-star rating, and a DJSI ESG score of 78. Green building initiatives include EDGE and LEED certifications for several projects.",
+        "tone_label": "Positive",
+        "tone_note": "The presentation emphasizes strong financial growth, robust operational performance, strategic acquisitions, successful partnerships, and high ESG ratings."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 8019,
+      "completion_tokens": 521,
+      "total_tokens": 8540,
+      "latency_sec": 45.6958,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1382,
+        "reference_chars": 865,
+        "lexical_overlap": 0.3223,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Sunteck Realty Limited reported its financial results for Q4 and the full year FY26, highlighting a revenue increase to approximately Rs. 339 crore in Q4FY26 and Rs. 1,124 crore for FY26, representing year-on-year growth of 65% and 32%, respectively. EBITDA also saw significant growth, reaching around Rs. 97 crore in Q4FY26 and Rs. 305 crore for FY26, up 41% and 64% YoY. The company reported a PAT of Rs. 63 crore in Q4FY26 and Rs. 202 crore for FY26, marking increases of 25% and 34% YoY. Operationally, pre-sales grew to Rs. 1,064 crore in Q4FY26 and Rs. 3,157 crore for FY26, with collections at Rs. 432 crore and Rs. 1,433 crore, respectively. The company maintained a strong net debt to equity ratio of 0.06x and reported a net cash flow surplus of Rs. 552 crore, up 48% YoY. Sunteck emphasized its strong market position and successful equity partnerships.",
+        "tone_label": "Positive",
+        "tone_note": "Management highlighted strong financial and operational growth metrics.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T21:40:50.881258"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_SUNTECK_106596830",
+        "symbol": "SUNTECK",
+        "company_name": "Sunteck Realty Limited",
+        "filing_date": "2026-04-22",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Sunteck Realty Ltd. \n                   \n \n5th Floor, Sunteck Centre, 37-40 Subhash Road, Vile Parle (East), Mumbai 400057. Tel: +91 22 4287 7800 Fax: +91 22 4287 7890  \nWebsite: www.sunteckindia.com CIN: L32100MH1981PLC025346 Email Id: cosec@sunteckindia.com  \n  Date: 22nd April, 2026 \n \nNational Stock Exchange of India Ltd \nExchange Plaza, Plot no. C/1, G Block, \nBandra-Kurla Complex, Bandra (East),  \nMumbai - 400 051 \nSymbol: SUNTECK \nBSE Limited \nPhiroze Jeejeebhoy Tower, \nDalal Street, \nMumbai - 400 001 \nScrip Code: 512179 \n \nSub: Investor Presentation on Q4 and Full Year FY26 Results \n \nDear Sir/Madam, \n \nPlease find enclosed the Investor Presentation with regard to the Financial Results of the Company for the \nquarter and year ended 31st March, 2026. \n \nThe Investor Presentation shall also be placed on the Company’s website. \n \nThis is for your information and records. \n \nYours sincerely, \nFor Sunteck Realty Limited \n \n \n \nRachana Hingarajia \nCompany Secretary \n(ACS No.: 23202) \nEncl: a/a \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \nRachana \nVipul \nHingarajia\nDigitally signed by \nRachana Vipul \nHingarajia \nDate: 2026.04.22 \n14:22:38 +05'30'\n\nSunteck Realty Limited\nInvestor Presentation\nQ4 & Full Year FY26 \nApril 2026\nNSE: SUNTECK | BSE: 512179 | Bloomberg: SRIN: IN  | Reuters: SUNT.NS / SUNT.BO \n\nDisclaimer\nBy attending the meeting where this presentation is made and any additional material is provided (“Presentation”) or by reading the Presentation, you (“Recipient”),\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_KANPRPLA_106607445",
+      "ok": true,
+      "output": {
+        "summary": "The investor presentation for Kanpur Plastipack Limited (KANPRPLA) for Q4 FY26 outlines the company's operational and financial performance, strategic initiatives, and key strengths. Total income for FY26 was INR 73,132 lakh, a 26.98% increase from FY25, with EBITDA rising to INR 7,770 lakh, a 42.11% year-over-year growth. Quarterly income for Q4 FY26 was INR 18,505 lakh, with EBITDA at INR 2,556 lakh, a 20.67% increase from Q3 FY26. Net profit for FY26 was INR 4,080 lakh, up 76.39% from FY25, with a net profit margin of 5.58%. Key operational updates include the completion of a new FIBC manufacturing unit, progress on a modern roll management system, and the establishment of a new trading warehouse. Strategic initiatives focus on expanding into technical textiles and value-added products, including a 50:50 joint venture with an Italian company and the acquisition of a UK-based firm. The company also highlights its sustainability efforts, including solar power usage and zero liquid discharge initiatives. Financial highlights show a consolidated basic EPS of INR 17.4 for FY26. The presentation includes forward-looking statements with disclaimers about risks and uncertainties.",
+        "tone_label": "Positive",
+        "tone_note": "The document emphasizes strong financial growth, strategic expansions, and sustainability initiatives without overtly negative language."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 6627,
+      "completion_tokens": 351,
+      "total_tokens": 6978,
+      "latency_sec": 30.5574,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1193,
+        "reference_chars": 885,
+        "lexical_overlap": 0.2419,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The investor presentation by Kanpur Plastipack Limited detailed the company's financial results for the quarter and financial year ended March 31, 2026. The presentation highlighted a total income of Rs. 18,505 lakhs for Q4 FY26, reflecting a year-on-year growth of 7.26%. EBITDA for the same quarter was reported at Rs. 2,556 lakhs, with a margin of 13.81%, up from 12.28% in the previous year. Net profit increased by 24.70% to Rs. 1,492 lakhs, with an EPS of 6.2. The company emphasized its strong export model, with approximately 70% of revenue derived from international markets, and outlined strategic initiatives for capacity expansion and diversification into technical textiles. Sustainability efforts were also highlighted, with nearly 50% of energy needs met through solar power. The presentation concluded with a focus on disciplined diversification and capital allocation.",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasized growth in financial performance and strategic initiatives.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T21:15:18.722511"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_KANPRPLA_106607445",
+        "symbol": "KANPRPLA",
+        "company_name": "Kanpur Plastipack Limited",
+        "filing_date": "2026-05-02",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Manufacturers & Exporters: \nFlexible Intermediate Bulk Container (FIBC) I PP Multifilament Yarn I UV Master Batches I Fabrics I CPP Films \nCIN: L25209UP1971PLC003444 \n \n \n \nD-19,20 Panki Industrial Area, \nKanpur-208022, India\n+91(512) 2691113-116\ninfo@kanplas.com\nwww.kanplas.com\nMay 02, 2026 \nBSE Limited \nPhiroze Jeejeebhoy Towers,  \nDalal Street, \nMumbai 400 001 \n \nScrip Code: 507779 \nNational Stock Exchange of India Limited \nExchange Plaza, Plot No. C/1, \nG Block, Bandra – Kurla Complex,  \nBandra (East), Mumbai 400 051 \n \nTrading Symbol: KANPRPLA \n \nSub:- Intimation under Regulation 30 of the SEBI (Listing Obligations and Disclosure \nRequirements) Regulations, 2015 - Investor Presentation on Financial Results for the Quarter and \nFinancial Year ended March 31, 2026. \n \nDear Sir, \n \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, \n2015, please find enclosed herewith the Investor Presentation on the Financial Results for the Quarter and \nFinancial Year ended March 31, 2026. \n \nThe aforesaid Investor Presentation is also available on the website of the Company at: \n \nhttps://www.kanplas.com/report_pdf/KPL_Investor_Presentation_Q4_FY26._1777724631.pdf \n \n \nPlease take this on record and oblige. \nThanking You. \n \nYours Faithfully, \nFor Kanpur Plastipack Limited \n \n \n \n(Ankur Srivastava) \nCompany Secretary \n \nEncl: A/a \n \nAnkur \nSrivastava\nDigitally signed by Ankur Srivastava \nDN: c=IN, o=Personal, postalCode=208014, l=Kanpur N\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_COROMANDEL_106614369",
+      "ok": true,
+      "output": {
+        "summary": "Coromandel International Limited's investor presentation for the Q4FY26 conference call, dated May 8, 2026, was uploaded to the company's website as required by SEBI regulations. The document confirms the scheduling of the conference call to discuss Q4FY26 results, set for May 8, 2026 at 02:30 PM IST. The company's compliance officer, B. Shanmugasundaram, submitted the notice of the presentation, which includes details about the event and its availability online. The filing adheres to SEBI's disclosure requirements, ensuring transparency for investors. No specific financial results, performance metrics, or strategic initiatives were detailed in the text provided, as the document primarily serves as a formal notice of the presentation's availability and the call's schedule.",
+        "tone_label": "Neutral",
+        "tone_note": "The document provides a formal notice of the presentation's availability and the call's schedule without emphasizing positive or negative aspects."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 1925,
+      "completion_tokens": 209,
+      "total_tokens": 2134,
+      "latency_sec": 7.799,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Neutral",
+        "candidate_tone_label": "Neutral",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 783,
+        "reference_chars": 418,
+        "lexical_overlap": 0.2985,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Coromandel International Limited announced the scheduling of a conference call to discuss its Q4FY26 results, which took place on May 8, 2026. The investor presentation related to this call was made available on the company's website, in compliance with SEBI regulations. The communication was signed by B. Shanmugasundaram, the Company Secretary and Compliance Officer, and requested acknowledgment of the submission.",
+        "tone_label": "Neutral",
+        "tone_note": "The document provided factual information regarding the conference call and investor presentation.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T20:50:19.560211"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_COROMANDEL_106614369",
+        "symbol": "COROMANDEL",
+        "company_name": "Coromandel International Limited",
+        "filing_date": "2026-05-08",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Ref. No: 2026-27/008 \n \n  May 08, 2026 \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor, \nBandra-Kurla Complex, \nBandra (E), Mumbai 400 051 \nSymbol: COROMANDEL \nBSE Limited, \nPhiroze Jeejeebhoy Towers, \nDalal Street, \nMumbai 400 001.p \nScrip Code: 506395 \n \nDear Sir / Madam,  \n \nSub \n: \nInvestor Presentation of Conference Call to discuss the Q4FY26 results to be held on May \n8, 2026 \nThis is further to our letter(s) ref no. 2026-27/005 dated May 05, 2026 regarding Conference Call to discuss \nfinancial results of the Company for the quarter ended March 31, 2026. \n \nIn this regard, we wish to inform that the Investor presentation to be made at the Conference Call scheduled \ntoday i.e., May 8, 2026 at 02:30 PM (IST) has been uploaded on the website of the Company at \nhttps://www.coromandel.biz/investors/corporate-presentation/ as required pursuant to Regulation \n46(2)(o) of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015. \n \nWe kindly request you to take the above submission on record. \n \nThanking you, \n \nYours truly, \nFor Coromandel International Limited \n \n \n \nB. Shanmugasundaram  \nCompany Secretary & Compliance Officer \n \nBALASUBRAM\nANIAN \nSHANMUGASU\nNDARAM\nDigitally signed by \nBALASUBRAMANIAN \nSHANMUGASUNDARA\nM \nDate: 2026.05.08 \n13:11:27 +05'30'"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_ALKYLAMINE_106620224",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'expectations'",
+          "text": {
+            "summary": "In the Q4FY26 earnings conference call, Alkyl Amines Chemicals Limited reported flat revenue and net profit compared to the previous year, with volume and value growth remaining nearly unchanged. Management attributed this to market growth not meeting expectations, though the company retained or slightly increased its market share. Operations faced challenges in March due to ammonia sourcing issues, but these were resolved with improved supply. Raw material prices, particularly ammonia, have risen significantly, leading to higher finished product prices to maintain margins. However, demand impact from these price increases remains uncertain. Capacity utilization across plants is between 60% and 85%, with sufficient raw material availability to maintain operations. The company is cautiously optimistic about future margin improvements as supply chain issues resolve, though competition in methylamines has increased with new entrants like Aarti. Management highlighted the potential benefit from Chinese anti-involution policies reducing competition but noted it would not be a dramatic change. Strategic focus includes R&D for new products, though no specific launches are announced, and capex plans for FY27 and FY28 are limited to existing projects and maintenance. The company expects volume growth of 5% to 10% and cautious optimism about future performance despite ongoing uncertainties.",
+            "tone_label": "Mixed",
+            "tone_note": "The document acknowledges challenges and uncertainties while expressing cautious optimism about future margin improvements and growth potential."
+          },
+          "raw_text": "{\"summary\": \"In the Q4FY26 earnings conference call, Alkyl Amines Chemicals Limited reported flat revenue and net profit compared to the previous year, with volume and value growth remaining nearly unchanged. Management attributed this to market growth not meeting expectations, though the company retained or slightly increased its market share. Operations faced challenges in March due to ammonia sourcing issues, but these were resolved with improved supply. Raw material prices, particularly ammonia, have risen significantly, leading to higher finished product prices to maintain margins. However, demand impact from these price increases remains uncertain. Capacity utilization across plants is between 60% and 85%, with sufficient raw material availability to maintain operations. The company is cautiously optimistic about future margin improvements as supply chain issues resolve, though competition in methylamines has increased with new entrants like Aarti. Management highlighted the potential benefit from Chinese anti-involution policies reducing competition but noted it would not be a dramatic change. Strategic focus includes R&D for new products, though no specific launches are announced, and capex plans for FY27 and FY28 are limited to existing projects and maintenance. The company expects volume growth of 5% to 10% and cautious optimism about future performance despite ongoing uncertainties.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The document acknowledges challenges and uncertainties while expressing cautious optimism about future margin improvements and growth potential.\"}",
+          "raw_output_chars": 1602,
+          "forward_tense_hits": {
+            "summary": [
+              "...ed. Management attributed this to market growth not meeting expectations, though the company retained or slightly increased its mark...",
+              "...e limited to existing projects and maintenance. The company expects volume growth of 5% to 10% and cautious optimism about futu..."
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 1000
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "In the Q4FY26 earnings call, Alkyl Amines Chemicals Limited reported that both revenue and profit remained flat compared to the previous year, with minor fluctuations of plus or minus 1%. Management noted that market growth had not met desired levels, but the company managed to retain or slightly increase its market share across key segments. The year was divided into 11 months before the war began and one month in March, during which operational challenges arose due to ammonia sourcing issues. However, these challenges were largely overcome, and management expressed hope for resolution of the ongoing war. On the demand side, management indicated that customers have absorbed increased product prices, though potential future demand challenges remain uncertain. Regarding raw materials, ammonia prices rose significantly, from INR50 per kg to over INR100 per kg, and management stated that the company has been able to source ammonia despite the increased costs. Capacity utilization averaged between 60% and 85%, with management suggesting that the industry may take 3 to 6 months to stabilize supply chains. A project initially scheduled for commissioning in April-June faced a slight delay, with mechanical completion expected by the end of June. The economics of the project remained unaffected by the delay. On the competitive front, management highlighted that the Chinese market's reduced aggression has provided some benefit, though competition remains. Management also discussed the impact of the anti-involution policy in China, which has led to reduced Chinese competition, potentially benefiting Indian manufacturers. However, the company remains cautious about future market conditions and is evaluating long-term contracts for raw material sourcing. Management emphasized that while the company is optimistic about future growth, there are uncertainties, and the current focus is on maintaining margins and navigating supply chain challenges. Research and development efforts are ongoing, with several projects in various stages of development, though specific details are not disclosed until products reach the market. The company is also considering new product launches from its R&D pipeline, though final decisions depend on market stability. Management reiterated that the company is cautiously optimistic about future performance, though challenges remain in the form of geopolitical issues and supply chain disruptions.",
+            "tone_label": "Mixed",
+            "tone_note": "The document presents both challenges and cautious optimism, highlighting uncertainties alongside some positive developments."
+          },
+          "raw_text": "{\"summary\": \"In the Q4FY26 earnings call, Alkyl Amines Chemicals Limited reported that both revenue and profit remained flat compared to the previous year, with minor fluctuations of plus or minus 1%. Management noted that market growth had not met desired levels, but the company managed to retain or slightly increase its market share across key segments. The year was divided into 11 months before the war began and one month in March, during which operational challenges arose due to ammonia sourcing issues. However, these challenges were largely overcome, and management expressed hope for resolution of the ongoing war. On the demand side, management indicated that customers have absorbed increased product prices, though potential future demand challenges remain uncertain. Regarding raw materials, ammonia prices rose significantly, from INR50 per kg to over INR100 per kg, and management stated that the company has been able to source ammonia despite the increased costs. Capacity utilization averaged between 60% and 85%, with management suggesting that the industry may take 3 to 6 months to stabilize supply chains. A project initially scheduled for commissioning in April-June faced a slight delay, with mechanical completion expected by the end of June. The economics of the project remained unaffected by the delay. On the competitive front, management highlighted that the Chinese market's reduced aggression has provided some benefit, though competition remains. Management also discussed the impact of the anti-involution policy in China, which has led to reduced Chinese competition, potentially benefiting Indian manufacturers. However, the company remains cautious about future market conditions and is evaluating long-term contracts for raw material sourcing. Management emphasized that while the company is optimistic about future growth, there are uncertainties, and the current focus is on maintaining margins and navigating supply chain challenges. Research and development efforts are ongoing, with several projects in various stages of development, though specific details are not disclosed until products reach the market. The company is also considering new product launches from its R&D pipeline, though final decisions depend on market stability. Management reiterated that the company is cautiously optimistic about future performance, though challenges remain in the form of geopolitical issues and supply chain disruptions.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The document presents both challenges and cautious optimism, highlighting uncertainties alongside some positive developments.\"}",
+          "raw_output_chars": 2628,
+          "forward_tense_hits": {
+            "summary": [
+              "...April-June faced a slight delay, with mechanical completion expected by the end of June. The economics of the project remained u..."
+            ]
+          }
+        },
+        {
+          "pass": 3,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 2000
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "In the Q4FY26 earnings conference call, Alkyl Amines Chemicals Limited reported flat revenue and net profit compared to the previous year, with minor fluctuations of plus or minus 1%. Management noted that market growth was slower than anticipated, but the company maintained or slightly increased its market share across key segments. The year was divided into 11 months before the war began and one month in March, during which operational challenges arose due to ammonia sourcing issues. However, these were largely resolved with improved sourcing and inventory management. Management highlighted that while raw material prices, particularly ammonia, had risen significantly (from INR50/kg to INR100/kg), customers have absorbed these costs so far. Concerns about demand destruction due to higher prices remain, but no immediate impact was observed. Capacity utilization across plants averaged between 60% and 85%, with sufficient raw material availability to sustain operations. The company mentioned a slight delay in a project initially scheduled for commissioning in April-June, with mechanical completion ongoing and expected by the end of June. Management emphasized that the project's economics remain unaffected despite the delay and rising prices. On the competitive front, the entry of Aarti into the methylamine market has increased competition, but the company remains optimistic about long-term growth. Management also discussed the impact of Chinese competition, noting reduced aggression from Chinese players and potential benefits from India's anti-involution policies. However, the effect was described as moderate rather than dramatic. The company is cautious about major R&D investments due to current market volatility and is monitoring developments in green ammonia and coal gasification as potential long-term solutions. Management expressed cautious optimism for future growth, noting that the worst of recent challenges may have passed, though uncertainties remain. The company is also evaluating long-term contracts for raw material sourcing to mitigate future risks. Revenue from pharma and agro segments accounted for approximately 70-75% of total sales, with pharma showing greater resilience compared to agro concerns related to monsoon patterns. The company is planning modest capex for FY27 and FY28, primarily for existing projects and maintenance, with no major new initiatives. R&D efforts are ongoing, with multiple projects at various stages, though specific details are not disclosed until products reach the market. The company is closely monitoring the impact of new competitors and is focused on maintaining cost efficiency to sustain competitive advantages.",
+            "tone_label": "Mixed",
+            "tone_note": "The document highlights both challenges such as flat growth and increased competition, as well as cautious optimism about future recovery and strategic initiatives."
+          },
+          "raw_text": "{\"summary\": \"In the Q4FY26 earnings conference call, Alkyl Amines Chemicals Limited reported flat revenue and net profit compared to the previous year, with minor fluctuations of plus or minus 1%. Management noted that market growth was slower than anticipated, but the company maintained or slightly increased its market share across key segments. The year was divided into 11 months before the war began and one month in March, during which operational challenges arose due to ammonia sourcing issues. However, these were largely resolved with improved sourcing and inventory management. Management highlighted that while raw material prices, particularly ammonia, had risen significantly (from INR50/kg to INR100/kg), customers have absorbed these costs so far. Concerns about demand destruction due to higher prices remain, but no immediate impact was observed. Capacity utilization across plants averaged between 60% and 85%, with sufficient raw material availability to sustain operations. The company mentioned a slight delay in a project initially scheduled for commissioning in April-June, with mechanical completion ongoing and expected by the end of June. Management emphasized that the project's economics remain unaffected despite the delay and rising prices. On the competitive front, the entry of Aarti into the methylamine market has increased competition, but the company remains optimistic about long-term growth. Management also discussed the impact of Chinese competition, noting reduced aggression from Chinese players and potential benefits from India's anti-involution policies. However, the effect was described as moderate rather than dramatic. The company is cautious about major R&D investments due to current market volatility and is monitoring developments in green ammonia and coal gasification as potential long-term solutions. Management expressed cautious optimism for future growth, noting that the worst of recent challenges may have passed, though uncertainties remain. The company is also evaluating long-term contracts for raw material sourcing to mitigate future risks. Revenue from pharma and agro segments accounted for approximately 70-75% of total sales, with pharma showing greater resilience compared to agro concerns related to monsoon patterns. The company is planning modest capex for FY27 and FY28, primarily for existing projects and maintenance, with no major new initiatives. R&D efforts are ongoing, with multiple projects at various stages, though specific details are not disclosed until products reach the market. The company is closely monitoring the impact of new competitors and is focused on maintaining cost efficiency to sustain competitive advantages.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The document highlights both challenges such as flat growth and increased competition, as well as cautious optimism about future recovery and strategic initiatives.\"}",
+          "raw_output_chars": 2920,
+          "forward_tense_hits": {
+            "summary": [
+              "...oning in April-June, with mechanical completion ongoing and expected by the end of June. Management emphasized that the project'..."
+            ]
+          }
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 37939,
+      "completion_tokens": 1282,
+      "total_tokens": 39221,
+      "latency_sec": 122.365,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": null,
+        "tone_label_agrees": null,
+        "tone_label_valid": false,
+        "candidate_compliance": "empty text",
+        "reference_compliance": null,
+        "candidate_chars": 0,
+        "reference_chars": 1004,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The earnings conference call for Alkyl Amines Chemicals Limited, held on May 6, 2026, featured management discussing the company's financial performance for Q4FY26. Management reported that both the top line and bottom line remained flat, with a slight increase in market share despite challenging market conditions. They noted that raw material prices, particularly ammonia, had risen significantly due to geopolitical factors, impacting production costs. Management indicated that while they had managed to source ammonia, the future supply chain remained uncertain. They mentioned a cautious optimism regarding potential volume growth of 5% to 10% in the upcoming year, contingent on market stability. Additionally, management highlighted ongoing projects and the potential for new product launches, while emphasizing the importance of maintaining competitive margins amidst fluctuating raw material prices. The call concluded with management expressing gratitude for investor interest and engagement.",
+        "tone_label": "Mixed",
+        "tone_note": "Management conveyed both challenges and cautious optimism regarding future performance.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T20:23:32.274836"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_ALKYLAMINE_106620224",
+        "symbol": "ALKYLAMINE",
+        "company_name": "Alkyl Amines Chemicals Limited",
+        "filing_date": "2026-05-13",
+        "doc_kind": "earnings concall transcript"
+      },
+      "evidence_excerpt": "May 13, 2026 \n \nTo,  \nBSE Limited \nP. J. Towers, Dalal Street,  \nMumbai - 400 001  \nSCRIP CODE: 506767  \n \n \nThe NaƟonal Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex,  \nBandra - (E), Mumbai - 400 051 \nSYMBOL: ALKYLAMINE \nDear Sir / Madam, \n \nSubject: Transcript of Conference Call held on May 6, 2026 with investors and analyst on financial \nperformance of Q4FY26 \n \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, \n2015, we are enclosing herewith the transcript of the Conference Call held on Wednesday, May 6, \n2026 at 3.00 p.m. (IST) with investors and analyst on financial performance of Q4FY26. \n \nThe said transcript will also be made available at the website of the Company at www.alkylamines.com \nunder Investor Relations>Investor Center>Conference Call Transcripts \n \nYou are requested to kindly take the same on your record.   \n \nThanking you, \n \nFor Alkyl Amines Chemicals Limited \n \n \n \nChintamani Thatte \nGeneral Manager (Legal) & Company Secretary  \n& Compliance Oﬃcer \n \nEncl: As above \nChintamani \nDattatraya \nThatte\nDigitally signed by \nChintamani \nDattatraya Thatte \nDate: 2026.05.13 \n12:42:34 +05'30'\n\nPage 1 of 16 \n \n \n \n“Alkyl Amines Chemicals Limited \nQ4 and FY26 Earnings Conference Call” \nMay 06, 2026 \n \n \n \n \n \n \n       \n \n \nMANAGEMENT: MR. KIRAT PATEL – EXECUTIVE DIRECTOR – ALKYL \nAMINES CHEMICALS LIMITED \n \nMRS. KANCHAN SHINDE – CHIEF FINANCIAL OFFICER \n– ALKYL AMINES CHEMICALS LIMITED \n \nMR\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_AARTIDRUGS_106626214",
+      "ok": true,
+      "output": {
+        "summary": "The investor presentation for Q4 and FY26 by Aarti Drugs Limited outlines operational and financial performance, strategic initiatives, and key strengths. Management noted that FY26 concluded with operational continuity, strengthened customer relationships, and a reinforced long-term growth strategy. The Sayakha facility achieved a milestone run-rate of ~1,000 tonnes per month in March 2026, contributing to sequential improvements in revenue and EBITDA. Financially, Q4 FY26 revenue was Rs. 721.1 crore, with an EBITDA of Rs. 96.6 crore and a PAT of Rs. 194.9 crore. The presentation reported a 5-year revenue CAGR of 7% and EBITDA CAGR of 12.1%. Guidance for FY27 includes achieving revenue of Rs. 2,565–2,718 crore, an EBITDA margin of 12.1%, and >65% capacity utilization post-Sayakha ramp-up. The document also highlighted ESG performance, including waste recycling rates and CSR initiatives. The tone of the presentation emphasized resilience and strategic positioning despite financial challenges in FY26.",
+        "tone_label": "Mixed",
+        "tone_note": "The presentation acknowledged financial challenges in FY26 while highlighting strategic progress and growth initiatives."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 14731,
+      "completion_tokens": 286,
+      "total_tokens": 15017,
+      "latency_sec": 87.8619,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": "Mixed",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1015,
+        "reference_chars": 930,
+        "lexical_overlap": 0.1855,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Aarti Drugs Limited's investor presentation for Q4 and FY26 highlighted a total revenue of Rs. 721.1 crore for Q4 FY26, marking a 6% year-over-year increase. EBITDA was reported at Rs. 96.6 crore, with a margin of 13.4%, reflecting a decline of 60 basis points compared to the previous year. The presentation noted that the company's profitability was affected by start-up losses from new facilities and weakness in the domestic antibiotics market. However, sequentially, revenue and EBITDA improved by 20% and 72%, respectively. The management emphasized a shift towards regulated markets, with contributions increasing from 66% in FY25 to 73% in FY26. The company also reported a strong focus on expanding its product pipeline and enhancing operational capabilities, particularly in oncology and specialty chemicals. Overall, the presentation outlined the company's strategic initiatives and resilience amid industry challenges.",
+        "tone_label": "Mixed",
+        "tone_note": "The presentation conveyed both positive growth in certain areas and challenges affecting profitability.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T20:00:42.235983"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_AARTIDRUGS_106626214",
+        "symbol": "AARTIDRUGS",
+        "company_name": "Aarti Drugs Limited",
+        "filing_date": "2026-05-16",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Ref: ADL/SE/2026-27/11 \n        May 16, 2026 \n \nTo, \nListing/ Compliance Department \nBSE Limited \nPhiroze Jeejeebhoy Towers,  \nDalal Street,  \nMumbai – 400 001 \nBSE CODE: 524348 \nTo, \nListing/ Compliance Department \nNational Stock Exchange of India Limited, \n“Exchange Plaza”, Plot No. C/1, \nG Block Bandra - Kurla Complex,  \nBandra (East), Mumbai – 400051 \nNSE SYMBOL: AARTIDRUGS \nDear Sir/Madam, \n       \nRef:   Regulation 30 of SEBI (Listing Obligations and Disclosure \nRequirements) Regulations, 2015. \n \nSub:  Investor Presentation \n \nPlease find attached herewith Q4 & FY26 Investor Presentation. \n \nKindly take the same on record. \n \nThanking you, \nYours faithfully, \nFOR AARTI DRUGS LIMITED \n \n \nRUSHIKESH DEOLE  \nCOMPANY SECRETARY & COMPLIANCE OFFICER \nICSI M. No.: F12932 \n \n \n \nRUSHIKESH \nVIVEK DEOLE\nDigitally signed by RUSHIKESH VIVEK DEOLE \nDN: c=IN, postalCode=421301, st=MAHARASHTRA, street=THANE,B-2, \nDEVIPRASAD SOCIETY, AGRA ROAD ,421301, l=THANE, o=Personal, \nserialNumber=9b60f64457feab7f455d17463ebe710861bf01b575f6fc04\n84483273dabfc17f, pseudonym=39fdd8cc665b44adb709d2b2c0bc1ffe, \n2.5.4.20=76af11ab2ea790a8aec8b0d90f9da6fdb715f5b922a7af009bb3f\n93dc014e116, email=RUSHIKESH.DEOLE@AARTIDRUGS.COM, \ncn=RUSHIKESH VIVEK DEOLE \nDate: 2026.05.16 14:27:54 +05'30'\n\nAarti Drugs Limited\nQ4 & FY26 Investor Presentation\nMay 2026\n\nSafe Harbor \nThis presentation and the accompanying slides (the “Presentation”), which have been prepared by Aarti Drugs Limited (the “Company”), have been p\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_INDIQUBE_106632356",
+      "ok": true,
+      "output": {
+        "summary": "Indiqube Spaces Limited's investor presentation for FY26 and Q4 highlights strong financial performance, with total income of ₹1,491 crore, a 37% YoY revenue growth, and PAT increasing by 145% to ₹125 crore. EBITDA rose by 60% to ₹301 crore, with EBITDA margins improving to 21%. The company reported robust cash flows, a 147% increase in operating cash flows, and a RoE of 8.4%. Operational metrics include 130 centers across 17 cities, 9.66 million sq.ft. of office space, and 215,000 seats, with steady-state occupancy at 88%. Strategic initiatives focus on expanding into new cities, enhancing technology through the MiQube platform, and green certifications. The presentation also addresses accounting adjustments under Ind AS, clarifying lease liabilities and their impact on financials. Key operational highlights include adding 28,000 seats, securing large client contracts, and maintaining a healthy churn rate of -0.11%.",
+        "tone_label": "Positive",
+        "tone_note": "The tone is positive as the document emphasizes strong financial growth, operational efficiency, and strategic expansion into new markets and technologies."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 12776,
+      "completion_tokens": 279,
+      "total_tokens": 13055,
+      "latency_sec": 69.3991,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 930,
+        "reference_chars": 952,
+        "lexical_overlap": 0.2879,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Indiqube Spaces Limited reported a record financial performance for FY26, with total income reaching ₹1,491 crore, a year-on-year growth of 37%. The company achieved a profit after tax (PAT) of ₹125 crore, reflecting a significant increase of 145% compared to the previous year. Management highlighted the resilience of their business model amid geopolitical volatility and AI-related uncertainties. The company expanded its presence to 17 cities, operating 130 properties with over 9.66 million square feet of office space, maintaining a steady occupancy rate of 88%. The earnings presentation outlined a disciplined expansion strategy, with a focus on enhancing client value and operational efficiency. Key highlights included the addition of 28,000 seats and a growing contribution from value-added services, which accounted for 15% of total revenue. The management expressed confidence in the long-term growth potential of their workspace platform.",
+        "tone_label": "Positive",
+        "tone_note": "The document emphasized strong financial growth and operational resilience.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T19:33:33.943771"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_INDIQUBE_106632356",
+        "symbol": "INDIQUBE",
+        "company_name": "Indiqube Spaces Limited",
+        "filing_date": "2026-05-20",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Indiqube Spaces Limited  \n(formerly known as Indiqube Spaces Private Limited, Innovent Spaces Private Limited)                                 nfo@indiqube.com  \nRegistered and Corporate Office:                                                                                                                                   www.indiqube.com \nPlot # 53, Careernet Campus, Kariyammanna Agrahara Road, Devarabisanahalli,                                                   +91 9900092210 \nOuter Ring Road, Bangalore, Karnataka, India, 560103                                                                                                 \nCIN - L45400KA2015PLC133523                                                                                                                                    \n                                                                                          \n \nMay 20, 2026  \nTo, \n \nBSE Limited, \n20th Floor, P.J. Towers, \nDalal Street, \nMumbai - 400001 \nBSE Scrip Code: 544454 \nNational Stock Exchange of India Limited, \nExchange Plaza, C-1, Block G, \nBandra Kurla Complex, Bandra (E),  \nMumbai – 400 051 \nNSE Scrip Symbol: INDIQUBE \n \n \nSubject: Subject: Disclosure under Regulation 30 of the Securities and Exchange Board \nof India (Listing Obligations and Disclosure Requirements) Regulations, 2015 - \nPresentation on the Financial Results \n \nThis is with reference to our intimation dated May 14, 2026, regarding intimation of Investors/ \nAnalysts call of Indiqube Spa\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_TVSELECT_106638347",
+      "ok": true,
+      "output": {
+        "summary": "The investor presentation for TVS Electronics Limited (TVSELECT) for Q4-FY26 outlines the company's operational and financial performance, strategic priorities, and business segments. Revenue for Q4-FY26 was INR 1,174 Mn, a 3.3% increase on a Q-o-Q basis and 2.4% on a Y-o-Y basis, with FY26 revenue reaching INR 4,552 Mn, a 5.7% Y-o-Y increase. The Products and Solutions Group generated INR 804 Mn in Q4-FY26, up 2.3% Q-o-Q, while Customer Support Services revenue rose to INR 370 Mn, up 5.7% Q-o-Q. EBITDA for Q4-FY26 was INR 70 Mn with a margin of 5.96%, up 24 bps Q-o-Q and 413 bps Y-o-Y, while FY26 EBITDA was INR 195 Mn with a margin of 4.28%, up 172 bps Y-o-Y. The company reported a net profit of INR 13 Mn for FY26, up from a loss of INR 39 Mn in FY25, with a PAT margin of 0.29%. Strategic priorities include enhancing in-house designed technology products, strengthening manufacturing capabilities, and expanding the supply chain ecosystem. Operational highlights include the addition of new customers across all businesses and improvements in product mix and TCM initiatives. The balance sheet shows total liabilities of INR 1,866 Mn and total assets of INR 2,825 Mn as of FY26. The presentation includes forward-looking statements with disclaimers about risks and uncertainties.",
+        "tone_label": "Neutral",
+        "tone_note": "The document presents factual operational and financial data alongside strategic initiatives without overtly positive or negative language."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 7054,
+      "completion_tokens": 420,
+      "total_tokens": 7474,
+      "latency_sec": 34.3515,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Neutral",
+        "candidate_tone_label": "Neutral",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1292,
+        "reference_chars": 980,
+        "lexical_overlap": 0.281,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "TVS Electronics Limited's investor presentation for Q4-FY26 reported a revenue from operations of INR 1,174 million, reflecting a 2.4% year-over-year increase and a 3.3% quarter-over-quarter increase. The Customer Support Services segment generated revenue of INR 370 million in Q4-FY26, up 10.4% year-over-year, while the Products and Solutions Group reported INR 804 million, a slight decrease of 0.9% year-over-year. The overall FY26 revenue reached INR 4,552 million, marking a 5.7% increase from FY25. EBITDA for Q4-FY26 was INR 70 million, with an EBITDA margin of 5.96%, showing significant improvement from the previous year. The presentation highlighted strategic priorities, including enhancing tech products and strengthening supply chain capabilities. The company also emphasized its commitment to local manufacturing under the 'Make in India' initiative. The document concluded with a focus on integrated solutions for various sectors, including retail and logistics.",
+        "tone_label": "Neutral",
+        "tone_note": "The presentation provided a balanced overview of financial performance and strategic initiatives without strong emphasis on growth or challenges.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T19:03:40.757440"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_TVSELECT_106638347",
+        "symbol": "TVSELECT",
+        "company_name": "TVS Electronics Limited",
+        "filing_date": "2026-05-24",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "TVS Electronics Limited \n       “Arihant E-Park”, No.117/1, 9th Floor, L.B. Road, Adyar, Chennai – 600 020. Tel.: +91-44-42005200 \n     Registered Office: Harita Towers, 2nd Floor, No.119, St. Mary’s Road, Abhiramapuram, Chennai- 600 018 \n     Corporate Identity Number: L30007TN1995PLC032941 \n     E-mail id: webmaster@tvs-e.in Website: www.tvs-e.in \n \n \n \n \n \n \n \n \n \n24th May 2026 \n \n \nBSE Limited \nPhiroze Jeejeebhoy Towers \nDalal Street \nMumbai - 400 001 \nScrip Code - 532513 \n \nNational Stock Exchange of India Limited Exchange \nPlaza, 5th Floor \nPlot No. C/1 G Block \nBandra - Kurla Complex, Bandra - (E) \nMumbai - 400 051 \nScrip Symbol - TVSELECT \n \n \nDear Sir/ Madam, \n \nSub: Earnings Presentation – Q4- FY26/ FY26 \n \nPursuant to Regulation 30(2) and other respective Regulations of SEBI (Listing Obligations and \nDisclosure Requirements) Regulations, 2015, we are herewith enclosing the copy of Earnings \nPresentation – Q4-FY26/FY26. \n \nKindly take the above information on record. \nThanking you, \nYours truly, \nFor TVS Electronics Limited \n \n \n \n \nK Santosh \nCompany Secretary \n \n \n \n \n \n \n \n \n \nSANTOSH \nKRISHNADASS\nDigitally signed by \nSANTOSH KRISHNADASS \nDate: 2026.05.24 \n13:31:42 +05'30'\n\n1\nTVS Elecronics Limited\nEarnings Presentation\nQ1-FY25\nEARNINGS \nPRESENTATION\nQ4-FY26/FY26\n\n2\nSnapshot\nState-of-the-art \nhardware solutions for \nretail, BFSI & logistics \nindustries.\nUnique edge of \ncustomizing & bundling \nhardware and software \nsolutions\nIndian electronics \nmanufacturer with \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_KUANTUM_106643553",
+      "ok": true,
+      "output": {
+        "summary": "In the Q4-FY26 investor presentation, Kuantum Papers Limited reported operational income of INR10,932 crores, a 1.2% decline from FY25, driven by a 14.8% EBITDA margin, down from 21.9% in FY25 due to lower net sales realization (NSR) and increased costs. Quarterly performance for Q4-FY26 showed operational income of INR3,009 crores, with EBITDA margins improving to 15.9% from 13.6% in Q3-FY26, despite market challenges. The company highlighted mill expansion projects, including completion of Paper Machine 2 rebuild and progress on the Displacement Digester System (DDS) for wood pulping. Sustainability initiatives include adding 854 acres to its Social Farm Forestry program, reaching 18,300+ acres. Financials show a net debt-to-equity ratio of 0.66 and a market price of INR66.1 as of 31 March 2026. The presentation also outlined future strategies like debottlenecking, leveraging single-use plastic bans, and adopting Industry 4.0 technologies for efficiency. Historical data shows declining EBITDA margins and PAT margins, with FY26 PAT at INR420 crores, down from INR1,152 crores in FY25.",
+        "tone_label": "Neutral",
+        "tone_note": "The presentation provides factual financial and operational updates without overtly positive or negative language."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 8574,
+      "completion_tokens": 342,
+      "total_tokens": 8916,
+      "latency_sec": 41.1685,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Neutral",
+        "candidate_tone_label": "Neutral",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1101,
+        "reference_chars": 943,
+        "lexical_overlap": 0.2707,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Kuantum Papers Limited's investor presentation for the quarter and financial year ended March 31, 2026, detailed the company's operational and financial performance. The presentation reported a total operational income of INR 10,932 million for FY26, a slight decrease from INR 11,070 million in FY25. EBITDA margins fell to 14.80% from 21.92% in the previous year, attributed to increased costs and a drop in net selling rates. For Q4 FY26, operational income was INR 3,009 million, with EBITDA margins improving to 15.89% from 13.55% in Q3 FY26. The company highlighted its strategic initiatives, including plant upgrades and sustainability efforts, such as expanding its Social Farm Forestry Program. Kuantum's product portfolio includes a variety of paper types, and it has increased its export footprint to 24 countries. The presentation also outlined future growth strategies focused on capacity expansion and technological advancements.",
+        "tone_label": "Neutral",
+        "tone_note": "The presentation provided a balanced overview of financial performance and strategic initiatives without strong emphasis on positive or negative aspects.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T18:35:09.482626"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_KUANTUM_106643553",
+        "symbol": "KUANTUM",
+        "company_name": "Kuantum Papers Limited",
+        "filing_date": "2026-05-27",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "27.05.2026 \nBSE Limited                                             \nPhiroze Jeejeebhoy Towers                      \nDalal Street                                               \nMumbai 400 001                                       \nScrip Code: 532937     \nScrip ID: KUANTUM                                \nNational Stock Exchange of India Limited \nExchange Plaza \nPlot No. C/1, G Block,                                           \nBandra-Kurla Complex, Bandra (East)                   \nMumbai 400 051 \nTrading Symbol: KUANTUM \n \n \nReg: Earnings Presentation – Disclosure under Regulation 30 of SEBI (Listing \nObligations and Disclosure Requirements) Regulations, 2015 \n \nDear Sir/Madam, \n \nPursuant to Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find attached herewith a copy of Earnings Presentation for Quarter \nand Financial Year ended 31st March, 2026 for your information and record purposes.   \nThe said presentation is also being made available on the Company’s website i.e.  \nwww.kuantumpapers.com. \n \nKindly take the same on record. \n \nThanking you, \n \nYours faithfully, \nFor Kuantum Papers Limited \n \n \n \n \n(Gurinder Singh Makkar) \nCompany Secretary & Compliance Officer \nM. No.: F5124 \n \n \n \n \n \n \n \n \n \n1l. Kuantum Papers ltd \n© kuantumpapers.com \nS kuantumcorp@kuantumpapers.com \nS kuantummill@kuantumpapers.com \nCorp Office WlA FF Tower A Godrej Eternia Plot 70 lndl Area 1 Chandigarh 160 002 Ph -0172 5172737 \nRegd Office & Works Sa\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_SIGACHI_106649351",
+      "ok": true,
+      "output": {
+        "summary": "Sigachi Industries Limited's Q4 FY2025-26 investor presentation outlines a 4.91% year-on-year revenue decline to Rs. 4,778 crore, with EBITDA dropping by 52.05% to Rs. 537 crore and a margin contraction of 1,114 bps to 11.24%. Sequentially, Q4 FY26 showed a 4.01% revenue increase from Q3 FY26 but EBITDA fell by 45.97% year-on-year. The company reported a 66.08% decline in profit before tax to Rs. 77 crore and a 53.08% drop in PAT to Rs. 76 crore. The presentation highlights operational challenges, including a 9.22% increase in total expenses year-on-year and a 66.96% decline in PAT for FY26 compared to FY25. Sigachi emphasized its global presence with 500+ customers across 65+ countries, four manufacturing facilities, and a product range of over 100 items. The company noted progress on the Dahej-2 capacity expansion, aiming to increase total MCC capacity to 30,000 MTPA, and the operational start of its new API R&D Center in Hyderabad. Management outlined strategic priorities for FY27, including completing the Dahej-2 expansion by Q4 FY27, maintaining stable global pharma excipient demand, and achieving higher margin revenues through its API portfolio. The balance sheet shows a gross block of Rs. 2,981 crore as of FY26, with net debt to equity at 3.19 and interest coverage ratio of 4.56. The company also provided historical financial data showing revenue growth from Rs. 2,503 crore in FY22 to Rs. 5,003 crore in FY25, though FY26 saw a decline. Sigachi highlighted its leadership in MCC manufacturing, with a capacity of 18,000 MTPA across four locations and plans to expand to 30,000 MTPA. The presentation included details on quality certifications, R&D investments, and key milestones such as its 2023 acquisition of Trimax Biosciences and the establishment of the API R&D Center in 2025. The company also noted its ESG initiatives, including waste management and CSR activities, and its corporate governance practices with 100% board meeting attendance and 50% independent directors.",
+        "tone_label": "Negative",
+        "tone_note": "The document reports significant declines in key financial metrics, operational challenges, and a drop in profitability compared to previous periods."
+      },
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'target'",
+          "text": {
+            "summary": "Sigachi Industries Limited's Q4 FY2025-26 investor presentation outlines operational and financial highlights, including a 4.91% year-on-year revenue decline to Rs. 4,778 crore and a 52.05% drop in EBITDA to Rs. 537 crore. The presentation notes a sequential revenue increase of 4.01% and a significant EBITDA growth of 170.17% in Q4 FY26, driven by the Dahej-2 capacity expansion and improved product mix. The company reported a 6.23% PAT margin, down from 12.63% in Q4 FY25, with a 53.08% decline in PAT to Rs. 76 crore. Key operational updates include the Dahej-2 expansion progressing on schedule, the new API R&D Center in Hyderabad now fully operational, and a focus on expanding MCC capacity to 30,000 MTPA. The company emphasizes its global presence, with 500+ customers across 65+ countries, and highlights strategic initiatives such as backward integration, capacity expansion, and R&D investments. The presentation also details ESG performance, including waste recycling at 77.88% and energy intensity of 31.30 GJ/MT. Guidance for FY27 includes a revenue target of Rs. 6,500-6,750 crore, an EBITDA margin of 18%-20%, and capacity utilization of over 65% post-Dahej-2 ramp-up. The company's balance sheet shows a net debt-to-equity ratio of 3.19 and interest coverage ratio of 5.56 as of FY26. Sigachi Industries also outlines its long-term growth strategy, including the expansion of its API portfolio and entry into new markets through joint ventures.",
+            "tone_label": "Mixed",
+            "tone_note": "The document presents both positive developments such as operational expansions and ESG achievements alongside financial declines and uncertainties in profitability."
+          },
+          "raw_text": "{\"summary\": \"Sigachi Industries Limited's Q4 FY2025-26 investor presentation outlines operational and financial highlights, including a 4.91% year-on-year revenue decline to Rs. 4,778 crore and a 52.05% drop in EBITDA to Rs. 537 crore. The presentation notes a sequential revenue increase of 4.01% and a significant EBITDA growth of 170.17% in Q4 FY26, driven by the Dahej-2 capacity expansion and improved product mix. The company reported a 6.23% PAT margin, down from 12.63% in Q4 FY25, with a 53.08% decline in PAT to Rs. 76 crore. Key operational updates include the Dahej-2 expansion progressing on schedule, the new API R&D Center in Hyderabad now fully operational, and a focus on expanding MCC capacity to 30,000 MTPA. The company emphasizes its global presence, with 500+ customers across 65+ countries, and highlights strategic initiatives such as backward integration, capacity expansion, and R&D investments. The presentation also details ESG performance, including waste recycling at 77.88% and energy intensity of 31.30 GJ/MT. Guidance for FY27 includes a revenue target of Rs. 6,500-6,750 crore, an EBITDA margin of 18%-20%, and capacity utilization of over 65% post-Dahej-2 ramp-up. The company's balance sheet shows a net debt-to-equity ratio of 3.19 and interest coverage ratio of 5.56 as of FY26. Sigachi Industries also outlines its long-term growth strategy, including the expansion of its API portfolio and entry into new markets through joint ventures.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The document presents both positive developments such as operational expansions and ESG achievements alongside financial declines and uncertainties in profitability.\"}",
+          "raw_output_chars": 1683,
+          "forward_tense_hits": {
+            "summary": [
+              "...ensity of 31.30 GJ/MT. Guidance for FY27 includes a revenue target of Rs. 6,500-6,750 crore, an EBITDA margin of 18%-20%, and ..."
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 1000
+          },
+          "reason": "forward-tense word 'target'",
+          "text": {
+            "summary": "Sigachi Industries Limited's Q4 FY26 investor presentation outlines operational and financial highlights, including a 4.91% year-on-year revenue decline to Rs. 4,778 crore, with EBITDA dropping by 52.05% to Rs. 537 crore and a margin contraction to 11.24%. The presentation notes a 47,600% QoQ increase in PAT to Rs. 76 crore, though the PAT margin fell significantly. The company emphasizes its global presence with 500+ customers across 65+ countries, 4 manufacturing facilities, and a product range of over 100 items. Strategic initiatives include the Dahej-2 capacity expansion, progressing with civil works underway to increase MCC capacity to 30,000 MTPA, and the operational API R&D Center in Hyderabad. The FY27 guidance includes a revenue goal of Rs. 6,500-6,750 crore, an EBITDA margin target of 18-20%, and >65% capacity utilization post-expansion. The company highlights its competitive edge through quality certifications, R&D investments, and strategic acquisitions, including Trimax Biosciences Pvt Ltd. The balance sheet shows a gross block of Rs. 2,981 crore and net debt-to-equity ratio of 3.19 as of FY26. The presentation also details ESG performance, including waste recycling and CSR initiatives, and outlines key milestones such as the 2023 capacity expansion to 21,000 MTPA and the 2025 GAIN certification achievement. Management expressed confidence in FY27 recovery and growth, citing progress on projects and stable global demand for excipients.",
+            "tone_label": "Mixed",
+            "tone_note": "The presentation includes both positive aspects like strategic expansion and R&D progress, alongside negative financial results such as revenue decline and margin contraction."
+          },
+          "raw_text": "{\n\n\n\"summary\": \"Sigachi Industries Limited's Q4 FY26 investor presentation outlines operational and financial highlights, including a 4.91% year-on-year revenue decline to Rs. 4,778 crore, with EBITDA dropping by 52.05% to Rs. 537 crore and a margin contraction to 11.24%. The presentation notes a 47,600% QoQ increase in PAT to Rs. 76 crore, though the PAT margin fell significantly. The company emphasizes its global presence with 500+ customers across 65+ countries, 4 manufacturing facilities, and a product range of over 100 items. Strategic initiatives include the Dahej-2 capacity expansion, progressing with civil works underway to increase MCC capacity to 30,000 MTPA, and the operational API R&D Center in Hyderabad. The FY27 guidance includes a revenue goal of Rs. 6,500-6,750 crore, an EBITDA margin target of 18-20%, and >65% capacity utilization post-expansion. The company highlights its competitive edge through quality certifications, R&D investments, and strategic acquisitions, including Trimax Biosciences Pvt Ltd. The balance sheet shows a gross block of Rs. 2,981 crore and net debt-to-equity ratio of 3.19 as of FY26. The presentation also details ESG performance, including waste recycling and CSR initiatives, and outlines key milestones such as the 2023 capacity expansion to 21,000 MTPA and the 2025 GAIN certification achievement. Management expressed confidence in FY27 recovery and growth, citing progress on projects and stable global demand for excipients.\",\n\n\"tone_label\": \"Mixed\", \n\n\"tone_note\": \"The presentation includes both positive aspects like strategic expansion and R&D progress, alongside negative financial results such as revenue decline and margin contraction.\"\n}",
+          "raw_output_chars": 1709,
+          "forward_tense_hits": {
+            "summary": [
+              "...s a revenue goal of Rs. 6,500-6,750 crore, an EBITDA margin target of 18-20%, and >65% capacity utilization post-expansion. Th..."
+            ]
+          }
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 24834,
+      "completion_tokens": 1470,
+      "total_tokens": 26304,
+      "latency_sec": 87.9503,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": "Negative",
+        "tone_label_agrees": false,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 2009,
+        "reference_chars": 880,
+        "lexical_overlap": 0.259,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The investor presentation for Q4 FY 2025-26 from Sigachi Industries Limited outlined the company's operational and financial highlights, emphasizing a year of resilience and strategic growth. Management reported that the Dahej-2 capacity expansion is on schedule, aiming to elevate total MCC capacity to 30,000 MTPA. The presentation highlighted a global customer base of over 500 across 65 countries and noted a 19.92% revenue CAGR over five years. Financially, the company reported a revenue of Rs. 1,219 million for Q4 FY26, a 4.01% increase QoQ, but a 4.91% decrease YoY. EBITDA margin was reported at 12.63%, down from 22.31% YoY. Management set a goal for FY27 to achieve revenue between Rs. 6,500 - 6,750 million and an EBITDA margin of 18% - 20%. The presentation also emphasized the company's commitment to sustainability and community engagement through CSR initiatives.",
+        "tone_label": "Mixed",
+        "tone_note": "The presentation highlighted both challenges and strategic growth initiatives.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T18:03:31.782239"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_SIGACHI_106649351",
+        "symbol": "SIGACHI",
+        "company_name": "Sigachi Industries Limited",
+        "filing_date": "2026-05-30",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "To \n \n \n \n \n \n \n \n                    Date: May 30, 2026 \n \nThe Manager \nBSE Limited \nP. J. Towers, Dalal Street \nMumbai-400001(BSE \nScrip Code: 543389) \nThe Manager \nNational Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex \nBandra (E), Mumbai- 400051 \n(NSE Symbol: SIGACHI) \n \n \n \nDear Sir/Madam, \n \nSub: Investor Presentation for Q4 FY 2025-26 \n \n \nPursuant to Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) 2015, \nand with reference to the subject cited, please find enclosed the Investor Presentation for Q4 \nFY 2025-26. The same is also uploaded on the website of the Company  www.sigachi.com  \n \nRequest you to kindly take the same on record. \n \nThanking You, \n \nYours faithfully \nFor Sigachi Industries Limited \n \n \n \nVivek Kumar \nCompany Secretary & Compliance Officer \n \n \n \n \nVIVEK \nKUMAR\nDigitally signed \nby VIVEK KUMAR \nDate: 2026.05.30 \n16:02:36 +05'30'\n\nSIGACHI INDUSTRIES LTD\nQ 4 F Y 26 \nInvestor Pres entation \n30 th May ’ 2 0 2 6\n\nNo representation or warranty, express or implied, is made as to, and no reliance should be placed on, the fairness, accuracy, completeness or \ncorrectness of the information or opinions contained in this presentation. Such information and opinions are in all events not current after the \ndate of this presentation. Certain statements made in this presentation may not be based on historical information or facts and may be \n\"forward looking statements\" based on the currently held beliefs and assumptio\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_SDBL_106655906",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "Som Distilleries & Breweries Limited reported a 14.8% decline in consolidated revenue to INR1,233 crores for FY26, driven by operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Beer volumes fell by 20% to 187.19 lakh cases, while IMFL business grew by 32% to 15.03 lakh cases. The company faced industry-wide inflationary pressures on inputs like glass bottles, aluminum cans, and barley, which impacted margins. Despite these challenges, the company maintained healthy cash flows and is working on resolving the Bhopal license issue, with the renewal process underway. The greenfield brewery in Uttar Pradesh is on track for commercial operations, expected to contribute 15-20 lakh cases in FY27. Management guided revenue for FY27 between INR1,400 crores and INR1,500 crores, contingent on Bhopal's license resolution. The company emphasized cost optimization and premiumization strategies to mitigate margin pressures. Investors raised concerns about delays in license resolution, market share loss in Karnataka, and credit rating downgrades linked to operational issues. Management assured proactive steps to address compliance and governance, including appointing a dedicated compliance officer. The discussion concluded without forward-looking guidance beyond FY27 revenue targets.",
+            "tone_label": "Mixed",
+            "tone_note": "The tone is mixed as the document highlights both operational challenges and strategic initiatives, with management expressing confidence in future recovery while acknowledging current difficulties."
+          },
+          "raw_text": "{\"summary\": \"Som Distilleries & Breweries Limited reported a 14.8% decline in consolidated revenue to INR1,233 crores for FY26, driven by operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Beer volumes fell by 20% to 187.19 lakh cases, while IMFL business grew by 32% to 15.03 lakh cases. The company faced industry-wide inflationary pressures on inputs like glass bottles, aluminum cans, and barley, which impacted margins. Despite these challenges, the company maintained healthy cash flows and is working on resolving the Bhopal license issue, with the renewal process underway. The greenfield brewery in Uttar Pradesh is on track for commercial operations, expected to contribute 15-20 lakh cases in FY27. Management guided revenue for FY27 between INR1,400 crores and INR1,500 crores, contingent on Bhopal's license resolution. The company emphasized cost optimization and premiumization strategies to mitigate margin pressures. Investors raised concerns about delays in license resolution, market share loss in Karnataka, and credit rating downgrades linked to operational issues. Management assured proactive steps to address compliance and governance, including appointing a dedicated compliance officer. The discussion concluded without forward-looking guidance beyond FY27 revenue targets.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The tone is mixed as the document highlights both operational challenges and strategic initiatives, with management expressing confidence in future recovery while acknowledging current difficulties.\"}",
+          "raw_output_chars": 1596,
+          "forward_tense_hits": {
+            "summary": [
+              "...ery in Uttar Pradesh is on track for commercial operations, expected to contribute 15-20 lakh cases in FY27. Management guided r...",
+              "...cluded without forward-looking guidance beyond FY27 revenue targets...."
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 1000
+          },
+          "reason": "forward-tense word 'expects'",
+          "text": {
+            "summary": "Som Distilleries & Breweries Limited reported a 14.8% decline in consolidated revenue to INR1,233 crores for FY26, driven by operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Beer volumes fell 20% to 187.19 lakh cases, while IMFL business grew 32% to 15.03 lakh cases. Input costs for glass, aluminum, barley, and logistics remained under pressure, impacting margins. The company maintained a healthy balance sheet with gross debt at INR211 crores (0.30x debt-to-equity ratio). A greenfield brewery in Uttar Pradesh is progressing, with Phase 1 on schedule and commercial operations anticipated after trial runs. Management highlighted plans to ramp up production capacity and improve regional market access. The Bhopal plant's license suspension remains unresolved, though the company is working with authorities and expects resolution soon. Revenue guidance for FY27 was set at INR1,400-1,500 crores, contingent on Bhopal resuming operations and UP plant contributions. Investors raised concerns about delayed license resolution, operational challenges, and credit rating downgrades linked to the suspension. Management emphasized ongoing efforts to resolve regulatory issues, optimize costs, and leverage new market policies in Karnataka. The discussion concluded without forward-looking guidance beyond FY27 revenue targets.",
+            "tone_label": "Mixed",
+            "tone_note": "The tone is mixed as the document reports both operational challenges and strategic initiatives, with management expressing confidence in future recovery."
+          },
+          "raw_text": "{\"summary\": \"Som Distilleries & Breweries Limited reported a 14.8% decline in consolidated revenue to INR1,233 crores for FY26, driven by operational disruptions at the Bhopal facility and subdued demand in key markets like Karnataka and Odisha. Beer volumes fell 20% to 187.19 lakh cases, while IMFL business grew 32% to 15.03 lakh cases. Input costs for glass, aluminum, barley, and logistics remained under pressure, impacting margins. The company maintained a healthy balance sheet with gross debt at INR211 crores (0.30x debt-to-equity ratio). A greenfield brewery in Uttar Pradesh is progressing, with Phase 1 on schedule and commercial operations anticipated after trial runs. Management highlighted plans to ramp up production capacity and improve regional market access. The Bhopal plant's license suspension remains unresolved, though the company is working with authorities and expects resolution soon. Revenue guidance for FY27 was set at INR1,400-1,500 crores, contingent on Bhopal resuming operations and UP plant contributions. Investors raised concerns about delayed license resolution, operational challenges, and credit rating downgrades linked to the suspension. Management emphasized ongoing efforts to resolve regulatory issues, optimize costs, and leverage new market policies in Karnataka. The discussion concluded without forward-looking guidance beyond FY27 revenue targets.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The tone is mixed as the document reports both operational challenges and strategic initiatives, with management expressing confidence in future recovery.\"}",
+          "raw_output_chars": 1595,
+          "forward_tense_hits": {
+            "summary": [
+              "...esolved, though the company is working with authorities and expects resolution soon. Revenue guidance for FY27 was set at INR1,...",
+              "...cluded without forward-looking guidance beyond FY27 revenue targets...."
+            ]
+          }
+        },
+        {
+          "pass": 3,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 2000
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "Som Distilleries & Breweries Limited reported a 14.8% decline in consolidated revenue to INR1,233 crores for FY26, with beer volumes down 20% to 187.19 lakh cases. The IMFL business grew 32% to 15.03 lakh cases. The Bhopal plant's license suspension remains unresolved, though the company is working with authorities and has indicated plans to resolve the issue. The Uttar Pradesh greenfield brewery project is on schedule, with commercial operations expected to start soon, contributing 15-20 lakh cases in FY27. Management highlighted improved market share in Karnataka and Tamil Nadu, with the revised excise duty structure supporting recovery. The company maintained a healthy balance sheet with a debt-to-equity ratio of 0.30x. Management set a goal of INR1,400-1,500 crores in revenue for FY27, contingent on Bhopal's license resolution. Concerns were raised about inventory sustainability, regulatory delays, and credit rating downgrades linked to the license suspension. The company emphasized cost optimization, premiumization, and operational efficiency to mitigate margin pressure.",
+            "tone_label": "Mixed",
+            "tone_note": "The tone is mixed as the document highlights both operational challenges and strategic initiatives, with some positive developments offset by ongoing issues."
+          },
+          "raw_text": "{\"summary\": \"Som Distilleries & Breweries Limited reported a 14.8% decline in consolidated revenue to INR1,233 crores for FY26, with beer volumes down 20% to 187.19 lakh cases. The IMFL business grew 32% to 15.03 lakh cases. The Bhopal plant's license suspension remains unresolved, though the company is working with authorities and has indicated plans to resolve the issue. The Uttar Pradesh greenfield brewery project is on schedule, with commercial operations expected to start soon, contributing 15-20 lakh cases in FY27. Management highlighted improved market share in Karnataka and Tamil Nadu, with the revised excise duty structure supporting recovery. The company maintained a healthy balance sheet with a debt-to-equity ratio of 0.30x. Management set a goal of INR1,400-1,500 crores in revenue for FY27, contingent on Bhopal's license resolution. Concerns were raised about inventory sustainability, regulatory delays, and credit rating downgrades linked to the license suspension. The company emphasized cost optimization, premiumization, and operational efficiency to mitigate margin pressure.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The tone is mixed as the document highlights both operational challenges and strategic initiatives, with some positive developments offset by ongoing issues.\"}",
+          "raw_output_chars": 1304,
+          "forward_tense_hits": {
+            "summary": [
+              "... brewery project is on schedule, with commercial operations expected to start soon, contributing 15-20 lakh cases in FY27. Manag..."
+            ]
+          }
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 36176,
+      "completion_tokens": 961,
+      "total_tokens": 37137,
+      "latency_sec": 99.6507,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": null,
+        "tone_label_agrees": null,
+        "tone_label_valid": false,
+        "candidate_compliance": "empty text",
+        "reference_compliance": null,
+        "candidate_chars": 0,
+        "reference_chars": 972,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "During the earnings conference call held on June 2, 2026, management reported that Som Distilleries & Breweries Limited faced a challenging fiscal year 2026, with consolidated revenue declining by 14.8% to INR 1,233 crores, impacted by operational disruptions and subdued demand in key markets. Beer volumes decreased by 20%, while the Indian Made Foreign Liquor (IMFL) segment grew by 32%. Management noted ongoing inflationary pressures affecting input costs and margins. Despite these challenges, the company maintained healthy operating cash flows and continued investments in a greenfield brewery project in Uttar Pradesh, which is on schedule. Management set a goal of achieving revenue between INR 1,400 crores and INR 1,500 crores for FY 2027, contingent on the resolution of licensing issues at the Bhopal facility. The call concluded with management expressing confidence in recovering market share and improving operational performance in the upcoming quarters.",
+        "tone_label": "Mixed",
+        "tone_note": "Management highlighted both challenges and opportunities for recovery in the business.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T17:29:28.784482"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_SDBL_106655906",
+        "symbol": "SDBL",
+        "company_name": "Som Distilleries & Breweries Limited",
+        "filing_date": "2026-06-05",
+        "doc_kind": "earnings concall transcript"
+      },
+      "evidence_excerpt": "SOM DISTILLERIES AND BREWERIES LIMITED \nRegistered Office: I-A, Zee Plaza, Arjun Nagar, Safdarjung Enclave, Kamal Cinema Road, New Delhi - 110029 \nPhone: +91-11-26169909, 26169712  Fax: +91-11-26195897 \nCorporate Office: SOM House, 23, Zone II, M.P. Nagar, Bhopal, Madhya Pradesh – 462011 \nPhone: +91-755-4278827, 4271271  Fax: +91-755-2557470 \nEmail : compliance@somindia.com   Website: www.somindia.com \nCIN : L74899DL1993PLC052787   \n \n         \n(BSE : 507514, NSE : SDBL) \n \n    \n \nSDBL/BSE/NSE/2026 \n \n \n \n \n \n                      5.06.2026 \n \nTo, \nThe Manager, \nDy. General Manager, \nListing Department, \nDepartment of Corporate Services, \nNATIONAL \nSTOCK \nEXCHANGE \nOF \nINDIA LIMITED \nBSE LIMITED, \n‘Exchange Plaza’ C-1, Block G, \nFirst Floor, P.J. Towers, \nBandra-Kurla Complex, Bandra (E), \nDalal Street, Fort, \nMumbai-400 051.  \ncmlist@nse.co.in \nMumbai – 400001. \ncorp.compliance@bseindia.com \nSecurity ID: SDBL \nSecurity ID: 507514 \n \nSUB: INTIMATION UNDER REGULATION 30 OF THE SEBI (LISTING OBLIGATIONS \nAND \nDISCLOSURE \nREQUIREMENTS) \nREGULATIONS, \n2015 \n- \nEARNINGS \nCONFERENCE CALL TRANSCRIPT \n \nDear Sir/ Madam, \n \nPursuant to Regulation 30 of Listing Regulations, Please find attached Earnings Conference \nCall transcript held on Tuesday, June 2, 2026 with respect to the Audited Financial Results \nfor the Q4 & Financial year ended 31st March, 2026.  \n \nThe transcript of the said Earnings Conference Call is also available on the Company's \nwebsite i.e. www.somindia.com.  \n \nThi\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_PNB_106702450",
+      "ok": true,
+      "output": {
+        "summary": "In the Q1 FY27 investor presentation, Punjab National Bank (PNB) reported a net profit of ₹5,253 crores, a 213.6% YoY increase, driven by a 6.2% YoY growth in operating profit and a 17.2% YoY rise in net interest income. The bank's global business grew by 10.2% YoY to ₹29,97,970 crores, with domestic advances increasing by 11.6% YoY and overseas advances rising by 36.3% YoY. Asset quality improved, with gross NPA at 2.78% of domestic advances and net NPA at 0.28%, down 100 bps and 3 bps YoY, respectively. The bank's capital adequacy ratio (CRAR) stood at 18.13%, up from 17.50% YoY, and CET-1 ratio at 14.52%. Digital initiatives showed progress, with PNB One activated users reaching 365 lakh and digital transactions hitting ₹357 crores. The bank also highlighted ESG initiatives, including green financing and sustainability efforts, and received awards for product innovation and climate finance. Guidance for FY27 included credit growth of 12-13% YoY, deposit growth of 9-10% YoY, and maintaining a CASA share of 38%. However, the bank noted challenges such as inflationary pressures and global economic uncertainties.",
+        "tone_label": "Positive",
+        "tone_note": "The document highlights strong financial performance, improved asset quality, digital progress, and ESG achievements despite acknowledging external challenges."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 21701,
+      "completion_tokens": 372,
+      "total_tokens": 22073,
+      "latency_sec": 174.7278,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1129,
+        "reference_chars": 933,
+        "lexical_overlap": 0.2576,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The investor presentation by Punjab National Bank (PNB) detailed the unaudited financial results for the quarter ended June 30, 2026. Management reported a net profit of ₹5,253 crore, reflecting a year-on-year increase of 213.6%. The bank's return on assets (ROA) was 1.04%, and the gross non-performing assets (GNPA) ratio improved to 2.78%, down 100 basis points from the previous year. Global business reached ₹29,97,970 crore, growing 10.2% year-on-year. The presentation highlighted strong credit growth, particularly in retail and MSME sectors, and emphasized the bank's digital transformation initiatives. Management noted challenges from geopolitical uncertainties and inflationary pressures but expressed confidence in the bank's resilience and growth potential. The document also outlined the bank's commitment to environmental, social, and governance (ESG) initiatives, showcasing various awards and recognitions received.",
+        "tone_label": "Positive",
+        "tone_note": "Management highlighted significant growth in profitability and business metrics.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T17:01:47.695219"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_PNB_106702450",
+        "symbol": "PNB",
+        "company_name": "Punjab National Bank",
+        "filing_date": "2026-07-18",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "E] r>nb\nJ(Z1p S?\nAmrit Mahotsav\n'B\npab one\n#JunOweftpp\n...the name you can BANK upon!\nShare Department, Board & Coordination Division, Head Office Plot No.4 Sector IO, Dwarka,\nNew Delhi-llO075, \nE-mail: hQ sa@lpnb,benk,in\nScrip Code: PNB\nNational Stock Exchange of India Limited\n“Exchange Plaza'\nBandra – Kurla Complex, Bandra (E)\nMumbai – 400 051\nScrip Code: 532461\nBSE Limited\n1 st Floor, Phiroze Jeejeebhoy Towers\nDalaI Street\nMumbai – 400 001\nDate: 18.07.2026\nDear Sir (s),\nReg.: Analyst Presentation on Unaudited (Reviewed) Financial Results for the\nQuarter ended on 30th June, 2026\nPursuant to Regulation 30 read with Clause 15 of Para A of Part A of Schedule III of\nthe SEBI (LODR) Regulations, 2015, please find enclosed Analyst Presentation on the\nUnaudited (Reviewed) Financial Results of the Bank for the quarter ended 30th June,\n2026\nThe same is also available at https://pnb.bank.in/financials-current.html.\nYou are requested to take the above on record.\nThanking you,\n(Bikramjit Shorn)\nCompany Secretary\nEnclosed: As above\ndana a9aa \navm punjab national bank\ng gm aT=fm: @fed.4, M!-lo, \natol. q{feHt-110075\nHead Office: Plot No. 4, Sector - 10, Dwarka. New Delhi 110075 India\npnb. bank.in\nT: 01 1 28075000, 28045000\nE\n(f)Oai)@)©)pnbindia @) www.pnb.bank.in\ndana anS:Irg;! y•\npunjab?asI::!9£Akcjro\\\\\nBIKRAMJIT \nSHOM\nDigitally signed by BIKRAMJIT SHOM \nDN: st=West Bengal, \nserialNumber=6f2651546fb6d9dcaa692694280f1d0198\nf3f1283652a85f10889a45fae593e8, \npostalCode=700039, o=Personal, c=\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_MANYAVAR_106711176",
+      "ok": true,
+      "output": {
+        "summary": "The investor presentation for Vedant Fashions Limited (MANYAVAR) for Q1 FY27 outlines the company's business overview, financial performance, and strategic initiatives. Management highlighted the company's position as the largest in India for men’s Indian wedding & celebration wear by revenue, OPBDIT, and PAT, with a strong pan-India presence through its Manyavar brand. The company reported a 3.4% growth in retail sales (sale of customers) and a 3.8% increase in domestic SSSG (Same-Store Sales Growth) compared to Q1 FY26. Financial highlights include a 7.2% increase in revenue from operations, a 5.2% rise in gross profit with a gross margin of 65.7%, and a 14.7% growth in PAT with a strong PAT margin of 26.7%. The company's retail footprint includes 501 EBOs (Exclusive Brand Outlets) across 205 domestic cities and towns, with a total EBO area of 1.67 million sq. ft. Strategic initiatives focus on brand expansion, including the Mohey and Twamev labels, and marketing campaigns featuring celebrity ambassadors. The presentation also details the company's growth strategy, emphasizing up-selling, cross-selling, retail expansion, and disciplined acquisitions. The company has a long track record of strong financial performance, with consistent growth in revenue, gross profit, EBITDA, and PAT over the past few fiscal years. The document includes a glossary defining key terms and mentions several awards and accolades received by the company. The presentation includes forward-looking statements with disclaimers about risks and uncertainties, as well as a disclaimer that the content is for informational purposes only and not an offer to purchase or subscribe to securities.",
+        "tone_label": "Positive",
+        "tone_note": "The document emphasizes strong financial performance metrics, growth in key business areas, and strategic initiatives without overtly negative language."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 8231,
+      "completion_tokens": 412,
+      "total_tokens": 8643,
+      "latency_sec": 42.1108,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1689,
+        "reference_chars": 852,
+        "lexical_overlap": 0.2532,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Vedant Fashions Limited submitted an investor presentation on July 25, 2026, detailing its performance for the quarter ended June 30, 2026. The presentation highlighted a 3.4% increase in retail sales and a 7.2% growth in revenue from operations compared to the same quarter in the previous year. The company reported a gross margin of 65.7% and a profit after tax (PAT) growth of 14.7%, achieving a PAT margin of 26.7%. Vedant Fashions emphasized its market leadership in Indian wedding and celebration wear, with a diversified brand portfolio and a strong omni-channel presence. The company also noted its unique business model, which includes no end-of-season sales for its Manyavar brand. The presentation outlined key investment highlights, including a disciplined approach to acquisitions and a focus on technology-driven supply chain management.",
+        "tone_label": "Positive",
+        "tone_note": "The presentation emphasized growth and strong financial performance.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T16:38:39.527396"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_MANYAVAR_106711176",
+        "symbol": "MANYAVAR",
+        "company_name": "Vedant Fashions Limited",
+        "filing_date": "2026-07-25",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Vedant Fashions Limited  \nRegistered Office: 19, Canal South Road, Paridhan Garment Park, SDF-1. 4th Floor, A501-A502, Kolkata: 700015, Phone: +91 3361255353 \nEmail: info@vedantfashions.com | Website: www.vedantfashions.com | CIN: L51311WB2002PLC094677 \n \n \nJuly 25, 2026 \n \n \nTo,  \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor, Plot No. C-1, \nBandra Kurla Complex, Bandra (E), \nMumbai – 400051 \n \nTo,  \nBSE Limited \n \n \n \n \nPhiroze Jeejeebhoy Towers \n \n \nDalal Street, Fort, \nMumbai – 400001 \nNSE Symbol: MANYAVAR \n \nBSE Scrip Code: 543463 \n \nMadam / Sir, \n \nSub : \nSubmission of Investor Presentation–July 2026 | Vedant Fashions Limited (the ‘Company’) \nRef : \nDisclosure under Regulation 30 of the Securities and Exchange Board of India (Listing \nObligations and Disclosure Requirements) Regulations, 2015, as amended (“Listing \nRegulations”) \nPursuant to Regulation 30 read with Schedule III of the Listing Regulations, please find enclosed a copy of \n‘Investor Presentation – July 2026’ issued in connection with the Unaudited Financial Results of Vedant \nFashions Limited (“the Company”) for the quarter ended on June 30, 2026. \n \nThe aforesaid Investor Presentation is also being made available on the Company’s website \n(www.vedantfashions.com). \n \nWe request you to kindly take the aforesaid information on record and disseminate the same on your \nrespective websites. \n \nThank you. \n \n \nFor, Vedant Fashions Limited \n \n \n \n_____________________ \nNavin Pareek  \nCompan\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_GOCOLORS_106717019",
+      "ok": true,
+      "output": {
+        "summary": "The investor presentation for Q1 FY2027 by Go Fashion (India) Limited outlines key financial and operational highlights. Management reported Q1 FY27 revenue of ₹161 crores, a 2% year-over-year increase, with gross profit of ₹50 crores (2% YoY) and PAT of ₹8 crores (4% YoY). However, revenue from online channels declined by 54% YoY to ₹140 crores, and EBITDA fell by 2% YoY to ₹67 crores. The presentation noted a 10 basis point decline in gross profit margins to 62.9% and a 70 basis point drop in EBITDA margins to 30.3%. Retail expansion included adding 7,016 sq. ft. of new store space, though this was offset by the closure of 66 stores. The average selling price increased by 1.2%, and full-price sales accounted for 94% of EBO sales. The company emphasized its product portfolio evolution, with non-leggings products contributing ~70% of revenues. Strategic initiatives include expanding larger EBO stores, enhancing online presence, and leveraging technology for supply chain efficiency. The presentation highlighted a 18% CAGR in the branded bottom-wear market and Go Colors' position in the sweet-spot price segment. The document also outlined historical financial performance, including a 17.8% projected CAGR for the branded bottom-wear market. The tone of the presentation acknowledged mixed financial results, with growth in revenue and store expansion tempered by declines in online sales and EBITDA margins.",
+        "tone_label": "Mixed",
+        "tone_note": "The presentation highlighted both revenue growth and store expansion while noting declines in online sales and EBITDA margins, reflecting a mixed tone."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 10630,
+      "completion_tokens": 388,
+      "total_tokens": 11018,
+      "latency_sec": 57.2916,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Neutral",
+        "candidate_tone_label": "Mixed",
+        "tone_label_agrees": false,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1424,
+        "reference_chars": 907,
+        "lexical_overlap": 0.3022,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The investor presentation for Q1 FY 2027 by Go Fashion (India) Limited reported a revenue from operations of Rs. 161 crores, reflecting a 2% year-over-year increase. Gross profit also rose by 2% to Rs. 50 crores, while profit after tax increased by 4% to Rs. 8 crores. However, EBITDA before exceptional items decreased by 2% to Rs. 67 crores, with EBITDA margins at 30.3%, down 70 basis points from the previous year. The presentation highlighted a strategic focus on expanding retail space, with 7,016 sq. ft. added during the quarter, despite the closure of 66 stores. The company emphasized its commitment to enhancing product relevance and customer experience through larger exclusive brand outlets (EBOs) and a diversified product portfolio. Management noted that the bottom-wear segment is evolving, with a significant shift towards value-added products contributing to approximately 70% of revenues.",
+        "tone_label": "Neutral",
+        "tone_note": "The presentation provided a balanced overview of financial performance and strategic initiatives without strong emphasis on growth or challenges.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T16:16:07.344922"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_GOCOLORS_106717019",
+        "symbol": "GOCOLORS",
+        "company_name": "Go Fashion (India) Limited",
+        "filing_date": "2026-07-30",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "July 30, 2026 \n \nBSE Limited \nScrip Code: 543401 \nNational Stock Exchange of India Ltd. \nTrading Symbol: GOCOLORS \n \nDear Sir/Madam, \n \nSub: Investor Presentation for Q1 FY 2027 - Regulation 30 of SEBI (Listing Obligations and \nDisclosure Requirements) Regulations, 2015. \n \nWith reference to the above captioned subject, please find enclosed Investor Presentation for Q1 FY 27. \n \nThe aforesaid Investor Presentation is also being disseminated on company’s website at \nhttps://www.gocolors.com/investor-relations. \n \nThis is for your information and record. \n \nThanking You, \nFor Go Fashion (India) Limited \n \n \n \n \nGayathri Kethar \nCompany Secretary & Compliance Officer \n \n \n \n \nGAYATHR\nI KETHAR\nDigitally signed by \nGAYATHRI KETHAR \nDate: 2026.07.30 \n13:53:47 +05'30'\n\nInvestor Presentation\nJuly 2026\n\nGo Fashion (India) Limited\nThis presentation has been prepared by and is the sole responsibility of Go Fashion (India) Limited (the “Company”). By accessing this presentation, you are \nagreeing to be bound by the trailing restrictions. \nThis presentation does not constitute or form part of any offer or invitation or inducement to sell or issue, or any solicitation of any offer or recommendation to \npurchase or subscribe for, any securities of the Company, nor shall it or any part of it or the fact of its distribution form the basis of, or be relied on in connection \nwith, any contract or commitment thereof. In particular, this presentation is not intended to be a prospectus or offer do\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_UNIMECH_106722740",
+      "ok": true,
+      "output": {
+        "summary": "Unimech Aerospace and Manufacturing Limited's Q1 FY27 investor presentation highlights a 71% YoY revenue growth to ₹1,076.2 mn, with EBITDA rising 98% to ₹392.5 mn and a 36.5% EBITDA margin, up 5% YoY. Profit after tax increased 46% to ₹278.6 mn, with a 24.2% PAT margin, while the order book reached ₹2,803 million as of June 30, 2026. Strategic initiatives include the acquisition of Hobel Bellows, long-term agreements with FACC and semiconductor OEMs, and expansion into nuclear, energy, and semiconductor sectors. The company reported 6,300+ qualified SKUs, 5 manufacturing facilities, and ~563,000 sq. ft. of manufacturing area, with exports at ~96%. FY26 financials show revenue growth from ₹941.7 mn in FY23 to ₹2,404.9 mn in FY26, with PAT rising from ₹228.0 mn to ₹632.8 mn. The presentation notes a 60.4% CAGR in revenue from FY22 to FY26 and outlines strategic pillars including expanding manufacturing footprint, enhancing customer proximity, and leveraging acquisitions. The company emphasizes its AS9100D and ISO certifications, advanced machining capabilities, and partnerships like the Kanoo–Unimech JV in Saudi Arabia. The document includes forward-looking statements about future growth, qualification programs, and market expansion, but cautions that these are subject to risks and uncertainties.",
+        "tone_label": "Positive",
+        "tone_note": "The document highlights strong revenue and EBITDA growth, strategic acquisitions, and expansion into new markets, with an emphasis on future growth opportunities."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 8423,
+      "completion_tokens": 404,
+      "total_tokens": 8827,
+      "latency_sec": 42.9103,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1316,
+        "reference_chars": 868,
+        "lexical_overlap": 0.2345,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The investor presentation from Unimech Aerospace and Manufacturing Limited reported that the company achieved its highest-ever quarterly revenue of ₹1,076.2 million for Q1 FY27, reflecting a 71% year-over-year increase. EBITDA also saw significant growth, rising 98% to ₹392.5 million, with an EBITDA margin of 36.5%. The presentation highlighted the successful integration of Hobel Bellows and the signing of a long-term supply agreement with FACC, a Tier-1 aerospace supplier. Management emphasized a focus on qualification-led growth, aiming to increase qualifications for flying parts and precision manufacturing programs. The total order book as of June 30, 2026, stood at ₹2,803 million, with a healthy order pipeline and expanding customer relationships. The document outlined strategic investments and operational improvements as key drivers for future growth.",
+        "tone_label": "Positive",
+        "tone_note": "Management highlighted strong financial performance and strategic growth initiatives.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T15:54:47.442699"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_UNIMECH_106722740",
+        "symbol": "UNIMECH",
+        "company_name": "Unimech Aerospace and Manufacturing Limited",
+        "filing_date": "2026-08-03",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "August 03, 2026 \nTo,  \nNational Stock Exchange of India Ltd. \nSymbol: UNIMECH \nBSE Limited \nScrip Code: 544322 \n \nSub: \nIntimation of Investor Presentation \nDear Sir/Ma’am, \nIn continuation to our letter dated July 29, 2026, pursuant to Regulation 30 of the SEBI (Listing \nObligations and Disclosure Requirements) Regulations, 2015, we hereby enclose the copy of \nEarnings Presentation on un-audited Financial Results of the Company for the quarter ended June \n30, 2026, which is being placed on the Company’s website, for the Earnings Conference Call \nscheduled on Tuesday, August 04, 2026. \n \nThanking You,  \nYours Faithfully,  \n \nFor Unimech Aerospace and Manufacturing Limited \n \n \nRashmi Gupta \nCompany Secretary & Compliance Officer \nM. No: A25382 \n \n \nEncl: Annexure-A \n \nRASHMI \nGUPTA\nDigitally signed by \nRASHMI GUPTA \nDate: 2026.08.03 \n19:24:02 +05'30'\n\nUnimech Aerospace \nand Manufacturing Limited\nInvestor Presentation\nQ1 FY27 – August 2026\n\nDisclaimer\nThis presentation and the accompanying slides (the “Presentation”), which has been prepared by Unimech Aerospace and Manufacturing Ltd (the “Company”), \nhave been prepared solely for information purposes and do not constitute any offer, recommendation or invitation to purchase or subscribe for any securities, \nand shall not form the basis or be relied on in connection with any contract or binding commitment whatsoever. No offering of securities of the Company shall be \nmade except by means of a statutory offering document contain\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_RATEGAIN_106728376",
+      "ok": true,
+      "output": {
+        "summary": "In the Q1 FY2027 investor presentation, Rategain Travel Technologies Limited reported robust revenue growth of 187.6% year-over-year to INR785 crores, driven by strong performance across its DaaS, Distribution, and Martech segments. Adjusted EBITDA grew by 289.3% to INR193.4 crores (24.6% margin), and adjusted PAT increased by 148.8% to INR116.8 crores (14.9% margin). The company highlighted a diversified revenue mix with 79.1% from subscription, 13.9% from transaction, and 7.3% from hybrid models. Revenue by industry type showed 46.7% from hospitality, 33.5% from DMOs, and 7.3% from OTAs. Geographically, 66.2% of revenue came from North America, 10.8% from Asia Pacific, and 20.5% from Europe. The company added 1,261 customers through the Sojern acquisition, with 14,158 total customers as of Q1 FY2027. Revenue per employee rose 95.3% YoY, and free cash flow conversion reached 78.8%. Key initiatives included AI-powered innovations like Agentic ARI, RateIQ, and RG Pay, along with strategic partnerships and product launches. The company emphasized operational efficiency, with a 47.3% increase in employee headcount and a 10.7x LTV to CAC ratio. Financials showed a net cash and equivalents balance of INR255.6 crores and a net debt of INR615.4 crores. The presentation outlined growth drivers such as SMB expansion, geographic diversification, and AI product innovation, alongside a strong customer base and strategic investments. Management highlighted confidence in the business model and future growth despite ongoing integration challenges from the Sojern acquisition.",
+        "tone_label": "Positive",
+        "tone_note": "The document highlights strong revenue and profit growth, operational efficiency, and confidence in future growth despite integration challenges."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 9151,
+      "completion_tokens": 472,
+      "total_tokens": 9623,
+      "latency_sec": 50.213,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1586,
+        "reference_chars": 983,
+        "lexical_overlap": 0.2169,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "The investor presentation by RateGain Travel Technologies Limited detailed the company's un-audited financial results for the quarter ended June 30, 2026. Management reported a significant year-on-year operating revenue growth of 187.6%, with adjusted EBITDA increasing by 289.3% and adjusted PAT rising by 148.8%. The presentation highlighted a diversified revenue stream across various offerings and geographies, with a strong focus on operational excellence and integration following the Sojern acquisition. Key partnerships were noted, including collaborations with Philippine Airlines and Duetto. The company emphasized its vision of leveraging AI to enhance guest acquisition, retention, and revenue expansion. Management also discussed the integration of AI into their products and operations, aiming to optimize pricing and improve customer engagement. The presentation concluded with a focus on continuous product innovation and strategic investments to drive future growth.",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasized strong growth and operational efficiency.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T15:34:40.655906"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_RATEGAIN_106728376",
+        "symbol": "RATEGAIN",
+        "company_name": "Rategain Travel Technologies Limited",
+        "filing_date": "2026-08-06",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Corporate Office Address: Plot No. 3,4,5, Club 125, Tower A, 4th Floor \nSector – 125 Noida – 201301, Uttar Pradesh India \nRegistered Office Address: M-140, Greater Kailash, Part-II, Delhi-110048 \nTel: +91 120 5057000 \nCIN: L72900DL2012PLC244966 \nWebsite: www.rategain.com \nE-mail: help@rategain.com \n \n \nAugust 06, 2026 \n \nTo, \nNational Stock Exchange of India Limited \n(NSE: RATEGAIN) \n \nBSE Limited \n(BSE: 543417) \n \nSubject: Investor Presentation on the Un-Audited (Standalone and Consolidated) Financial \nResults of the Company for the Quarter ended June 30, 2026 \n \nDear Sir/Ma’am, \n \nPursuant to Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find enclosed herewith Investor Presentation on Un-Audited \n(Standalone and Consolidated) Financial Results of the Company for the Quarter ended June 30, \n2026. \n \nPlease take the above information on record.  \n \nYours faithfully, \n \nFor RATEGAIN TRAVEL TECHNOLOGIES LIMITED \n \n \nMukesh Kumar \nGeneral Counsel,  \nCompany Secretary & Compliance Officer \nMembership No.: A17925 \n \nEncl.: As above \n \n \n \n \n \nMukesh \nKumar\nDigitally signed by \nMukesh Kumar \nDate: 2026.08.06 \n13:34:15 +05'30'\n\nInvestor \nPresentation\nQ1 FY2027\n\nSafe Harbor\nThis presentation and the accompanying slides (the “Presentation”), which have been prepared by \nRate Gain Travel Technologies \nLimited (the “Company”), have been prepared solely for information purposes and do not constitute any offer, recommendation o\nr \ninvit\n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_EMAMILTD_106734041",
+      "ok": true,
+      "output": {
+        "summary": "The earnings call for Emami Limited (EMAMILTD) for Q1 FY27 outlines the company's financial performance, strategic initiatives, and operational updates. Consolidated revenue grew by 15% to INR1,039 crores, with domestic business up 20% and like-to-like growth at 12%. Hair and Scalp care delivered 11% growth, while Skin Care grew 3% and Healthcare 2%. Strategic investments, including Axiom Ayurveda and IncNut, showed 61% like-to-like growth, contributing 18% to domestic business. The company transitioned to category-wise reporting, emphasizing diversification across traditional FMCG, personal care, healthcare, and digital-first brands. Organized channels grew 19% and contributed 32% of domestic business, while e-commerce and quick commerce accounted for 35% of e-commerce sales. International business declined 12% due to West Asia conflicts, but management highlighted efforts to realign strategies and indicated plans to regain momentum in future quarters. Profitability faced challenges from inflation and cost increases, though EBITDA grew 6% to INR226 crores and profit before tax rose 4% to INR195 crores. Management outlined three strategic initiatives to enhance supply chain efficiency, AI-driven sales planning, and data analytics platforms. The company emphasized confidence in its diversified portfolio, strengthened distribution, and innovation pipeline to sustain growth. Management addressed questions on sustainability of strategic investments, margin pressures, and international recovery plans, noting ongoing efforts to resolve supply chain issues in the Middle East.",
+        "tone_label": "Positive",
+        "tone_note": "The document emphasizes strong growth in key segments, strategic initiatives, and confidence in future recovery despite current challenges."
+      },
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'expectations'",
+          "text": {
+            "summary": "The earnings call for Emami Limited (EMAMILTD) for Q1 FY27 outlines the company's financial performance, strategic initiatives, and operational updates. Consolidated revenue grew by 15% to INR1,039 crores, with domestic business up 20% and like-to-like growth at 12%. Hair and Scalp care delivered 11% growth, with Navratna Cool Oil and Kesh King showing strong and mid-single-digit growth, respectively. Skin Care grew by 3%, with Talcum powder showing high single-digit growth despite seasonal challenges. Healthcare grew by 2%, with the OTC portfolio performing strongly in high teens and Medico range posting single-digit growth. The strategic investment portfolio, including Axiom Ayurveda and IncNut, grew by 61% on a like-to-like basis, contributing 18% to domestic business. Management highlighted diversification into traditional FMCG, personal and healthcare, premium beauty, and digital-first brands, with organized channels growing 19% and contributing 32% of domestic business. International business declined 12% due to West Asia conflicts, but management expressed confidence in recovery. Profitability faced inflationary pressures from higher crude oil prices and cost increases, leading to moderation in gross margins. EBITDA grew 6% to INR226 crores, and profit before tax rose 4% to INR195 crores, though profit after tax fell 16% due to tax rate normalization. Strategic initiatives include supply chain optimization, AI-driven sales tools, and data analytics platforms. Management emphasized confidence in sustaining growth through diversified portfolios, cost management, and strategic investments, with expectations of improved international performance in Q3 and Q4. The call included discussions on margin sustainability, seasonality in new ventures, and plans for future acquisitions.",
+            "tone_label": "Positive",
+            "tone_note": "The document emphasizes strong growth in core and strategic investment segments, confidence in recovery, and ongoing strategic initiatives."
+          },
+          "raw_text": "{\"summary\": \"The earnings call for Emami Limited (EMAMILTD) for Q1 FY27 outlines the company's financial performance, strategic initiatives, and operational updates. Consolidated revenue grew by 15% to INR1,039 crores, with domestic business up 20% and like-to-like growth at 12%. Hair and Scalp care delivered 11% growth, with Navratna Cool Oil and Kesh King showing strong and mid-single-digit growth, respectively. Skin Care grew by 3%, with Talcum powder showing high single-digit growth despite seasonal challenges. Healthcare grew by 2%, with the OTC portfolio performing strongly in high teens and Medico range posting single-digit growth. The strategic investment portfolio, including Axiom Ayurveda and IncNut, grew by 61% on a like-to-like basis, contributing 18% to domestic business. Management highlighted diversification into traditional FMCG, personal and healthcare, premium beauty, and digital-first brands, with organized channels growing 19% and contributing 32% of domestic business. International business declined 12% due to West Asia conflicts, but management expressed confidence in recovery. Profitability faced inflationary pressures from higher crude oil prices and cost increases, leading to moderation in gross margins. EBITDA grew 6% to INR226 crores, and profit before tax rose 4% to INR195 crores, though profit after tax fell 16% due to tax rate normalization. Strategic initiatives include supply chain optimization, AI-driven sales tools, and data analytics platforms. Management emphasized confidence in sustaining growth through diversified portfolios, cost management, and strategic investments, with expectations of improved international performance in Q3 and Q4. The call included discussions on margin sustainability, seasonality in new ventures, and plans for future acquisitions.\", \"tone_label\": \"Positive\", \"tone_note\": \"The document emphasizes strong growth in core and strategic investment segments, confidence in recovery, and ongoing strategic initiatives.\"}",
+          "raw_output_chars": 2007,
+          "forward_tense_hits": {
+            "summary": [
+              "...ortfolios, cost management, and strategic investments, with expectations of improved international performance in Q3 and Q4. The cal..."
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 1000
+          },
+          "reason": "forward-tense word 'expects'",
+          "text": {
+            "summary": "The earnings call for Emami Limited (EMAMILTD) for Q1 FY27 outlines the company's financial performance, strategic initiatives, and operational updates. Consolidated revenue grew by 15% to INR1,039 crores, with domestic business up 20% and like-to-like growth at 12%, including 8% volume growth after adjusting for two start-ups. The company transitioned from brand-wise to category-wise reporting, reflecting a more diversified portfolio. Hair and Scalp care delivered 11% growth, with Navratna Cool Oil and Kesh King showing strong and mid-single-digit growth, respectively. Skin Care grew by 3%, with Talcum powder delivering high single-digit growth despite seasonal challenges. Healthcare grew by 2%, with the OTC portfolio performing strongly in high teens and the strategic investment portfolio growing 61% on a like-to-like basis, contributing 18% to domestic business. International business declined 12% due to West Asia conflicts, but management highlighted efforts to realign strategies and expects recovery in Q3 and Q4. Inflationary pressures from crude oil and packaging costs led to higher COGS and moderated gross margins, though EBITDA increased 6% to INR226 crores and profit before tax rose 4% to INR195 crores. Strategic initiatives include supply chain optimization, AI-driven sales planning, and a centralized analytics platform, all expected to be completed by FY27. Management emphasized confidence in sustaining growth through diversified portfolios, cost management, and strategic investments, with plans to improve international performance in Q3 and Q4. The company also discussed the performance of recently acquired businesses like Axiom Ayurveda and IncNut, which showed encouraging growth, and outlined plans for further acquisitions. The call included discussions on margin pressures, tax rates, and the impact of new investments on profitability.",
+            "tone_label": "Positive",
+            "tone_note": "The document emphasizes progress on key projects, improved financial performance, and confidence in future growth strategies."
+          },
+          "raw_text": "{\"summary\": \"The earnings call for Emami Limited (EMAMILTD) for Q1 FY27 outlines the company's financial performance, strategic initiatives, and operational updates. Consolidated revenue grew by 15% to INR1,039 crores, with domestic business up 20% and like-to-like growth at 12%, including 8% volume growth after adjusting for two start-ups. The company transitioned from brand-wise to category-wise reporting, reflecting a more diversified portfolio. Hair and Scalp care delivered 11% growth, with Navratna Cool Oil and Kesh King showing strong and mid-single-digit growth, respectively. Skin Care grew by 3%, with Talcum powder delivering high single-digit growth despite seasonal challenges. Healthcare grew by 2%, with the OTC portfolio performing strongly in high teens and the strategic investment portfolio growing 61% on a like-to-like basis, contributing 18% to domestic business. International business declined 12% due to West Asia conflicts, but management highlighted efforts to realign strategies and expects recovery in Q3 and Q4. Inflationary pressures from crude oil and packaging costs led to higher COGS and moderated gross margins, though EBITDA increased 6% to INR226 crores and profit before tax rose 4% to INR195 crores. Strategic initiatives include supply chain optimization, AI-driven sales planning, and a centralized analytics platform, all expected to be completed by FY27. Management emphasized confidence in sustaining growth through diversified portfolios, cost management, and strategic investments, with plans to improve international performance in Q3 and Q4. The company also discussed the performance of recently acquired businesses like Axiom Ayurveda and IncNut, which showed encouraging growth, and outlined plans for further acquisitions. The call included discussions on margin pressures, tax rates, and the impact of new investments on profitability.\", \"tone_label\": \"Positive\", \"tone_note\": \"The document emphasizes progress on key projects, improved financial performance, and confidence in future growth strategies.\"}",
+          "raw_output_chars": 2064,
+          "forward_tense_hits": {
+            "summary": [
+              "...ut management highlighted efforts to realign strategies and expects recovery in Q3 and Q4. Inflationary pressures from crude oi...",
+              "...n sales planning, and a centralized analytics platform, all expected to be completed by FY27. Management emphasized confidence i..."
+            ]
+          }
+        }
+      ],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 30239,
+      "completion_tokens": 1225,
+      "total_tokens": 31464,
+      "latency_sec": 93.6574,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Mixed",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": false,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1595,
+        "reference_chars": 995,
+        "lexical_overlap": 0.2812,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "During the Q1 FY27 earnings conference call, management reported a consolidated revenue growth of 15% to INR 1,039 crores, with domestic business growing by 20%. The company transitioned to category-wise reporting to reflect its diversified portfolio. Key categories included Hair and Scalp care, which grew by 11%, and Skin Care, which saw a 3% increase. The strategic investment portfolio grew by 61%, contributing 18% to domestic business. However, international business declined by 12% due to geopolitical disruptions. Despite inflationary pressures impacting profitability, EBITDA grew by 6% to INR 226 crores. Management highlighted ongoing initiatives to enhance supply chain efficiency and sales productivity. They expressed optimism about growth prospects, supported by strong core brand performance and digital-first initiatives. The effective tax rate normalized to around 25-26%. Overall, management emphasized resilience and a commitment to maintaining margins amid cost pressures.",
+        "tone_label": "Mixed",
+        "tone_note": "The tone reflected both positive growth in certain segments and challenges in profitability and international business.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T15:11:50.234594"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_EMAMILTD_106734041",
+        "symbol": "EMAMILTD",
+        "company_name": "Emami Limited",
+        "filing_date": "2026-08-10",
+        "doc_kind": "earnings concall transcript"
+      },
+      "evidence_excerpt": "10th August, 2026 \n \nThe Manager – Listing \nNational Stock Exchange of India Ltd. \nExchange Plaza, Plot No. C/1, Block – G \nBandra Kurla Complex, Bandra (E) \nMumbai – 400 051 \nScrip Code: EMAMILTD \nThe Manager – Listing \nBSE Limited \nPhiroze Jeejeebhoy Towers \nDalal Street \n \n \n \n \nMumbai – 400 001 \n \n   \n     \nScrip Code: 531162 \n \nSub: Transcript of Investor’s Conference Call of the Company for Q1 FY 27 – Financial Results \nDear Sir/ Madam, \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find enclosed herewith the transcript of the Conference Call with \nAnalysts / Investors held on 4th August, 2026, post declaration of the Unaudited Financial \nResults (Standalone & Consolidated) for the quarter ended 30th June, 2026.  \nThe said transcript is also available on the Company’s website at www.emamiltd.in.  \nThis is for your information and record. \nThanking you, \nYours faithfully, \nFor Emami Limited \n \n \n \n \nRavi Varma \nCompany Secretary & Compliance Officer \nMembership No: F9531 \n \n(Encl: As above) \nRavi \nVarma\nDigitally signed \nby Ravi Varma \nDate: 2026.08.10 \n11:39:46 +05'30'\n\nPage 1 of 12 \n \n \n“Emami Limited \nQ1 FY27 Earnings Conference Call” \nAugust 04, 2026 \n  \n \n \n \n \nMANAGEMENT: MR. MOHAN GOENKA – WHOLE-TIME DIRECTOR \nAND VICE CHAIRMAN – EMAMI LIMITED \n \nMR. VIVEK DHIR – CHIEF EXECUTIVE OFFICER – \nINTERNATIONAL BUSINESS – EMAMI LIMITED \n \nMR. DHRUV AGGARWAL – CHIEF GROWTH \nOFFICER – EMAMI LIMITED \n \nMR. \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_JNKINDIA_106738190",
+      "ok": true,
+      "output": {
+        "summary": "The investor presentation for JNK India Limited (JNKINDIA) for Q1FY27 outlines the company's financial performance, strategic initiatives, and operational highlights. Total Income grew by 80.6% YoY to Rs. 186.0 cr in Q1FY27, compared to Rs. 103.0 cr in Q1FY26, with EBITDA increasing by 3.1x YoY to Rs. 21.9 cr and PAT rising by 8.5x YoY to Rs. 9.6 cr. The company maintained an EBITDA margin of 11.8% and reported an order book of Rs. 1,801 cr as of June 30, 2026, with a bidding pipeline of ~Rs. 6,000 cr across domestic and international markets. Strategic initiatives include diversification into offshore, metals & minerals, and renewable energy, with JNK Chemdist executing green hydrogen projects. The company emphasized its focus on executing existing projects, converting the opportunity pipeline into new orders, and expanding into newer markets. Financial highlights show a strong increase in Total Income, EBITDA, and PAT, alongside a robust order book and growth visibility. The presentation also details the company's product portfolio, core solutions in combustion equipment and waste gas handling systems, and its strategic joint venture with Chemdist to enhance technology capabilities. The company's operational model emphasizes rigorous customer qualification, proven execution, and long-term relationships with leading global and Indian companies. The presentation includes forward-looking statements with disclaimers about risks and uncertainties.",
+        "tone_label": "Positive",
+        "tone_note": "The document highlights strong financial performance, growth in key metrics, and strategic expansion into new markets and technologies, using positive language to describe achievements and future opportunities."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 6690,
+      "completion_tokens": 385,
+      "total_tokens": 7075,
+      "latency_sec": 31.6942,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Positive",
+        "tone_label_agrees": true,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1468,
+        "reference_chars": 777,
+        "lexical_overlap": 0.3383,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "JNK India Limited reported a strong start to FY27, with total income increasing by over 80.6% year-on-year to Rs. 186.0 crore in Q1FY27, compared to Rs. 103.0 crore in Q1FY26. EBITDA grew 3.1 times to Rs. 21.9 crore, while profit after tax (PAT) surged 8.5 times to Rs. 9.6 crore. The company maintained an EBITDA margin of 11.8%. As of June 30, 2026, the order book stood at Rs. 1,801 crore, with a bidding pipeline of approximately Rs. 6,000 crore. Management highlighted plans to diversify into offshore, metals & minerals, and renewable energy sectors, with JNK Chemdist contributing to the renewable energy segment through a green hydrogen project. The presentation emphasized the company's focus on executing existing projects and expanding into new markets and segments.",
+        "tone_label": "Positive",
+        "tone_note": "Management highlighted strong financial growth and strategic expansion initiatives.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T14:48:26.027066"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_JNKINDIA_106738190",
+        "symbol": "JNKINDIA",
+        "company_name": "JNK India Limited",
+        "filing_date": "2026-08-12",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "JNK India Limited \n(Formerly known as JNK India Private Limited) \nCIN: L29268MH2010PLC204223 \n \n203 to 206, Centrum, Plot No. C-3, S.G. Barve Road, Wagle Estate,  \nThane (W) – 400604, Maharashtra, INDIA Tel : 91-22-68858000 \nEmail: admin@jnkindia.com Website: www.jnkindia.com \n \n  Date: August 11, 2026 \nTo,  \nBSE Limited, \nThe General Manager,  \nDepartment of Listing Operations,  \nPhiroze Jeejeebhoy Towers,  \nDalal Street, Mumbai – 400 001 \nTo,  \nNational Stock Exchange of India Limited, \nThe Manager, Listing Department, \nExchange Plaza, C-1, Block-G,  \nBandra Kurla Complex, Bandra (East), \nMumbai – 400 051 \nScrip code: 544167 \nSecurity Symbol: JNKINDIA \n \nDear Sir/Madam, \nSub.: Q1FY27 Investor Presentation \n \nPursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, we enclose herewith a copy of Q1FY27 Investor Presentation. \n \nWe request you to take note of the same. \n \nThanking you, \nYours faithfully, \nFor JNK India Limited \n \n \nAshish Soni \nCompany Secretary and Compliance Officer \n \nEncl: a/a \nASHIS\nH SONI\nDigitally signed \nby ASHISH SONI \nDate: \n2026.08.11 \n23:50:07 +05'30'\n\nINVESTOR PRESENTATION\nQ1FY27\nResults\nAugust 2026  \nEngineering \nExcellence,\nDelivered.\nJNK India Ltd. · NSE: JNKINDIA · BSE: 544220\n\n2\nSafe Harbor\nThis presentation and the accompanying slides (the “Presentation”), which have been prepared by JNK India Limited (the “Company”), have been prepared solely for information \npurposes and do not constitute \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_FINOPB_106742828",
+      "ok": true,
+      "output": {
+        "summary": "The investor presentation for Fino Payments Bank Limited (FINOPB) for Q1 FY27 outlines the company's operational and financial performance, strategic initiatives, and key strengths. The presentation highlights a 32% YoY increase in revenue to ₹ 306.9 Cr, driven by a 42.8% net revenue margin, the highest in Q1 FY27, attributed to higher contributions from the CASA business segment. Average total deposits rose by 12% YoY to ₹ 2,772 Cr, with digitally active customers growing by 22% YoY to 64.6 lakh. Referral loan disbursements surged 214% YoY to ₹ 628 Cr, accounting for ~50% of total referral loans disbursed in FY26. The company reported a PAT of ₹ (13.7) Cr for Q1 FY27, reflecting operational challenges. Strategic initiatives include progressing toward becoming a Small Finance Bank (SFB), with end-to-end process validation and readiness assessments underway, and the development of internal API integrations. The company also emphasized its geographical expansion, with 2,889 employees and a growing merchant base across regions. Financial highlights include a 32% YoY revenue growth, a 42.8% net revenue margin, and a 14.0% EBITDA margin. The presentation also notes the company's focus on digital expansion, with FinoPay users growing by 38% YoY to 8.4 lakh and UPI throughput increasing by 14% YoY to ₹ 60.1k Cr. The company faces near-term headwinds but continues to build a low-cost liability franchise with a cost of funds at 1.4%. The document includes forward-looking statements with disclaimers about risks and uncertainties.",
+        "tone_label": "Mixed",
+        "tone_note": "The document presents both positive financial metrics such as revenue growth and margin improvements alongside challenges like a net loss and near-term headwinds."
+      },
+      "attempts": 1,
+      "rejections": [],
+      "error": null,
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 7005,
+      "completion_tokens": 433,
+      "total_tokens": 7438,
+      "latency_sec": 35.1577,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": "Mixed",
+        "tone_label_agrees": false,
+        "tone_label_valid": true,
+        "candidate_compliance": null,
+        "reference_compliance": null,
+        "candidate_chars": 1545,
+        "reference_chars": 935,
+        "lexical_overlap": 0.3217,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Fino Payments Bank Limited's investor presentation for Q1 FY'27 highlighted several key business updates and financial metrics. Management reported the highest quarterly net revenue margin of 42.8%, driven by increased contributions from the CASA business segment. The average total deposits rose by 12% year-over-year to ₹2,772 crores, and digitally active users grew by 22% to 64.6 lakh. Loan referral disbursements surged 214% year-over-year, totaling ₹628 crores. The bank's preparations for transitioning to a Small Finance Bank (SFB) are on track, with key systems identified and a consultant engaged for the transition. Financial highlights included a revenue of ₹306.9 crores, a 32% increase, and an EBITDA of ₹43.1 crores, reflecting a 30% growth. The presentation also noted a net loss of ₹13.7 crores for the quarter. Overall, the document provided a comprehensive overview of the bank's performance and strategic direction.",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasized growth in key financial metrics and strategic initiatives.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T14:24:04.959471"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_FINOPB_106742828",
+        "symbol": "FINOPB",
+        "company_name": "Fino Payments Bank Limited",
+        "filing_date": "2026-08-13",
+        "doc_kind": "investor presentation"
+      },
+      "evidence_excerpt": "Fino Payments Bank Limited \nRegistered Office: Mindspace Juinagar, Plot No Gen 2/1/F, Tower 1, 8th Floor, TTC Industrial Area, MIDC Shirwane, Juinagar, Navi Mumbai  \n- 400 706 | CIN: L65100MH2007PLC171959 | Tel: (+91 22) 7104 7000 | Website: www.fino.bank.in | Email: cs@fino.bank.in  \n \nAugust 13, 2026 \n \nBSE Limited \nP.J. Towers, \nDalal Street,  \nMumbai- 400 001 \n \n(Scrip Code: 543386) \nNational Stock Exchange of India Limited \nExchange Plaza, 5th Floor, Plot No. C/1, G \nBlock, Bandra - Kurla Complex,  \nBandra (E), Mumbai - 400 051 \n \n(Symbol: FINOPB) \n \nDear Sir/Madam, \n \nSub: Investor Presentation under Regulation 30 of the Securities and Exchange Board of \nIndia (Listing Obligations and Disclosure Requirements) Regulations, 2015 (“SEBI \nListing Regulations”)  \n \nPursuant to Regulation 30 of SEBI Listing Regulations, enclosed herewith the Investor \nPresentation on Un-audited Financial Results for the first quarter ended June 30, 2026 of Fino \nPayments Bank Limited (“Bank”). \n  \nThe said presentation will also available on the Bank’s website i.e. www.fino.bank.in  \n \nKindly take the same on record. \n \nThanking You \n \nYours faithfully, \nFor Fino Payments Bank Limited \n \n \n \nBasavraj Loni \nCompany Secretary & Compliance Officer \n \nPlace: Navi Mumbai \n \n \nEncl: a/a \n \nBasavraj \nShivanand Loni\nDigitally signed by \nBasavraj Shivanand Loni \nDate: 2026.08.13 \n19:30:54 +05'30'\n\nOn Our Journey to Become a \nSmall Finance Bank\nInvestor Pre se n tation \nQ1 FY’ 27\n\nTable of Content\nKey \n\n… truncated for review; full text is in the fixture …"
+    },
+    {
+      "task": "concall_summary[concall_fewshot_bank_v1]",
+      "fixture_id": "CC_KIRIINDUS_106747935",
+      "ok": false,
+      "output": {},
+      "attempts": 3,
+      "rejections": [
+        {
+          "pass": 1,
+          "sampling": {
+            "temperature": 0.0,
+            "seed": 0
+          },
+          "reason": "forward-tense word 'targeting'",
+          "text": {
+            "summary": "In the Q1 FY27 earnings conference call, Kiri Industries Limited reported standalone revenue growth of 63% year-on-year to INR 295 crore, driven by improved average selling realizations across dyes, dyes intermediates, and basic chemicals. Standalone EBITDA was INR 17 crore with a margin of 5.86%, while consolidated revenue reached INR 312 crore, growing 55% year-on-year. Consolidated EBITDA stood at INR 37 crore with a margin of 7.84%, supported by strong other income from treasury management. The company's integrated copper and fertilizer project is progressing, with the construction phase initiated and key infrastructure developments underway. The downstream copper facilities are planned for phased commissioning, with the copper tube plant targeting Q1 FY28 and the refinery in Q3 FY29. The dyes and intermediates business saw improved margins due to favorable pricing differentials, though input cost pressures persisted. The company emphasized disciplined execution of projects, maintaining a prudent capital structure, and focusing on long-term growth. Management addressed concerns about dividend declarations, stating no current decision to declare dividends, and highlighted the need for capital to fund the copper and fertilizer projects. The company also discussed challenges with the MCB Copper-Gold project, including shareholder disputes and litigation, and outlined plans for future expansion and exploration of new chemical complexes. The company remains focused on operational efficiency and strategic growth initiatives.",
+            "tone_label": "Mixed",
+            "tone_note": "The tone is mixed as the document acknowledges both strong financial performance and growth initiatives, alongside challenges such as litigation, input cost pressures, and the absence of dividend declarations."
+          },
+          "raw_text": "{\"summary\": \"In the Q1 FY27 earnings conference call, Kiri Industries Limited reported standalone revenue growth of 63% year-on-year to INR 295 crore, driven by improved average selling realizations across dyes, dyes intermediates, and basic chemicals. Standalone EBITDA was INR 17 crore with a margin of 5.86%, while consolidated revenue reached INR 312 crore, growing 55% year-on-year. Consolidated EBITDA stood at INR 37 crore with a margin of 7.84%, supported by strong other income from treasury management. The company's integrated copper and fertilizer project is progressing, with the construction phase initiated and key infrastructure developments underway. The downstream copper facilities are planned for phased commissioning, with the copper tube plant targeting Q1 FY28 and the refinery in Q3 FY29. The dyes and intermediates business saw improved margins due to favorable pricing differentials, though input cost pressures persisted. The company emphasized disciplined execution of projects, maintaining a prudent capital structure, and focusing on long-term growth. Management addressed concerns about dividend declarations, stating no current decision to declare dividends, and highlighted the need for capital to fund the copper and fertilizer projects. The company also discussed challenges with the MCB Copper-Gold project, including shareholder disputes and litigation, and outlined plans for future expansion and exploration of new chemical complexes. The company remains focused on operational efficiency and strategic growth initiatives.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The tone is mixed as the document acknowledges both strong financial performance and growth initiatives, alongside challenges such as litigation, input cost pressures, and the absence of dividend declarations.\"}",
+          "raw_output_chars": 1812,
+          "forward_tense_hits": {
+            "summary": [
+              "...lanned for phased commissioning, with the copper tube plant targeting Q1 FY28 and the refinery in Q3 FY29. The dyes and intermedi..."
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 1000
+          },
+          "reason": "forward-tense word 'expected'",
+          "text": {
+            "summary": "In the Q1 FY27 earnings call, Kiri Industries Limited reported standalone revenue growth of 63% year-on-year to INR295 crore, driven by improved average selling realizations in dyes, dyes intermediates, and basic chemicals. Standalone EBITDA was INR17 crore with a 5.86% margin, while consolidated revenue reached INR312 crore, growing 55% YoY. Consolidated EBITDA stood at INR37 crore with a 7.84% margin, supported by strong other income from treasury activities. The company's integrated copper and fertilizer project advanced from design to construction, with key infrastructure like the captive jetty desalination facility and raw material conveying system progressing. Downstream copper facilities are planned for phased commissioning, with the copper tube plant aiming for Q1 FY28 and the refinery in Q3 FY29. Management highlighted the potential for growth in the dyes business due to tighter global supply and improved pricing, while emphasizing the need to pass on input cost increases to maintain margins. The company is focused on executing the copper and fertilizer projects in a disciplined manner, with the fertilizer opportunity supported by India's reliance on imports. Management addressed concerns about dividends, stating no decision to declare dividends yet but emphasizing growth and capital deployment for future returns. The company also discussed the MCB Copper-Gold project, noting ongoing shareholder disputes but positive financing offers. Financial closure for the copper project is expected within the next few months, with over 50% of commitments secured. The company is exploring equity financing options for the project, though it is currently relying on internal funds. Management reiterated confidence in the long-term strategic roadmap, with the integrated complex aligned with the company's growth goals.",
+            "tone_label": "Mixed",
+            "tone_note": "The tone is mixed as the document acknowledges both strong financial performance and growth potential, alongside challenges such as ongoing litigation, input cost pressures, and the need for future capital deployment."
+          },
+          "raw_text": "{\"summary\": \"In the Q1 FY27 earnings call, Kiri Industries Limited reported standalone revenue growth of 63% year-on-year to INR295 crore, driven by improved average selling realizations in dyes, dyes intermediates, and basic chemicals. Standalone EBITDA was INR17 crore with a 5.86% margin, while consolidated revenue reached INR312 crore, growing 55% YoY. Consolidated EBITDA stood at INR37 crore with a 7.84% margin, supported by strong other income from treasury activities. The company's integrated copper and fertilizer project advanced from design to construction, with key infrastructure like the captive jetty desalination facility and raw material conveying system progressing. Downstream copper facilities are planned for phased commissioning, with the copper tube plant aiming for Q1 FY28 and the refinery in Q3 FY29. Management highlighted the potential for growth in the dyes business due to tighter global supply and improved pricing, while emphasizing the need to pass on input cost increases to maintain margins. The company is focused on executing the copper and fertilizer projects in a disciplined manner, with the fertilizer opportunity supported by India's reliance on imports. Management addressed concerns about dividends, stating no decision to declare dividends yet but emphasizing growth and capital deployment for future returns. The company also discussed the MCB Copper-Gold project, noting ongoing shareholder disputes but positive financing offers. Financial closure for the copper project is expected within the next few months, with over 50% of commitments secured. The company is exploring equity financing options for the project, though it is currently relying on internal funds. Management reiterated confidence in the long-term strategic roadmap, with the integrated complex aligned with the company's growth goals.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The tone is mixed as the document acknowledges both strong financial performance and growth potential, alongside challenges such as ongoing litigation, input cost pressures, and the need for future capital deployment.\"}",
+          "raw_output_chars": 2113,
+          "forward_tense_hits": {
+            "summary": [
+              "...nancing offers. Financial closure for the copper project is expected within the next few months, with over 50% of commitments se..."
+            ]
+          }
+        },
+        {
+          "pass": 3,
+          "sampling": {
+            "temperature": 0.4,
+            "seed": 2000
+          },
+          "reason": "forward-tense word 'targeted'",
+          "text": {
+            "summary": "In the Q1 FY27 earnings call, Kiri Industries Limited reported standalone revenue growth of 63% year-on-year to INR295 crore, driven by improved average selling realizations in dyes, dyes intermediates, and basic chemicals. Standalone EBITDA was INR17 crore with a 5.86% margin, while consolidated revenue grew 55% to INR312 crore. Consolidated EBITDA reached INR37 crore with a 7.84% margin, supported by strong other income from treasury management. The company emphasized progress on its integrated copper and fertilizer project, with construction now in a structured phase and key infrastructure developments underway. Copper tube production is targeted for Q1 FY28, with downstream facilities planned for FY28 and FY29. Management highlighted strategic sourcing for copper concentrate and rock phosphate, and noted improved margins from pricing differentials. The company also discussed its 40% stake in Lonsen Kiri, which contributed INR21 crore in profit for Q1 FY27. Regarding dividends, management stated no decision had been made yet but emphasized capital deployment for growth. Financial closure for the copper project remains pending, with over 50% of commitments secured. Management indicated plans to achieve financial closure within the next few months but did not specify a timeline. The company also addressed concerns about debt repayment, stating it would begin in 2029 after the moratorium period. Discussions on potential equity financing for the project were noted, with management acknowledging it as a viable option. The company reiterated its focus on disciplined execution of projects and long-term growth strategies.",
+            "tone_label": "Mixed",
+            "tone_note": "The tone is mixed as the document acknowledges both strong financial performance and strategic progress, alongside challenges such as pending financial closure and debt repayment timelines."
+          },
+          "raw_text": "{\"summary\": \"In the Q1 FY27 earnings call, Kiri Industries Limited reported standalone revenue growth of 63% year-on-year to INR295 crore, driven by improved average selling realizations in dyes, dyes intermediates, and basic chemicals. Standalone EBITDA was INR17 crore with a 5.86% margin, while consolidated revenue grew 55% to INR312 crore. Consolidated EBITDA reached INR37 crore with a 7.84% margin, supported by strong other income from treasury management. The company emphasized progress on its integrated copper and fertilizer project, with construction now in a structured phase and key infrastructure developments underway. Copper tube production is targeted for Q1 FY28, with downstream facilities planned for FY28 and FY29. Management highlighted strategic sourcing for copper concentrate and rock phosphate, and noted improved margins from pricing differentials. The company also discussed its 40% stake in Lonsen Kiri, which contributed INR21 crore in profit for Q1 FY27. Regarding dividends, management stated no decision had been made yet but emphasized capital deployment for growth. Financial closure for the copper project remains pending, with over 50% of commitments secured. Management indicated plans to achieve financial closure within the next few months but did not specify a timeline. The company also addressed concerns about debt repayment, stating it would begin in 2029 after the moratorium period. Discussions on potential equity financing for the project were noted, with management acknowledging it as a viable option. The company reiterated its focus on disciplined execution of projects and long-term growth strategies.\", \"tone_label\": \"Mixed\", \"tone_note\": \"The tone is mixed as the document acknowledges both strong financial performance and strategic progress, alongside challenges such as pending financial closure and debt repayment timelines.\"}",
+          "raw_output_chars": 1888,
+          "forward_tense_hits": {
+            "summary": [
+              "...astructure developments underway. Copper tube production is targeted for Q1 FY28, with downstream facilities planned for FY28 an..."
+            ]
+          }
+        }
+      ],
+      "error": "failed validation after 3 attempts",
+      "json_repair_used": false,
+      "structured_output_used": true,
+      "structured_output_mode": "json_schema",
+      "model": "qwen3-14b-awq-tp2",
+      "backend": "vllm-inprocess",
+      "prompt_tokens": 39814,
+      "completion_tokens": 1157,
+      "total_tokens": 40971,
+      "latency_sec": 122.0501,
+      "comparison": {
+        "reference_present": true,
+        "reference_tone_label": "Positive",
+        "candidate_tone_label": null,
+        "tone_label_agrees": null,
+        "tone_label_valid": false,
+        "candidate_compliance": "empty text",
+        "reference_compliance": null,
+        "candidate_chars": 0,
+        "reference_chars": 1042,
+        "lexical_overlap": 0.0,
+        "overlap_is_triage_only": true
+      },
+      "reference": {
+        "summary": "Kiri Industries Limited held its Q1 FY27 Earnings Conference Call on August 13, 2026, where management provided updates on their integrated copper and fertilizer project, which has moved into the construction phase. Management reported that orders for long-lead packages have been placed and highlighted the project's alignment with their long-term growth strategy. The operating environment for the dyes and chemicals business improved, with a 63% year-on-year revenue growth to INR 295 crore, driven by better pricing and operational efficiency. Standalone EBITDA was reported at INR 17 crore, while consolidated revenue reached INR 312 crore, marking a 55% increase. Management noted that the company remains focused on maintaining a prudent capital structure and executing projects efficiently. The discussion also addressed shareholder concerns regarding dividends, with management emphasizing the need to reinvest profits for growth. The call concluded with management expressing optimism about future performance and project timelines.",
+        "tone_label": "Positive",
+        "tone_note": "Management emphasized strong performance and growth potential in their projects.",
+        "summary_model": "gpt-4o-mini",
+        "summarized_at": "2026-08-25T13:57:19.070139"
+      },
+      "case_meta": {
+        "benchmark_id": "CC_KIRIINDUS_106747935",
+        "symbol": "KIRIINDUS",
+        "company_name": "Kiri Industries Limited",
+        "filing_date": "2026-08-18",
+        "doc_kind": "earnings concall transcript"
+      },
+      "evidence_excerpt": "CIN No.: L24231GJ1998PLC034094 \n \nDate: August 18, 2026 \n \nTo,\nBSE Limited \nPhiroze Jeejeebhoy Towers,  \nDalal Street, Mumbai- 400 001 \nScrip Code: 532967 \nTo,\nNational Stock Exchange of India Limited \nExchange Plaza, Bandra Kurla Complex, \nBandra (E), Mumbai - 400 051 \nScrip ID - KIRIINDUS \n \nDear Sir/Madam, \n \nSub: Submission of Transcript for Q1-FY27 Earnings Conference call \n \nIn compliance with Regulation 30 of SEBI (Listing Obligations and Disclosure Requirements) \nRegulations, 2015, please find attached herewith the Transcript of Q1-FY27 Earnings Conference \nCall held on Thursday, August 13, 2026 at 10:30 A.M. \n \nThe Transcript of Q1-FY27 Earnings Conference Call is also available on website of the Company \nat www.kiriindustries.com. \n \nYou are kindly requested to take note of the same. \n \nThanking You, \n \nYours faithfully, \n \nFor Kiri Industries Limited \n \n \n \nSuresh Gondalia \nCompany Secretary \nM No. : F7306 \nEncl: As stated \n \nGONDALIA \nSURESH \nSAVAJIBHAI\nDigitally signed by GONDALIA SURESH SAVAJIBHAI \nDN: c=IN, postalCode=380015, st=GUJARAT, street=21, \nBHAVI APARTMENT, ,156 NEHRU \nPARK, ,AHMADABAD,VASTRAPUR ,380015, l=AHMADABAD, \no=Personal, \nserialNumber=61ef2e945d9b4545361118485ed828d8e6a1\n7a5394d0cc83c0083d7fae6378bf, \npseudonym=df3fa15041844632b83c6e37da8b7e34, \n2.5.4.20=2ffb8407a32dbc76dc1756ccf827b5ded85b5aad6\n7c9ece0e2e2eb8303f03eca, \nemail=SURESH.GONDALIA@KIRIINDUSTRIES.COM, \ncn=GONDALIA SURESH SAVAJIBHAI \nDate: 2026.08.18 10:36:36 +05'30'\n\n \n \nPage 1 of 1\n\n… truncated for review; full text is in the fixture …"
+    }
+  ]
+}

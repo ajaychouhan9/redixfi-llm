@@ -2,7 +2,7 @@
 
 > **EXPERIMENTAL / NOT PRODUCTION.** Nothing here scores quality. The tables below carry only mechanically-checkable signals and a suggested reading order; every quality judgement lives in the blank HUMAN REVIEW NOTES tables inside the per-case sheets.
 
-_Generated 2026-08-30 04:25 UTC_
+_Generated 2026-08-30 06:12 UTC_
 
 > ## ⚠️ Read this before comparing any two runs
 >
@@ -216,12 +216,14 @@ _Generated 2026-08-30 04:25 UTC_
 
 | Variant | Model | Task | Cases | Generated | Compliance fails | Tone agreement | Outcome breakdown | Sheet |
 |---|---|---|---|---|---|---|---|---|
+| `concall_fewshot_bank_v1` | `qwen3-14b-awq-tp2` | Concall | 20 | 17 | 3 | 0.7647 | — | [concall_summary__fewshot_bank__qwen3-14b-awq-tp2__20260830T060722Z.md](concall/runs/concall_summary__fewshot_bank__qwen3-14b-awq-tp2__20260830T060722Z.md) |
 | `concall_markdown_fairness_v1` | `ministral3-14b-w4a16-tp2` | Concall | 20 | 13 | 7 | 0.7692 | — | [concall_summary__markdown_fairness__ministral3-14b-w4a16-tp2__20260829T221613Z.md](concall/runs/concall_summary__markdown_fairness__ministral3-14b-w4a16-tp2__20260829T221613Z.md) |
 | `concall_markdown_fairness_v1` | `qwen3-14b-awq-tp2` | Concall | 20 | 15 | 5 | 0.8 | — | [concall_summary__markdown_fairness__qwen3-14b-awq-tp2__20260829T214133Z.md](concall/runs/concall_summary__markdown_fairness__qwen3-14b-awq-tp2__20260829T214133Z.md) |
 | `concall_steered_v2` | `qwen3-14b-awq-tp2` | Concall | 20 | 14 | 6 | 0.7857 | — | [concall_summary__steered__qwen3-14b-awq-tp2__20260829T141955Z.md](concall/runs/concall_summary__steered__qwen3-14b-awq-tp2__20260829T141955Z.md) |
 | `retries_8_improved` | `qwen3-14b-awq-tp2` | Concall | 20 | 20 | 0 | 0.75 | — | [concall_summary__retries_extended__qwen3-14b-awq-tp2__20260830T041530Z.md](concall/runs/concall_summary__retries_extended__qwen3-14b-awq-tp2__20260830T041530Z.md) |
 | `red_flag_instance_check_v1` | `qwen3-14b-awq-tp2` | Red Flag | 60 | 60 | 0 | — | false_negative=28, agree=12, agree_no_flag=19, false_positive=1 | [red_flag__instance_check__qwen3-14b-awq-tp2__20260830T041647Z.md](red_flags/runs/red_flag__instance_check__qwen3-14b-awq-tp2__20260830T041647Z.md) |
 
+- **`concall_fewshot_bank_v1`** (attempts 3, retry policy `improved`): Production SYSTEM prompt, completely unmodified. Only the user message differs: up to 2 REAL validated prior successes, retrieved by jaccard similarity from the accumulating example bank, prepended before the current document. No forbidden vocabulary is named anywhere — the examples are positive demonstrations only, testing a mechanism different from every other prompt change tried this session.
 - **`concall_markdown_fairness_v1`** (attempts 3, retry policy `production`): Production prompt plus ONE explicit line forbidding markdown/asterisks/bold. Production retry policy — no sampling variation, no directive notes, no content steering. Isolates whether a stronger markdown instruction alone changes behaviour, and whether forbidden-figure violations found inside markdown persist once the markdown itself is suppressed.
 - **`concall_steered_v2`** (attempts 3, retry policy `improved`): Content-preference steering: report period results first and abstract forward guidance into attributed past-tense framings harvested from real gpt-4o-mini output. Layered on the improved retry policy, so its delta is measured against retry_policy_improved, not against the baseline.
 - **`retries_8_improved`** (attempts 8, retry policy `improved`): Production PROMPT (unmodified) + the improved retry policy (varied sampling, directive notes) + a larger budget (8 attempts, vs production's 3). Isolates budget size as the only additional variable on top of the already-committed retry-mechanics fix — no steering, no markdown instruction, no other prompt change.
