@@ -432,3 +432,20 @@ def test_concall_fewshot_bank_flag_uses_argparse_dest_name(kr):
     src = open(kr.__file__, encoding="utf-8").read()
     assert '"--concall-fewshot-bank"' in src
     assert "args.concall_fewshot_bank" in src
+
+
+def test_app_models_registry_is_tracked_by_git():
+    """FOUND 2026-08-30: .gitignore's unanchored `models/` matched
+    app/models/ anywhere in the tree, including registry.py — the file
+    every Kaggle kernel this project runs depends on. It had NEVER been
+    committed (git log --all -- app/models/ returned nothing), masked
+    the whole time because every dataset upload tarred the local working
+    directory directly rather than a git clone. Only surfaced when the
+    production pipeline's git-clone-based VM deployment tried to import
+    it. This must never regress silently again."""
+    import subprocess
+    out = subprocess.run(["git", "ls-files", "app/models/registry.py"],
+                         cwd=ROOT, capture_output=True, text=True, check=True)
+    assert out.stdout.strip() == "app/models/registry.py", (
+        "app/models/registry.py is not tracked by git — it would be "
+        "silently missing from any fresh clone-based deployment")

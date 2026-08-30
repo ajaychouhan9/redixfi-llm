@@ -57,8 +57,23 @@ evaluation/**/*.md
 # scripts/make_sample_subset.py + the tar command in the runbook
 kaggle_upload/
 
-# models / weights — never in git
-models/
+# models / weights — never in git.
+# BUG FOUND 2026-08-30 (a FOURTH instance of this project's recurring
+# .gitignore collateral-damage pattern, and the worst one): the
+# unanchored `models/` matched app/models/ ANYWHERE in the tree —
+# including app/models/registry.py, the model-spec code every Kaggle
+# kernel this whole project has ever run depends on. `git log --all --
+# app/models/` returned NOTHING: it had NEVER been committed. This was
+# masked the entire time because every earlier Kaggle dataset was staged
+# by tarring the LOCAL WORKING DIRECTORY directly (bypassing git and its
+# ignore rules entirely), so the file was always physically present on
+# disk regardless of tracking status. It only surfaced when this
+# project's first `git clone`-based deployment (onto the RedixFi VM,
+# for the production pipeline) tried to import it and got
+# ModuleNotFoundError. Anchored to repo root only, so it still excludes
+# an actual downloaded-weights cache without shadowing source code that
+# happens to share the directory name "models" anywhere else in the tree.
+/models/
 *.safetensors
 *.gguf
 *.bin
