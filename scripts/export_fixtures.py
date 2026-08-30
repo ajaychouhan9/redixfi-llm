@@ -654,7 +654,7 @@ def build_red_flag(limit: int, symbols: Optional[List[str]],
     negatives_added = 0
     scanned = 0
     batch_size = 200
-    search_pool = spread_sample(negative_pool, min(len(negative_pool), 6000))
+    search_pool = spread_sample(negative_pool, min(len(negative_pool), 20000))
     for start in range(0, len(search_pool), batch_size):
         if negatives_added >= n_negatives:
             break
