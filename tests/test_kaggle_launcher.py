@@ -426,3 +426,9 @@ def test_special_phases_are_combinable_not_each_an_immediate_return(kr):
     src = open(kr.__file__, encoding="utf-8").read()
     assert "ran_special_phase" in src
     assert src.count("if ran_special_phase:") == 1
+
+
+def test_concall_fewshot_bank_flag_uses_argparse_dest_name(kr):
+    src = open(kr.__file__, encoding="utf-8").read()
+    assert '"--concall-fewshot-bank"' in src
+    assert "args.concall_fewshot_bank" in src

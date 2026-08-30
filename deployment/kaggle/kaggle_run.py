@@ -269,6 +269,17 @@ def main():
                          "instruction distinguishing accounting-policy "
                          "boilerplate from an actual disclosed instance — "
                          "see app/prompts/red_flag_instance_check.py")
+    ap.add_argument("--concall-fewshot-bank", action="store_true",
+                    help="RUNS ONLY THIS PHASE (combinable with the other "
+                         "single-phase flags): the 20-case "
+                         "concall_benchmark.json fixture with the UNMODIFIED "
+                         "production SYSTEM prompt, the IMPROVED retry "
+                         "policy, PRODUCTION's 3-attempt budget, and up to 2 "
+                         "real retrieved examples from example_bank/ "
+                         "prepended to the user message. Loads the bank from "
+                         "example_bank/concall_summary.json shipped in the "
+                         "dataset. See app/example_bank.py and "
+                         "app/prompts/concall_summary_fewshot_bank.py")
     ap.add_argument("--concall-experiment", action="store_true",
                     help="after the benchmark, run the concall fix variants "
                          "(baseline / retries=6 / few-shot prompt) against the "
@@ -755,6 +766,33 @@ def main():
             "concall_benchmark.json", "evaluation/concall/runs",
             "concall_summary__retries_extended", v, run_variant_evaluation,
             1024, "concall_retries_extended")
+
+    if args.concall_fewshot_bank:
+        from app.example_bank import load_bank
+        from app.experiments.concall_variants import (fewshot_bank_variant,
+                                                       run_variant_evaluation)
+        bank = load_bank("concall_summary")
+        print(f"  bank: {len(bank)} entries loaded from example_bank/concall_summary.json",
+              flush=True)
+        if not bank:
+            die(10, "example_bank/concall_summary.json is empty or missing — "
+                    "was it included in the dataset upload?")
+        # PRODUCTION's 3-attempt budget deliberately, NOT the 8-attempt
+        # budget from --concall-retries-extended: testing at the production
+        # budget isolates whether few-shot helps INDEPENDENTLY of the
+        # already-committed budget increase, rather than layering two
+        # unproven levers and being unable to attribute the result to
+        # either. IMPROVED_POLICY is kept (already-committed, not being
+        # re-tested here).
+        v = fewshot_bank_variant(bank, max_attempts=3)
+        print(f"  policy : {v.policy.name}, max_attempts={v.max_attempts} "
+              "(production budget — isolating few-shot from the budget "
+              "increase already tested separately)", flush=True)
+        _run_prompt_variant_phase(
+            "CONCALL RETRIEVAL-AUGMENTED FEW-SHOT TEST (one phase only)",
+            "concall_benchmark.json", "evaluation/concall/runs",
+            "concall_summary__fewshot_bank", v, run_variant_evaluation,
+            1024, "concall_fewshot_bank")
 
     if args.red_flag_instance_check:
         from app.experiments.red_flag_variants import (
