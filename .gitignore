@@ -36,6 +36,22 @@ evaluation/**/*.md
 !evaluation/ask_ai/runs/*
 !evaluation/ministral_preflight/*
 !evaluation/_gpu_run_*/
+# NOTE (found 2026-08-30, not fixed — out of this session's scope): this
+# glob does not match evaluation/_gpu_expanded_2026-08-29/ or
+# evaluation/_gpu_smoke_2026-08-28/, which predate this session's naming
+# convention. They hold only kaggle_run_state.json + kernel.log (state/
+# logs, not run deliverables) and are untracked locally. If they turn out
+# to matter, widen this glob; left alone for now.
+
+# SAME BUG FOUND AGAIN 2026-08-30, worse: evaluation/**/*.md on line 19
+# ignores evaluation/REVIEW_INDEX.md itself (it sits directly under
+# evaluation/, not under any runs/ subdirectory none of the negations
+# above reach it). It had NEVER been committed — confirmed via
+# `git log --all -- evaluation/REVIEW_INDEX.md` returning nothing —
+# despite several commit messages saying it was updated. The document
+# every session was told to check for "what to review" was silently
+# local-only the entire time.
+!evaluation/REVIEW_INDEX.md
 
 # Kaggle upload bundle — contains the fixtures, rebuild with
 # scripts/make_sample_subset.py + the tar command in the runbook

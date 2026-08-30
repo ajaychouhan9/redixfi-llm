@@ -55,14 +55,28 @@ def instance_check_variant() -> Variant:
     return Variant(
         name=instance_check_prompt.VARIANT_NAME,
         system_prompt=instance_check_prompt.SYSTEM_PROMPT,
+        # MEASURED 2026-08-30, n=60 (not the pre-test prediction this
+        # description originally carried, which expected 4/7 targeted and
+        # was too optimistic in one direction, too pessimistic in another):
+        # ALL 7 known false positives were suppressed (7 -> 1; the 1
+        # remaining, ASIANPAINT-679, is a NEW false positive at a
+        # previously-correct case, not a surviving original one). But
+        # false negatives rose from 2 to 28, spread across every category
+        # (auditor_qualification 9, related_party_transaction 6,
+        # promoter_pledge 6, contingent_liability 5) — including genuine
+        # Key Audit Matters gpt-4o-mini itself confirms (ABB-277,
+        # HDFCBANK-766). Overall agreement fell 0.85 -> 0.5167. A large net
+        # regression: do not adopt as-is. See CONCALL_AND_REDFLAG_TUNING.md.
         description=("Production prompt plus ONE added instruction "
-                     "distinguishing a policy DESCRIPTION (Ind-AS 37 "
-                     "boilerplate, present in nearly every annual report) "
-                     "from an actual disclosed INSTANCE, using the real "
-                     "confirmed false-positive chunk (BAJFINANCE-488) as the "
-                     "negative example. Targets 4 of the 7 known false "
-                     "positives; the other 3 are different failure modes, "
-                     "not assumed to be fixed by this."),
+                     "distinguishing a policy DESCRIPTION from an actual "
+                     "disclosed INSTANCE, using the real confirmed "
+                     "false-positive chunk (BAJFINANCE-488) as the negative "
+                     "example. MEASURED: fixed all 7 known false positives, "
+                     "but introduced 26 new false negatives (2 -> 28) by "
+                     "over-suppressing genuine instances across every "
+                     "category, including real Key Audit Matters gpt-4o-mini "
+                     "itself confirms elsewhere. Net regression "
+                     "(agreement 0.85 -> 0.5167) — NOT a fix as written."),
     )
 
 

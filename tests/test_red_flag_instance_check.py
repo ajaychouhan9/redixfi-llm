@@ -51,9 +51,13 @@ class TestVariantConfig:
         v = production_variant()
         assert v.system_prompt == prod.SYSTEM_PROMPT
 
-    def test_description_names_which_cases_it_targets_and_which_it_does_not(self):
-        """The description must not overclaim — 3 of 7 known false
-        positives are explicitly NOT expected to be fixed by this."""
+    def test_description_reports_the_measured_regression_not_a_prediction(self):
+        """Updated 2026-08-30 after the GPU test ran: the pre-test prediction
+        (targets 4/7, doesn't touch the other 3) turned out wrong in both
+        directions — ALL 7 were fixed, but at the cost of 26 new false
+        negatives. The description must state the measured outcome, not the
+        superseded prediction, so a reader of REVIEW_INDEX.md sees the real
+        result rather than a forecast that did not hold."""
         d = instance_check_variant().description
-        assert "4" in d
-        assert "not" in d.lower() or "other" in d.lower()
+        assert "26" in d or "false negatives" in d.lower()
+        assert "regression" in d.lower() or "not a fix" in d.lower()

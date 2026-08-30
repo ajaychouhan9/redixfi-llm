@@ -129,18 +129,32 @@ def main() -> None:
     L.append("> ## ⚠️ Read this before comparing any two runs\n"
              ">\n"
              "> **Generation on this hardware is NOT reproducible run-to-run, "
-             "even at `temperature=0` with a fixed seed.** Measured directly by "
-             "re-running the same fixtures with identical settings: attempt-1 "
-             "output differed on **4 of 20** annual-report cases and **7 of 20** "
-             "concall cases, and the attempt-1 pass/fail verdict itself flipped "
-             "on **1** annual-report and **3** concall cases. The likely cause is "
+             "even at `temperature=0` with a fixed seed.** Observed from a SINGLE "
+             "before/after comparison (n=2 samples per case, not a repeated-trial "
+             "measurement — see `ACTIONS_1_3_FULL_RESULTS.md` for the precise "
+             "accounting of what was and wasn't measured): re-running the same "
+             "fixtures with identical settings, attempt-1 output differed on "
+             "**4 of 20** annual-report cases and **7 of 20** concall cases, and "
+             "the attempt-1 pass/fail verdict itself flipped on **1** "
+             "annual-report and **3** concall cases. The likely cause is "
              "continuous batching and non-deterministic reduction order across "
              "the two T4s, not the sampling settings.\n"
              ">\n"
              "> **Consequence: at n=20, a difference of ±1–3 cases between runs "
-             "is inside the noise floor and must not be read as an improvement "
-             "or a regression.** Only larger, repeated differences carry signal. "
-             "This applies to every before/after number in this index.\n")
+             "is inside this observed range and should not be read as a confirmed "
+             "improvement or regression on its own.** A properly measured noise "
+             "floor (3-5x repeat, never yet run) could show a tighter or wider "
+             "range than this — treat ±1-3 as a lower bound on the uncertainty, "
+             "not a precise figure. Larger deltas (roughly 5+ cases) are "
+             "unlikely to be pure noise. This applies to every before/after "
+             "number in this index.\n"
+             ">\n"
+             "> **Session documents, in the order the work happened:** "
+             "`ACTIONS_1_3_FULL_RESULTS.md` (the noise-floor correction above), "
+             "`MINISTRAL_EVAL.md` (head-to-head vs Ministral 3 14B, shelved), "
+             "`CONCALL_MARKDOWN_FAIRNESS.md` (one-line markdown ban, both "
+             "models), `CONCALL_AND_REDFLAG_TUNING.md` (retry-budget 20/20 for "
+             "concall; red_flag instance-check — net regression, not adopted).\n")
 
     L.append("## What ran\n")
     L.append("| Category | Model | Cases | Generated | Compliance fails | "
@@ -237,18 +251,22 @@ def main() -> None:
                  "OTHER under the same added instruction. Read it against the "
                  "baseline row for the same model above, not against the reference.\n")
         L.append("| Variant | Model | Task | Cases | Generated | Compliance fails | "
-                 "Tone agreement | Sheet |")
-        L.append("|---|---|---|---|---|---|---|---|")
+                 "Tone agreement | Outcome breakdown | Sheet |")
+        L.append("|---|---|---|---|---|---|---|---|---|")
         for key, (path, run) in sorted(variant_runs.items()):
             s = run.get("summary") or {}
             v = run.get("variant") or {}
             md = os.path.relpath(path.replace(".json", ".md"),
                                  os.path.dirname(args.out) or ".").replace(os.sep, "/")
+            outcomes = s.get("outcomes")
+            outcome_str = (", ".join(f"{k}={v}" for k, v in outcomes.items())
+                          if outcomes else "—")
             L.append(f"| `{v.get('name')}` | `{run.get('model')}` | "
                      f"{TASK_LABEL.get(run.get('task'), run.get('task'))} | "
                      f"{s.get('cases')} | {s.get('generated_ok')} | "
                      f"{s.get('candidate_compliance_failures')} | "
                      f"{s.get('tone_label_agreement_rate', '—')} | "
+                     f"{outcome_str} | "
                      f"[{os.path.basename(md)}]({md}) |")
         L.append("")
         seen_desc = set()
@@ -257,8 +275,15 @@ def main() -> None:
             name = v.get("name")
             if name not in seen_desc:
                 seen_desc.add(name)
-                L.append(f"- **`{name}`** (attempts {v.get('max_attempts')}, "
-                         f"retry policy `{v.get('retry_policy')}`): {v.get('description')}")
+                # red_flag variants have no retry concept (single-shot task);
+                # only render attempts/policy when the variant actually has them.
+                cfg_bits = []
+                if v.get("max_attempts") is not None:
+                    cfg_bits.append(f"attempts {v.get('max_attempts')}")
+                if v.get("retry_policy") is not None:
+                    cfg_bits.append(f"retry policy `{v.get('retry_policy')}`")
+                cfg = f" ({', '.join(cfg_bits)})" if cfg_bits else ""
+                L.append(f"- **`{name}`**{cfg}: {v.get('description')}")
         L.append("")
 
     # Concall experiments, if present
