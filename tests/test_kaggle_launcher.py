@@ -397,3 +397,32 @@ def test_ministral_carries_no_rope_scaling_so_it_may_run():
     assert spec.extra_vllm_args["tokenizer_mode"] == "mistral"
     # 32k, matching qwen3-14b-awq-tp2 — a comparison must not differ by context
     assert spec.max_model_len == get_model_spec("qwen3-14b-awq-tp2").max_model_len
+
+
+# --------------------------------------------------------------------------
+# New multi-phase special-run flags (concall retry-budget, red_flag
+# instance-check) must be wired with argparse's actual dest-name conversion
+# (dashes -> underscores), and must be combinable in one kernel invocation
+# rather than each forcing an immediate return.
+# --------------------------------------------------------------------------
+def test_new_special_phase_flags_use_argparse_dest_names(kr):
+    src = open(kr.__file__, encoding="utf-8").read()
+    assert '"--concall-retries-extended"' in src
+    assert "args.concall_retries_extended" in src, (
+        "argparse converts --concall-retries-extended to "
+        "args.concall_retries_extended (dashes -> underscores); a mismatch "
+        "here means the flag is silently never read")
+    assert '"--red-flag-instance-check"' in src
+    assert "args.red_flag_instance_check" in src
+
+
+def test_special_phases_are_combinable_not_each_an_immediate_return(kr):
+    """The ORIGINAL markdown-fairness phase returned immediately inside its
+    own `if` block. That was fine when it was the only special phase; once
+    a second and third existed, returning inside each would make them
+    mutually exclusive within one kernel run, defeating the point of
+    sharing one already-loaded model across phases. There must be exactly
+    ONE `return` gating all of them, keyed off a shared flag."""
+    src = open(kr.__file__, encoding="utf-8").read()
+    assert "ran_special_phase" in src
+    assert src.count("if ran_special_phase:") == 1

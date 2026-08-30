@@ -252,6 +252,23 @@ def main():
                     help="after the benchmark, re-run the FULL concall fixture "
                          "with the content-steering prompt, so its contribution "
                          "is separable from the retry-policy change")
+    ap.add_argument("--concall-retries-extended", type=int, default=None,
+                    metavar="N",
+                    help="RUNS ONLY THIS PHASE (combinable with "
+                         "--red-flag-instance-check in the same kernel; skips "
+                         "the main --jobs loop): the 20-case "
+                         "concall_benchmark.json fixture with the UNMODIFIED "
+                         "production prompt, the IMPROVED retry policy, and N "
+                         "attempts instead of production's 3. Isolates retry "
+                         "BUDGET as the only variable on top of the "
+                         "already-committed sampling fix.")
+    ap.add_argument("--red-flag-instance-check", action="store_true",
+                    help="RUNS ONLY THIS PHASE (combinable with "
+                         "--concall-retries-extended): the 60-case "
+                         "red_flag_benchmark.json fixture with ONE added "
+                         "instruction distinguishing accounting-policy "
+                         "boilerplate from an actual disclosed instance — "
+                         "see app/prompts/red_flag_instance_check.py")
     ap.add_argument("--concall-experiment", action="store_true",
                     help="after the benchmark, run the concall fix variants "
                          "(baseline / retries=6 / few-shot prompt) against the "
@@ -663,45 +680,43 @@ def main():
         _save()
         return
 
-    if args.concall_markdown_fairness:
-        # RUNS ONLY THIS PHASE. Deliberately bypasses the main --jobs loop —
-        # the baseline concall numbers for both models already exist from
-        # the head-to-head eval, so re-running them here would just spend
-        # GPU time re-measuring something already known. This kernel run is
-        # the "after" half of a before/after fairness test, nothing else.
-        head(10, "CONCALL MARKDOWN-FAIRNESS TEST (one phase only)")
-        from app.evaluation import compare as compare_mod
+    # Special single-phase runs: each bypasses the main --jobs loop entirely
+    # (the baseline numbers they compare against already exist from earlier
+    # sessions, so re-running the full benchmark here would only spend GPU
+    # re-measuring something already known). Any combination of these flags
+    # can run together in ONE kernel invocation — they share the already-
+    # loaded model, so combining them costs one load instead of several.
+    ran_special_phase = False
+
+    def _run_prompt_variant_phase(label, fixture_filename, outdir, out_prefix,
+                                  variant, run_variant_evaluation_fn,
+                                  max_tokens, state_key):
+        nonlocal ran_special_phase
+        head(10, label)
         from app.evaluation import fixtures as fx
         from app.evaluation import report as report_mod
-        from app.evaluation.runner import save_run
-        from app.experiments.concall_variants import (
-            markdown_fairness_variant, run_variant_evaluation)
 
-        variant = markdown_fairness_variant()
         print(f"  variant: {variant.name}", flush=True)
         print(f"  {variant.description}", flush=True)
-        print(f"  policy : {variant.policy.name} (hardcoded — this test is "
-              "isolated to the ONE added prompt line)", flush=True)
 
-        fixture_path = os.path.join(args.fixtures, "concall_benchmark.json")
+        fixture_path = os.path.join(args.fixtures, fixture_filename)
         if not os.path.exists(fixture_path):
-            die(10, f"concall_benchmark.json not found under {args.fixtures}")
+            die(10, f"{fixture_filename} not found under {args.fixtures}")
         fs = fx.load(fixture_path)
         print(f"  fixture: {fixture_path}  ({len(fs.cases)} cases)", flush=True)
 
         t0 = time.time()
-        run = run_variant_evaluation(
-            backend, fs, args.model, variant, temperature=0.0, max_tokens=1024,
-            seed=0, limit=args.limit_per_task,
+        run = run_variant_evaluation_fn(
+            backend, fs, args.model, variant, temperature=0.0,
+            max_tokens=max_tokens, seed=0, limit=args.limit_per_task,
             gpu=dict(STATE["gpu"], **{"context_length": spec.max_model_len,
                                       "quantization": spec.quantization}),
             progress=lambda i, n, bid: print(f"    [{i}/{n}] {bid}", flush=True))
         wall = time.time() - t0
 
-        outdir = "evaluation/concall/runs"
         os.makedirs(outdir, exist_ok=True)
-        outp = os.path.join(outdir, f"concall_summary__markdown_fairness__"
-                                    f"{args.model}__{run['run_id']}.json")
+        outp = os.path.join(outdir, f"{out_prefix}__{args.model}__"
+                                    f"{run['run_id']}.json")
         with open(outp, "w", encoding="utf-8") as fh:
             json.dump(run, fh, ensure_ascii=False, indent=2, default=str)
         report_mod.save(run, outp.replace(".json", ".md"),
@@ -710,11 +725,49 @@ def main():
         s = run["summary"]
         for k, v in s.items():
             print(f"      {k:34s} {v}")
-        STATE["benchmark"] = dict(s, variant=variant.name,
-                                  wall_sec=round(wall, 1))
+        STATE[state_key] = dict(s, variant=variant.name, wall_sec=round(wall, 1))
         print(f"\n  wrote {outp}")
         print(f"  wrote {outp.replace('.json', '.md')}")
-        print(f"\n  TOTAL GPU TIME   : {elapsed()}")
+        _save()
+        ran_special_phase = True
+
+    if args.concall_markdown_fairness:
+        from app.experiments.concall_variants import (
+            markdown_fairness_variant, run_variant_evaluation)
+        v = markdown_fairness_variant()
+        print(f"  policy : {v.policy.name} (hardcoded — this test is "
+              "isolated to the ONE added prompt line)", flush=True)
+        _run_prompt_variant_phase(
+            "CONCALL MARKDOWN-FAIRNESS TEST (one phase only)",
+            "concall_benchmark.json", "evaluation/concall/runs",
+            "concall_summary__markdown_fairness", v, run_variant_evaluation,
+            1024, "concall_markdown_fairness")
+
+    if args.concall_retries_extended:
+        from app.experiments.concall_variants import (
+            retries_extended_variant, run_variant_evaluation)
+        v = retries_extended_variant(args.concall_retries_extended)
+        print(f"  policy : {v.policy.name}, max_attempts={v.max_attempts} "
+              "(prompt unmodified — isolating retry BUDGET alone)", flush=True)
+        _run_prompt_variant_phase(
+            f"CONCALL RETRY-BUDGET TEST: {args.concall_retries_extended} "
+            "attempts under the improved policy (one phase only)",
+            "concall_benchmark.json", "evaluation/concall/runs",
+            "concall_summary__retries_extended", v, run_variant_evaluation,
+            1024, "concall_retries_extended")
+
+    if args.red_flag_instance_check:
+        from app.experiments.red_flag_variants import (
+            instance_check_variant, run_variant_evaluation as rf_run_eval)
+        v = instance_check_variant()
+        _run_prompt_variant_phase(
+            "RED FLAG INSTANCE-CHECK TEST (one phase only)",
+            "red_flag_benchmark.json", "evaluation/red_flags/runs",
+            "red_flag__instance_check", v, rf_run_eval,
+            512, "red_flag_instance_check")
+
+    if ran_special_phase:
+        print(f"\n  TOTAL GPU TIME   : {elapsed()}", flush=True)
         _save()
         return
 

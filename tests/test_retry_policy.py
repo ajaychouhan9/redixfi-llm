@@ -87,3 +87,43 @@ class TestDirectiveNote:
         reason = "key_points count 7 outside [3, 5]"
         assert build_corrective_note(reason, {}, ["summary"],
                                      IMPROVED_POLICY) == reason
+
+
+class TestRetriesExtendedVariant:
+    """The original retries_6 result (repaired 2/5) was measured under
+    PRODUCTION_POLICY, where every attempt is temperature=0 and therefore
+    a retry mostly reproduces attempt 1's rejected text verbatim. That
+    tested "does budget help when retries are identical" — a different
+    question from "does budget help now that retries genuinely differ".
+    These pin that the extended variant asks the SECOND question."""
+
+    def test_uses_improved_policy_not_production(self):
+        from app.experiments.concall_variants import retries_extended_variant
+        v = retries_extended_variant()
+        assert v.policy is IMPROVED_POLICY
+
+    def test_prompt_is_unmodified_production(self):
+        from app.experiments.concall_variants import retries_extended_variant
+        from app.prompts import concall_summary as prod
+        v = retries_extended_variant()
+        assert v.system_prompt == prod.SYSTEM_PROMPT
+
+    def test_default_budget_is_8_not_the_old_6(self):
+        from app.experiments.concall_variants import retries_extended_variant
+        v = retries_extended_variant()
+        assert v.max_attempts == 8
+
+    def test_budget_is_configurable(self):
+        from app.experiments.concall_variants import retries_extended_variant
+        v = retries_extended_variant(max_attempts=10)
+        assert v.max_attempts == 10
+
+    def test_old_retries_variant_default_is_unaffected(self):
+        """retries_variant(6) with no policy arg must still behave exactly
+        as it did when the original retries_6 result was measured — every
+        existing conclusion drawn from that result depends on this."""
+        from app.experiments.concall_variants import retries_variant
+        from app.tasks.retry_policy import PRODUCTION_POLICY as PP
+        v = retries_variant(6)
+        assert v.policy is PP
+        assert v.max_attempts == 6

@@ -77,15 +77,49 @@ def production_variant() -> Variant:
     )
 
 
-def retries_variant(max_attempts: int = 6) -> Variant:
+def retries_variant(max_attempts: int = 6,
+                    policy: RetryPolicy = PRODUCTION_POLICY) -> Variant:
+    """`policy` defaults to PRODUCTION_POLICY so old callers/tests are
+    unaffected. This matters here specifically: the ORIGINAL retries_6
+    result (repaired 2/5) was measured under PRODUCTION_POLICY — every
+    attempt at temperature=0, so retries 2 through 6 mostly reproduced
+    attempt 1's rejected text verbatim. That is a test of "does raising the
+    budget help when every retry is identical", not "does raising the
+    budget help now that retries genuinely differ" — those are different
+    questions, and conflating them would misread which one this answers."""
+    tag = policy.name if policy is not PRODUCTION_POLICY else "production"
     return Variant(
-        name=f"retries_{max_attempts}",
+        name=f"retries_{max_attempts}_{tag}",
         system_prompt=prod_prompt.SYSTEM_PROMPT,
         max_attempts=max_attempts,
         description=("Production prompt, larger retry budget. Cheapest possible "
                      "fix. Tests whether the model CAN produce a compliant "
                      "answer and simply needs more attempts, versus being "
                      "unable to find one at all."),
+        policy=policy,
+    )
+
+
+def retries_extended_variant(max_attempts: int = 8) -> Variant:
+    """Larger retry budget UNDER THE IMPROVED POLICY — the test the original
+    retries_6 result could not answer, because it ran before temp/seed
+    variation existed. Now that a retry demonstrably produces different
+    text (measured: similarity 0.04-0.36 vs 1.000 under production), more
+    attempts may simply be more genuine chances to land compliant phrasing,
+    rather than more repeats of the same rejected text."""
+    v = retries_variant(max_attempts, policy=IMPROVED_POLICY)
+    return Variant(
+        name=v.name,
+        system_prompt=v.system_prompt,
+        max_attempts=v.max_attempts,
+        description=("Production PROMPT (unmodified) + the improved retry "
+                     f"policy (varied sampling, directive notes) + a larger "
+                     f"budget ({max_attempts} attempts, vs production's 3). "
+                     "Isolates budget size as the only additional variable on "
+                     "top of the already-committed retry-mechanics fix — no "
+                     "steering, no markdown instruction, no other prompt "
+                     "change."),
+        policy=v.policy,
     )
 
 
