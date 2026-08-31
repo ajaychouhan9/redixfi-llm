@@ -55,7 +55,9 @@ from ..schemas.output_schemas import schema_for_task
 from ..tasks.base import TaskResult, parse_json_object
 from ..tasks.context_budget import plan_context
 from ..tasks.rephrase import (build_rephrase_backend, build_rephrase_request,
-                              collect_validator_findings, is_eligible_for_rephrase)
+                              collect_validator_findings,
+                              information_preservation_check,
+                              is_eligible_for_rephrase)
 # The REAL judging logic — imported, never reimplemented.
 from ..tasks.concall_summary import TASK_NAME, _normalize, validate
 from ..tasks.retry_policy import (IMPROVED_POLICY, PRODUCTION_POLICY,

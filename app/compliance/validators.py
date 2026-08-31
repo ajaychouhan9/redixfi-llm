@@ -92,11 +92,9 @@ def _is_attributed_guidance(text: str, match: "re.Match") -> bool:
     word = match.group(0).lower()
     if not any(word.startswith(prefix) for prefix in _ALLOWED_ATTRIBUTED_FORWARD):
         return False
-    sentence_start = text.rfind(".", 0, match.start()) + 1
-    sentence_end = text.find(".", match.end())
-    sentence_end = len(text) if sentence_end == -1 else sentence_end + 1
-    window = text[sentence_start:sentence_end]
-    pre = window[:max(0, match.end() - sentence_start + 80)]
+    # Fixed window rather than naive sentence splitting: abbreviations such as
+    # "U.S." contain periods and would otherwise hide the attribution phrase.
+    pre = text[max(0, match.start() - 300):match.end() + 80]
     if _ATTRIBUTED_GUIDANCE_RE.search(pre):
         return True
     return bool(_ATTRIBUTION_SUBJECT_RE.search(pre)
@@ -108,11 +106,7 @@ def _is_attributed_figure(text: str, match: "re.Match") -> bool:
     allowed when it is explicitly attributed to management/source (e.g.
     'management's stated target to expand ... to 1 billion tonnes'). Bare
     figures stated as fact ('revenue was ₹43,541 crore') still fail."""
-    sentence_start = text.rfind(".", 0, match.start()) + 1
-    sentence_end = text.find(".", match.end())
-    sentence_end = len(text) if sentence_end == -1 else sentence_end + 1
-    window = text[sentence_start:sentence_end]
-    pre = window[:max(0, match.end() - sentence_start + 80)]
+    pre = text[max(0, match.start() - 300):match.end() + 80]
     if _ATTRIBUTED_GUIDANCE_RE.search(pre):
         return True
     return bool(_ATTRIBUTION_SUBJECT_RE.search(pre)
