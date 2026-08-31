@@ -13,6 +13,12 @@ def test_attributed_management_guidance_is_allowed():
     assert summarizer_violation(
         "The report stated an outlook of continued growth."
     ) is None
+    assert summarizer_violation(
+        "Management noted near-term drag but expects core margins to offset this."
+    ) is None
+    assert summarizer_violation(
+        "FY27 guidance indicates low double-digit growth and expects margin protection."
+    ) is None
 
 
 def test_bare_future_claim_is_still_rejected():

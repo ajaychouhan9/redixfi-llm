@@ -71,6 +71,10 @@ class TaskResult:
     latency_sec: float = 0.0
     # Pre-generation context-budget log (see app/tasks/context_budget.py).
     context_log: Optional[Dict[str, Any]] = None
+    # One-shot GPT-4o-mini compliance-edit log (see app/tasks/rephrase.py).
+    rephrase_log: Optional[Dict[str, Any]] = None
+    # Where the final output came from: qwen | gpt_rephrase | failed_human_review.
+    final_source: str = "qwen"
 
     def absorb(self, generation: GenerationResult) -> None:
         self.model = generation.model
@@ -104,4 +108,6 @@ class TaskResult:
             "total_tokens": self.total_tokens,
             "latency_sec": round(self.latency_sec, 4),
             "context_log": self.context_log,
+            "rephrase_log": self.rephrase_log,
+            "final_source": self.final_source,
         }

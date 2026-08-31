@@ -70,6 +70,21 @@ _ATTRIBUTED_GUIDANCE_RE = re.compile(
 )
 _ALLOWED_ATTRIBUTED_FORWARD = ("expect", "target", "forecast", "outlook")
 
+# Looser attribution check: a reporting subject AND a non-forward reporting
+# verb anywhere earlier in the same sentence (e.g. "Management noted ... but
+# expects ..." / "FY27 guidance indicates ..."). The verb list deliberately
+# excludes expect/target/forecast/outlook so a bare future word cannot
+# attribute itself.
+_ATTRIBUTION_SUBJECT_RE = re.compile(
+    r"\b(management|company|report|document|presentation|board|directors?|"
+    r"chairman|ceo|cfo|guidance|management team)\b", re.IGNORECASE,
+)
+_ATTRIBUTION_VERB_RE = re.compile(
+    r"\b(said|stated|noted|notes?|mentioned|indicat\w*|guided|emphasized|highlighted|"
+    r"reiterated|maintained|outlined|detailed|described|presented|announced|"
+    r"reported|commented|added|confirmed|guided toward|set)\b", re.IGNORECASE,
+)
+
 
 def _is_attributed_guidance(text: str, match: "re.Match") -> bool:
     """True when a forward word is explicitly attributed to management/source
@@ -82,7 +97,10 @@ def _is_attributed_guidance(text: str, match: "re.Match") -> bool:
     sentence_end = len(text) if sentence_end == -1 else sentence_end + 1
     window = text[sentence_start:sentence_end]
     pre = window[:max(0, match.end() - sentence_start + 80)]
-    return bool(_ATTRIBUTED_GUIDANCE_RE.search(pre))
+    if _ATTRIBUTED_GUIDANCE_RE.search(pre):
+        return True
+    return bool(_ATTRIBUTION_SUBJECT_RE.search(pre)
+                and _ATTRIBUTION_VERB_RE.search(pre))
 
 
 def _forward_tense_reason(text: str) -> Optional[str]:

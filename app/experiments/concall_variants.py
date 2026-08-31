@@ -54,6 +54,8 @@ from ..prompts import concall_summary_variant as variant_prompt
 from ..schemas.output_schemas import schema_for_task
 from ..tasks.base import TaskResult, parse_json_object
 from ..tasks.context_budget import plan_context
+from ..tasks.rephrase import (build_rephrase_backend, build_rephrase_request,
+                              collect_validator_findings, is_eligible_for_rephrase)
 # The REAL judging logic — imported, never reimplemented.
 from ..tasks.concall_summary import TASK_NAME, _normalize, validate
 from ..tasks.retry_policy import (IMPROVED_POLICY, PRODUCTION_POLICY,
@@ -243,17 +245,18 @@ def run_variant(
     temperature: float = 0.0,
     max_tokens: int = 1024,
     seed: Optional[int] = 0,
+    rephrase_backend: Optional[Backend] = None,
 ) -> TaskResult:
-    """Mirrors concall_summary.run()'s control flow exactly, with the
-    variant's prompt and retry budget substituted. The normalize/validate/
-    parse calls are the real ones."""
+    """Mirrors concall_summary.run()'s new control flow: ONE Qwen attempt,
+    then a single GPT-4o-mini compliance edit on eligible validator failures.
+    The normalize/validate/parse calls are the real ones. Validator-driven
+    Qwen retries are gone (2026-08-31)."""
     result = TaskResult(
         task=f"{TASK_NAME}[{variant.name}]",
         fixture_id=str(fixture.get("benchmark_id") or fixture.get("fixture_id") or ""),
         ok=False)
     schema = schema_for_task(TASK_NAME, None)
     rejections: List[Dict[str, Any]] = []
-    corrective_note: Optional[str] = None
 
     # Pre-generation context budget (same guard as task_cc.run). Applied to
     # production-prompt variants, which is the path BAJFINANCE actually uses.
@@ -266,75 +269,112 @@ def run_variant(
             result.error = f"context_overflow: {context_log}"
             return result
 
-    for attempt in range(1, variant.max_attempts + 1):
-        result.attempts = attempt
-        # Attempt 1 is always the caller's deterministic settings; only
-        # retries vary, and only under a policy that says so.
-        attempt_temperature = variant.policy.temperature_for(attempt, temperature)
-        attempt_seed = variant.policy.seed_for(attempt, seed)
-        if variant.user_content_fn is not None:
-            user_content = variant.user_content_fn(fixture, corrective_note)
-        else:
-            user_content = planned_user or ""
-            if corrective_note:
-                user_content += (
-                    f"\n\n(Your previous attempt was rejected: {corrective_note}. "
-                    "Rewrite following the rules exactly.)"
-                )
-        request = GenerationRequest(
-            messages=[
-                Message("system", variant.system_prompt),
-                Message("user", user_content),
-            ],
-            model=model, temperature=attempt_temperature, max_tokens=max_tokens,
-            seed=attempt_seed, json_mode=True, json_schema=schema,
-        )
-        sampling = {"temperature": attempt_temperature, "seed": attempt_seed}
-        generation = backend.generate(request)
-        result.absorb(generation)
+    # ONE Qwen generation.
+    result.attempts = 1
+    attempt_temperature = variant.policy.temperature_for(1, temperature)
+    attempt_seed = variant.policy.seed_for(1, seed)
+    if variant.user_content_fn is not None:
+        user_content = variant.user_content_fn(fixture, None)
+    else:
+        user_content = planned_user or ""
+    request = GenerationRequest(
+        messages=[
+            Message("system", variant.system_prompt),
+            Message("user", user_content),
+        ],
+        model=model, temperature=attempt_temperature, max_tokens=max_tokens,
+        seed=attempt_seed, json_mode=True, json_schema=schema,
+    )
+    sampling = {"temperature": attempt_temperature, "seed": attempt_seed}
+    generation = backend.generate(request)
+    result.absorb(generation)
 
-        if not generation.ok:
-            rejections.append({"pass": attempt,
-                               "reason": f"llm_exception: {generation.error}"})
-            corrective_note = "the previous attempt failed to reach the model — retry"
-            continue
+    if not generation.ok:
+        result.ok = False
+        result.error = f"llm_exception: {generation.error}"
+        result.final_source = "failed_human_review"
+        result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
+        return result
 
-        parsed, repaired, parse_error = parse_json_object(generation.text)
-        result.json_repair_used = result.json_repair_used or repaired
-        if parsed is None:
-            rejections.append({"pass": attempt,
-                               "reason": f"invalid_json: {parse_error}",
-                               "raw_output": generation.text,
-                               "raw_output_chars": len(generation.text or "")})
-            corrective_note = "the previous attempt was not valid JSON"
-            continue
+    parsed, repaired, parse_error = parse_json_object(generation.text)
+    result.json_repair_used = result.json_repair_used or repaired
+    if parsed is None:
+        result.ok = False
+        result.error = f"invalid_json: {parse_error}"
+        result.final_source = "failed_human_review"
+        result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
+        return result
 
-        out = _normalize(parsed)
-        bad = validate(out)
-        if not bad:
-            result.ok = True
-            result.output = out
-            result.rejections = rejections
-            return result
+    out = _normalize(parsed)
+    bad = validate(out)
+    if not bad:
+        result.ok = True
+        result.output = out
+        result.rejections = []
+        result.final_source = "qwen"
+        return result
 
-        # Record the FULL output plus the offending span, so a post-mortem
-        # can see whether the model repeats one phrase or drifts differently
-        # each attempt — the distinction between "needs another try" and
-        # "cannot find a compliant formulation at all".
-        rejections.append({
-            "pass": attempt,
-            "sampling": sampling,
-            "reason": bad,
-            "text": out,
-            "raw_text": generation.text,
-            "raw_output_chars": len(generation.text or ""),
-            "forward_tense_hits": _forward_hits(out),
-        })
-        corrective_note = build_corrective_note(bad, out, ["summary", "tone_note"],
-                                                policy=variant.policy)
+    result.rejections = [{
+        "pass": 1,
+        "sampling": sampling,
+        "reason": bad,
+        "text": out,
+        "raw_text": generation.text,
+        "raw_output_chars": len(generation.text or ""),
+        "forward_tense_hits": _forward_hits(out),
+    }]
 
-    result.rejections = rejections
-    result.error = f"failed validation after {variant.max_attempts} attempts"
+    if not is_eligible_for_rephrase(bad):
+        result.ok = False
+        result.error = f"non-eligible validator failure: {bad}"
+        result.final_source = "failed_human_review"
+        return result
+
+    # ONE GPT-4o-mini edit, max. The source transcript is never sent.
+    findings = collect_validator_findings(TASK_NAME, out)
+    rb = rephrase_backend or build_rephrase_backend()
+    g = rb.generate(build_rephrase_request(TASK_NAME, out, findings, schema, max_tokens))
+    rephrase_log = {
+        "gpt_rephrase_called": True,
+        "gpt_model": g.model,
+        "gpt_input_tokens": g.prompt_tokens,
+        "gpt_output_tokens": g.completion_tokens,
+        "validator_finding": findings,
+    }
+    result.rephrase_log = rephrase_log
+    if not g.ok:
+        rephrase_log["error"] = g.error
+        result.ok = False
+        result.error = f"gpt rephrase failed: {g.error}"
+        result.final_source = "failed_human_review"
+        return result
+
+    parsed2, repaired2, parse_error2 = parse_json_object(g.text)
+    result.json_repair_used = result.json_repair_used or repaired2
+    if parsed2 is None:
+        rephrase_log["error"] = parse_error2
+        rephrase_log["gpt_rephrased_output"] = g.text
+        result.ok = False
+        result.error = f"gpt rephrase invalid json: {parse_error2}"
+        result.final_source = "failed_human_review"
+        return result
+
+    out2 = _normalize(parsed2)
+    bad2 = validate(out2)
+    rephrase_log["gpt_rephrased_output"] = out2
+    rephrase_log["validator_status_after_rephrase"] = bad2 or "PASS"
+
+    if not bad2:
+        result.ok = True
+        result.output = out2
+        result.final_source = "gpt_rephrase"
+        return result
+
+    result.ok = False
+    result.error = f"gpt rephrase failed validation: {bad2}"
+    result.final_source = "failed_human_review"
+    result.rejections.append({"pass": 2, "reason": bad2, "text": out2,
+                              "raw_text": g.text})
     return result
 
 

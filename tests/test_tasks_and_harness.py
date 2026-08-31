@@ -136,9 +136,13 @@ def test_annual_report_retries_then_succeeds_on_a_compliance_failure():
         "important_risks": [],
         "key_takeaway": "The report centred on stated operating priorities.",
     })
-    backend = ScriptedBackend([bad, good])
-    result = task_ar.run(backend, _ar_fixture(), "test-model")
-    assert result.ok and result.attempts == 2
+    qwen_backend = ScriptedBackend([bad])
+    rephrase_backend = ScriptedBackend([good])
+    result = task_ar.run(qwen_backend, _ar_fixture(), "test-model",
+                         rephrase_backend=rephrase_backend)
+    assert result.ok
+    assert result.attempts == 1, "no Qwen validator retry"
+    assert result.final_source == "gpt_rephrase"
     assert "forward-tense" in result.rejections[0]["reason"]
 
 
@@ -157,10 +161,15 @@ def test_annual_report_writes_no_placeholder_on_total_failure():
     bad = json.dumps({"executive_summary": "Revenue will rise.",
                       "key_points": ["a", "b", "c"], "important_risks": [],
                       "key_takeaway": "It will rise."})
-    result = task_ar.run(ScriptedBackend([bad]), _ar_fixture(), "test-model")
+    bad_rephrase = json.dumps({"executive_summary": "The company will achieve growth.",
+                               "key_points": ["a", "b", "c"], "important_risks": [],
+                               "key_takeaway": "It will rise."})
+    result = task_ar.run(ScriptedBackend([bad]), _ar_fixture(), "test-model",
+                         rephrase_backend=ScriptedBackend([bad_rephrase]))
     assert not result.ok
     assert result.output == {}          # no placeholder, matching RedixFi
-    assert result.attempts == task_ar.MAX_ATTEMPTS == 3
+    assert result.attempts == 1         # no Qwen validator retries
+    assert result.final_source == "failed_human_review"
 
 
 # --------------------------------------------------------------------------

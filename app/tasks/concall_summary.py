@@ -32,8 +32,9 @@ from ..prompts.concall_summary import (
 )
 from .base import TaskResult, parse_json_object
 from .context_budget import plan_context
-from .retry_policy import (PRODUCTION_POLICY, RetryPolicy,
-                           build_corrective_note)
+from .rephrase import (build_rephrase_backend, build_rephrase_request,
+                       collect_validator_findings, is_eligible_for_rephrase)
+from .retry_policy import PRODUCTION_POLICY, RetryPolicy
 
 TASK_NAME = "concall_summary"
 
@@ -65,6 +66,7 @@ def run(
     max_tokens: int = 1024,
     seed: Optional[int] = 0,
     policy: RetryPolicy = PRODUCTION_POLICY,
+    rephrase_backend: Optional[Backend] = None,
 ) -> TaskResult:
     result = TaskResult(task=TASK_NAME, fixture_id=str(fixture.get("benchmark_id")
                                                         or fixture.get("fixture_id") or ""),
@@ -75,8 +77,6 @@ def run(
     # fallback and `json_repair_used` still reports if it was needed.
     schema = schema_for_task(TASK_NAME, None)
     rejections: List[Dict[str, Any]] = []
-    corrective_note: Optional[str] = None
-    previous_raw: Optional[str] = None
 
     # Pre-generation context budget: never spend retries on an impossible
     # request (e.g. BAJFINANCE transcript exceeding 32,768 tokens).
@@ -87,75 +87,110 @@ def run(
         result.error = f"context_overflow: {context_log}"
         return result
 
-    for attempt in range(1, MAX_ATTEMPTS + 1):
-        result.attempts = attempt
-        # Retries sample differently so they can actually differ; attempt 1
-        # is untouched. See retry_policy's docstring for the measured
-        # repetition this fixes. Both values are recorded on each rejection
-        # so "the retry really did differ" stays checkable from the run JSON.
-        attempt_temperature = policy.temperature_for(attempt, temperature)
-        attempt_seed = policy.seed_for(attempt, seed)
-        user_content = planned_user
-        if corrective_note:
-            user_content += (
-                f"\n\n(Your previous attempt was rejected: {corrective_note}. "
-                "Rewrite following the rules exactly.)"
-            )
-        request = GenerationRequest(
-            messages=[
-                Message("system", SYSTEM_PROMPT),
-                Message("user", user_content),
-            ],
-            model=model,
-            temperature=attempt_temperature,
-            max_tokens=max_tokens,
-            seed=attempt_seed,
-            json_mode=True,
-            json_schema=schema,
-        )
-        sampling = {"temperature": attempt_temperature, "seed": attempt_seed}
-        generation = backend.generate(request)
-        result.absorb(generation)
+    # ONE Qwen generation. Validator-driven Qwen retries were removed
+    # (2026-08-31): if the wording fails, a single GPT-4o-mini EDIT is used.
+    result.attempts = 1
+    attempt_temperature = policy.temperature_for(1, temperature)
+    attempt_seed = policy.seed_for(1, seed)
+    user_content = planned_user
+    request = GenerationRequest(
+        messages=[
+            Message("system", SYSTEM_PROMPT),
+            Message("user", user_content),
+        ],
+        model=model,
+        temperature=attempt_temperature,
+        max_tokens=max_tokens,
+        seed=attempt_seed,
+        json_mode=True,
+        json_schema=schema,
+    )
+    sampling = {"temperature": attempt_temperature, "seed": attempt_seed}
+    generation = backend.generate(request)
+    result.absorb(generation)
 
-        if not generation.ok:
-            rejections.append({"pass": attempt, "sampling": sampling,
-                               "reason": f"llm_exception: {generation.error}"})
-            corrective_note = "the previous attempt failed to reach the model — retry"
-            continue
+    if not generation.ok:
+        result.ok = False
+        result.error = f"llm_exception: {generation.error}"
+        result.final_source = "failed_human_review"
+        result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
+        return result
 
-        parsed, repaired, parse_error = parse_json_object(generation.text)
-        result.json_repair_used = result.json_repair_used or repaired
-        if parsed is None:
-            rejections.append({"pass": attempt, "sampling": sampling,
-                               "reason": f"invalid_json: {parse_error}",
-                               "text": generation.text[:500]})
-            corrective_note = "the previous attempt was not valid JSON"
-            continue
+    parsed, repaired, parse_error = parse_json_object(generation.text)
+    result.json_repair_used = result.json_repair_used or repaired
+    if parsed is None:
+        result.ok = False
+        result.error = f"invalid_json: {parse_error}"
+        result.final_source = "failed_human_review"
+        result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
+        return result
 
-        out = _normalize(parsed)
-        bad = validate(out)
-        if not bad:
-            result.ok = True
-            result.output = out
-            result.rejections = rejections
-            return result
+    out = _normalize(parsed)
+    bad = validate(out)
+    if not bad:
+        result.ok = True
+        result.output = out
+        result.rejections = []
+        result.final_source = "qwen"
+        return result
 
-        output_changed = previous_raw is None or generation.text != previous_raw
-        next_note = build_corrective_note(bad, out, ['summary', 'tone_note'],
-                                          policy=policy)
-        rejections.append({
-            "pass": attempt,
-            "sampling": sampling,
-            "reason": bad,
-            "text": out,
-            "raw_text": generation.text,
-            "corrective_note": corrective_note,   # note that shaped THIS attempt
-            "next_corrective_note": next_note,    # directive for the next attempt
-            "output_changed": output_changed,
-        })
-        corrective_note = next_note
-        previous_raw = generation.text
+    result.rejections = [
+        {"pass": 1, "sampling": sampling, "reason": bad, "text": out,
+         "raw_text": generation.text},
+    ]
 
-    result.rejections = rejections
-    result.error = f"failed validation after {MAX_ATTEMPTS} attempts"
+    # Only eligible wording/compliance issues go to GPT-4o-mini. Technical
+    # failures must NOT be sent to a rephraser.
+    if not is_eligible_for_rephrase(bad):
+        result.ok = False
+        result.error = f"non-eligible validator failure: {bad}"
+        result.final_source = "failed_human_review"
+        return result
+
+    # ONE GPT-4o-mini edit, max. The source transcript is never sent.
+    findings = collect_validator_findings(TASK_NAME, out)
+    rb = rephrase_backend or build_rephrase_backend()
+    g = rb.generate(build_rephrase_request(TASK_NAME, out, findings, schema, max_tokens))
+    rephrase_log = {
+        "gpt_rephrase_called": True,
+        "gpt_model": g.model,
+        "gpt_input_tokens": g.prompt_tokens,
+        "gpt_output_tokens": g.completion_tokens,
+        "validator_finding": findings,
+    }
+    result.rephrase_log = rephrase_log
+    if not g.ok:
+        rephrase_log["error"] = g.error
+        result.ok = False
+        result.error = f"gpt rephrase failed: {g.error}"
+        result.final_source = "failed_human_review"
+        return result
+
+    parsed2, repaired2, parse_error2 = parse_json_object(g.text)
+    result.json_repair_used = result.json_repair_used or repaired2
+    if parsed2 is None:
+        rephrase_log["error"] = parse_error2
+        rephrase_log["gpt_rephrased_output"] = g.text
+        result.ok = False
+        result.error = f"gpt rephrase invalid json: {parse_error2}"
+        result.final_source = "failed_human_review"
+        return result
+
+    out2 = _normalize(parsed2)
+    bad2 = validate(out2)
+    rephrase_log["gpt_rephrased_output"] = out2
+    rephrase_log["validator_status_after_rephrase"] = bad2 or "PASS"
+
+    if not bad2:
+        result.ok = True
+        result.output = out2
+        result.final_source = "gpt_rephrase"
+        return result
+
+    # One GPT attempt only — do NOT loop back to GPT.
+    result.ok = False
+    result.error = f"gpt rephrase failed validation: {bad2}"
+    result.final_source = "failed_human_review"
+    result.rejections.append({"pass": 2, "reason": bad2, "text": out2,
+                              "raw_text": g.text})
     return result
