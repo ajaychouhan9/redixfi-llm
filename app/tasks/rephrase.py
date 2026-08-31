@@ -43,6 +43,10 @@ EDITOR_SYSTEM_PROMPT = (
     "Every forward-looking term (expect*, target*, forecast*, outlook) must appear "
     "in a sentence that explicitly names management or the report as the source; "
     "if it is not already attributed, rewrite the sentence to attribute it.\n"
+    "Never leave an unattributed 'is expected' / 'are expected' phrase. Rewrite it "
+    "as 'Management expects X to be ...' or 'Management expects X at ...'.\n"
+    "Example: 'Capital expenditure is expected at INR300-350 crores' -> "
+    "'Management expects capital expenditure to be INR300-350 crores'.\n"
     "Example: 'The company targets X' -> 'Management has stated a target of X.'\n"
     "Example: 'The company will achieve X' -> 'Management expects to achieve X.'\n"
     "If the information cannot be preserved while satisfying the current validator "
@@ -66,7 +70,8 @@ TASK_POLICY_NOTES = {
         "Concall policy: financial figures are allowed and should be preserved. "
         "Do not present management guidance as guaranteed fact; attribute "
         "expectations, targets, projections or plans to management in the SAME "
-        "sentence where the forward-looking term appears."
+        "sentence where the forward-looking term appears. Rewrite unattributed "
+        "'is expected' phrases as 'Management expects X to be ...'."
     ),
 }
 
