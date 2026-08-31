@@ -30,6 +30,7 @@ from ..prompts.annual_report_summary import (
     build_user_content,
 )
 from .base import TaskResult, parse_json_object
+from .context_budget import plan_context
 from .retry_policy import (PRODUCTION_POLICY, RetryPolicy,
                            build_corrective_note)
 
@@ -111,6 +112,16 @@ def run(
     corrective_note: Optional[str] = None
     previous_raw: Optional[str] = None
 
+    # Pre-generation context budget: never spend retries on an impossible
+    # request (same protection as Concall; Annual Report evidence normally
+    # fits, but the guard is shared).
+    planned_user, context_log = plan_context(TASK_NAME, fixture, model, max_tokens)
+    result.context_log = context_log
+    if planned_user is None:
+        result.ok = False
+        result.error = f"context_overflow: {context_log}"
+        return result
+
     for attempt in range(1, MAX_ATTEMPTS + 1):
         result.attempts = attempt
         # Retries sample differently so they can actually differ; attempt 1
@@ -119,10 +130,16 @@ def run(
         # so "the retry really did differ" stays checkable from the run JSON.
         attempt_temperature = policy.temperature_for(attempt, temperature)
         attempt_seed = policy.seed_for(attempt, seed)
+        user_content = planned_user
+        if corrective_note:
+            user_content += (
+                f"\n\n(Your previous attempt was rejected: {corrective_note}. "
+                "Rewrite following the rules exactly.)"
+            )
         request = GenerationRequest(
             messages=[
                 Message("system", SYSTEM_PROMPT),
-                Message("user", build_user_content(fixture, corrective_note)),
+                Message("user", user_content),
             ],
             model=model,
             temperature=attempt_temperature,

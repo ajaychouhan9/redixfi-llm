@@ -55,6 +55,44 @@ FORWARD_TENSE_RE = re.compile(
     r"should\s+rise|should\s+fall|recommend\w*)\b", re.IGNORECASE,
 )
 
+# Controlled fix (2026-08-31): reporting management's OWN stated expectation,
+# target, forecast, or outlook is legitimate source-grounded guidance — the
+# validator must not reject it. Asserting a future event as fact ("will",
+# "likely", "going to") remains forbidden even when the company is the
+# subject, because that is a future claim, not reported guidance.
+_ATTRIBUTED_GUIDANCE_RE = re.compile(
+    r"\b(management|company|report|document|presentation|board|directors?|chairman|ceo|cfo)\b\s+"
+    r"(said|stated|reported|guided|indicated|outlines?|details?|describes?|presents?|notes?|highlights?|announced|"
+    r"expects?|targets?|plans?|forecasts?|intends?|committed|outlook|guidance)"
+    r"|\b(management|company|report|document|presentation|board)\s+(guidance|outlook|target)"
+    r"|\b(stated|said|reported|guided|indicated|outlined|detailed|described|presented|noted|highlighted|announced)\s+that",
+    re.IGNORECASE,
+)
+_ALLOWED_ATTRIBUTED_FORWARD = ("expect", "target", "forecast", "outlook")
+
+
+def _is_attributed_guidance(text: str, match: "re.Match") -> bool:
+    """True when a forward word is explicitly attributed to management/source
+    as reported guidance (e.g. 'Management stated that it expects ...')."""
+    word = match.group(0).lower()
+    if not any(word.startswith(prefix) for prefix in _ALLOWED_ATTRIBUTED_FORWARD):
+        return False
+    sentence_start = text.rfind(".", 0, match.start()) + 1
+    sentence_end = text.find(".", match.end())
+    sentence_end = len(text) if sentence_end == -1 else sentence_end + 1
+    window = text[sentence_start:sentence_end]
+    pre = window[:max(0, match.end() - sentence_start + 80)]
+    return bool(_ATTRIBUTED_GUIDANCE_RE.search(pre))
+
+
+def _forward_tense_reason(text: str) -> Optional[str]:
+    """Returns the first UN-ATTRIBUTED forward-tense violation, or None."""
+    for m in FORWARD_TENSE_RE.finditer(text):
+        if _is_attributed_guidance(text, m):
+            continue
+        return f"forward-tense word '{m.group(0)}'"
+    return None
+
 # Annual-report-specific. RedixFi forbids stating any financial figure as
 # fact in an annual report summary, because PDF table extraction has a
 # CONFIRMED real failure mode (two different LLMs mislabeled the same figure
@@ -103,9 +141,9 @@ def violation(text: str, *, check_financial_figures: bool = False) -> Optional[s
     """
     if not text:
         return "empty text"
-    m = FORWARD_TENSE_RE.search(text)
-    if m:
-        return f"forward-tense word '{m.group(0)}'"
+    reason = _forward_tense_reason(text)
+    if reason:
+        return reason
     m = FORBIDDEN_WORDS_RE.search(text)
     if m:
         return f"forbidden word '{m.group(0)}'"
@@ -161,9 +199,9 @@ def chunk_fails_compliance(text: str) -> Optional[str]:
     """
     if not text:
         return "empty text"
-    m = FORWARD_TENSE_RE.search(text)
-    if m:
-        return f"forward-tense word '{m.group(0)}'"
+    reason = _forward_tense_reason(text)
+    if reason:
+        return reason
     for m in FORBIDDEN_WORDS_RE.finditer(text):
         word = m.group(0).lower()
         if word in ("call", "calls"):

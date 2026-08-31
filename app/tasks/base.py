@@ -69,6 +69,8 @@ class TaskResult:
     completion_tokens: int = 0
     total_tokens: int = 0
     latency_sec: float = 0.0
+    # Pre-generation context-budget log (see app/tasks/context_budget.py).
+    context_log: Optional[Dict[str, Any]] = None
 
     def absorb(self, generation: GenerationResult) -> None:
         self.model = generation.model
@@ -101,4 +103,5 @@ class TaskResult:
             "completion_tokens": self.completion_tokens,
             "total_tokens": self.total_tokens,
             "latency_sec": round(self.latency_sec, 4),
+            "context_log": self.context_log,
         }

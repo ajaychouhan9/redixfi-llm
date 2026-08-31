@@ -18,10 +18,12 @@ from app.inference.base import GenerationResult
 from app.tasks import concall_summary as task_cc
 from app.tasks.retry_policy import IMPROVED_POLICY, PRODUCTION_POLICY
 
-FORBIDDEN = ("Management said the plant is expected to commence production "
-             "in September 2026.")
-COMPLIANT = ("Management highlighted plans to commission the plant, and "
-             "reported that construction is on schedule.")
+# Controlled validator fix (2026-08-31): "Management said ... expected ..."
+# is now ACCEPTED as attributed guidance, so the retry-loop test must use a
+# genuinely forbidden bare future claim to keep exercising the retry path.
+FORBIDDEN = "The plant will commence production in September 2026."
+COMPLIANT = ("Management stated that the plant is expected to commence "
+             "production in September 2026.")
 
 
 class StuckBackend:
