@@ -53,6 +53,7 @@ from ..prompts import concall_summary_steered as steered_prompt
 from ..prompts import concall_summary_variant as variant_prompt
 from ..schemas.output_schemas import schema_for_task
 from ..tasks.base import TaskResult, parse_json_object
+from ..tasks.context_budget import plan_context
 # The REAL judging logic — imported, never reimplemented.
 from ..tasks.concall_summary import TASK_NAME, _normalize, validate
 from ..tasks.retry_policy import (IMPROVED_POLICY, PRODUCTION_POLICY,
@@ -254,15 +255,32 @@ def run_variant(
     rejections: List[Dict[str, Any]] = []
     corrective_note: Optional[str] = None
 
+    # Pre-generation context budget (same guard as task_cc.run). Applied to
+    # production-prompt variants, which is the path BAJFINANCE actually uses.
+    planned_user: Optional[str] = None
+    if variant.user_content_fn is None:
+        planned_user, context_log = plan_context(TASK_NAME, fixture, model, max_tokens)
+        result.context_log = context_log
+        if planned_user is None:
+            result.ok = False
+            result.error = f"context_overflow: {context_log}"
+            return result
+
     for attempt in range(1, variant.max_attempts + 1):
         result.attempts = attempt
         # Attempt 1 is always the caller's deterministic settings; only
         # retries vary, and only under a policy that says so.
         attempt_temperature = variant.policy.temperature_for(attempt, temperature)
         attempt_seed = variant.policy.seed_for(attempt, seed)
-        user_content = (variant.user_content_fn(fixture, corrective_note)
-                        if variant.user_content_fn is not None
-                        else prod_prompt.build_user_content(fixture, corrective_note))
+        if variant.user_content_fn is not None:
+            user_content = variant.user_content_fn(fixture, corrective_note)
+        else:
+            user_content = planned_user or ""
+            if corrective_note:
+                user_content += (
+                    f"\n\n(Your previous attempt was rejected: {corrective_note}. "
+                    "Rewrite following the rules exactly.)"
+                )
         request = GenerationRequest(
             messages=[
                 Message("system", variant.system_prompt),
