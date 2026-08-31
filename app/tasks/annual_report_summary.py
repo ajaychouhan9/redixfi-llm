@@ -32,7 +32,8 @@ from ..prompts.annual_report_summary import (
 from .base import TaskResult, parse_json_object
 from .context_budget import plan_context
 from .rephrase import (build_rephrase_backend, build_rephrase_request,
-                       collect_validator_findings, is_eligible_for_rephrase)
+                       collect_validator_findings, information_preservation_check,
+                       is_eligible_for_rephrase)
 from .retry_policy import PRODUCTION_POLICY, RetryPolicy
 
 TASK_NAME = "annual_report_summary"
@@ -120,6 +121,9 @@ def run(
     if planned_user is None:
         result.ok = False
         result.error = f"context_overflow: {context_log}"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         return result
 
     # ONE Qwen generation. Validator-driven Qwen retries were removed
@@ -148,6 +152,9 @@ def run(
         result.ok = False
         result.error = f"llm_exception: {generation.error}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
         return result
 
@@ -157,6 +164,9 @@ def run(
         result.ok = False
         result.error = f"invalid_json: {parse_error}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
         return result
 
@@ -167,6 +177,7 @@ def run(
         result.output = out
         result.rejections = []
         result.final_source = "qwen"
+        result.final_status = "QWEN_PASS"
         return result
 
     result.rejections = [
@@ -181,6 +192,9 @@ def run(
         result.ok = False
         result.error = f"non-eligible validator failure: {bad}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         return result
 
     # ONE GPT-4o-mini edit, max. The source document is never sent.
@@ -200,6 +214,9 @@ def run(
         result.ok = False
         result.error = f"gpt rephrase failed: {g.error}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         return result
 
     parsed2, repaired2, parse_error2 = parse_json_object(g.text)
@@ -210,6 +227,9 @@ def run(
         result.ok = False
         result.error = f"gpt rephrase invalid json: {parse_error2}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         return result
 
     out2 = _normalize(parsed2)
@@ -217,16 +237,35 @@ def run(
     rephrase_log["gpt_rephrased_output"] = out2
     rephrase_log["validator_status_after_rephrase"] = bad2 or "PASS"
 
-    if not bad2:
-        result.ok = True
-        result.output = out2
-        result.final_source = "gpt_rephrase"
+    if bad2:
+        # One GPT attempt only — do NOT loop back to GPT.
+        result.ok = False
+        result.error = f"gpt rephrase failed validation: {bad2}"
+        result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
+        result.rejections.append({"pass": 2, "reason": bad2, "text": out2,
+                                  "raw_text": g.text})
         return result
 
-    # One GPT attempt only — do NOT loop back to GPT.
-    result.ok = False
-    result.error = f"gpt rephrase failed validation: {bad2}"
-    result.final_source = "failed_human_review"
-    result.rejections.append({"pass": 2, "reason": bad2, "text": out2,
-                              "raw_text": g.text})
+    # Deterministic information-preservation guard: never accept a GPT edit
+    # that silently removed material numbers/dates/percentages.
+    info = information_preservation_check(out, out2)
+    result.information_preservation_check = info
+    rephrase_log["information_preservation_check"] = info
+    if info["status"] != "PASS":
+        result.ok = False
+        result.error = (f"information loss after rephrase: "
+                        f"{info['missing_material_tokens']}")
+        result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
+        return result
+
+    result.ok = True
+    result.output = out2
+    result.final_source = "gpt_rephrase"
+    result.final_status = "GPT_REPHRASE_PASS"
     return result

@@ -99,6 +99,10 @@ def main() -> None:
         "validator_after": r.rephrase_log.get("validator_status_after_rephrase") if r.rephrase_log else None,
         "final_output": r.output,
         "final_source": r.final_source,
+        "final_status": r.final_status,
+        "human_review_required": r.human_review_required,
+        "human_review_reason": r.human_review_reason,
+        "information_preservation_check": r.information_preservation_check,
         "result": "PASS" if r.ok else "FAIL",
         "notes": r.error or "",
     })
@@ -124,6 +128,10 @@ def main() -> None:
         "validator_after": r.rephrase_log.get("validator_status_after_rephrase") if r.rephrase_log else None,
         "final_output": r.output,
         "final_source": r.final_source,
+        "final_status": r.final_status,
+        "human_review_required": r.human_review_required,
+        "human_review_reason": r.human_review_reason,
+        "information_preservation_check": r.information_preservation_check,
         "result": "PASS" if r.ok else "FAIL",
         "notes": r.error or "",
     })
@@ -148,6 +156,10 @@ def main() -> None:
         "validator_after": r.rephrase_log.get("validator_status_after_rephrase") if r.rephrase_log else None,
         "final_output": r.output,
         "final_source": r.final_source,
+        "final_status": r.final_status,
+        "human_review_required": r.human_review_required,
+        "human_review_reason": r.human_review_reason,
+        "information_preservation_check": r.information_preservation_check,
         "result": "PASS" if r.ok else "FAIL",
         "notes": r.error or "",
     })

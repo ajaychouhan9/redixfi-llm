@@ -103,6 +103,22 @@ def _is_attributed_guidance(text: str, match: "re.Match") -> bool:
                 and _ATTRIBUTION_VERB_RE.search(pre))
 
 
+def _is_attributed_figure(text: str, match: "re.Match") -> bool:
+    """Annual Report controlled fix (2026-08-31): a financial figure is
+    allowed when it is explicitly attributed to management/source (e.g.
+    'management's stated target to expand ... to 1 billion tonnes'). Bare
+    figures stated as fact ('revenue was ₹43,541 crore') still fail."""
+    sentence_start = text.rfind(".", 0, match.start()) + 1
+    sentence_end = text.find(".", match.end())
+    sentence_end = len(text) if sentence_end == -1 else sentence_end + 1
+    window = text[sentence_start:sentence_end]
+    pre = window[:max(0, match.end() - sentence_start + 80)]
+    if _ATTRIBUTED_GUIDANCE_RE.search(pre):
+        return True
+    return bool(_ATTRIBUTION_SUBJECT_RE.search(pre)
+                and _ATTRIBUTION_VERB_RE.search(pre))
+
+
 def _forward_tense_reason(text: str) -> Optional[str]:
     """Returns the first UN-ATTRIBUTED forward-tense violation, or None."""
     for m in FORWARD_TENSE_RE.finditer(text):
@@ -199,9 +215,9 @@ def summarizer_violation(
     if reason:
         return reason
     if check_financial_figures:
-        m = FINANCIAL_FIGURE_RE.search(text)
-        if m:
-            return f"financial figure stated as fact '{m.group(0).strip()}'"
+        for m in FINANCIAL_FIGURE_RE.finditer(text):
+            if not _is_attributed_figure(text, m):
+                return f"financial figure stated as fact '{m.group(0).strip()}'"
     return None
 
 

@@ -20,7 +20,7 @@ from app.tasks import concall_summary as task_cc
 from app.tasks import red_flag as task_rf
 
 COMPLIANT_CC = json.dumps({
-    "summary": "Management stated the plant is expected to commence production.",
+    "summary": "Management stated the plant is expected to commence production in September 2026.",
     "tone_label": "Neutral",
     "tone_note": "The call highlighted reported results.",
 })
@@ -193,6 +193,28 @@ def test_technical_failure_does_not_invoke_gpt():
     assert r.final_source == "failed_human_review"
     assert r.rephrase_log is None
     assert "VLLMValidationError" in r.error
+
+
+def test_information_loss_marks_human_review_required():
+    qwen = json.dumps({
+        "executive_summary": "Coal India plans expansion to 1 billion tonnes by FY28-29.",
+        "key_points": ["a", "b", "c"],
+        "important_risks": [],
+        "key_takeaway": "Fine.",
+    })
+    lossy = json.dumps({
+        "executive_summary": "Coal India plans significant expansion by FY28-29.",
+        "key_points": ["a", "b", "c"],
+        "important_risks": [],
+        "key_takeaway": "Fine.",
+    })
+    r = task_ar.run(FakeQwen(qwen), AR_FIXTURE, "m",
+                    rephrase_backend=FakeRephrase(lossy))
+    assert r.ok is False
+    assert r.final_status == "HUMAN_REVIEW_REQUIRED"
+    assert r.human_review_required is True
+    assert r.information_preservation_check["status"] == "HUMAN_REVIEW_REQUIRED"
+    assert "1" in r.information_preservation_check["missing_material_tokens"]
 
 
 def test_red_flag_classification_unchanged():

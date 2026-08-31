@@ -75,6 +75,12 @@ class TaskResult:
     rephrase_log: Optional[Dict[str, Any]] = None
     # Where the final output came from: qwen | gpt_rephrase | failed_human_review.
     final_source: str = "qwen"
+    # Final processing state: QWEN_PASS | GPT_REPHRASE_PASS | HUMAN_REVIEW_REQUIRED.
+    final_status: str = "QWEN_PASS"
+    human_review_required: bool = False
+    human_review_reason: Optional[str] = None
+    # Deterministic info-preservation guard result (see app/tasks/rephrase.py).
+    information_preservation_check: Optional[Dict[str, Any]] = None
 
     def absorb(self, generation: GenerationResult) -> None:
         self.model = generation.model
@@ -110,4 +116,8 @@ class TaskResult:
             "context_log": self.context_log,
             "rephrase_log": self.rephrase_log,
             "final_source": self.final_source,
+            "final_status": self.final_status,
+            "human_review_required": self.human_review_required,
+            "human_review_reason": self.human_review_reason,
+            "information_preservation_check": self.information_preservation_check,
         }

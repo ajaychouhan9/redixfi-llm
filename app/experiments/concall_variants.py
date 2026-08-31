@@ -267,6 +267,9 @@ def run_variant(
         if planned_user is None:
             result.ok = False
             result.error = f"context_overflow: {context_log}"
+            result.final_status = "HUMAN_REVIEW_REQUIRED"
+            result.human_review_required = True
+            result.human_review_reason = result.error
             return result
 
     # ONE Qwen generation.
@@ -293,6 +296,9 @@ def run_variant(
         result.ok = False
         result.error = f"llm_exception: {generation.error}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
         return result
 
@@ -302,6 +308,9 @@ def run_variant(
         result.ok = False
         result.error = f"invalid_json: {parse_error}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         result.rejections = [{"pass": 1, "sampling": sampling, "reason": result.error}]
         return result
 
@@ -312,6 +321,7 @@ def run_variant(
         result.output = out
         result.rejections = []
         result.final_source = "qwen"
+        result.final_status = "QWEN_PASS"
         return result
 
     result.rejections = [{
@@ -328,6 +338,9 @@ def run_variant(
         result.ok = False
         result.error = f"non-eligible validator failure: {bad}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         return result
 
     # ONE GPT-4o-mini edit, max. The source transcript is never sent.
@@ -347,6 +360,9 @@ def run_variant(
         result.ok = False
         result.error = f"gpt rephrase failed: {g.error}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         return result
 
     parsed2, repaired2, parse_error2 = parse_json_object(g.text)
@@ -357,6 +373,9 @@ def run_variant(
         result.ok = False
         result.error = f"gpt rephrase invalid json: {parse_error2}"
         result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
         return result
 
     out2 = _normalize(parsed2)
@@ -364,17 +383,35 @@ def run_variant(
     rephrase_log["gpt_rephrased_output"] = out2
     rephrase_log["validator_status_after_rephrase"] = bad2 or "PASS"
 
-    if not bad2:
-        result.ok = True
-        result.output = out2
-        result.final_source = "gpt_rephrase"
+    if bad2:
+        result.ok = False
+        result.error = f"gpt rephrase failed validation: {bad2}"
+        result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
+        result.rejections.append({"pass": 2, "reason": bad2, "text": out2,
+                                  "raw_text": g.text})
         return result
 
-    result.ok = False
-    result.error = f"gpt rephrase failed validation: {bad2}"
-    result.final_source = "failed_human_review"
-    result.rejections.append({"pass": 2, "reason": bad2, "text": out2,
-                              "raw_text": g.text})
+    # Deterministic information-preservation guard.
+    info = information_preservation_check(out, out2)
+    result.information_preservation_check = info
+    rephrase_log["information_preservation_check"] = info
+    if info["status"] != "PASS":
+        result.ok = False
+        result.error = (f"information loss after rephrase: "
+                        f"{info['missing_material_tokens']}")
+        result.final_source = "failed_human_review"
+        result.final_status = "HUMAN_REVIEW_REQUIRED"
+        result.human_review_required = True
+        result.human_review_reason = result.error
+        return result
+
+    result.ok = True
+    result.output = out2
+    result.final_source = "gpt_rephrase"
+    result.final_status = "GPT_REPHRASE_PASS"
     return result
 
 

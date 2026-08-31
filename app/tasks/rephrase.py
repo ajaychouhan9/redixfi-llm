@@ -15,6 +15,7 @@ evidence) are never routed here.
 """
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, List, Optional
 
 from ..compliance.validators import summarizer_violation
@@ -28,35 +29,85 @@ from ..prompts.concall_summary import TONE_LABELS
 REPHRASE_MODEL = "gpt-4o-mini"
 
 EDITOR_SYSTEM_PROMPT = (
-    "You are the final compliance editor for a financial summary.\n"
-    "You will receive an already-generated Qwen summary and a specific validator finding.\n"
-    "Rewrite ONLY the supplied summary so that it satisfies the supplied validator finding.\n"
-    "Preserve all factual information, numbers, dates, risks and meaning wherever permitted.\n"
-    "Do not add facts. Do not invent information. Do not consult or infer from the original source.\n"
-    "Do not create a new summary. Do not remove useful information unless required by the stated policy.\n"
-    "For management guidance, explicitly attribute expectations, targets, projections or plans to "
-    "management when required.\n"
-    "Return ONLY the corrected summary as a JSON object matching the required schema.\n"
+    "You are a compliance editor for a financial summary.\n"
+    "Rewrite ONLY the supplied Qwen summary to address the supplied validator finding.\n"
+    "Preserve all factual information and material quantitative details.\n"
+    "Do NOT create a new summary.\n"
+    "Do NOT add facts.\n"
+    "Do NOT infer facts.\n"
+    "Do NOT consult or reconstruct the original source.\n"
+    "Do NOT remove a number, date, percentage, target, projection, guidance, risk, "
+    "or business fact merely to make the validator pass.\n"
+    "When the supplied information is clearly management guidance, preserve it and "
+    "attribute it appropriately.\n"
+    "Every forward-looking term (expect*, target*, forecast*, outlook) must appear "
+    "in a sentence that explicitly names management or the report as the source; "
+    "if it is not already attributed, rewrite the sentence to attribute it.\n"
+    "Example: 'The company targets X' -> 'Management has stated a target of X.'\n"
+    "Example: 'The company will achieve X' -> 'Management expects to achieve X.'\n"
+    "If the information cannot be preserved while satisfying the current validator "
+    "policy, DO NOT silently generalize or delete it. In that situation return the "
+    "information as faithfully as possible and mark the case for human review.\n"
+    "Return only the required summary output.\n"
 )
 
 # Task-specific policy notes. These describe the EXISTING RedixFi policy;
 # they do not invent new policy.
 TASK_POLICY_NOTES = {
     "annual_report_summary": (
-        "Annual Report policy: do not state specific financial figures as fact; "
-        "rephrase or remove them. The validator treats any number followed by "
-        "crore/lakh/million/billion/bn/mn as a financial figure (for example "
-        "'1 billion tonnes' still trips it), so generalize or remove such "
-        "digit+unit quantities (e.g. 'over a billion tonnes' or 'significant "
-        "capacity expansion'). Preserve non-financial facts, dates, management "
-        "guidance (attributed to management), risks, and meaning."
+        "Annual Report policy: financial figures are allowed when explicitly "
+        "attributed to management/source (e.g. 'management's stated target to "
+        "expand ... to 1 billion tonnes'). PRESERVE material quantitative facts, "
+        "numbers, dates, percentages, targets, projections, guidance, risks and "
+        "meaning. Attribute figures to management or the report when needed. "
+        "Do NOT delete or generalize figures merely to pass the validator."
     ),
     "concall_summary": (
         "Concall policy: financial figures are allowed and should be preserved. "
         "Do not present management guidance as guaranteed fact; attribute "
-        "expectations, targets, projections or plans to management."
+        "expectations, targets, projections or plans to management in the SAME "
+        "sentence where the forward-looking term appears."
     ),
 }
+
+_MATERIAL_TOKEN_RE = re.compile(
+    r"\b\d[\d,]*(?:\.\d+)?\b"
+    r"|\bFY\d{2}-\d{2}\b"
+    r"|\b20\d{2}\b"
+    r"|\bQ[1-4]\s*FY\d{2}\b"
+    r"|\b\d+(?:\.\d+)?\s*%",
+    re.IGNORECASE,
+)
+
+
+def _text_of(output: Dict[str, Any]) -> str:
+    parts: List[str] = []
+    for value in output.values():
+        if isinstance(value, str):
+            parts.append(value)
+        elif isinstance(value, list):
+            for item in value:
+                if isinstance(item, str):
+                    parts.append(item)
+    return " ".join(parts)
+
+
+def extract_material_tokens(text: str) -> set:
+    return {m.group(0).lower().replace(" ", "") for m in _MATERIAL_TOKEN_RE.finditer(text)}
+
+
+def information_preservation_check(
+    qwen_output: Dict[str, Any],
+    gpt_output: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Deterministic guard: if GPT removed any material number/date/percentage
+    that was present in the Qwen summary, do NOT silently accept it."""
+    qwen_tokens = extract_material_tokens(_text_of(qwen_output))
+    gpt_tokens = extract_material_tokens(_text_of(gpt_output))
+    missing = sorted(qwen_tokens - gpt_tokens)
+    if missing:
+        return {"status": "HUMAN_REVIEW_REQUIRED", "missing_material_tokens": missing}
+    return {"status": "PASS", "missing_material_tokens": []}
 
 
 def is_eligible_for_rephrase(reason: Optional[str]) -> bool:
