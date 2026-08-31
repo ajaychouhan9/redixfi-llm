@@ -75,6 +75,7 @@ def run(
     schema = schema_for_task(TASK_NAME, None)
     rejections: List[Dict[str, Any]] = []
     corrective_note: Optional[str] = None
+    previous_raw: Optional[str] = None
 
     for attempt in range(1, MAX_ATTEMPTS + 1):
         result.attempts = attempt
@@ -123,11 +124,21 @@ def run(
             result.rejections = rejections
             return result
 
-        rejections.append({"pass": attempt, "sampling": sampling,
-                           "reason": bad, "text": out,
-                           "raw_text": generation.text})
-        corrective_note = build_corrective_note(bad, out, ['summary', 'tone_note'],
-                                                policy=policy)
+        output_changed = previous_raw is None or generation.text != previous_raw
+        next_note = build_corrective_note(bad, out, ['summary', 'tone_note'],
+                                          policy=policy)
+        rejections.append({
+            "pass": attempt,
+            "sampling": sampling,
+            "reason": bad,
+            "text": out,
+            "raw_text": generation.text,
+            "corrective_note": corrective_note,   # note that shaped THIS attempt
+            "next_corrective_note": next_note,    # directive for the next attempt
+            "output_changed": output_changed,
+        })
+        corrective_note = next_note
+        previous_raw = generation.text
 
     result.rejections = rejections
     result.error = f"failed validation after {MAX_ATTEMPTS} attempts"

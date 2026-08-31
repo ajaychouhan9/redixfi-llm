@@ -77,9 +77,16 @@ def test_annual_report_system_prompt_matches():
 def test_red_flag_system_prompt_matches():
     source = _read(CLASSIFIER)
     theirs = _extract_string_literal(source, "_SYSTEM_PROMPT")
-    assert _normalize(rf_prompt.SYSTEM_PROMPT) == _normalize(theirs), (
+    ours = _normalize(rf_prompt.SYSTEM_PROMPT)
+    base = _normalize(theirs)
+    # Controlled append-only deviation (Phase 4, 2026-08-30): the vendored
+    # copy intentionally appends a classification-evidence paragraph. The
+    # RedixFi base prompt must still be present as a prefix so drift in the
+    # base text is still caught.
+    assert ours.startswith(base), (
         "risk_flag_classifier.py::_SYSTEM_PROMPT has DIVERGED from the vendored copy."
     )
+    assert "CONTROLLED FIX (2026-08-30)" in rf_prompt.SYSTEM_PROMPT
 
 
 def test_ask_system_templates_match():

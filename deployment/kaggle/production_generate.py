@@ -85,7 +85,7 @@ from app.tasks.retry_policy import IMPROVED_POLICY, PRODUCTION_POLICY  # noqa: E
 
 TASK_RUNNERS = {"annual_report_summary": task_ar.run, "concall_summary": task_cc.run,
                 "red_flag": task_rf.run}
-DEFAULT_POLICY = {"annual_report_summary": PRODUCTION_POLICY,
+DEFAULT_POLICY = {"annual_report_summary": IMPROVED_POLICY,  # Phase 2 shared retry fix
                   "concall_summary": IMPROVED_POLICY,   # the CONFIRMED fix
                   "red_flag": PRODUCTION_POLICY}
 DEFAULT_ATTEMPTS = {"annual_report_summary": None, "concall_summary": 8, "red_flag": None}
@@ -146,13 +146,16 @@ if args.task == "concall_summary" and policy is IMPROVED_POLICY:
 
     def runner(backend, case, model):
         return run_variant(backend, case, model, variant)
+elif args.task == "annual_report_summary":
+    # Phase 2 (2026-08-30 controlled fix): the shared directive-retry
+    # mechanism (improved policy) is now applied to Annual Report as well
+    # as Concall. Attempt 1 stays deterministic; retries vary sampling and
+    # receive directive corrective feedback.
+    def runner(backend, case, model):
+        return task_ar.run(backend, case, model, policy=IMPROVED_POLICY)
 else:
-    # annual_report_summary/red_flag run with production settings by
-    # default (their own `run()` defaults policy to PRODUCTION_POLICY),
-    # matching this build's brief: only concall carries a confirmed fix.
-    # A --retry-policy override for annual_report is NOT wired through
-    # here — out of scope until that task has its own confirmed change to
-    # apply, same as concall's did.
+    # red_flag keeps its single-shot production behavior — Phase 4 changes
+    # classification/evidence logic, not retry mechanics.
     runner = TASK_RUNNERS[args.task]
 
 results = []

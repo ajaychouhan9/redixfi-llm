@@ -117,9 +117,9 @@ def test_annual_report_accepts_compliant_output():
     result = task_ar.run(ScriptedBackend([good]), _ar_fixture(), "test-model")
     assert result.ok and result.attempts == 1
     assert len(result.output["key_points"]) == 3
-    # Legacy fields RedixFi also writes must be present.
-    assert result.output["summary"] == result.output["executive_summary"]
-    assert result.output["bullets"] == result.output["key_points"]
+    # Phase 1 canonical schema: current keys only; legacy duplicates removed.
+    assert "summary" not in result.output
+    assert "bullets" not in result.output
 
 
 def test_annual_report_retries_then_succeeds_on_a_compliance_failure():
@@ -186,13 +186,14 @@ def test_red_flag_confirms_and_emits_metadata_contract():
 
 
 def test_red_flag_omits_keys_rather_than_nulling_them():
-    """ChromaDB metadata cannot hold None — the keys must be ABSENT."""
+    """ChromaDB metadata cannot hold None — the keys must be ABSENT.
+    Phase 1 controlled fix: no confirmed type => risk_classified False."""
     result = task_rf.run(
         ScriptedBackend([json.dumps({"category": None, "summary": ""})]),
         _rf_fixture(), "test-model",
     )
     assert result.ok
-    assert result.output == {"risk_classified": True}
+    assert result.output == {"risk_classified": False}
     assert "risk_flag_type" not in result.output
     assert "risk_flag_summary" not in result.output
 
@@ -210,7 +211,7 @@ def test_red_flag_drops_a_noncompliant_summary():
         "summary": "The company will expand related party dealings.",
     })
     result = task_rf.run(ScriptedBackend([bad]), _rf_fixture(), "test-model")
-    assert result.output == {"risk_classified": True}
+    assert result.output == {"risk_classified": False}
     assert "failed compliance" in result.rejections[0]["reason"]
 
 

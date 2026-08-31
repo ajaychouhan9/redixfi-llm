@@ -87,6 +87,20 @@ SYSTEM_PROMPT = (
     "what the excerpt states about it, with no commentary, no numbers, no "
     "forward-looking language, no investment advice — empty string if "
     "category is null}."
+    " CONTROLLED FIX (2026-08-30): A disclosure is NOT automatically a "
+    "material red flag. Key Audit Matters, Emphasis of Matter paragraphs, "
+    "standard audit disclosures, generic definitions of contingent "
+    "liabilities, routine related-party disclosures, and ordinary "
+    "promoter-pledge notes are evidence that a topic was mentioned — not "
+    "proof that a material governance/financial risk exists. Only confirm a "
+    "category when the excerpt shows a company-specific fact/event/risk: an "
+    "actual qualified/adverse audit opinion, an actual pending claim or "
+    "guarantee against the company, an actual transaction with a related "
+    "party/promoter entity that creates risk, or an actual pledge of "
+    "promoter shares. If the excerpt only describes a definition, generic "
+    "policy, or standard disclosure without a company-specific material "
+    "fact, return category: null. The summary must restate the specific "
+    "company fact that justifies the category, not the generic definition."
 )
 
 

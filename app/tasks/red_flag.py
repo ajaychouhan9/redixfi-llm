@@ -11,10 +11,11 @@ edge cases and are not:
   * The summary is re-validated with _violation(); a non-compliant summary
     is DROPPED, leaving the chunk classified-but-unflagged. RedixFi never
     stores non-compliant LLM-authored text as metadata.
-  * METADATA CONTRACT: `risk_classified` is always True; `risk_flag_type`
-    and `risk_flag_summary` are OMITTED entirely (never null) whenever
-    nothing was confirmed. ChromaDB metadata cannot hold null, and
-    reproducing this exactly is what makes the outputs comparable.
+  * METADATA CONTRACT (Phase 1 controlled fix, 2026-08-30):
+    `risk_classified` is now deterministic: True only when a valid
+    `risk_flag_type` is confirmed; False when nothing was confirmed.
+    `risk_flag_type` / `risk_flag_summary` are OMITTED entirely (never null)
+    whenever nothing was confirmed, matching ChromaDB's no-null constraint.
   * Financial-figure checking is OFF here — that check belongs only to the
     annual report summarizer.
 
@@ -56,7 +57,7 @@ def run(
     if not candidates:
         result.ok = True
         result.attempts = 0
-        result.output = {"risk_classified": True}
+        result.output = {"risk_classified": False}
         return result
 
     request = GenerationRequest(
@@ -75,14 +76,15 @@ def run(
     result.absorb(generation)
     result.attempts = 1
 
-    # Every failure path below is fail-soft to {"risk_classified": True},
-    # exactly as classify_chunk is. `ok` stays True because "no flag" is a
-    # legitimate outcome, not an error; `rejections` records WHY so the
-    # comparison report can distinguish a genuine no-match from a model
-    # that could not produce parseable output.
+    # Every failure path below is fail-soft to {"risk_classified": False},
+    # matching the Phase 1 deterministic rule: no valid risk_flag_type => no
+    # confirmed red flag => risk_classified False. `ok` stays True because
+    # "no flag" is a legitimate outcome, not an error; `rejections` records
+    # WHY so the comparison report can distinguish a genuine no-match from a
+    # model that could not produce parseable output.
     def unflagged(reason: str) -> TaskResult:
         result.ok = True
-        result.output = {"risk_classified": True}
+        result.output = {"risk_classified": False}
         result.rejections = [{"pass": 1, "reason": reason}]
         return result
 

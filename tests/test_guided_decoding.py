@@ -239,7 +239,7 @@ def test_red_flag_null_category_is_expressible():
     runner, fixture = RUNNERS["red_flag"]
     result = runner(backend, fixture, "test-model")
     assert result.ok
-    assert result.output == {"risk_classified": True}
+    assert result.output == {"risk_classified": False}
     assert "risk_flag_type" not in result.output
 
 

@@ -37,8 +37,16 @@ TASK_NAME = "annual_report_summary"
 
 
 def _normalize(parsed: Dict[str, Any]) -> Dict[str, Any]:
-    """Mirrors call_llm_summarize's parsing, including its legacy-key
-    fallback (`summary`/`bullets`) and the additive legacy output fields."""
+    """Canonical RedixFi current-schema output only.
+
+    Phase 1 (2026-08-30 controlled fix): the previous normalization mirrored
+    call_llm_summarize's additive legacy fallback and emitted BOTH the current
+    keys (`executive_summary`/`key_points`) and the legacy keys
+    (`summary`/`bullets`) with duplicated content. Consumers observed the
+    duplication. The canonical schema for the current pipeline is
+    `executive_summary` / `key_points` / `important_risks` / `key_takeaway`;
+    the legacy keys are no longer emitted by this task.
+    """
     executive_summary = str(
         parsed.get("executive_summary") or parsed.get("summary") or ""
     ).strip()
@@ -60,9 +68,6 @@ def _normalize(parsed: Dict[str, Any]) -> Dict[str, Any]:
         "key_points": key_points,
         "important_risks": important_risks,
         "key_takeaway": key_takeaway,
-        # Legacy fields RedixFi also stores (Research page reads these).
-        "summary": executive_summary,
-        "bullets": key_points,
     }
 
 
@@ -104,6 +109,7 @@ def run(
     schema = schema_for_task(TASK_NAME, None)
     rejections: List[Dict[str, Any]] = []
     corrective_note: Optional[str] = None
+    previous_raw: Optional[str] = None
 
     for attempt in range(1, MAX_ATTEMPTS + 1):
         result.attempts = attempt
@@ -152,11 +158,24 @@ def run(
             result.rejections = rejections
             return result
 
-        rejections.append({"pass": attempt, "sampling": sampling,
-                           "reason": bad, "text": out,
-                           "raw_text": generation.text})
-        corrective_note = build_corrective_note(bad, out, ['executive_summary', 'key_takeaway', 'key_points', 'important_risks'],
-                                                policy=policy)
+        output_changed = previous_raw is None or generation.text != previous_raw
+        next_note = build_corrective_note(
+            bad, out,
+            ['executive_summary', 'key_takeaway', 'key_points', 'important_risks'],
+            policy=policy,
+        )
+        rejections.append({
+            "pass": attempt,
+            "sampling": sampling,
+            "reason": bad,
+            "text": out,
+            "raw_text": generation.text,
+            "corrective_note": corrective_note,   # note that shaped THIS attempt
+            "next_corrective_note": next_note,    # directive for the next attempt
+            "output_changed": output_changed,
+        })
+        corrective_note = next_note
+        previous_raw = generation.text
 
     # Same posture as RedixFi: no placeholder on total failure.
     result.rejections = rejections
