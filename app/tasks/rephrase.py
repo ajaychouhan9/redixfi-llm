@@ -228,24 +228,62 @@ def _resolve_openai_key_in_kaggle_env() -> None:
     import os
     if os.environ.get("OPENAI_API_KEY"):
         return
+
+    # Diagnostic logging only (2026-09-01 follow-up) -- the prior version
+    # of this function swallowed every exception silently, so two real
+    # Kaggle runs both failed with the exact same downstream RuntimeError
+    # and gave no way to tell WHICH resolution path failed or why (not
+    # attached / wrong secret name / wrong kernel scope / import error /
+    # empty value / API error). Every branch below now prints exactly one
+    # line naming its own outcome. Never logs the key's VALUE -- only
+    # whether one was found, and if not, why not. Behavior is unchanged:
+    # still tries kaggle_secrets first, then the dataset-file fallback,
+    # still a silent no-op on success (build_rephrase_backend's existing
+    # RuntimeError is still what surfaces on total failure).
     try:
         from kaggle_secrets import UserSecretsClient
-        key = UserSecretsClient().get_secret("OPENAI_API_KEY")
-        if key:
-            os.environ["OPENAI_API_KEY"] = key
-            return
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[rephrase key-resolve] kaggle_secrets import failed: "
+             f"{type(e).__name__}: {e}", flush=True)
+    else:
+        try:
+            key = UserSecretsClient().get_secret("OPENAI_API_KEY")
+        except Exception as e:
+            print(f"[rephrase key-resolve] UserSecretsClient().get_secret "
+                 f"raised: {type(e).__name__}: {e}", flush=True)
+        else:
+            if key:
+                print("[rephrase key-resolve] resolved OPENAI_API_KEY from "
+                     "a Kaggle Secret", flush=True)
+                os.environ["OPENAI_API_KEY"] = key
+                return
+            print("[rephrase key-resolve] UserSecretsClient().get_secret "
+                 "returned None/empty -- secret not attached to this "
+                 "kernel, wrong name, or its access toggle is off",
+                 flush=True)
+
     try:
         import glob
         hits = glob.glob("/kaggle/input/**/openai_key.txt", recursive=True)
-        if hits:
+        if not hits:
+            print("[rephrase key-resolve] no dataset fallback file found "
+                 "either (no openai_key.txt under /kaggle/input) -- "
+                 "OPENAI_API_KEY will remain unset", flush=True)
+        else:
             with open(hits[0], encoding="utf-8") as fh:
                 key = fh.read().strip()
             if key:
+                print("[rephrase key-resolve] resolved OPENAI_API_KEY from "
+                     "the dataset fallback file", flush=True)
                 os.environ["OPENAI_API_KEY"] = key
-    except Exception:
-        pass
+            else:
+                print(f"[rephrase key-resolve] dataset fallback file {hits[0]} "
+                     "exists but is empty -- OPENAI_API_KEY will remain unset",
+                     flush=True)
+    except Exception as e:
+        print(f"[rephrase key-resolve] dataset fallback lookup raised: "
+             f"{type(e).__name__}: {e} -- OPENAI_API_KEY will remain unset",
+             flush=True)
 
 
 def build_rephrase_backend() -> Backend:
