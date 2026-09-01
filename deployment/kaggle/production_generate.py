@@ -158,26 +158,56 @@ else:
     # classification/evidence logic, not retry mechanics.
     runner = TASK_RUNNERS[args.task]
 
+def _write_checkpoint(path, task, model, policy_name, results, wall, complete):
+    """Persist EVERY case's result as soon as it lands, not only once the
+    whole batch finishes. 2026-09-01's real production run lost VEDL's and
+    BAJFINANCE's already-completed, already-GPU-paid-for output when a
+    LATER case (COALINDIA / APLLTD) crashed the process before this
+    function existed — nothing was written until the end, so one case's
+    failure discarded every earlier case's real work. Atomic write (temp
+    file + os.replace) so a mid-write crash/kill can never leave a
+    truncated/corrupt output file for writeback_*.py to trip over.
+    """
+    ok = sum(1 for r in results if r.get("ok"))
+    tmp = path + ".tmp"
+    os.makedirs(os.path.dirname(os.path.abspath(path)) or ".", exist_ok=True)
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump({"task": task, "model": model, "policy": policy_name,
+                  "generated_ok": ok, "cases": len(results), "wall_sec": wall,
+                  "complete": complete, "results": results},
+                  fh, ensure_ascii=False, indent=2, default=str)
+    os.replace(tmp, path)
+
+
 results = []
 t0 = time.time()
 for i, case in enumerate(fs.cases, 1):
     bid = case.get("benchmark_id") or case.get("fixture_id") or case.get("filing_id") or case.get("chunk_id")
     print(f"  [{i}/{len(fs.cases)}] {bid}", flush=True)
-    result = runner(backend, case, args.model)
-    row = result.to_dict()
+    try:
+        result = runner(backend, case, args.model)
+        row = result.to_dict()
+    except Exception as e:
+        # A single case's crash (missing dependency, unhandled API error,
+        # etc.) must not discard every earlier case's already-completed
+        # result — see _write_checkpoint's docstring for exactly what this
+        # fixes. Recorded as a normal failed case; the loop continues.
+        import traceback
+        tb = traceback.format_exc()
+        print(f"    CASE FAILED: {type(e).__name__}: {e}", flush=True)
+        row = {"ok": False, "error": f"{type(e).__name__}: {e}", "traceback": tb}
     row["case_id"] = bid
     row["filing_id"] = case.get("filing_id")
     row["chunk_id"] = case.get("chunk_id")
     row["symbol"] = case.get("symbol")
     results.append(row)
+    _write_checkpoint(args.output, args.task, args.model, policy.name,
+                      results, time.time() - t0, complete=False)
 wall = time.time() - t0
 
 ok = sum(1 for r in results if r["ok"])
 print(f"\ngenerated_ok: {ok}/{len(results)}   wall: {wall/60:.1f} min")
 
-os.makedirs(os.path.dirname(os.path.abspath(args.output)) or ".", exist_ok=True)
-with open(args.output, "w", encoding="utf-8") as fh:
-    json.dump({"task": args.task, "model": args.model, "policy": policy.name,
-              "generated_ok": ok, "cases": len(results), "wall_sec": wall,
-              "results": results}, fh, ensure_ascii=False, indent=2, default=str)
+_write_checkpoint(args.output, args.task, args.model, policy.name,
+                  results, wall, complete=True)
 print(f"wrote {args.output}")

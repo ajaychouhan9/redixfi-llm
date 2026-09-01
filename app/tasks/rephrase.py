@@ -202,8 +202,55 @@ def build_rephrase_request(
     )
 
 
+def _resolve_openai_key_in_kaggle_env() -> None:
+    """Populate os.environ["OPENAI_API_KEY"] from a Kaggle-native source
+    when running inside a Kaggle kernel, where the VM's own .env never
+    reaches (Kaggle kernels are isolated cloud sandboxes with their own
+    environment — see the 2026-09-01 production run, where both AR and
+    concall crashed with `OPENAI_API_KEY is required` for exactly this
+    reason). No-op when the env var is already set (the normal VM/local
+    path) so this never changes existing behavior outside Kaggle.
+
+    Two sources are tried, in order of preference:
+    1. A true Kaggle Secret named OPENAI_API_KEY, via kaggle_secrets
+       (Add-ons > Secrets in the kernel editor — the Kaggle-native
+       mechanism; requires the founder to attach it once per kernel
+       through the web UI, since neither the kaggle CLI nor kagglesdk
+       exposes any API to do this — confirmed by grepping both packages'
+       source for "secret": zero hits, and `kaggle kernels push -h` has
+       no such flag).
+    2. A private per-account Kaggle Dataset (`redixfi-openai-key`)
+       carrying a single `openai_key.txt` file, mounted the same way the
+       code/fixture datasets already are — the automatable fallback,
+       still keeps the key out of any script/notebook body and out of
+       git; only ever read, never logged or echoed.
+    """
+    import os
+    if os.environ.get("OPENAI_API_KEY"):
+        return
+    try:
+        from kaggle_secrets import UserSecretsClient
+        key = UserSecretsClient().get_secret("OPENAI_API_KEY")
+        if key:
+            os.environ["OPENAI_API_KEY"] = key
+            return
+    except Exception:
+        pass
+    try:
+        import glob
+        hits = glob.glob("/kaggle/input/**/openai_key.txt", recursive=True)
+        if hits:
+            with open(hits[0], encoding="utf-8") as fh:
+                key = fh.read().strip()
+            if key:
+                os.environ["OPENAI_API_KEY"] = key
+    except Exception:
+        pass
+
+
 def build_rephrase_backend() -> Backend:
     """Reuses the existing OpenAI-compatible backend + RedixFi API config."""
+    _resolve_openai_key_in_kaggle_env()
     settings = get_settings()
     if not settings.openai_api_key:
         raise RuntimeError(
