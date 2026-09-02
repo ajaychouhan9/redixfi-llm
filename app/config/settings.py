@@ -68,9 +68,11 @@ class Settings:
         default_factory=lambda: _env("MONGO_APP_DB_NAME", "redixfi_app")
     )
     chroma_path: str = field(
-        default_factory=lambda: _env(
-            "CHROMA_PATH", "/home/ubuntu/redixfi-backend/data/chroma_production"
-        )
+        # 2026-09-02: repointed at the new dedicated /data/chroma mount
+        # (127GB ext4, permanent in /etc/fstab on the VM) after the
+        # chroma_production wipe -- a separate top-level mount, not a
+        # subdirectory of redixfi-backend's own data/ folder anymore.
+        default_factory=lambda: _env("CHROMA_PATH", "/data/chroma")
     )
     redixfi_root: str = field(
         default_factory=lambda: _env("REDIXFI_ROOT", "/home/ubuntu/redixfi-backend")

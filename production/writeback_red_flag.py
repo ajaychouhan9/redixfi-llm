@@ -10,7 +10,10 @@ import os
 import sys
 
 REDIXFI_ROOT = os.getenv("REDIXFI_ROOT", "/home/ubuntu/redixfi-backend")
-CHROMA_PATH = os.getenv("CHROMA_PATH", os.path.join(REDIXFI_ROOT, "data/chroma_production"))
+# 2026-09-02: repointed at the new dedicated /data/chroma mount (127GB
+# ext4, permanent in /etc/fstab) after the chroma_production wipe -- a
+# separate top-level mount, not derived from REDIXFI_ROOT anymore.
+CHROMA_PATH = os.getenv("CHROMA_PATH", "/data/chroma")
 
 
 def main():

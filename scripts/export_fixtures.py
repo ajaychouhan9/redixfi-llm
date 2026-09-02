@@ -44,7 +44,7 @@ categories()` and records their output verbatim.
 
 USAGE
     export REDIXFI_ROOT=/home/ubuntu/redixfi-backend
-    export CHROMA_PATH=$REDIXFI_ROOT/data/chroma_production
+    export CHROMA_PATH=/data/chroma
 
     python3 export_fixtures.py --validate                    # writes nothing
     python3 export_fixtures.py --task concall_summary --limit 20 \
@@ -66,7 +66,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app.evaluation.fixtures import build_document, save, validate_document  # noqa: E402
 
 REDIXFI_ROOT = os.getenv("REDIXFI_ROOT", "/home/ubuntu/redixfi-backend")
-CHROMA_PATH = os.getenv("CHROMA_PATH", os.path.join(REDIXFI_ROOT, "data/chroma_production"))
+# 2026-09-02: repointed at the new dedicated /data/chroma mount (127GB
+# ext4, permanent in /etc/fstab) after the chroma_production wipe -- a
+# separate top-level mount, not derived from REDIXFI_ROOT anymore.
+CHROMA_PATH = os.getenv("CHROMA_PATH", "/data/chroma")
 EVIDENCE_MAX_TOKENS = int(os.getenv("EVIDENCE_MAX_TOKENS", "20000"))
 
 # Legacy Stage 3 contract — see app/prompts/annual_report_summary_legacy.py
