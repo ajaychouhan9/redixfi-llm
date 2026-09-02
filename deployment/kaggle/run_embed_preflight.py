@@ -81,8 +81,14 @@ log("STEP 3 - load the model, measure REAL VRAM cost")
 log("=" * 70)
 from sentence_transformers import SentenceTransformer  # noqa: E402
 
+# 2026-09-02: dtype is explicit and comes from app/embedding_config.py.
+# Loading without it silently gets bf16 on this T4 = 2.66 chunks/sec vs
+# 12.19 with fp16 (4.58x), measured head-to-head. See that module.
 t0 = time.time()
-model = SentenceTransformer(MODEL_ID, device="cuda:0")
+model = SentenceTransformer(
+    MODEL_ID, device="cuda:0",
+    model_kwargs={"torch_dtype": torch.float16},
+)
 load_sec = time.time() - t0
 after_load = gpu_mem()
 log(f"  loaded in {load_sec:.1f}s")
@@ -131,6 +137,8 @@ log(f"  avg chars/chunk: {sum(len(t) for t in texts) // len(texts)}")
 model.encode(texts[:8], batch_size=8, convert_to_numpy=True)
 
 R["throughput"] = []
+# batch 8 is the MEASURED best (12.19/sec); kept as a sweep here
+# because this is the preflight whose job is to measure.
 for bs in (8, 16, 32, 64):
     t0 = time.time()
     vecs = model.encode(texts, batch_size=bs, convert_to_numpy=True,
