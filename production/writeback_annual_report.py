@@ -21,6 +21,9 @@ from datetime import datetime, timezone
 sys.path.insert(0, "/home/ubuntu/redixfi-backend")
 from config.db import get_db  # noqa: E402
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from review_queue import ensure_indexes, enqueue_for_review  # noqa: E402
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -37,12 +40,20 @@ def main():
     db = get_db()
     col = db["annual_reports"]
 
-    written = skipped = 0
+    written = skipped = held = 0
+    ensure_indexes(db)
     for row in doc["results"]:
         filing_id = row.get("filing_id")
         if not row.get("ok"):
-            print(f"  SKIP {filing_id}: generation failed ({row.get('error')})")
-            skipped += 1
+            # Held for human review rather than dropped. This branch used to
+            # print one line and lose the case forever — see production/
+            # review_queue.py for why that mattered.
+            action = enqueue_for_review(db, "annual_report", filing_id, row,
+                                        symbol=row.get("symbol"),
+                                        confirm=args.confirm)
+            print(f"  HELD {filing_id}: {row.get('human_review_reason') or row.get('error')}"
+                  f" [{action}]")
+            held += 1
             continue
         out = row.get("output") or {}
         update = {
@@ -75,7 +86,7 @@ def main():
                 sys.exit(1)
         written += 1
 
-    print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {written}, skipped {skipped}")
+    print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {written}, skipped {skipped}, held for review {held}")
     if not args.confirm:
         print("DRY RUN — nothing was written. Re-run with --confirm to write.")
 
