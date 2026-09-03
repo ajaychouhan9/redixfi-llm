@@ -59,20 +59,35 @@ def main():
     if not args.force:
         query["embedded"] = {"$exists": False}
 
-    docs = list(col.find(query))
-    print(f"[INFO] {args.source}: {len(docs)} candidate document(s)")
+    # 2026-09-03 MEMORY FIX: this used to be `docs = list(col.find(query))`
+    # with NO projection — pulling every candidate document's full raw_text/
+    # raw_transcript_text into memory just to sort and slice off the top
+    # --limit. On the real 8,423-candidate AR backlog that is enough full
+    # annual-report text to OOM-kill the process (confirmed live: RSS hit
+    # 11.5GB before the kernel killed it, on a host with 10GB free at the
+    # time). A "small daily batch" driver script cannot carry an O(whole
+    # backlog) memory footprint. Fixed in two passes: gather ONLY the
+    # lightweight sort/filter fields for every candidate first, pick the
+    # final N ids in Python, then fetch full text for just those N.
+    light_projection = {"_id": 1, "filing_date": 1, "symbol": 1}
+    light_docs = list(col.find(query, light_projection))
+    print(f"[INFO] {args.source}: {len(light_docs)} candidate document(s)")
 
     if args.source == "investor_calls":
-        before = len(docs)
-        docs = select_recent_quarters(docs, CONCALL_MAX_QUARTERS)
-        if before != len(docs):
+        before = len(light_docs)
+        light_docs = select_recent_quarters(light_docs, CONCALL_MAX_QUARTERS)
+        if before != len(light_docs):
             print(f"[INFO] retention cap (last {CONCALL_MAX_QUARTERS} quarters): "
-                  f"{before} -> {len(docs)}")
+                  f"{before} -> {len(light_docs)}")
 
     # MOST-RECENT-FIRST — the incremental rollout decision.
-    docs.sort(key=lambda d: (d.get("filing_date") or ""), reverse=True)
-    docs = docs[:args.limit]
-    print(f"[INFO] exporting newest {len(docs)} document(s)")
+    light_docs.sort(key=lambda d: (d.get("filing_date") or ""), reverse=True)
+    chosen_ids = [d["_id"] for d in light_docs[:args.limit]]
+    print(f"[INFO] exporting newest {len(chosen_ids)} document(s)")
+
+    # Second pass: full text for ONLY the chosen documents, order preserved.
+    full_by_id = {d["_id"]: d for d in col.find({"_id": {"$in": chosen_ids}})}
+    docs = [full_by_id[i] for i in chosen_ids if i in full_by_id]
 
     out = {"schema": "qwen_embed_batch_v1", "source": args.source, "chunks": []}
     for doc in docs:
