@@ -3,6 +3,18 @@
 metadata — a METADATA-ONLY `collection.update()`, exactly matching
 risk_flag_backfill.py's own write mechanism. No re-embedding, no
 re-chunking, no touch of the source document text.
+
+2026-09-05 CLEAR-FLAG FIX — ChromaDB `collection.update()` MERGES the
+supplied metadata with what is already stored; it does not remove keys
+that are omitted. For a reclassification whose Qwen output has no
+`risk_flag_type` (the two real ACMESOLAR disagreements on 2026-09-04),
+the old write only sent `{"risk_classified": True}`, so a previously
+confirmed `risk_flag_type`/`risk_flag_summary` stayed in place and the
+chunk remained visible on the user-facing red-flag path despite Qwen
+having cleared it. The no-flag branch now writes explicit empty strings
+for both keys; empty strings are not in RISK_FLAG_CATEGORIES, so every
+reader treats the chunk as unflagged while Chroma's merge keeps the
+metadata self-consistent.
 """
 import argparse
 import json
@@ -48,12 +60,21 @@ def main():
                 skipped += 1
                 continue
             out = row.get("output") or {}
+            # Chroma update() merges metadata; omitting a key never removes
+            # an old value. When Qwen clears a previously-confirmed flag,
+            # write explicit empty strings so stale risk_flag_type /
+            # risk_flag_summary cannot keep the chunk on user-facing
+            # red-flag paths. Empty strings are not in RISK_FLAG_CATEGORIES,
+            # so readers treat them as no flag.
             meta = {"risk_classified": True}
             if out.get("risk_flag_type"):
                 meta["risk_flag_type"] = out["risk_flag_type"]
                 meta["risk_flag_summary"] = out.get("risk_flag_summary") or ""
+            else:
+                meta["risk_flag_type"] = ""
+                meta["risk_flag_summary"] = ""
             print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {cid} "
-                 f"[{coll_name}] -> {meta.get('risk_flag_type', 'no flag')}")
+                 f"[{coll_name}] -> {meta.get('risk_flag_type') or 'no flag'}")
             ids.append(cid)
             metas.append(meta)
             written += 1
