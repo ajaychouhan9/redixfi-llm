@@ -10,8 +10,14 @@ Most-recent-first by default, per the incremental-rollout decision:
 newest filings are embedded first so the useful corpus is live early,
 with historical depth filling in behind it.
 
-Concall respects the 8-quarter retention cap (data-pipeline/
-concall_retention.py); annual reports are deliberately uncapped.
+BOTH sources are embedded uncapped, full history, no retention filter
+here. Concall's "last 8 quarters" cap is real but applies LATER, only as
+a post-generation chunk-prune step (data-pipeline/
+concall_prune_aged_out.py) — never at embed time. Corrected 2026-09-04:
+an earlier version of this script capped concall AT embed time, which
+would have made it structurally impossible to ever generate summaries
+for the 3 years of history outside the window (Qwen cannot summarize a
+concall whose chunks were never embedded).
 
   python3 export_embed_batch.py --source annual_reports --limit 100 --out /tmp/in.json
 """
@@ -30,7 +36,6 @@ from config.db import get_db  # noqa: E402
 from annual_report_embedder import (  # noqa: E402
     chunk_text_blocks, is_garbled, is_table_noise,
 )
-from concall_retention import CONCALL_MAX_QUARTERS, select_recent_quarters  # noqa: E402
 
 SOURCES = {
     "annual_reports": {"text_field": "raw_text", "token_target": 500,
@@ -73,12 +78,19 @@ def main():
     light_docs = list(col.find(query, light_projection))
     print(f"[INFO] {args.source}: {len(light_docs)} candidate document(s)")
 
-    if args.source == "investor_calls":
-        before = len(light_docs)
-        light_docs = select_recent_quarters(light_docs, CONCALL_MAX_QUARTERS)
-        if before != len(light_docs):
-            print(f"[INFO] retention cap (last {CONCALL_MAX_QUARTERS} quarters): "
-                  f"{before} -> {len(light_docs)}")
+    # 2026-09-04 CORRECTION (founder decision): the retention cap is NOT
+    # applied here, at embed time, anymore -- for the current backfill OR
+    # going forward. Concall embedding is now uncapped, same as annual
+    # reports. The earlier "last 8 quarters" plan was about ONGOING
+    # STEADY-STATE storage, not what to embed during backfill: Qwen cannot
+    # summarize a concall whose chunks were never embedded, so capping
+    # embedding at export time would make it structurally impossible to
+    # ever generate summaries for the older 3 years of history. The cap now
+    # applies ONLY at data-pipeline/concall_prune_aged_out.py, and only
+    # after confirming a real summary exists for the quarter being pruned
+    # -- see that script's docstring. This module no longer imports
+    # concall_retention at all; the cap now lives exclusively in
+    # concall_prune_aged_out.py.
 
     # MOST-RECENT-FIRST — the incremental rollout decision.
     light_docs.sort(key=lambda d: (d.get("filing_date") or ""), reverse=True)
