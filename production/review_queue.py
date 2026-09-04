@@ -58,6 +58,24 @@ def enqueue_for_review(db, task: str, doc_id: str, row: dict,
     reason = (row.get("human_review_reason") or row.get("error")
               or "validation failed (no reason recorded)")
 
+    # 2026-09-04, found live on this session's first real held case (VEDL):
+    # row["output"] is only ever set on a SUCCESSFUL TaskResult (ok=True) -
+    # for a held case it is always empty, even when the model produced
+    # real, substantive content that merely failed a validator check on one
+    # detail. Before this fix, the admin review page's "what Qwen produced"
+    # panel showed nothing for every held case, and its own UI copy read
+    # "Qwen produced no usable output, so this row must be edited before
+    # approval" - actively misleading when real content exists in
+    # `rejections`. Falls back to the LAST rejected attempt's parsed text,
+    # which is exactly what a reviewer needs to judge whether to approve
+    # with a small edit, retry, or discard.
+    last_attempt = None
+    for r in reversed(row.get("rejections") or []):
+        if r.get("text"):
+            last_attempt = r["text"]
+            break
+    qwen_output = row.get("output") or last_attempt
+
     fields: dict[str, Any] = {
         "task": task,
         "doc_id": doc_id,
@@ -66,7 +84,7 @@ def enqueue_for_review(db, task: str, doc_id: str, row: dict,
         "symbol": symbol or row.get("symbol"),
         "reason": reason,
         "final_status": row.get("final_status"),
-        "qwen_output": row.get("output"),
+        "qwen_output": qwen_output,
         "model": row.get("model") or "",
         "attempts": row.get("attempts") or 0,
         "rejections": row.get("rejections"),
