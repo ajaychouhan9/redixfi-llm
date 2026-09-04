@@ -52,6 +52,15 @@ def main():
             "summary_model": doc["model"],
             "summarized_at": datetime.now(timezone.utc).isoformat(),
         }
+        # 2026-09-04 defensive hardening, added alongside the same real fix
+        # in writeback_annual_report.py (see that file's docstring for the
+        # live bug it closes there): never write an explicit null over a
+        # field the real read path (research.py) depends on. concall's
+        # schema has always matched the reader's field names directly in
+        # every real case observed so far, so this has not been observed
+        # to fire — kept as the same safety net regardless, cheap and
+        # consistent.
+        update = {k: v for k, v in update.items() if v is not None}
         existing = col.find_one({"filing_id": filing_id})
         if existing is None:
             print(f"  SKIP {filing_id}: no matching document found — refusing to write")
