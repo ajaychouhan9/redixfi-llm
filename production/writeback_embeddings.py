@@ -100,13 +100,32 @@ def main():
         print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {len(ids)} vector(s) "
               f"into Chroma '{cname}'")
         if args.confirm:
-            col.upsert(ids=ids, embeddings=embs, metadatas=metas)
-            got = col.get(ids=ids, include=[])
-            landed = len(got.get("ids") or [])
-            print(f"    VERIFY: {landed}/{len(ids)} present in Chroma "
-                  f"{'OK' if landed == len(ids) else 'MISMATCH — INVESTIGATE'}")
-            if landed != len(ids):
-                return 1
+            # 2026-09-04: chromadb enforces its OWN max batch size per
+            # upsert() call — found live on the first real production-scale
+            # writeback (42,180 vectors in one batch): "Batch size of 42180
+            # is greater than max batch size of 5461". Invisible at every
+            # smaller scale this project tested at (the round-trip test was
+            # 40 vectors). Queried at runtime via client.get_max_batch_size()
+            # rather than hardcoded, so a future chromadb version changing
+            # the limit doesn't silently reintroduce this. The failed call
+            # raised before writing anything (confirmed live: Chroma count
+            # was unchanged after the failure), so batching here is a real
+            # fix, not a recovery from partial corruption.
+            max_batch = client.get_max_batch_size()
+            landed_total = 0
+            for i in range(0, len(ids), max_batch):
+                bi, be, bm = ids[i:i + max_batch], embs[i:i + max_batch], metas[i:i + max_batch]
+                col.upsert(ids=bi, embeddings=be, metadatas=bm)
+                got = col.get(ids=bi, include=[])
+                landed = len(got.get("ids") or [])
+                landed_total += landed
+                if landed != len(bi):
+                    print(f"    VERIFY batch [{i}:{i+len(bi)}]: {landed}/{len(bi)} "
+                          f"present in Chroma — MISMATCH, INVESTIGATE")
+                    return 1
+            print(f"    VERIFY: {landed_total}/{len(ids)} present in Chroma "
+                  f"{'OK' if landed_total == len(ids) else 'MISMATCH — INVESTIGATE'} "
+                  f"({(len(ids) + max_batch - 1) // max_batch} batch(es) of <= {max_batch})")
         total_vec += len(ids)
 
         if text_by_key:
