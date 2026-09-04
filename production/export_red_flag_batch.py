@@ -22,6 +22,16 @@ sys.path.insert(0, os.path.join(REDIXFI_ROOT, "data-pipeline"))
 # separate top-level mount, not derived from REDIXFI_ROOT anymore.
 CHROMA_PATH = os.getenv("CHROMA_PATH", "/data/chroma")
 
+# 2026-09-04: `col.get(..., include=["documents", ...])` below used to be
+# the real chunk text. Since the 2026-09-02 storage-reduction change
+# (annual_report_embedder.py / writeback_embeddings.py stopped passing
+# `documents=` to Chroma at all), that field is unconditionally None for
+# every chunk written since -- confirmed live: a real post-2026-09-02
+# chunk's `documents` comes back `[None]`. Chunk text now lives in Mongo's
+# `chunk_text` collection, keyed `_id = "{filing_id}_{chunk_index}"` -- the
+# same convention api/app/core/document_retrieval.py::_fetch_chunk_texts
+# and risk_flag_backfill.py's 2026-09-04 fix both use.
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -33,20 +43,24 @@ def main():
 
     import chromadb
     from risk_flag_classifier import matched_categories
+    from config.db import get_db
 
     client = chromadb.PersistentClient(path=CHROMA_PATH)
     col = client.get_collection(args.collection)
+    db = get_db()
 
     cases = []
     offset = 0
     while len(cases) < args.limit:
-        page = col.get(limit=500, offset=offset, include=["documents", "metadatas"])
+        page = col.get(limit=500, offset=offset, include=["metadatas"])
         ids = page.get("ids") or []
         if not ids:
             break
-        for cid, doc, meta in zip(ids, page.get("documents") or [],
-                                  page.get("metadatas") or []):
+        text_by_id = {r["_id"]: r.get("text", "") for r in
+                     db["chunk_text"].find({"_id": {"$in": ids}}, {"_id": 1, "text": 1})}
+        for cid, meta in zip(ids, page.get("metadatas") or []):
             meta = meta or {}
+            doc = text_by_id.get(cid, "")
             if meta.get("risk_classified") is None:
                 continue   # only re-classify chunks already touched once
             cands = matched_categories(doc or "")
