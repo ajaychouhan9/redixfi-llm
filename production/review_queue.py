@@ -52,68 +52,10 @@ def enqueue_for_review(db, task: str, doc_id: str, row: dict,
     A row already resolved by a human is NOT reopened by a later batch —
     that would silently undo an admin's discard.
     """
-    _id = queue_id(task, doc_id)
-    now = datetime.now(timezone.utc)
-
-    reason = (row.get("human_review_reason") or row.get("error")
-              or "validation failed (no reason recorded)")
-
-    # 2026-09-04, found live on this session's first real held case (VEDL):
-    # row["output"] is only ever set on a SUCCESSFUL TaskResult (ok=True) -
-    # for a held case it is always empty, even when the model produced
-    # real, substantive content that merely failed a validator check on one
-    # detail. Before this fix, the admin review page's "what Qwen produced"
-    # panel showed nothing for every held case, and its own UI copy read
-    # "Qwen produced no usable output, so this row must be edited before
-    # approval" - actively misleading when real content exists in
-    # `rejections`. Falls back to the LAST rejected attempt's parsed text,
-    # which is exactly what a reviewer needs to judge whether to approve
-    # with a small edit, retry, or discard.
-    last_attempt = None
-    for r in reversed(row.get("rejections") or []):
-        if r.get("text"):
-            last_attempt = r["text"]
-            break
-    qwen_output = row.get("output") or last_attempt
-
-    fields: dict[str, Any] = {
-        "task": task,
-        "doc_id": doc_id,
-        "collection": {"annual_report": "annual_reports",
-                       "concall": "investor_calls"}.get(task),
-        "symbol": symbol or row.get("symbol"),
-        "reason": reason,
-        "final_status": row.get("final_status"),
-        "qwen_output": qwen_output,
-        "model": row.get("model") or "",
-        "attempts": row.get("attempts") or 0,
-        "rejections": row.get("rejections"),
-        "rephrase_log": row.get("rephrase_log"),
-        "updated_at": now,
-    }
-
-    if not confirm:
-        return "WOULD ENQUEUE"
-
-    existing = db[REVIEW_QUEUE].find_one({"_id": _id}, {"state": 1})
-    if existing and existing.get("state") not in (PENDING, RETRY_QUEUED):
-        # A human already settled this one. Record that it failed again, but
-        # do not drag it back into the queue behind their back.
-        db[REVIEW_QUEUE].update_one(
-            {"_id": _id},
-            {"$set": {"last_failed_again_at": now, "updated_at": now},
-             "$inc": {"failed_after_resolution": 1}})
-        return "ALREADY RESOLVED (recorded, not reopened)"
-
-    db[REVIEW_QUEUE].update_one(
-        {"_id": _id},
-        {"$set": {**fields, "state": PENDING},
-         "$setOnInsert": {"created_at": now, "retry_count": 0,
-                          "resolved_at": None, "resolved_by": None,
-                          "edited": False, "notified_at": None}},
-        upsert=True)
-    return "ENQUEUED"
-
+    from review_guard import complete_result
+    failed = dict(row, ok=False, human_review_required=True)
+    failed["symbol"] = symbol or row.get("symbol")
+    return complete_result(db, task, doc_id, failed, lambda: None, confirm)
 
 def ensure_indexes(db) -> None:
     """`state` drives the admin list query; `created_at` its sort order."""

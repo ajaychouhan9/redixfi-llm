@@ -30,54 +30,19 @@ def main():
     col = db["investor_calls"]
 
     written = skipped = held = 0
-    ensure_indexes(db)
+    if args.confirm:
+        ensure_indexes(db)
     for row in doc["results"]:
         filing_id = row.get("filing_id")
-        if not row.get("ok"):
-            # Held for human review rather than dropped. This branch used to
-            # print one line and lose the case forever — see production/
-            # review_queue.py for why that mattered.
-            action = enqueue_for_review(db, "concall", filing_id, row,
-                                        symbol=row.get("symbol"),
-                                        confirm=args.confirm)
-            print(f"  HELD {filing_id}: {row.get('human_review_reason') or row.get('error')}"
-                  f" [{action}]")
-            held += 1
-            continue
+        from review_guard import write_summary
         out = row.get("output") or {}
-        update = {
-            "summary": out.get("summary"),
-            "tone_label": out.get("tone_label"),
-            "tone_note": out.get("tone_note"),
-            "summary_model": doc["model"],
-            "summarized_at": datetime.now(timezone.utc).isoformat(),
-        }
-        # 2026-09-04 defensive hardening, added alongside the same real fix
-        # in writeback_annual_report.py (see that file's docstring for the
-        # live bug it closes there): never write an explicit null over a
-        # field the real read path (research.py) depends on. concall's
-        # schema has always matched the reader's field names directly in
-        # every real case observed so far, so this has not been observed
-        # to fire — kept as the same safety net regardless, cheap and
-        # consistent.
-        update = {k: v for k, v in update.items() if v is not None}
-        existing = col.find_one({"filing_id": filing_id})
-        if existing is None:
-            print(f"  SKIP {filing_id}: no matching document found — refusing to write")
-            skipped += 1
-            continue
-
-        print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {filing_id} "
-             f"({row.get('symbol')}) tone={update['tone_label']}")
-        if args.confirm:
-            result = col.update_one({"filing_id": filing_id}, {"$set": update})
-            reread = col.find_one({"filing_id": filing_id}, {k: 1 for k in update})
-            ok = all(reread.get(k) == v for k, v in update.items())
-            print(f"    matched={result.matched_count} modified={result.modified_count} "
-                 f"VERIFY={'OK' if ok else 'MISMATCH — INVESTIGATE'}")
-            if not ok:
-                sys.exit(1)
-        written += 1
+        update = {k: out[k] for k in ("summary", "tone_label", "tone_note", "bullets", "key_takeaway") if out.get(k) is not None}
+        update.update(summary_model=doc["model"], summarized_at=row.get("generated_at") or datetime.now(timezone.utc).isoformat())
+        action = write_summary(db, "concall", row, update, args.confirm)
+        print(f"  {filing_id}: {action}")
+        written += action in ("PUBLISHED", "WOULD PUBLISH", "ALREADY PUBLISHED")
+        held += action in ("HELD", "WOULD HOLD")
+        skipped += action.startswith("BLOCKED")
 
     print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {written}, skipped {skipped}, held for review {held}")
     if not args.confirm:

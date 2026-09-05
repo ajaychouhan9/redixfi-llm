@@ -197,9 +197,8 @@ for i, case in enumerate(fs.cases, 1):
         print(f"    CASE FAILED: {type(e).__name__}: {e}", flush=True)
         row = {"ok": False, "error": f"{type(e).__name__}: {e}", "traceback": tb}
     row["case_id"] = bid
-    row["filing_id"] = case.get("filing_id")
-    row["chunk_id"] = case.get("chunk_id")
-    row["symbol"] = case.get("symbol")
+    from app.tasks.production_identity import attach_identity
+    row = attach_identity(row, case)
     results.append(row)
     _write_checkpoint(args.output, args.task, args.model, policy.name,
                       results, time.time() - t0, complete=False)

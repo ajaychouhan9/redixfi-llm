@@ -47,10 +47,10 @@ def export_batch(task: str, limit: int, out_path: str, red_flag_collection: str)
              "--collection", red_flag_collection, "--limit", str(limit),
              "--out", out_path])
     else:
-        _run([sys.executable, os.path.join(llm_pipeline, "scripts",
-                                           "export_fixtures.py"),
+        _run([sys.executable, os.path.join(llm_pipeline, "production",
+                                           "export_generation_batch.py"),
              "--task", task, "--limit", str(limit), "--out", out_path,
-             "--out-dir", os.path.dirname(out_path)])
+             "--confirm"])
 
 
 def stage_dataset(stage_dir: str, batch_path: str, dataset_owner: str, dataset_slug: str):

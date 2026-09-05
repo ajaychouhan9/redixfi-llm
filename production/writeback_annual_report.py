@@ -88,41 +88,18 @@ def main():
     col = db["annual_reports"]
 
     written = skipped = held = 0
-    ensure_indexes(db)
+    if args.confirm:
+        ensure_indexes(db)
     for row in doc["results"]:
         filing_id = row.get("filing_id")
-        if not row.get("ok"):
-            # Held for human review rather than dropped. This branch used to
-            # print one line and lose the case forever — see production/
-            # review_queue.py for why that mattered.
-            action = enqueue_for_review(db, "annual_report", filing_id, row,
-                                        symbol=row.get("symbol"),
-                                        confirm=args.confirm)
-            print(f"  HELD {filing_id}: {row.get('human_review_reason') or row.get('error')}"
-                  f" [{action}]")
-            held += 1
-            continue
+        from review_guard import write_summary
         out = row.get("output") or {}
-        update = build_update(out, doc["model"], datetime.now(timezone.utc).isoformat())
-        existing = col.find_one({"filing_id": filing_id})
-        if existing is None:
-            print(f"  SKIP {filing_id}: no matching document found — refusing to write")
-            skipped += 1
-            continue
-
-        print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {filing_id} "
-             f"({row.get('symbol')})")
-        if args.confirm:
-            result = col.update_one({"filing_id": filing_id}, {"$set": update})
-            # VERIFY immediately: re-read and confirm the write landed exactly.
-            reread = col.find_one({"filing_id": filing_id},
-                                  {k: 1 for k in update})
-            ok = all(reread.get(k) == v for k, v in update.items())
-            print(f"    matched={result.matched_count} modified={result.modified_count} "
-                 f"VERIFY={'OK' if ok else 'MISMATCH — INVESTIGATE'}")
-            if not ok:
-                sys.exit(1)
-        written += 1
+        update = build_update(out, doc["model"], row.get("generated_at") or datetime.now(timezone.utc).isoformat())
+        action = write_summary(db, "annual_report", row, update, args.confirm)
+        print(f"  {filing_id}: {action}")
+        written += action in ("PUBLISHED", "WOULD PUBLISH", "ALREADY PUBLISHED")
+        held += action in ("HELD", "WOULD HOLD")
+        skipped += action.startswith("BLOCKED")
 
     print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {written}, skipped {skipped}, held for review {held}")
     if not args.confirm:

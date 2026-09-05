@@ -48,6 +48,7 @@ def main():
     client = chromadb.PersistentClient(path=CHROMA_PATH)
     col = client.get_collection(args.collection)
     db = get_db()
+    from review_guard import allowed
 
     cases = []
     offset = 0
@@ -60,6 +61,10 @@ def main():
                      db["chunk_text"].find({"_id": {"$in": ids}}, {"_id": 1, "text": 1})}
         for cid, meta in zip(ids, page.get("metadatas") or []):
             meta = meta or {}
+            if not allowed(db, "red_flag", f"{args.collection}:{cid}"):
+                continue
+            if meta.get("status") in ("pending_review", "discarded") or meta.get("summary_reviewed_by"):
+                continue
             doc = text_by_id.get(cid, "")
             if meta.get("risk_classified") is None:
                 continue   # only re-classify chunks already touched once

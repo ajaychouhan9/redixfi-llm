@@ -38,6 +38,10 @@ def main():
     print(f"generated_ok: {doc['generated_ok']}/{doc['cases']}  "
          f"model={doc['model']}")
 
+    sys.path.insert(0, REDIXFI_ROOT)
+    from config.db import get_db
+    from review_guard import write_red_flag
+    db = get_db()
     import chromadb
     client = chromadb.PersistentClient(path=CHROMA_PATH)
 
@@ -46,7 +50,9 @@ def main():
     by_collection = {}
     for row in doc["results"]:
         cid = row.get("chunk_id")
-        by_collection.setdefault(row.get("source_collection", "annual_reports"),
+        if row.get("source_collection") not in ("annual_reports", "investor_calls"):
+            raise ValueError("red-flag result missing an explicit source_collection; re-export with the current runner")
+        by_collection.setdefault(row["source_collection"],
                                  []).append(row)
 
     written = skipped = 0
@@ -75,26 +81,10 @@ def main():
                 meta["risk_flag_summary"] = ""
             print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {cid} "
                  f"[{coll_name}] -> {meta.get('risk_flag_type') or 'no flag'}")
-            ids.append(cid)
-            metas.append(meta)
-            written += 1
-
-        if args.confirm and ids:
-            col.update(ids=ids, metadatas=metas)
-            # VERIFY immediately.
-            check = col.get(ids=ids, include=["metadatas"])
-            ok = True
-            for cid, expected in zip(ids, metas):
-                idx = check["ids"].index(cid)
-                actual = check["metadatas"][idx] or {}
-                for k, v in expected.items():
-                    if actual.get(k) != v:
-                        ok = False
-            print(f"    [{coll_name}] updated {len(ids)} chunks  "
-                 f"VERIFY={'OK' if ok else 'MISMATCH — INVESTIGATE'}")
-            if not ok:
-                sys.exit(1)
-
+            action = write_red_flag(db, col, coll_name, row, meta, args.confirm)
+            print(f"    {action}")
+            written += action in ("PUBLISHED", "WOULD PUBLISH")
+            skipped += action.startswith("BLOCKED")
     print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {written}, skipped {skipped}")
     if not args.confirm:
         print("DRY RUN — nothing was written. Re-run with --confirm to write.")
