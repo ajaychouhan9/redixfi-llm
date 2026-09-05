@@ -91,7 +91,8 @@ def push_dataset(stage_dir: str, dataset_owner: str, dataset_slug: str):
 
 def stage_and_push_kernel(kernel_dir: str, task: str, batch_basename: str,
                           output_basename: str, kernel_owner: str, kernel_slug: str,
-                          dataset_owner: str, dataset_slug: str):
+                          dataset_owner: str, dataset_slug: str,
+                          extra_dataset_sources=()):
     os.makedirs(kernel_dir, exist_ok=True)
     template_path = os.path.join(ROOT, "deployment", "kaggle",
                                  "production_kernel_wrapper.py")
@@ -108,7 +109,7 @@ def stage_and_push_kernel(kernel_dir: str, task: str, batch_basename: str,
             "id": f"{kernel_owner}/{kernel_slug}", "title": kernel_slug,
             "code_file": wrapper_name, "language": "python", "kernel_type": "script",
             "is_private": True, "enable_gpu": True, "enable_internet": True,
-            "dataset_sources": [f"{dataset_owner}/{dataset_slug}"],
+            "dataset_sources": [f"{dataset_owner}/{dataset_slug}", *extra_dataset_sources],
             "competition_sources": [], "kernel_sources": [],
         }, fh)
 

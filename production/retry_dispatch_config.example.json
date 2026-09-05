@@ -1,0 +1,18 @@
+{
+  "annual_report": {
+    "enabled": false,
+    "owner": "ajaychouhan9",
+    "profile_dir": "/home/ubuntu/.kaggle_profiles/annual_report",
+    "work_dir": "/home/ubuntu/redixfi_retry_dispatch/annual_report",
+    "editor_dataset_sources": ["ajaychouhan9/openai-key"],
+    "limit": 20
+  },
+  "concall": {
+    "enabled": false,
+    "owner": "aurataxai",
+    "profile_dir": "/home/ubuntu/.kaggle_profiles/concall",
+    "work_dir": "/home/ubuntu/redixfi_retry_dispatch/concall",
+    "editor_dataset_sources": ["aurataxai/openai-key"],
+    "limit": 20
+  }
+}
