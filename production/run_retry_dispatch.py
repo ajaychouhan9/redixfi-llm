@@ -55,6 +55,9 @@ class KaggleAdapter:
         self.api.authenticate()
 
     def ref(self, job):
+        return self.owner + "/redixfi-retry-run-" + job["_id"]
+
+    def dataset_ref(self, job):
         return self.owner + "/redixfi-retry-" + job["_id"]
 
     def status_ref(self, ref):
@@ -107,7 +110,7 @@ class KaggleAdapter:
         directory.mkdir(parents=True, exist_ok=True)
         batch_path = directory / "input.json"
         batch_path.write_text(json.dumps(job["batch"], default=str), encoding="utf-8")
-        ref = self.ref(job)
+        ref = self.dataset_ref(job)
         try:
             status = self.api.dataset_status(ref)
         except Exception as exc:
@@ -133,7 +136,7 @@ class KaggleAdapter:
         stage_and_push_kernel(str(directory / "kernel"), job["batch"]["task"],
                               "input.json", "output.json", self.owner,
                               self.ref(job).split("/")[1], self.owner,
-                              self.ref(job).split("/")[1],
+                              self.dataset_ref(job).split("/")[1],
                               extra_dataset_sources=self.config["editor_dataset_sources"])
 
     def collect_and_write(self, job):

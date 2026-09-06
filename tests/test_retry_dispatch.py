@@ -43,6 +43,15 @@ def test_unavailable_editor_attachment_blocks_before_kernel_submission(tmp_path)
         adapter.prepare({"_id": "unique", "batch": {}})
 
 
+def test_kernel_and_dataset_names_are_distinct_and_deterministic():
+    adapter = object.__new__(KaggleAdapter)
+    adapter.owner = "owner"
+    job = {"_id": "a" * 32}
+    assert adapter.ref(job) != adapter.dataset_ref(job)
+    assert adapter.ref(job) == "owner/redixfi-retry-run-" + "a" * 32
+    assert len(adapter.ref(job).split("/")[1]) <= 50
+
+
 @pytest.fixture
 def setup(monkeypatch):
     db = mongomock.MongoClient().redixfi
