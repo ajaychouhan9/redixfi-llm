@@ -81,9 +81,11 @@ def tick(db, task, adapter, now, limit=20):
             if response is not None:
                 try:
                     payload = response.json()
-                    message = payload.get("message") if isinstance(payload, dict) else None
+                    message = payload.get("message") or payload.get("error") or payload.get("errorMessage") if isinstance(payload, dict) else None
                 except (ValueError, AttributeError):
                     pass
+                if not message:
+                    message = getattr(response, "text", None)
             # Provider message only: never persist request headers/body or keys.
             if message:
                 import os
