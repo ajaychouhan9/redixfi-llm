@@ -76,8 +76,20 @@ def tick(db, task, adapter, now, limit=20):
         except Exception as exc:
             # In particular, never change launching back to waiting_gpu after
             # a network timeout: that would allow a duplicate GPU launch.
+            response = getattr(exc, "response", None)
+            message = None
+            if response is not None:
+                try:
+                    payload = response.json()
+                    message = payload.get("message") if isinstance(payload, dict) else None
+                except (ValueError, AttributeError):
+                    pass
+            # Provider message only: never persist request headers/body or keys.
+            if message:
+                import os
+                message = str(message).replace(os.getenv("KAGGLE_API_TOKEN") or "\0", "[redacted]")[:500]
             return save(job["state"], 3600, reason=type(exc).__name__,
-                        http_status=getattr(getattr(exc, "response", None), "status_code", None))
+                        http_status=getattr(response, "status_code", None), provider_message=message)
 
 
 def verify_output(batch, output):
