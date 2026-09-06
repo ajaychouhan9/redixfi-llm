@@ -109,7 +109,10 @@ class KaggleAdapter:
             status = self.api.dataset_status(ref)
         except Exception as exc:
             code = getattr(exc, "status", None) or getattr(getattr(exc, "response", None), "status_code", None)
-            if code != 404:
+            # Kaggle returns 403 for an as-yet nonexistent private dataset
+            # in production. Only our batch-specific, own-account dataset
+            # is created here; never reinterpret a foreign resource denial.
+            if code not in (403, 404):
                 raise
             stage_dir = directory / "dataset"
             stage_dataset(str(stage_dir), str(batch_path), self.owner, ref.split("/")[1])

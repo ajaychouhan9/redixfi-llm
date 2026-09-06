@@ -5,7 +5,7 @@ import mongomock
 import pytest
 
 from production import retry_dispatch as worker
-from production.run_retry_dispatch import quota_busy
+from production.run_retry_dispatch import KaggleAdapter, quota_busy
 
 
 @pytest.mark.parametrize("reserved,used,allowed,busy", [(1, 0, 30, True), (0, 30, 30, True), (0, 0, 30, False)])
@@ -18,6 +18,20 @@ def test_live_quota_response_shape(reserved, used, allowed, busy):
 def test_unknown_quota_shape_fails_closed():
     with pytest.raises(ValueError):
         quota_busy({})
+
+
+def test_new_private_dataset_403_is_staged_without_launch(tmp_path, monkeypatch):
+    from scripts import run_production_batch
+    calls = []
+    monkeypatch.setattr(run_production_batch, "stage_dataset", lambda *args: calls.append("stage"))
+    monkeypatch.setattr(run_production_batch, "push_dataset", lambda *args: calls.append("dataset"))
+    adapter = object.__new__(KaggleAdapter)
+    adapter.directory, adapter.owner = tmp_path, "owner"
+    error = RuntimeError("private dataset does not exist yet")
+    error.response = SimpleNamespace(status_code=403)
+    adapter.api = SimpleNamespace(dataset_status=lambda ref: (_ for _ in ()).throw(error))
+    assert adapter.prepare({"_id": "unique", "batch": {"cases": []}}) is False
+    assert calls == ["stage", "dataset"]
 
 
 @pytest.fixture
