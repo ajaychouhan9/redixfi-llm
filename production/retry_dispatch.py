@@ -76,7 +76,8 @@ def tick(db, task, adapter, now, limit=20):
         except Exception as exc:
             # In particular, never change launching back to waiting_gpu after
             # a network timeout: that would allow a duplicate GPU launch.
-            return save(job["state"], 3600, reason=type(exc).__name__)
+            return save(job["state"], 3600, reason=type(exc).__name__,
+                        http_status=getattr(getattr(exc, "response", None), "status_code", None))
 
 
 def verify_output(batch, output):

@@ -27,11 +27,20 @@ def test_new_private_dataset_403_is_staged_without_launch(tmp_path, monkeypatch)
     monkeypatch.setattr(run_production_batch, "push_dataset", lambda *args: calls.append("dataset"))
     adapter = object.__new__(KaggleAdapter)
     adapter.directory, adapter.owner = tmp_path, "owner"
+    adapter.config = {"editor_dataset_sources": []}
     error = RuntimeError("private dataset does not exist yet")
     error.response = SimpleNamespace(status_code=403)
     adapter.api = SimpleNamespace(dataset_status=lambda ref: (_ for _ in ()).throw(error))
     assert adapter.prepare({"_id": "unique", "batch": {"cases": []}}) is False
     assert calls == ["stage", "dataset"]
+
+
+def test_unavailable_editor_attachment_blocks_before_kernel_submission(tmp_path):
+    adapter = object.__new__(KaggleAdapter)
+    adapter.config = {"editor_dataset_sources": ["owner/existing-editor"]}
+    adapter.api = SimpleNamespace(dataset_status=lambda ref: "processing")
+    with pytest.raises(ValueError, match="editor dataset"):
+        adapter.prepare({"_id": "unique", "batch": {}})
 
 
 @pytest.fixture

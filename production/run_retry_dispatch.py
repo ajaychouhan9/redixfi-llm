@@ -100,6 +100,9 @@ class KaggleAdapter:
 
     def prepare(self, job):
         from scripts.run_production_batch import stage_dataset, push_dataset
+        for attachment in self.config["editor_dataset_sources"]:
+            if self.api.dataset_status(attachment) != "ready":
+                raise ValueError("editor dataset attachment is not ready")
         directory = self.directory / job["_id"]
         directory.mkdir(parents=True, exist_ok=True)
         batch_path = directory / "input.json"

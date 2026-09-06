@@ -4,7 +4,7 @@
     "owner": "ajaychouhan9",
     "profile_dir": "/home/ubuntu/.kaggle_profiles/annual_report",
     "work_dir": "/home/ubuntu/redixfi_retry_dispatch/annual_report",
-    "editor_dataset_sources": ["ajaychouhan9/openai-key"],
+    "editor_dataset_sources": ["ajaychouhan9/redixfi-openai-key"],
     "limit": 20
   },
   "concall": {
@@ -12,7 +12,7 @@
     "owner": "aurataxai",
     "profile_dir": "/home/ubuntu/.kaggle_profiles/concall",
     "work_dir": "/home/ubuntu/redixfi_retry_dispatch/concall",
-    "editor_dataset_sources": ["aurataxai/openai-key"],
+    "editor_dataset_sources": ["aurataxai/redixfi-openai-key"],
     "limit": 20
   }
 }
