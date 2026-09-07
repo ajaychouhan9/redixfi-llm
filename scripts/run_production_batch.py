@@ -53,7 +53,8 @@ def export_batch(task: str, limit: int, out_path: str, red_flag_collection: str)
              "--confirm"])
 
 
-def stage_dataset(stage_dir: str, batch_path: str, dataset_owner: str, dataset_slug: str):
+def stage_dataset(stage_dir: str, batch_path: str, dataset_owner: str, dataset_slug: str,
+                  dataset_batch_name: str | None = None):
     project_dir = os.path.join(stage_dir, "llm_project")
     if os.path.isdir(project_dir):
         subprocess.run(["rm", "-rf", project_dir])
@@ -67,7 +68,12 @@ def stage_dataset(stage_dir: str, batch_path: str, dataset_owner: str, dataset_s
     )
     subprocess.run(tar_cmd, shell=True, check=True)
     import shutil
-    shutil.copy(batch_path, os.path.join(stage_dir, os.path.basename(batch_path)))
+    # Embedding kernels have a stable input contract (`embed_batch_input.json`)
+    # while generation kernels use the phase-specific batch filename.  Keep
+    # the source batch path unchanged on the VM, but allow the dataset copy to
+    # use the contract expected by the kernel.
+    target_name = dataset_batch_name or os.path.basename(batch_path)
+    shutil.copy(batch_path, os.path.join(stage_dir, target_name))
     with open(os.path.join(stage_dir, "dataset-metadata.json"), "w") as fh:
         json.dump({"title": dataset_slug, "id": f"{dataset_owner}/{dataset_slug}",
                   "licenses": [{"name": "other"}]}, fh)
