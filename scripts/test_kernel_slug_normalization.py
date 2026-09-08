@@ -71,12 +71,24 @@ else:
 # (c) structural guard: nothing after normalization may use args.kernel_slug
 src = (Path(__file__).resolve().parent / "launch_staged_kaggle_batch.py").read_text(encoding="utf-8")
 main_body = src.split("def main()", 1)[1]
-after_norm = main_body.split("kernel_slug = normalize_kernel_slug", 1)[1]
-check("push/poll/retrieve never re-read args.kernel_slug after normalizing",
-      "args.kernel_slug" not in after_norm.split("return 0")[0],
-      "found a raw args.kernel_slug use after normalization")
-check("poll_and_retrieve is called with the normalized slug",
-      re.search(r"poll_and_retrieve\(\s*args\.dataset_owner,\s*kernel_slug", main_body) is not None)
+
+# The meaningful guard is the OPERATIONAL call sites, not every textual
+# mention: args.kernel_slug legitimately appears in the normalization
+# assignment itself and in the line that logs the rewrite. What must never
+# happen again is a push, poll or retrieve reading the raw arg.
+for call in ("stage_and_push_embed_kernel", "stage_and_push_kernel", "poll_and_retrieve"):
+    m = re.search(call + r"\(([^)]*)\)", main_body, re.S)
+    check("%s() is called with the normalized kernel_slug, not args.kernel_slug" % call,
+          m is not None and "args.kernel_slug" not in m.group(1)
+          and "kernel_slug" in m.group(1),
+          m.group(1).replace("
+", " ") if m else "call site not found")
+
+allowed_lines = [ln for ln in main_body.splitlines() if "args.kernel_slug" in ln]
+check("args.kernel_slug survives ONLY in the normalization assignment and its log line",
+      all(("normalize_kernel_slug" in ln) or ("!r}" in ln) or ("if kernel_slug !=" in ln)
+          for ln in allowed_lines),
+      str(allowed_lines))
 
 print()
 if FAIL:
