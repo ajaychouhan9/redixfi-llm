@@ -22,8 +22,10 @@ touches nothing, matching writeback_annual_report.py / writeback_concall.py
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import os
+import subprocess
 import sys
 
 REDIXFI_ROOT = os.getenv("REDIXFI_ROOT", "/home/ubuntu/redixfi-backend")
@@ -34,10 +36,22 @@ import chromadb  # noqa: E402
 from pymongo import ReplaceOne  # noqa: E402
 
 from config.db import get_db  # noqa: E402
+from config.chroma_safety import (  # noqa: E402
+    QWEN_DIMENSION,
+    QWEN_MODEL,
+    get_existing_qwen_collection,
+    global_chroma_write_lock,
+    validate_qwen_vectors,
+)
 
 CHROMA_PATH = os.getenv("CHROMA_PATH", "/data/chroma")
+ANNUAL_REPORT_CHROMA_PATH = os.getenv("ANNUAL_REPORT_CHROMA_PATH", CHROMA_PATH)
 COLLECTION_FOR = {"annual_reports": "annual_reports",
                   "investor_calls": "investor_calls"}
+
+
+def path_for_collection(name: str) -> str:
+    return ANNUAL_REPORT_CHROMA_PATH if name == "annual_reports" else CHROMA_PATH
 
 
 def main():
@@ -60,6 +74,20 @@ def main():
     if not results:
         print("[INFO] nothing to write.")
         return 0
+    if doc.get("model") != QWEN_MODEL:
+        print(f"[ERROR] output model {doc.get('model')!r} != required {QWEN_MODEL!r}")
+        return 1
+    if doc.get("requested_dim") != QWEN_DIMENSION:
+        print(f"[ERROR] output requested_dim={doc.get('requested_dim')!r} "
+              f"!= required {QWEN_DIMENSION}")
+        return 1
+    if doc.get("complete") is not True or doc.get("embedded") != doc.get("input_chunks"):
+        print("[ERROR] embedding output is partial/incomplete — refusing writeback")
+        return 1
+    if args.confirm and not args.input_batch:
+        print("[ERROR] --input-batch is required for confirmed writeback; "
+              "vectors without immutable Mongo chunk text are not recoverable")
+        return 1
 
     text_by_key = {}
     if args.input_batch:
@@ -71,34 +99,47 @@ def main():
         print("[WARN] no --input-batch given: chunk_text rows will NOT be written, "
               "so retrieval would find vectors with no recoverable text")
 
-    db = get_db()
-    client = chromadb.PersistentClient(path=CHROMA_PATH)
-
     by_source = {}
     for r in results:
         by_source.setdefault(r.get("source") or "annual_reports", []).append(r)
 
     total_vec = total_txt = 0
-    for source, rows in by_source.items():
+    lock_context = (
+        global_chroma_write_lock("writeback_embeddings")
+        if args.confirm else contextlib.nullcontext()
+    )
+    with lock_context:
+      db = get_db()
+      for source, rows in by_source.items():
         cname = COLLECTION_FOR.get(source)
         if not cname:
             print(f"[WARN] unknown source {source!r}, skipping {len(rows)} row(s)")
             continue
-        col = client.get_or_create_collection(cname)
+        store_path = path_for_collection(cname)
+        client = chromadb.PersistentClient(path=store_path)
+        try:
+            col = get_existing_qwen_collection(client, cname)
+        except Exception as exc:
+            print(f"[ERROR] {cname} contract/open failed — refusing write: {exc}")
+            client.close()
+            return 1
         ids = [f"{r['filing_id']}_{r['chunk_index']}" for r in rows]
         embs = [r["embedding"] for r in rows]
         metas = [{"chunk_index": r["chunk_index"], "symbol": r.get("symbol") or "",
                   "filing_id": r["filing_id"], "doc_type": r.get("doc_type") or "",
                   "page_number": r.get("page_number", 0)} for r in rows]
 
-        dims = {len(e) for e in embs}
-        print(f"[INFO] {cname}: {len(rows)} vector(s), dim(s)={dims}")
-        if len(dims) != 1:
-            print(f"[ERROR] inconsistent vector dimensions {dims} — refusing to write")
+        try:
+            validate_qwen_vectors(embs)
+        except ValueError as exc:
+            print(f"[ERROR] invalid Qwen vector batch — refusing write: {exc}")
+            client.close()
             return 1
+        print(f"[INFO] {cname}: {len(rows)} vector(s), dim={QWEN_DIMENSION}, "
+              f"model={QWEN_MODEL}, path={store_path}")
 
         print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {len(ids)} vector(s) "
-              f"into Chroma '{cname}'")
+              f"into existing Chroma '{cname}'")
         if args.confirm:
             # 2026-09-04: chromadb enforces its OWN max batch size per
             # upsert() call — found live on the first real production-scale
@@ -149,11 +190,24 @@ def main():
             total_txt += wrote
 
         if args.confirm:
+            expected_count = col.count()
+            client.close()
+            healthcheck = os.path.join(
+                REDIXFI_ROOT, "data-pipeline", "chroma_cold_healthcheck.py"
+            )
+            subprocess.run([
+                sys.executable, healthcheck,
+                "--path", store_path,
+                "--collection", cname,
+                "--expected-count", str(expected_count),
+            ], check=True)
             fids = sorted({r["filing_id"] for r in rows})
             db[source].update_many(
                 {"filing_id": {"$in": fids}},
                 {"$set": {"embedded": True, "embed_model": doc.get("model")}})
             print(f"  marked {len(fids)} source document(s) embedded=True")
+        else:
+            client.close()
 
     print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {total_vec} vector(s), "
           f"{total_txt} chunk_text row(s)")
