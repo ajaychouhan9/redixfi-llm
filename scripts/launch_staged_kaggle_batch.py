@@ -270,6 +270,11 @@ def main() -> int:
 
     configure_kaggle(args.kaggle_account)
     if out_dir.exists():
+        if cfg["kind"] == "embed":
+            raise FileExistsError(
+                f"embedding output directory already exists; refusing to overwrite "
+                f"immutable run artifact: {out_dir}"
+            )
         shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     if cfg["kind"] == "embed":

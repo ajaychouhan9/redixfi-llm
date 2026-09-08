@@ -17,8 +17,10 @@ reader treats the chunk as unflagged while Chroma's merge keeps the
 metadata self-consistent.
 """
 import argparse
+import contextlib
 import json
 import os
+import subprocess
 import sys
 
 REDIXFI_ROOT = os.getenv("REDIXFI_ROOT", "/home/ubuntu/redixfi-backend")
@@ -26,6 +28,11 @@ REDIXFI_ROOT = os.getenv("REDIXFI_ROOT", "/home/ubuntu/redixfi-backend")
 # ext4, permanent in /etc/fstab) after the chroma_production wipe -- a
 # separate top-level mount, not derived from REDIXFI_ROOT anymore.
 CHROMA_PATH = os.getenv("CHROMA_PATH", "/data/chroma")
+ANNUAL_REPORT_CHROMA_PATH = os.getenv("ANNUAL_REPORT_CHROMA_PATH", CHROMA_PATH)
+
+
+def path_for_collection(name):
+    return ANNUAL_REPORT_CHROMA_PATH if name == "annual_reports" else CHROMA_PATH
 
 
 def main():
@@ -40,10 +47,10 @@ def main():
 
     sys.path.insert(0, REDIXFI_ROOT)
     from config.db import get_db
+    from config.chroma_safety import get_existing_qwen_collection, global_chroma_write_lock
     from review_guard import write_red_flag
     db = get_db()
     import chromadb
-    client = chromadb.PersistentClient(path=CHROMA_PATH)
 
     # Group by source collection (chunks can come from annual_reports or
     # investor_calls), since collection.update() is per-collection.
@@ -56,9 +63,13 @@ def main():
                                  []).append(row)
 
     written = skipped = 0
-    for coll_name, rows in by_collection.items():
-        col = client.get_collection(coll_name)
-        ids, metas = [], []
+    lock_context = (global_chroma_write_lock("writeback_red_flag")
+                    if args.confirm else contextlib.nullcontext())
+    with lock_context:
+      for coll_name, rows in by_collection.items():
+        store_path = path_for_collection(coll_name)
+        client = chromadb.PersistentClient(path=store_path)
+        col = get_existing_qwen_collection(client, coll_name)
         for row in rows:
             cid = row.get("chunk_id")
             if not row.get("ok"):
@@ -85,6 +96,18 @@ def main():
             print(f"    {action}")
             written += action in ("PUBLISHED", "WOULD PUBLISH")
             skipped += action.startswith("BLOCKED")
+        if args.confirm:
+            expected_count = col.count()
+            client.close()
+            subprocess.run([
+                sys.executable,
+                os.path.join(REDIXFI_ROOT, "data-pipeline", "chroma_cold_healthcheck.py"),
+                "--path", store_path,
+                "--collection", coll_name,
+                "--expected-count", str(expected_count),
+            ], check=True)
+        else:
+            client.close()
     print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {written}, skipped {skipped}")
     if not args.confirm:
         print("DRY RUN — nothing was written. Re-run with --confirm to write.")
