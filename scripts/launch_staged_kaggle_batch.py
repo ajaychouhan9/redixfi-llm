@@ -50,6 +50,50 @@ def configure_kaggle(account: str) -> None:
         os.environ["KAGGLE_API_TOKEN"] = json.load(fh)["key"]
 
 
+def normalize_kernel_slug(slug: str) -> str:
+    """THE single definition of a Kaggle kernel slug for this pipeline.
+
+    2026-09-08, after a real overnight loss: Kaggle NORMALIZES a pushed
+    kernel slug (underscores -> hyphens) but keeps the TITLE verbatim. The
+    scheduler built its slug from the phase name (`embed_ar`), so the push
+    created `redixfi-prod-embed-ar-daily` while every later status/output
+    call used `redixfi-prod-embed_ar-daily` -> 403 Forbidden on
+    ListKernelSessionOutput. All five phases ran to completion on Kaggle
+    and every one of them had its output thrown away: zero writeback,
+    ~2.5 real GPU-hours wasted, no production data changed.
+
+    Normalizing here (and again at the caller that builds the slug) means
+    push, poll and retrieve physically cannot use different refs: they all
+    read the same normalized variable rather than re-deriving it.
+    """
+    return slug.replace("_", "-")
+
+
+def mark_pushed(marker_path: str | None, kernel_ref: str) -> None:
+    """Record kernel_pushed=true the moment the push succeeds.
+
+    Previously the parent process set this only after the whole round trip
+    returned, so last night's markers all said kernel_pushed=false even
+    though every kernel had been pushed and had run — the flag lied about
+    real GPU work precisely when something later failed, which is exactly
+    when an accurate record matters most.
+    """
+    if not marker_path:
+        return
+    try:
+        path = Path(marker_path)
+        marker = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+        marker.update({
+            "kernel_pushed": True,
+            "kernel_ref": kernel_ref,
+            "kernel_pushed_at": __import__("datetime").datetime.now(
+                __import__("datetime").timezone.utc).isoformat(),
+        })
+        path.write_text(json.dumps(marker, indent=2), encoding="utf-8")
+    except Exception as exc:  # never let bookkeeping break a real run
+        print(f"[WARN] could not update marker {marker_path}: {exc}", flush=True)
+
+
 def _embed_wrapper() -> str:
     return '''import glob, subprocess, sys
 
@@ -112,6 +156,9 @@ def main() -> int:
     ap.add_argument("--stage-dir", required=True)
     ap.add_argument("--kernel-slug", required=True)
     ap.add_argument("--out-dir", required=True)
+    ap.add_argument("--marker-path", default=None,
+                    help="ready-marker JSON to stamp kernel_pushed=true on, "
+                         "the moment the push succeeds")
     ap.add_argument("--timeout", type=int, default=4 * 60 * 60)
     args = ap.parse_args()
 
@@ -121,6 +168,23 @@ def main() -> int:
     out_dir = Path(args.out_dir)
     kernel_dir = stage_dir.parent / f"{args.phase}_kernel"
     dataset_ref = f"{args.dataset_owner}/{args.dataset_slug}"
+    # ONE normalized slug, derived once, used for push AND poll AND
+    # retrieve. See normalize_kernel_slug() for the real incident this
+    # closes. Nothing below may re-derive a ref from args.kernel_slug.
+    kernel_slug = normalize_kernel_slug(args.kernel_slug)
+    kernel_ref = f"{args.dataset_owner}/{kernel_slug}"
+    if kernel_slug != args.kernel_slug:
+        print(f"[INFO] normalized kernel slug {args.kernel_slug!r} -> "
+             f"{kernel_slug!r} (Kaggle hyphenates on push)", flush=True)
+    # The GPT-4o-mini editor inside the kernel resolves its key from a
+    # mounted private dataset (Kaggle Secrets is unreachable from kernels
+    # — a ConnectionError confirmed again in last night's logs). Without
+    # this second dataset attached, every case needing the editor dies
+    # with "OPENAI_API_KEY is required": 7 of 20 AR and 7 of 20 concall
+    # cases were lost that way last night. Embed phases never call the
+    # editor, so they do not need it.
+    extra_datasets = ([] if cfg["kind"] == "embed"
+                      else [f"{args.dataset_owner}/redixfi-openai-key"])
 
     configure_kaggle(args.kaggle_account)
     if out_dir.exists():
@@ -128,18 +192,19 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     if cfg["kind"] == "embed":
         stage_and_push_embed_kernel(kernel_dir, args.dataset_owner,
-                                    args.kernel_slug, dataset_ref)
+                                    kernel_slug, dataset_ref)
     else:
         if kernel_dir.exists():
             shutil.rmtree(kernel_dir)
         stage_and_push_kernel(
             str(kernel_dir), cfg["task"], batch_path.name,
-            f"output_{args.phase}.json", args.dataset_owner, args.kernel_slug,
-            args.dataset_owner, args.dataset_slug)
+            f"output_{args.phase}.json", args.dataset_owner, kernel_slug,
+            args.dataset_owner, args.dataset_slug,
+            extra_dataset_sources=extra_datasets)
+    mark_pushed(args.marker_path, kernel_ref)
 
-    print(f"POLLING: {dataset_ref} kernel={args.dataset_owner}/{args.kernel_slug}",
-          flush=True)
-    poll_and_retrieve(args.dataset_owner, args.kernel_slug, str(out_dir), args.timeout)
+    print(f"POLLING: {dataset_ref} kernel={kernel_ref}", flush=True)
+    poll_and_retrieve(args.dataset_owner, kernel_slug, str(out_dir), args.timeout)
     output = output_contract(args.phase, out_dir)
     assert_complete(output, args.phase)
     writeback(args.phase, output, batch_path)
