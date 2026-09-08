@@ -135,13 +135,86 @@ def output_contract(phase: str, out_dir: Path) -> Path:
                        else f"output_{phase}.json")
 
 
-def assert_complete(path: Path, phase: str) -> dict:
+def staged_unit_count(batch_path: Path, kind: str) -> int | None:
+    """How many units we actually staged, for the stale-output check.
+
+    Embed batches are hundreds of MB (219MB for 96,409 chunks), so this
+    stream-counts the per-chunk key rather than doing a second full
+    json.load in the launcher on top of the one the writeback already
+    does. Each chunk record carries exactly one "chunk_index" key under
+    export_embed_batch.py's schema, so the count is exact for this
+    writer. Generation batches are small enough to parse directly.
+    """
+    try:
+        if kind == "embed":
+            needle = b'"chunk_index"'
+            total, tail = 0, b""
+            with batch_path.open("rb") as fh:
+                while True:
+                    block = fh.read(8 << 20)
+                    if not block:
+                        break
+                    buf = tail + block
+                    total += buf.count(needle)
+                    # keep an overlap so a key split across reads is not lost
+                    tail = buf[-(len(needle) - 1):]
+            return total
+        with batch_path.open(encoding="utf-8") as fh:
+            return len(json.load(fh).get("cases") or [])
+    except Exception as exc:  # never block a good run on a counting failure
+        print(f"[WARN] could not count staged units in {batch_path}: {exc}",
+              flush=True)
+        return None
+
+
+def returned_unit_count(doc: dict, kind: str) -> int | None:
+    if kind == "embed":
+        return doc.get("input_chunks")
+    if isinstance(doc.get("cases"), int):
+        return doc["cases"]
+    results = doc.get("results")
+    return len(results) if isinstance(results, list) else None
+
+
+def assert_complete(path: Path, phase: str, batch_path: Path | None = None) -> dict:
     if not path.is_file():
         raise RuntimeError(f"Kaggle output missing: {path}")
     with path.open(encoding="utf-8") as fh:
         doc = json.load(fh)
     if not doc.get("complete"):
         raise RuntimeError(f"Kaggle output is not complete for {phase}: {path}")
+
+    # STALE-OUTPUT GUARD, 2026-09-08. A kernel launched before Kaggle
+    # finished processing a freshly pushed dataset version silently
+    # mounted the PREVIOUS version: we staged 96,409 chunks and the
+    # kernel embedded last night's 37,443, upserted them idempotently,
+    # and reported "WROTE 37443 ... COMPLETE". Nothing errored, the log
+    # looked like success, and the database did not move at all. That is
+    # far more dangerous than the first-push variant of the same race,
+    # which at least fails loudly.
+    #
+    # push_dataset() now waits for the dataset to be ready, so this
+    # should not recur — but "should not" is not a check. Comparing what
+    # we staged against what came back is cheap, independent of the
+    # upload path, and is the assertion that would have caught the
+    # incident immediately instead of reporting success on a no-op.
+    if batch_path is not None and batch_path.is_file():
+        kind = PHASE_CONFIG[phase]["kind"]
+        staged = staged_unit_count(batch_path, kind)
+        returned = returned_unit_count(doc, kind)
+        unit = "chunk" if kind == "embed" else "case"
+        if staged and returned is not None and staged != returned:
+            raise RuntimeError(
+                f"STALE OR MISMATCHED Kaggle output for {phase}: staged "
+                f"{staged} {unit}(s) but the kernel processed {returned}. "
+                f"The kernel almost certainly ran against an older dataset "
+                f"version (see push_dataset's ready-wait). REFUSING to write "
+                f"back — writing this would report success while leaving the "
+                f"staged batch unprocessed. Re-run the launcher once the "
+                f"dataset reports ready.")
+        if staged and returned is not None:
+            print(f"[INFO] output matches staged batch: {returned} {unit}(s)",
+                  flush=True)
     return doc
 
 
@@ -215,7 +288,7 @@ def main() -> int:
     print(f"POLLING: {dataset_ref} kernel={kernel_ref}", flush=True)
     poll_and_retrieve(args.dataset_owner, kernel_slug, str(out_dir), args.timeout)
     output = output_contract(args.phase, out_dir)
-    assert_complete(output, args.phase)
+    assert_complete(output, args.phase, batch_path)
     writeback(args.phase, output, batch_path)
     print(f"COMPLETE: {args.phase} output={output}", flush=True)
     return 0
