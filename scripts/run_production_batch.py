@@ -79,12 +79,67 @@ def stage_dataset(stage_dir: str, batch_path: str, dataset_owner: str, dataset_s
                   "licenses": [{"name": "other"}]}, fh)
 
 
-def push_dataset(stage_dir: str, dataset_owner: str, dataset_slug: str):
+def wait_for_dataset_ready(api, dataset_ref: str, timeout: int = 900,
+                           interval: int = 10) -> str:
+    """Block until a just-pushed dataset version is actually servable.
+
+    2026-09-08, third real production failure of this pipeline in one day:
+    a kernel launched immediately after `push_dataset` died in 18 seconds
+    with "production_generate.py not found under /kaggle/input". Kaggle
+    processes an uploaded version asynchronously, and the kernel had
+    mounted the dataset before that finished, so /kaggle/input was
+    effectively empty. The staged data was never wrong — purely timing.
+
+    This only bites a FIRST-EVER push (it hit `redixfi-prod-ar-rf-daily`
+    on the new Red Flag AR lane). For an existing slug Kaggle keeps
+    serving the previous ready version while the new one processes, which
+    is why the other four phases never saw it — and why the failure reads
+    like a missing-file/path bug rather than a race, costing real
+    debugging time. Any new slug added later would hit it again, so the
+    wait belongs here, in the one function every caller pushes through,
+    rather than in a caller.
+
+    A brand-new dataset can briefly 403/404 before it becomes visible,
+    which is NOT an error here (run_retry_dispatch.py documents the same
+    Kaggle 403-for-nonexistent-private-dataset behavior); it just means
+    "not ready yet". Genuine processing failures raise immediately rather
+    than burning the whole timeout.
+    """
+    deadline = time.time() + timeout
+    last = None
+    while time.time() < deadline:
+        try:
+            last = api.dataset_status(dataset_ref)
+        except Exception as exc:
+            code = (getattr(exc, "status", None)
+                    or getattr(getattr(exc, "response", None), "status_code", None))
+            if code not in (403, 404):
+                raise
+            last = f"not visible yet ({code})"
+        else:
+            if last == "ready":
+                print(f"[INFO] dataset {dataset_ref} is ready", flush=True)
+                return last
+            if last in ("error", "failed"):
+                raise RuntimeError(
+                    f"Kaggle dataset processing failed for {dataset_ref}: {last}")
+        print(f"[INFO] waiting for dataset {dataset_ref} to become ready "
+              f"(status={last}) ...", flush=True)
+        time.sleep(interval)
+    raise RuntimeError(
+        f"dataset {dataset_ref} did not reach 'ready' within {timeout}s "
+        f"(last status: {last}); refusing to launch a kernel against a "
+        f"dataset Kaggle cannot serve yet")
+
+
+def push_dataset(stage_dir: str, dataset_owner: str, dataset_slug: str,
+                 wait_ready: bool = True, ready_timeout: int = 900):
     from kaggle.api.kaggle_api_extended import KaggleApi
     api = KaggleApi()
     api.authenticate()
+    dataset_ref = f"{dataset_owner}/{dataset_slug}"
     try:
-        api.dataset_status(f"{dataset_owner}/{dataset_slug}")
+        api.dataset_status(dataset_ref)
         exists = True
     except Exception:
         exists = False
@@ -93,6 +148,8 @@ def push_dataset(stage_dir: str, dataset_owner: str, dataset_slug: str):
                                    dir_mode="zip")
     else:
         api.dataset_create_new(stage_dir, dir_mode="zip", public=False)
+    if wait_ready:
+        wait_for_dataset_ready(api, dataset_ref, timeout=ready_timeout)
 
 
 def stage_and_push_kernel(kernel_dir: str, task: str, batch_basename: str,
