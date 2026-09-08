@@ -76,19 +76,39 @@ main_body = src.split("def main()", 1)[1]
 # mention: args.kernel_slug legitimately appears in the normalization
 # assignment itself and in the line that logs the rewrite. What must never
 # happen again is a push, poll or retrieve reading the raw arg.
-for call in ("stage_and_push_embed_kernel", "stage_and_push_kernel", "poll_and_retrieve"):
-    m = re.search(call + r"\(([^)]*)\)", main_body, re.S)
-    check("%s() is called with the normalized kernel_slug, not args.kernel_slug" % call,
-          m is not None and "args.kernel_slug" not in m.group(1)
-          and "kernel_slug" in m.group(1),
-          m.group(1).replace("
-", " ") if m else "call site not found")
+def call_args(source: str, name: str):
+    """Return a call's full argument text, counting parens so a nested
+    call like str(kernel_dir) does not truncate the match."""
+    idx = source.find(name + "(")
+    if idx < 0:
+        return None
+    start = idx + len(name) + 1
+    depth, i = 1, start
+    while i < len(source) and depth:
+        if source[i] == "(":
+            depth += 1
+        elif source[i] == ")":
+            depth -= 1
+        i += 1
+    return source[start:i - 1]
 
-allowed_lines = [ln for ln in main_body.splitlines() if "args.kernel_slug" in ln]
+
+for call in ("stage_and_push_embed_kernel", "stage_and_push_kernel", "poll_and_retrieve"):
+    args_text = call_args(main_body, call)
+    check("%s() is called with the normalized kernel_slug, not args.kernel_slug" % call,
+          args_text is not None and "args.kernel_slug" not in args_text
+          and "kernel_slug" in args_text,
+          " ".join(args_text.split()) if args_text else "call site not found")
+
+# args.kernel_slug may legitimately appear in a comment, in the
+# normalization assignment, and in the line that logs the rewrite - but
+# nowhere else.
+code_lines = [ln for ln in main_body.splitlines()
+              if "args.kernel_slug" in ln and not ln.strip().startswith("#")]
 check("args.kernel_slug survives ONLY in the normalization assignment and its log line",
       all(("normalize_kernel_slug" in ln) or ("!r}" in ln) or ("if kernel_slug !=" in ln)
-          for ln in allowed_lines),
-      str(allowed_lines))
+          for ln in code_lines),
+      str(code_lines))
 
 print()
 if FAIL:
