@@ -33,6 +33,15 @@ PHASE_CONFIG = {
         "kind": "generate", "task": "concall_summary",
         "writeback": "writeback_concall.py",
     },
+    # Second AR generation lane on the Red Flag account's spare GPU hours
+    # — identical task, writeback and validators to generate_ar; separate
+    # phase key only so its directories/marker do not collide. See
+    # data-pipeline/kaggle_daily_stage.py's PHASES entry for why the two
+    # lanes must never overlap in time.
+    "generate_ar_rf": {
+        "kind": "generate", "task": "annual_report_summary",
+        "writeback": "writeback_annual_report.py",
+    },
     "reclassify_rf": {
         "kind": "generate", "task": "red_flag",
         "writeback": "writeback_red_flag.py",
