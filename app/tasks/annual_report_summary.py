@@ -1,55 +1,43 @@
-"""Phase A — Annual Report Summary.
+"""Annual Report Summary task — PRODUCTION (simplified prompt + deterministic
+evidence-anchored validation; NO GPT repair layer).
 
-Reproduces data-pipeline/annual_report_summarizer.py::generate_summary's
-contract against a candidate model:
+Contract (unchanged externally):
+  * one Qwen generation under guided JSON decoding;
+  * deterministic validation against the SAME evidence the model was given:
+      app/compliance/ar_grounding.validate_annual_report_summary(...)
+    covering advisory-language compliance, evidence-anchored figure grounding
+    (unsupported number / unit-scale mismatch / unit ambiguity / sign /
+    guidance-to-fact), the distortion guard and the two completeness checks;
+  * PASS  -> final_status QWEN_PASS, final_source qwen;
+  * anything else -> HUMAN_REVIEW_REQUIRED with the reason and findings
+    recorded in `rejections`. There is no second LLM layer and no retry.
 
-  * same SYSTEM_PROMPT and user-content shape (app/prompts/annual_report_summary.py)
-  * same MAX_ATTEMPTS=3 regenerate-then-validate loop, with the rejection
-    reason fed back as the corrective note
-  * same validation set: _violation() on executive_summary, key_takeaway,
-    every key_point and every important_risk, PLUS the key_points count
-    bound — and, unlike the other two tasks, the financial-figure check
-  * same failure posture: total failure returns no summary at all rather
-    than a placeholder
-
-Evidence comes from the fixture, produced by RedixFi's real
-evidence_finder.py. Nothing here selects evidence.
+Removed on 2026-09-16: the GPT-4o-mini rephrase/repair step for annual
+reports, the blanket forward-tense ban and the "every figure needs an
+attribution phrase" rule.
 """
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
-from ..compliance.validators import summarizer_violation
+from ..compliance import ar_grounding
 from ..inference.base import Backend, GenerationRequest, Message
 from ..schemas.output_schemas import schema_for_task
 from ..prompts.annual_report_summary import (
     BULLET_MAX,
     BULLET_MIN,
-    MAX_ATTEMPTS,
     SYSTEM_PROMPT,
     build_user_content,
 )
 from .base import TaskResult, parse_json_object
 from .context_budget import plan_context
-from .rephrase import (build_rephrase_backend, build_rephrase_request,
-                       collect_validator_findings, information_preservation_check,
-                       is_eligible_for_rephrase)
 from .retry_policy import PRODUCTION_POLICY, RetryPolicy
 
 TASK_NAME = "annual_report_summary"
 
 
 def _normalize(parsed: Dict[str, Any]) -> Dict[str, Any]:
-    """Canonical RedixFi current-schema output only.
-
-    Phase 1 (2026-08-30 controlled fix): the previous normalization mirrored
-    call_llm_summarize's additive legacy fallback and emitted BOTH the current
-    keys (`executive_summary`/`key_points`) and the legacy keys
-    (`summary`/`bullets`) with duplicated content. Consumers observed the
-    duplication. The canonical schema for the current pipeline is
-    `executive_summary` / `key_points` / `important_risks` / `key_takeaway`;
-    the legacy keys are no longer emitted by this task.
-    """
+    """Canonical RedixFi current-schema output only (unchanged)."""
     executive_summary = str(
         parsed.get("executive_summary") or parsed.get("summary") or ""
     ).strip()
@@ -74,24 +62,23 @@ def _normalize(parsed: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def validate(out: Dict[str, Any]) -> Optional[str]:
-    """Byte-for-byte the same rejection logic as generate_summary's `bad`
-    expression, including check order. Financial-figure checking is ON —
-    rule (4) of the system prompt is the summarizer's distinguishing rule.
-    """
-    def check(text: str) -> Optional[str]:
-        return summarizer_violation(text, check_financial_figures=True)
+def validate(fixture: Dict[str, Any], out: Dict[str, Any]) -> Tuple[Optional[str], Dict[str, Any]]:
+    """Deterministic, evidence-anchored validation.
 
-    return (
-        check(out["executive_summary"])
-        or check(out["key_takeaway"])
-        or next((check(b) for b in out["key_points"] if check(b)), None)
-        or next((check(r) for r in out["important_risks"] if check(r)), None)
-        or (
-            None
-            if BULLET_MIN <= len(out["key_points"]) <= BULLET_MAX
-            else f"key_points count {len(out['key_points'])} outside [{BULLET_MIN}, {BULLET_MAX}]"
+    Returns (reason, findings). reason is None only when the summary may be
+    published automatically.
+    """
+    if not (
+        BULLET_MIN <= len(out.get("key_points") or []) <= BULLET_MAX
+    ):
+        findings = {"bullet_count": len(out.get("key_points") or [])}
+        return (
+            f"key_points count {len(out.get('key_points') or [])} outside "
+            f"[{BULLET_MIN}, {BULLET_MAX}]",
+            findings,
         )
+    return ar_grounding.validate_annual_report_summary(
+        fixture.get("evidence_text") or "", out,
     )
 
 
@@ -103,19 +90,13 @@ def run(
     max_tokens: int = 1024,
     seed: Optional[int] = 0,
     policy: RetryPolicy = PRODUCTION_POLICY,
-    rephrase_backend: Optional[Backend] = None,
+    rephrase_backend: Optional[Backend] = None,  # accepted for API compatibility; unused
 ) -> TaskResult:
     result = TaskResult(task=TASK_NAME, fixture_id=str(fixture.get("fixture_id") or ""), ok=False)
 
-    # Guided decoding: constrain the shape at DECODE time so valid
-    # JSON is produced by construction. parse_json_object stays as a
-    # fallback and `json_repair_used` still reports if it was needed.
     schema = schema_for_task(TASK_NAME, None)
     rejections: List[Dict[str, Any]] = []
 
-    # Pre-generation context budget: never spend retries on an impossible
-    # request (same protection as Concall; Annual Report evidence normally
-    # fits, but the guard is shared).
     planned_user, context_log = plan_context(TASK_NAME, fixture, model, max_tokens)
     result.context_log = context_log
     if planned_user is None:
@@ -126,16 +107,14 @@ def run(
         result.human_review_reason = result.error
         return result
 
-    # ONE Qwen generation. Validator-driven Qwen retries were removed
-    # (2026-08-31): if the wording fails, a single GPT-4o-mini EDIT is used.
+    # ONE Qwen generation. No validator-driven retry, no GPT edit.
     result.attempts = 1
     attempt_temperature = policy.temperature_for(1, temperature)
     attempt_seed = policy.seed_for(1, seed)
-    user_content = planned_user
     request = GenerationRequest(
         messages=[
             Message("system", SYSTEM_PROMPT),
-            Message("user", user_content),
+            Message("user", planned_user),
         ],
         model=model,
         temperature=attempt_temperature,
@@ -171,101 +150,30 @@ def run(
         return result
 
     out = _normalize(parsed)
-    bad = validate(out)
-    if not bad:
-        result.ok = True
-        result.output = out
-        result.rejections = []
-        result.final_source = "qwen"
-        result.final_status = "QWEN_PASS"
-        return result
+    reason, findings = validate(fixture, out)
 
-    result.rejections = [
-        {"pass": 1, "sampling": sampling, "reason": bad, "text": out,
-         "raw_text": generation.text},
-    ]
-
-    # Only eligible wording/compliance issues go to GPT-4o-mini. Technical
-    # failures (context overflow, model unavailable, invalid JSON, missing
-    # evidence) must NOT be sent to a rephraser.
-    if not is_eligible_for_rephrase(bad):
-        result.ok = False
-        result.error = f"non-eligible validator failure: {bad}"
-        result.final_source = "failed_human_review"
-        result.final_status = "HUMAN_REVIEW_REQUIRED"
-        result.human_review_required = True
-        result.human_review_reason = result.error
-        return result
-
-    # ONE GPT-4o-mini edit, max. The source document is never sent.
-    findings = collect_validator_findings(TASK_NAME, out)
-    rb = rephrase_backend or build_rephrase_backend()
-    g = rb.generate(build_rephrase_request(TASK_NAME, out, findings, schema, max_tokens))
-    rephrase_log = {
-        "gpt_rephrase_called": True,
-        "gpt_model": g.model,
-        "gpt_input_tokens": g.prompt_tokens,
-        "gpt_output_tokens": g.completion_tokens,
-        "validator_finding": findings,
+    rejection = {
+        "pass": 1,
+        "sampling": sampling,
+        "reason": reason,
+        "text": out,
+        "raw_text": generation.text,
+        "grounding": findings,
     }
-    result.rephrase_log = rephrase_log
-    if not g.ok:
-        rephrase_log["error"] = g.error
+    result.rejections = [rejection]
+
+    if reason:
         result.ok = False
-        result.error = f"gpt rephrase failed: {g.error}"
+        result.error = f"deterministic validation failed: {reason}"
         result.final_source = "failed_human_review"
         result.final_status = "HUMAN_REVIEW_REQUIRED"
         result.human_review_required = True
-        result.human_review_reason = result.error
-        return result
-
-    parsed2, repaired2, parse_error2 = parse_json_object(g.text)
-    result.json_repair_used = result.json_repair_used or repaired2
-    if parsed2 is None:
-        rephrase_log["error"] = parse_error2
-        rephrase_log["gpt_rephrased_output"] = g.text
-        result.ok = False
-        result.error = f"gpt rephrase invalid json: {parse_error2}"
-        result.final_source = "failed_human_review"
-        result.final_status = "HUMAN_REVIEW_REQUIRED"
-        result.human_review_required = True
-        result.human_review_reason = result.error
-        return result
-
-    out2 = _normalize(parsed2)
-    bad2 = validate(out2)
-    rephrase_log["gpt_rephrased_output"] = out2
-    rephrase_log["validator_status_after_rephrase"] = bad2 or "PASS"
-
-    if bad2:
-        # One GPT attempt only — do NOT loop back to GPT.
-        result.ok = False
-        result.error = f"gpt rephrase failed validation: {bad2}"
-        result.final_source = "failed_human_review"
-        result.final_status = "HUMAN_REVIEW_REQUIRED"
-        result.human_review_required = True
-        result.human_review_reason = result.error
-        result.rejections.append({"pass": 2, "reason": bad2, "text": out2,
-                                  "raw_text": g.text})
-        return result
-
-    # Deterministic information-preservation guard: never accept a GPT edit
-    # that silently removed material numbers/dates/percentages.
-    info = information_preservation_check(out, out2)
-    result.information_preservation_check = info
-    rephrase_log["information_preservation_check"] = info
-    if info["status"] != "PASS":
-        result.ok = False
-        result.error = (f"information loss after rephrase: "
-                        f"{info['missing_material_tokens']}")
-        result.final_source = "failed_human_review"
-        result.final_status = "HUMAN_REVIEW_REQUIRED"
-        result.human_review_required = True
-        result.human_review_reason = result.error
+        result.human_review_reason = reason
         return result
 
     result.ok = True
-    result.output = out2
-    result.final_source = "gpt_rephrase"
-    result.final_status = "GPT_REPHRASE_PASS"
+    result.output = out
+    result.rejections = []
+    result.final_source = "qwen"
+    result.final_status = "QWEN_PASS"
     return result

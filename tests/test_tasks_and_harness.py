@@ -122,9 +122,11 @@ def test_annual_report_accepts_compliant_output():
     assert "bullets" not in result.output
 
 
-def test_annual_report_retries_then_succeeds_on_a_compliance_failure():
+def test_annual_report_advisory_language_routes_to_human_review():
+    """2026-09-16: the AR path has NO GPT repair layer. Advisory language
+    still fails deterministically and goes straight to Human Review."""
     bad = json.dumps({
-        "executive_summary": "Revenue will expand next year.",
+        "executive_summary": "Analysts should buy the stock; the target price is 500.",
         "key_points": ["a", "b", "c"], "important_risks": [],
         "key_takeaway": "Fine.",
     })
@@ -136,14 +138,13 @@ def test_annual_report_retries_then_succeeds_on_a_compliance_failure():
         "important_risks": [],
         "key_takeaway": "The report centred on stated operating priorities.",
     })
-    qwen_backend = ScriptedBackend([bad])
-    rephrase_backend = ScriptedBackend([good])
-    result = task_ar.run(qwen_backend, _ar_fixture(), "test-model",
-                         rephrase_backend=rephrase_backend)
-    assert result.ok
-    assert result.attempts == 1, "no Qwen validator retry"
-    assert result.final_source == "gpt_rephrase"
-    assert "forward-tense" in result.rejections[0]["reason"]
+    result = task_ar.run(ScriptedBackend([bad]), _ar_fixture(), "test-model",
+                         rephrase_backend=ScriptedBackend([good]))
+    assert not result.ok
+    assert result.attempts == 1, "single generation, no retries"
+    assert result.final_source == "failed_human_review"
+    assert result.rephrase_log is None, "no GPT repair layer for AR"
+    assert "forbidden word" in result.rejections[0]["reason"]
 
 
 def test_annual_report_bullet_count_bound_is_enforced():
@@ -158,17 +159,13 @@ def test_annual_report_bullet_count_bound_is_enforced():
 
 
 def test_annual_report_writes_no_placeholder_on_total_failure():
-    bad = json.dumps({"executive_summary": "Revenue will rise.",
+    bad = json.dumps({"executive_summary": "Analysts should buy the stock.",
                       "key_points": ["a", "b", "c"], "important_risks": [],
-                      "key_takeaway": "It will rise."})
-    bad_rephrase = json.dumps({"executive_summary": "The company will achieve growth.",
-                               "key_points": ["a", "b", "c"], "important_risks": [],
-                               "key_takeaway": "It will rise."})
-    result = task_ar.run(ScriptedBackend([bad]), _ar_fixture(), "test-model",
-                         rephrase_backend=ScriptedBackend([bad_rephrase]))
+                      "key_takeaway": "A takeaway."})
+    result = task_ar.run(ScriptedBackend([bad]), _ar_fixture(), "test-model")
     assert not result.ok
     assert result.output == {}          # no placeholder, matching RedixFi
-    assert result.attempts == 1         # no Qwen validator retries
+    assert result.attempts == 1         # single generation, no retries
     assert result.final_source == "failed_human_review"
 
 

@@ -1,26 +1,14 @@
-"""Annual Report Summary prompt — VENDORED COPY.
+"""Annual Report Summary prompt — PRODUCTION (simplified, materiality-first).
 
-PROVENANCE
-----------
-Original RedixFi file: data-pipeline/annual_report_summarizer.py
-Sections copied:  SYSTEM_PROMPT, _user_content(), BULLET_MIN/BULLET_MAX,
-                  MAX_ATTEMPTS, the regenerate-then-validate contract
-Source commit:    b9e40c4 (2026-08-24, "Evidence Finder unification")
-RedixFi HEAD at copy time: 8bb3170
-Date copied:      2026-08-28
+Replaces the legacy detailed prompt. The philosophy changed on 2026-09-16:
+RedixFi is SUMMARISING what the company/management/auditor/report already
+said, so financial figures, management guidance, targets, expectations,
+plans and outlook are normal source content and are allowed — provided they
+are preserved faithfully and grounded in the supplied evidence.
 
-The SYSTEM_PROMPT below is character-for-character what RedixFi sends to
-gpt-4o-mini today. Do NOT reword it to make a candidate model score better
-— that would invalidate the comparison, which is the entire point of this
-project.
-
-EVIDENCE, NOT RAW TEXT
-----------------------
-The `evidence_text` this prompt consumes is produced by RedixFi's own
-data-pipeline/evidence_finder.py (deterministic, LLM-free, global 20k-token
-budget) and captured into the fixture by scripts/export_fixtures.py. This
-project does NOT re-select evidence. Note that RedixFi's Stage 3 re-chunks
-Mongo `raw_text` in-process and does NOT read ChromaDB on its normal path.
+Validation is deterministic and evidence-anchored (see
+app/compliance/ar_grounding.py); the prompt does not try to encode the
+validator. Bounds are unchanged so the guided-decoding schema still matches.
 """
 from __future__ import annotations
 
@@ -30,59 +18,51 @@ from typing import Any, Dict, Optional
 BULLET_MIN = 3
 BULLET_MAX = 5
 
-# RedixFi's offline-batch deviation from ask.py's live 2-attempt budget.
-MAX_ATTEMPTS = 3
+# Kept for callers that still reference it (the AR task generates once).
+MAX_ATTEMPTS = 1
 
 SYSTEM_PROMPT = (
-    "You summarize a single exchange-filed corporate annual report for a "
-    "pre-RA (pre-SEBI-registration) Indian stock analytics product. "
-    "STRICT RULES: "
-    "(1) Base the summary ONLY on the text given below — never use outside "
-    "knowledge about this company, never speculate. "
-    "(2) Write NEUTRALLY and ATTRIBUTIVELY — always frame statements as "
-    "what management/the report said or stated (\"management said\", "
-    "\"the report stated\"), never as RedixFi's own claim or opinion. "
-    "(3) Past/present tense only — describe what was said or what the "
-    "document states, never what might happen next. Never use: expect, "
-    "likely, will, outlook, target, forecast, going to, should rise/fall, "
-    "recommend, buy, sell, calls, picks, tips, predictions, stop-loss, "
-    "accuracy — INCLUDING when describing guidance/goals management "
-    "stated: rephrase as \"management set a goal of X\" / \"management "
-    "stated a plan to reach X\", never \"targeting X\" or \"expects X\". "
-    "(4) NEVER state a specific financial figure as fact — no revenue, "
-    "profit, margin, growth-rate, or any other number, currency amount, or "
-    "percentage, even if the document appears to state one. This is because "
-    "PDF table extraction from annual reports can mislabel figures (e.g. "
-    "confusing revenue with order backlog) — describe direction or theme in "
-    "words only (e.g. \"the report described continued investment in "
-    "capacity expansion\"), never a quantity. "
-    "(5) Cover ONLY qualitative strategic themes — manufacturing strategy, "
-    "sustainability, market positioning, stated priorities, capital "
-    "allocation focus, governance — never treat the document as a source "
-    "of verified financial data. "
-    "(6) Never add a verdict, rating, or directional view on the stock — "
-    "this is a summary of a document, not investment advice or a signal. "
-    f"Respond ONLY with a JSON object: {{\"executive_summary\": \"...\" (3-4 "
+    "You summarize a single exchange-filed corporate annual report for an "
+    "Indian stock analytics product, using only the supplied evidence. "
+    "Summarize the most material information for an investor. "
+    "(1) Lead with the most important findings, including material financial "
+    "performance, significant audit or going-concern matters, regulatory or "
+    "legal actions, liquidity or debt concerns, negative net worth, major "
+    "contingent liabilities, governance/compliance issues and important "
+    "business developments. "
+    "(2) Keep routine strategy, industry commentary and general management "
+    "discussion secondary when more material findings exist. "
+    "(3) Use ONLY the supplied evidence; never add outside knowledge or "
+    "speculation. "
+    "(4) Preserve important dates, periods, qualifications, historical/current "
+    "status and the severity of findings exactly as stated; do not strengthen "
+    "or weaken what the source says. "
+    "(5) Financial figures are allowed and should be used when they explain "
+    "the company's performance or condition. Do not state a financial number "
+    "unless that number is present in the supplied evidence. "
+    "(6) Management guidance, targets, expectations, plans and outlook are "
+    "allowed when they appear in the evidence; preserve them as guidance, "
+    "targets, expectations or plans, and never convert them into guaranteed "
+    "outcomes or RedixFi's own prediction. "
+    "(7) Use the auditor's, management's or regulator's actual characterization "
+    "when it materially affects meaning. "
+    "(8) Do not omit a material adverse finding that is explicitly supported by "
+    "the evidence. Preserve material audit opinions, defaults, regulatory "
+    "actions and historical/current status exactly as stated. "
+    "Never give a verdict, rating, buy/sell view or price target. "
+    f"Respond ONLY with a JSON object: {{\"executive_summary\": \"...\" (3-5 "
     f"sentences), \"key_points\": [...] ({BULLET_MIN}-{BULLET_MAX} short "
-    "strategic-theme bullet strings), \"important_risks\": [...] (an array of "
-    "short risk statements ONLY if genuinely supported by the selected "
-    "evidence; empty array if not), \"key_takeaway\": \"...\" (one "
-    "sentence — the single most important qualitative point in the "
-    "document)}. No markdown, no preamble."
+    "bullet strings), \"important_risks\": [...] (short risk statements ONLY "
+    "if genuinely supported by the supplied evidence; empty array if not), "
+    "\"key_takeaway\": \"...\" (one sentence)}. No markdown, no preamble."
 )
 
 
 def build_user_content(
     fixture: Dict[str, Any], corrective_note: Optional[str] = None,
 ) -> str:
-    """Reproduces annual_report_summarizer.py::_user_content() exactly.
-
-    `fixture["evidence_text"]` is the Evidence Finder output captured from
-    the real pipeline — it takes the place of `_build_report_text(doc)`,
-    which is the ONLY substitution, and it is a substitution of value not
-    of shape: the string is byte-identical to what Stage 3 would have
-    built for this document.
-    """
+    """Unchanged shape: the fixture's evidence_text is the Evidence Finder
+    output captured from the real pipeline."""
     content = (
         f"Company: {fixture.get('company_name')} ({fixture.get('symbol')})\n"
         f"Document type: annual report\n"
