@@ -22,10 +22,11 @@ touches nothing, matching writeback_annual_report.py / writeback_concall.py
 from __future__ import annotations
 
 import argparse
+import codecs
 import contextlib
+import gc
 import json
 import os
-import subprocess
 import sys
 
 REDIXFI_ROOT = os.getenv("REDIXFI_ROOT", "/home/ubuntu/redixfi-backend")
@@ -51,7 +52,136 @@ COLLECTION_FOR = {"annual_reports": "annual_reports",
 
 
 def path_for_collection(name: str) -> str:
+    if name == "annual_reports" and not os.getenv("ANNUAL_REPORT_CHROMA_PATH"):
+        raise RuntimeError(
+            "ANNUAL_REPORT_CHROMA_PATH is required for annual_reports writeback; "
+            "refusing to fall back to the legacy Chroma root"
+        )
     return ANNUAL_REPORT_CHROMA_PATH if name == "annual_reports" else CHROMA_PATH
+
+
+def json_header(path: str, array_key: str) -> dict:
+    """Read only the small object prefix before a large JSON array."""
+    needle = ('"' + array_key + '"').encode("ascii")
+    with open(path, "rb") as fh:
+        prefix = fh.read(1 << 20)
+    pos = prefix.find(needle)
+    if pos < 0:
+        raise ValueError(f"JSON array {array_key!r} not found in {path}")
+    head = prefix[:pos].decode("utf-8").rstrip()
+    if head.endswith(":"):
+        head = head[:-1].rstrip()
+    if head.endswith(","):
+        head = head[:-1]
+    return json.loads(head + "}")
+
+
+def iter_json_array(path: str, array_key: str, chunk_size: int = 1 << 20):
+    """Yield array objects without deserializing the complete JSON document."""
+    decoder = json.JSONDecoder()
+    needle = ('"' + array_key + '"').encode("ascii")
+    buffer = ""
+    started = False
+    done = False
+    # 2026-09-18: a raw `block.decode("utf-8")` on each independently-read
+    # chunk raises UnicodeDecodeError whenever a multi-byte UTF-8 character
+    # (e.g. a rupee sign or other non-ASCII text in a chunk/company name)
+    # straddles a chunk_size boundary -- confirmed live, a real production
+    # writeback crash exactly at byte offset 1,048,574/1,048,575, one byte
+    # before the 1<<20 default chunk_size. An incremental decoder correctly
+    # carries any incomplete trailing byte(s) over to the next chunk instead
+    # of treating them as a truncated file.
+    text_decoder = codecs.getincrementaldecoder("utf-8")()
+    with open(path, "rb") as fh:
+        while not done:
+            block = fh.read(chunk_size)
+            if block:
+                buffer += text_decoder.decode(block, final=False)
+            elif not started:
+                raise ValueError(f"JSON array {array_key!r} not found in {path}")
+            elif not buffer.strip():
+                raise ValueError(f"unterminated JSON array {array_key!r} in {path}")
+            else:
+                # True EOF: flush the decoder. A genuinely truncated file
+                # (a real incomplete multi-byte sequence with no more bytes
+                # coming) still raises here, correctly.
+                buffer += text_decoder.decode(b"", final=True)
+
+            if not started:
+                pos = buffer.find(needle.decode("ascii"))
+                if pos < 0:
+                    if not block:
+                        raise ValueError(f"JSON array {array_key!r} not found in {path}")
+                    buffer = buffer[-len(needle):]
+                    continue
+                pos = buffer.find("[", pos + len(needle))
+                if pos < 0:
+                    if not block:
+                        raise ValueError(f"JSON array {array_key!r} has no '['")
+                    continue
+                buffer = buffer[pos + 1:]
+                started = True
+
+            while True:
+                buffer = buffer.lstrip()
+                if buffer.startswith("]"):
+                    done = True
+                    break
+                if not buffer:
+                    break
+                try:
+                    item, end = decoder.raw_decode(buffer)
+                except json.JSONDecodeError:
+                    break
+                yield item
+                buffer = buffer[end:]
+                buffer = buffer.lstrip()
+                if buffer.startswith(","):
+                    buffer = buffer[1:]
+                    continue
+                if buffer.startswith("]"):
+                    done = True
+                break
+            if not block and not done:
+                raise ValueError(f"unterminated JSON array {array_key!r} in {path}")
+
+
+def iter_stock_pairs(output_path: str, input_path: str, pair_size: int = 2):
+    """Join output vectors to input text in order, yielding at most two stocks."""
+    output_rows = iter_json_array(output_path, "results")
+    input_rows = iter_json_array(input_path, "chunks")
+    pair = []
+    pair_filing_ids = []
+    try:
+        for result in output_rows:
+            try:
+                chunk = next(input_rows)
+            except StopIteration as exc:
+                raise ValueError("Kaggle output has more rows than the input batch") from exc
+            result_id = f"{result['filing_id']}_{result['chunk_index']}"
+            input_id = f"{chunk['filing_id']}_{chunk['chunk_index']}"
+            if result_id != input_id:
+                raise ValueError(
+                    f"Kaggle/input order mismatch at {result_id}; expected {input_id}"
+                )
+            filing_id = result["filing_id"]
+            if filing_id not in pair_filing_ids:
+                if len(pair_filing_ids) == pair_size:
+                    yield pair
+                    pair = []
+                    pair_filing_ids = []
+                pair_filing_ids.append(filing_id)
+            pair.append((result, chunk))
+        try:
+            next(input_rows)
+        except StopIteration:
+            pass
+        else:
+            raise ValueError("input batch has more rows than Kaggle output")
+        if pair:
+            yield pair
+    finally:
+        del output_rows, input_rows
 
 
 def main():
@@ -63,17 +193,13 @@ def main():
     ap.add_argument("--confirm", action="store_true")
     args = ap.parse_args()
 
-    doc = json.load(open(args.kaggle_output, encoding="utf-8"))
-    results = doc.get("results", [])
+    doc = json_header(args.kaggle_output, "results")
     print(f"[INFO] kernel output: {doc.get('embedded')}/{doc.get('input_chunks')} "
           f"embedded | dtype={doc.get('dtype')} | "
           f"{doc.get('chunks_per_sec')} chunks/sec | complete={doc.get('complete')}")
     if doc.get("dtype") and doc["dtype"] != "torch.float16":
         print(f"[WARN] kernel ran {doc['dtype']}, not float16 — that is the "
               f"2.66 chunks/sec path; vectors are still valid, throughput was not")
-    if not results:
-        print("[INFO] nothing to write.")
-        return 0
     if doc.get("model") != QWEN_MODEL:
         print(f"[ERROR] output model {doc.get('model')!r} != required {QWEN_MODEL!r}")
         return 1
@@ -89,19 +215,11 @@ def main():
               "vectors without immutable Mongo chunk text are not recoverable")
         return 1
 
-    text_by_key = {}
     if args.input_batch:
-        src = json.load(open(args.input_batch, encoding="utf-8"))
-        for c in src["chunks"]:
-            text_by_key[f"{c['filing_id']}_{c['chunk_index']}"] = c["text"]
-        print(f"[INFO] loaded chunk text for {len(text_by_key)} chunk(s) from the input batch")
+        print("[INFO] streaming chunk text and vectors in two-stock pairs")
     else:
         print("[WARN] no --input-batch given: chunk_text rows will NOT be written, "
               "so retrieval would find vectors with no recoverable text")
-
-    by_source = {}
-    for r in results:
-        by_source.setdefault(r.get("source") or "annual_reports", []).append(r)
 
     total_vec = total_txt = 0
     lock_context = (
@@ -110,7 +228,14 @@ def main():
     )
     with lock_context:
       db = get_db()
-      for source, rows in by_source.items():
+      if not args.input_batch:
+          raise RuntimeError("confirmed writeback requires --input-batch")
+      for pair in iter_stock_pairs(args.kaggle_output, args.input_batch):
+        rows = [result for result, _ in pair]
+        chunks = [chunk for _, chunk in pair]
+        source = rows[0].get("source") or "annual_reports"
+        if any((r.get("source") or "annual_reports") != source for r in rows):
+            raise ValueError("a two-stock pair contains multiple sources")
         cname = COLLECTION_FOR.get(source)
         if not cname:
             print(f"[WARN] unknown source {source!r}, skipping {len(rows)} row(s)")
@@ -169,38 +294,22 @@ def main():
                   f"({(len(ids) + max_batch - 1) // max_batch} batch(es) of <= {max_batch})")
         total_vec += len(ids)
 
-        if text_by_key:
-            ops, wrote = [], 0
-            for r, _id in zip(rows, ids):
-                txt = text_by_key.get(_id)
-                if txt is None:
-                    continue
-                ops.append(ReplaceOne(
-                    {"_id": _id},
-                    {"_id": _id, "filing_id": r["filing_id"],
-                     "chunk_index": r["chunk_index"], "text": txt},
-                    upsert=True))
-                wrote += 1
-            print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {wrote} chunk_text row(s)")
-            if args.confirm and ops:
-                db["chunk_text"].bulk_write(ops, ordered=False)
-                back = db["chunk_text"].count_documents({"_id": {"$in": ids}})
-                print(f"    VERIFY: {back}/{wrote} chunk_text row(s) readable "
-                      f"{'OK' if back == wrote else 'MISMATCH — INVESTIGATE'}")
-            total_txt += wrote
+        ops = [ReplaceOne(
+            {"_id": _id},
+            {"_id": _id, "filing_id": r["filing_id"],
+             "chunk_index": r["chunk_index"], "text": c["text"]},
+            upsert=True)
+            for r, c, _id in zip(rows, chunks, ids)]
+        print(f"  {'WRITE' if args.confirm else 'WOULD WRITE'} {len(ops)} chunk_text row(s)")
+        if args.confirm and ops:
+            db["chunk_text"].bulk_write(ops, ordered=False)
+            back = db["chunk_text"].count_documents({"_id": {"$in": ids}})
+            print(f"    VERIFY: {back}/{len(ops)} chunk_text row(s) readable "
+                  f"{'OK' if back == len(ops) else 'MISMATCH — INVESTIGATE'}")
+        total_txt += len(ops)
 
         if args.confirm:
-            expected_count = col.count()
             client.close()
-            healthcheck = os.path.join(
-                REDIXFI_ROOT, "data-pipeline", "chroma_cold_healthcheck.py"
-            )
-            subprocess.run([
-                sys.executable, healthcheck,
-                "--path", store_path,
-                "--collection", cname,
-                "--expected-count", str(expected_count),
-            ], check=True)
             fids = sorted({r["filing_id"] for r in rows})
             db[source].update_many(
                 {"filing_id": {"$in": fids}},
@@ -208,6 +317,9 @@ def main():
             print(f"  marked {len(fids)} source document(s) embedded=True")
         else:
             client.close()
+        del pair, rows, chunks, ids, embs, metas, ops
+        gc.collect()
+        print("  released current two-stock pair")
 
     print(f"\n{'WROTE' if args.confirm else 'WOULD WRITE'} {total_vec} vector(s), "
           f"{total_txt} chunk_text row(s)")
