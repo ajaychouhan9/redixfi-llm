@@ -21,6 +21,20 @@ sys.path.insert(0, os.path.join(REDIXFI_ROOT, "data-pipeline"))
 # ext4, permanent in /etc/fstab) after the chroma_production wipe -- a
 # separate top-level mount, not derived from REDIXFI_ROOT anymore.
 CHROMA_PATH = os.getenv("CHROMA_PATH", "/data/chroma")
+# 2026-09-18 fix: annual_reports moved to a dedicated Qwen store
+# (ANNUAL_REPORT_CHROMA_PATH) on 2026-09-08/17; this script kept reading
+# the bare CHROMA_PATH default for BOTH collections, so every scheduled
+# reclassify_rf run opened the legacy root's corrupted `annual_reports`
+# remnant (the known HNSW pickle-deserialization error) and failed before
+# ever reaching Kaggle -- 15/15 attempts over 2026-09-13..17, confirmed by
+# audit. writeback_red_flag.py already routes per-collection this way;
+# mirrored here so export and writeback can never disagree about which
+# store a collection lives in.
+ANNUAL_REPORT_CHROMA_PATH = os.getenv("ANNUAL_REPORT_CHROMA_PATH", CHROMA_PATH)
+
+
+def path_for_collection(name: str) -> str:
+    return ANNUAL_REPORT_CHROMA_PATH if name == "annual_reports" else CHROMA_PATH
 
 # 2026-09-04: `col.get(..., include=["documents", ...])` below used to be
 # the real chunk text. Since the 2026-09-02 storage-reduction change
@@ -44,9 +58,11 @@ def main():
     import chromadb
     from risk_flag_classifier import matched_categories
     from config.db import get_db
+    from config.chroma_safety import get_existing_qwen_collection
 
-    client = chromadb.PersistentClient(path=CHROMA_PATH)
-    col = client.get_collection(args.collection)
+    store_path = path_for_collection(args.collection)
+    client = chromadb.PersistentClient(path=store_path)
+    col = get_existing_qwen_collection(client, args.collection)
     db = get_db()
     from review_guard import allowed
 
