@@ -74,6 +74,7 @@ _AR_LEGACY_STUB = {
 
 _RED_FLAG_STUB = {
     "category": None,
+    "is_red_flag": False,
     "summary": "",
 }
 
@@ -102,7 +103,12 @@ class EchoBackend(BaseBackend):
             return "annual_report_summary_legacy"
         if "summarize a single exchange-filed corporate document" in system:
             return "concall_summary"
-        if "confirm whether a document excerpt genuinely discusses" in system:
+        if "establishes an actual, company-specific red flag" in system.lower():
+            # 2026-09-19 Stage 1 promotion: the production prompt's opening
+            # line changed from "You confirm whether a document excerpt
+            # genuinely discusses..." to this — detection updated to match,
+            # not a second/legacy branch (the old prompt text no longer
+            # ships).
             return "red_flag"
         if "fact packet" in system:
             return "ask_ai"

@@ -142,21 +142,19 @@ def red_flag_schema(candidates: Sequence[str]) -> Dict[str, Any]:
     discuss any candidate category" is the correct answer for a keyword
     false positive, and 2 of the 6 first-run cases were exactly that.
 
-    `is_red_flag` (2026-09-19, Stage 1 follow-up to the CONTROLLED FIX
-    revert) makes explicit the same distinction RedixFi's own
-    risk_flag_classifier.py::classify_chunk now requires: a `category`
-    match alone means the excerpt genuinely DISCUSSES that topic, not that
-    it states an actual adverse/company-specific condition. Deliberately
-    NOT in `required`: this same schema builder backs BOTH the production
-    baseline (app/tasks/red_flag.py, whose live prompt — the Stage 0
-    revert — never mentions this field) and any Stage 1 candidate variant
-    that does. Requiring it would force the baseline prompt's model to
-    answer a question its instructions never asked, corrupting the
-    control group. app/tasks/red_flag.py and app/experiments/
-    red_flag_variants.py both default a missing `is_red_flag` to "legacy
-    behaviour" (category confirmed = flag confirmed) and only enforce the
-    stricter category-AND-is_red_flag rule when the model actually
-    returned the field.
+    `is_red_flag` (2026-09-19) makes explicit the same distinction
+    RedixFi's own risk_flag_classifier.py::classify_chunk requires: a
+    `category` match alone means the excerpt genuinely DISCUSSES that
+    topic, not that it states an actual adverse/company-specific
+    condition. Now REQUIRED: the production prompt (app/prompts/
+    red_flag.py, promoted from the validated Stage 1 candidate) asks for
+    it explicitly, so every real caller should provide it. Still not
+    force-enforced at the parsing layer for a model that omits it anyway
+    (app/tasks/red_flag.py and app/experiments/red_flag_variants.py both
+    default a missing `is_red_flag` to "legacy behaviour" — category
+    confirmed = flag confirmed — a defensive fallback, not the expected
+    path, kept for any future variant whose prompt genuinely doesn't ask
+    for the field).
     """
     cats = [c for c in candidates if c]
     if not cats:
@@ -177,7 +175,7 @@ def red_flag_schema(candidates: Sequence[str]) -> Dict[str, Any]:
             # Empty string is the documented value when category is null.
             "summary": {"type": "string"},
         },
-        "required": ["category", "summary"],
+        "required": ["category", "is_red_flag", "summary"],
         "additionalProperties": False,
     }
 

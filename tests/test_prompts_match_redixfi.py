@@ -75,30 +75,32 @@ def test_annual_report_system_prompt_matches():
 
 
 def test_red_flag_system_prompt_matches():
-    """2026-09-19 — this no longer compares against live RedixFi HEAD for
-    the base-prompt text. RedixFi's risk_flag_classifier.py::_SYSTEM_PROMPT
-    was rewritten that day (topic-detection vs. actual-Red-Flag distinction,
-    new `is_red_flag` field); this vendored copy was deliberately NOT
-    resynced to it (see app/prompts/PROVENANCE.md, "Known deviations") since
-    that prompt has only been validated against gpt-4o-mini, not Qwen — a
-    Qwen-specific version is separate, tracked follow-up work. Re-enable a
-    live comparison once that follow-up lands and this copy is resynced.
+    """2026-09-19 (Stage 1 promotion) — this permanently stops comparing
+    against live RedixFi HEAD for the base-prompt TEXT: the production
+    prompt here is now an independently-designed, Qwen-specific rewrite
+    (formerly red_flag_stage1_v1.py), not a vendored copy of RedixFi's
+    gpt-4o-mini prompt — the two encode the same SEMANTIC contract
+    (topic-detection vs. actual-Red-Flag, an explicit is_red_flag field,
+    asymmetric per-category guidance) but were deliberately written with
+    different wording, validated separately per model. See
+    app/prompts/PROVENANCE.md's "Known deviations" for the full history
+    and docs/00_MASTER_CONTEXT.md for the validation run (54/60 = 0.900
+    agreement against RedixFi's corrected gpt-4o-mini reference).
 
-    What this DOES still assert: the known-regression "CONTROLLED FIX
+    What this DOES assert: the known-regression "CONTROLLED FIX
     (2026-08-30)" paragraph (measured by this project's own harness at
     n=60: 7 false positives fixed but 26 new false negatives, agreement
-    0.85 -> 0.5167) is gone, and the original core prompt sentence is
-    still intact (catches accidental corruption of the revert, if not a
-    RedixFi-side rewrite)."""
+    0.85 -> 0.5167) stays gone, the new is_red_flag contract is present,
+    and the prompt never names "Key Audit Matter"/"unmodified opinion" as
+    auditor_qualification exclusions (the negation-priming precaution)."""
     assert "CONTROLLED FIX (2026-08-30)" not in rf_prompt.SYSTEM_PROMPT, (
         "the CONTROLLED FIX paragraph is back — it was measured as a net "
-        "regression and should stay removed until a validated replacement "
-        "lands (see PROVENANCE.md)"
+        "regression and should stay removed (see PROVENANCE.md)"
     )
-    assert "genuinely discusses one of a" in rf_prompt.SYSTEM_PROMPT, (
-        "the original base prompt sentence is missing — check for accidental "
-        "corruption of the 2026-09-19 revert"
-    )
+    assert "is_red_flag" in rf_prompt.SYSTEM_PROMPT
+    text = rf_prompt.SYSTEM_PROMPT.lower()
+    assert "key audit matter" not in text
+    assert "unmodified" not in text
 
 
 def test_ask_system_templates_match():

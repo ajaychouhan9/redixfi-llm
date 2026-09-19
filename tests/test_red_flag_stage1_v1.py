@@ -59,6 +59,10 @@ class TestVariantConfig:
         v = stage1_v1_variant()
         assert v.requires_is_red_flag is True
 
-    def test_production_variant_does_not_require_is_red_flag(self):
+    def test_production_variant_requires_is_red_flag(self):
+        """2026-09-19 Stage 1 promotion: production's real prompt (now
+        stage1_v1's content) asks for is_red_flag, so its own variant
+        wrapper must request it too — this flipped from False (pre-
+        promotion, when production's prompt predated the field)."""
         v = production_variant()
-        assert v.requires_is_red_flag is False
+        assert v.requires_is_red_flag is True

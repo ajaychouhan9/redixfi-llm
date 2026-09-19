@@ -40,23 +40,34 @@ Copy date: **2026-08-28**
 
 ## Known deviations from the register above
 
-* **`app/prompts/red_flag.py` — intentionally behind RedixFi as of
-  2026-09-19.** RedixFi's `data-pipeline/risk_flag_classifier.py::
-  _SYSTEM_PROMPT` was rewritten that day (topic-detection vs. actual-
-  Red-Flag distinction, new `is_red_flag` field, a deterministic
-  `_contradicts_evidence()` guard — see `docs/00_MASTER_CONTEXT.md`,
-  "risk-topic detection != Red Flag"). This vendored copy was NOT
-  resynced to that new prompt: it was only reverted to its own original
-  2026-08-24 baseline, removing the "CONTROLLED FIX (2026-08-30)"
-  paragraph this project's own eval harness had already measured as a
-  net regression (26 new false negatives for 7 false positives fixed,
-  n=60). Adopting RedixFi's new prompt here requires its own Qwen-
-  specific evaluation (not assumed to transfer from gpt-4o-mini) —
-  tracked as follow-up work, not done as part of the 2026-09-19 revert.
+* **`app/prompts/red_flag.py` — permanent, intentional fork from
+  RedixFi as of 2026-09-19 (Stage 1 promotion).** RedixFi's
+  `data-pipeline/risk_flag_classifier.py::_SYSTEM_PROMPT` was rewritten
+  2026-09-19 (topic-detection vs. actual-Red-Flag distinction, new
+  `is_red_flag` field, a deterministic `_contradicts_evidence()` guard —
+  see `docs/00_MASTER_CONTEXT.md`, "risk-topic detection != Red Flag").
+  This project's copy went through its own, separate path the same day:
+  Stage 0 reverted the "CONTROLLED FIX (2026-08-30)" paragraph (a
+  previously-undetected net regression: 26 new false negatives for 7
+  false positives fixed, n=60), then Stage 1 replaced the whole prompt
+  with an independently-designed, Qwen-specific rewrite (formerly
+  `app/prompts/red_flag_stage1_v1.py`) — same semantic contract as
+  RedixFi's new prompt (topic vs. instance, `is_red_flag`), different
+  wording, asymmetric per category (full exclusion framing for
+  `contingent_liability`/`related_party_transaction`, positive-only
+  framing for `auditor_qualification` — never naming "Key Audit Matter"/
+  "unmodified opinion" as exclusions, per the redixfi-qwen-prompt-
+  negation-priming finding). Validated on Kaggle T4x2/qwen3-14b-awq-tp2
+  against the 60-case `red_flag_benchmark.json`, re-scored against
+  RedixFi's CORRECTED gpt-4o-mini classifier (not the stale original
+  reference, which itself only agreed with the corrected one on 27/60 =
+  0.450 cases): 54/60 = 0.900 agreement. This file will NOT be resynced
+  to RedixFi's literal prompt text going forward — the two are
+  independently maintained, model-specific prompts on the same contract.
   `test_prompts_match_redixfi.py::test_red_flag_system_prompt_matches`
-  reflects this: it no longer asserts against live RedixFi HEAD for the
-  base-prompt-prefix check (expected to diverge until that follow-up
-  lands) but does assert the CONTROLLED FIX text is gone.
+  reflects this: it asserts the CONTROLLED FIX text stays gone, the
+  `is_red_flag` contract is present, and the negation-priming precaution
+  holds, but does not compare text against live RedixFi HEAD.
 
 ## Re-verification command
 

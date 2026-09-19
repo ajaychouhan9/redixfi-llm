@@ -72,39 +72,95 @@ def matched_categories(text: str) -> List[str]:
     return [cat for cat, pat in KEYWORD_PATTERNS.items() if pat.search(text or "")]
 
 
-# 2026-09-19 STAGE 0 REVERT — the "CONTROLLED FIX (2026-08-30)" paragraph
-# previously appended here was measured (this project's own evaluation
-# harness, n=60, evaluation/red_flags/runs/) to be a NET REGRESSION: it
-# fixed all 7 known false positives but caused 26 new false negatives
-# (agreement 0.85 -> 0.5167), concentrated in auditor_qualification
-# wrongly excluding genuine adverse Key Audit Matters. It was never
-# reverted after that finding, so production's real `reclassify_rf`
-# Kaggle runs have been using the worse-than-original prompt since
-# 2026-08-30 (confirmed live on the VM, 2026-09-19). This revert restores
-# the exact original text, already measured as the better of the two
-# known options (0.85 agreement) — a zero-additional-eval-needed
-# correctness fix. It intentionally does NOT adopt RedixFi's separately
-# rewritten `risk_flag_classifier.py::_SYSTEM_PROMPT` (2026-09-19,
-# topic-detection vs. actual-Red-Flag distinction + `is_red_flag` field —
-# see docs/00_MASTER_CONTEXT.md and this file's own PROVENANCE.md note)
-# as the new baseline here, since that prompt has only been validated
-# against gpt-4o-mini, not Qwen; a Qwen-specific version is tracked as a
-# separate, to-be-evaluated follow-up (Stage 1), not assumed to transfer.
+# 2026-09-19 STAGE 1 PROMOTION — production prompt. History:
+#   Original (pre-2026-08-30): pure topic-relevance confirmation.
+#   CONTROLLED FIX (2026-08-30): one blanket "policy vs instance"
+#     instruction appended, uniformly across all 4 categories. Measured
+#     (n=60, evaluation/red_flags/runs/) as a NET REGRESSION: fixed all 7
+#     known false positives but caused 26 new false negatives (agreement
+#     0.85 -> 0.5167), concentrated in auditor_qualification wrongly
+#     excluding genuine adverse Key Audit Matters. Never reverted after
+#     that finding — production ran this worse-than-original prompt from
+#     2026-08-30 until today (confirmed live on the VM, 2026-09-19).
+#   STAGE 0 REVERT (2026-09-19, earlier today): removed the CONTROLLED FIX
+#     paragraph, restoring the original text (0.85 agreement, already
+#     known better than the alternative) as a zero-eval-needed correctness
+#     fix.
+#   STAGE 1 (this promotion): a from-scratch rewrite (formerly `app/
+#     prompts/red_flag_stage1_v1.py`, VARIANT_NAME="red_flag_stage1_v1"),
+#     informed by BOTH the CONTROLLED FIX regression AND RedixFi's own
+#     2026-09-19 gpt-4o-mini fix (data-pipeline/risk_flag_classifier.py) —
+#     asymmetric per category (full policy-vs-instance framing for
+#     contingent_liability/related_party_transaction, ONLY positive
+#     framing for auditor_qualification, never naming "Key Audit Matter"/
+#     "unmodified opinion" as exclusions, per the redixfi-qwen-prompt-
+#     negation-priming finding on a different task) and adds an explicit
+#     `is_red_flag` field. VALIDATED before promotion: run on Kaggle
+#     T4x2/qwen3-14b-awq-tp2 against the 60-case red_flag_benchmark.json.
+#     The raw comparison against the OLD (pre-fix) reference showed only
+#     0.45 agreement — alarming at first read, until the reference itself
+#     was re-scored against RedixFi's CORRECTED gpt-4o-mini classifier:
+#     the OLD reference agreed with the CORRECTED one on only 27/60 =
+#     0.450 cases — the exact same number, proving the "regression" was
+#     entirely an artifact of comparing against a known-stale reference.
+#     Re-scored against the CORRECTED reference, this prompt agreed on
+#     54/60 = 0.900, with the 6 disagreements individually reviewed as
+#     ordinary model-to-model judgment calls (e.g. a claim-types-named-
+#     but-no-amount contingent-liability case), not systematic
+#     over-suppression like the CONTROLLED FIX regression. See
+#     docs/00_MASTER_CONTEXT.md for the full writeup.
 SYSTEM_PROMPT = (
-    "You confirm whether a document excerpt genuinely discusses one of a "
-    "small set of governance/risk categories, or is just a false keyword "
-    "match. Categories: auditor_qualification (a qualified/adverse audit "
-    "opinion, emphasis of matter, material weakness), contingent_liability "
-    "(a contingent liability, pending litigation, guarantee given), "
-    "related_party_transaction (a disclosed transaction with a related "
-    "party/promoter entity), promoter_pledge (promoter shares pledged or "
-    "encumbered). Given the excerpt and its candidate categories, respond "
-    "with JSON: {\"category\": one of the candidate category strings, or "
-    "null if the excerpt does not genuinely discuss any of them, "
-    "\"summary\": a short, neutral, factual 1-2 sentence restatement of "
-    "what the excerpt states about it, with no commentary, no numbers, no "
-    "forward-looking language, no investment advice — empty string if "
-    "category is null}."
+    "You decide whether a document excerpt establishes an ACTUAL, "
+    "company-specific Red Flag in one of a small set of governance/risk "
+    "categories — not merely whether the excerpt discusses, defines, or "
+    "routinely/compliantly discloses that topic. A topic mention alone is "
+    "never sufficient.\n\n"
+    "Categories:\n"
+    "- auditor_qualification: the auditor's report states an ACTUAL "
+    "qualified opinion, adverse opinion, disclaimer of opinion, explicit "
+    "qualification/reservation, inability to obtain sufficient audit "
+    "evidence, or a material weakness/exception the auditor actually "
+    "found and described. Confirm only when the excerpt itself states "
+    "such an adverse conclusion about this company.\n"
+    "- contingent_liability: Indian annual reports include a standard "
+    "accounting-POLICY note (often numbered, e.g. \"Provisions and "
+    "Contingent Liabilities\") that defines WHEN a company would "
+    "recognise or disclose such an item in general, as a matter of "
+    "accounting standard (Ind-AS 37). Nearly every company's report "
+    "contains this near-identical paragraph, and it does NOT by itself "
+    "mean the company has any such item. Confirm this category ONLY if "
+    "the excerpt discloses an ACTUAL, SPECIFIC contingent liability, "
+    "claim, dispute, litigation, or guarantee that exists NOW for THIS "
+    "company (ideally with an amount, counterparty, or matter named). "
+    "Merely defining the accounting treatment is NOT an instance.\n"
+    "- related_party_transaction: Indian annual reports include a "
+    "standard RPT POLICY/approval-process paragraph (Audit Committee "
+    "review, arm's-length/ordinary-course confirmation, Ind AS 24/"
+    "Section 188 compliance statements) that nearly every company's "
+    "report contains, and it does NOT by itself mean anything adverse "
+    "happened. Confirm this category ONLY if the excerpt describes an "
+    "ACTUAL adverse or governance-relevant related-party condition — "
+    "explicitly NOT at arm's length, outside the ordinary course of "
+    "business, an unresolved conflict of interest, or a transaction the "
+    "excerpt itself characterizes as unusually large relative to the "
+    "company's own stated turnover/net worth. A bare RPT policy "
+    "description, a routine Audit Committee approval, a statement that "
+    "transactions were at arm's length/ordinary course, or a statement "
+    "that there were no materially significant related-party "
+    "transactions are NOT instances.\n"
+    "- promoter_pledge: the excerpt states an ACTUAL disclosed pledge or "
+    "encumbrance of promoter shares (e.g. a stated percentage/quantity "
+    "pledged). A passage that only defines what a pledge is, with no "
+    "actual disclosed pledge named, is not enough.\n\n"
+    "Given the excerpt and its candidate categories, respond with JSON: "
+    "{\"category\": one of the candidate category strings, or null if "
+    "none apply, \"is_red_flag\": true only when the excerpt itself "
+    "establishes an actual adverse/exceptional company-specific "
+    "condition as described above, false otherwise (including whenever "
+    "category is null), \"summary\": a short, neutral, factual 1-2 "
+    "sentence restatement of what the excerpt states, with no "
+    "commentary, no forward-looking language, no investment advice — "
+    "empty string if category is null}."
 )
 
 

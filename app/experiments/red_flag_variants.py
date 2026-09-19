@@ -42,25 +42,27 @@ class Variant:
     name: str
     system_prompt: str
     description: str
-    # 2026-09-19: when True, `is_red_flag` is added to the request schema's
-    # `required` list (production/baseline leaves it optional — see
-    # output_schemas.py::red_flag_schema's own note) and run_variant()
-    # enforces it as an AND-condition alongside `category`. Only set for a
-    # variant whose prompt actually explains the field.
-    requires_is_red_flag: bool = False
+    # 2026-09-19: is_red_flag is REQUIRED by default in red_flag_schema()
+    # since the production prompt (post Stage-1 promotion) asks for it.
+    # Set this False only for a variant whose OWN prompt does not explain
+    # the field (e.g. the retired instance_check_v1) — run_variant() then
+    # drops it from that variant's own request schema so the model isn't
+    # forced to answer an unexplained question.
+    requires_is_red_flag: bool = True
 
 
 def production_variant() -> Variant:
     return Variant(
         name="baseline_production",
         system_prompt=prod_prompt.SYSTEM_PROMPT,
-        description="Exactly what production/gpt-4o-mini used. The control.",
+        description="Exactly what production (now qwen-validated Stage 1) uses. The control.",
     )
 
 
 def instance_check_variant() -> Variant:
     return Variant(
         name=instance_check_prompt.VARIANT_NAME,
+        requires_is_red_flag=False,
         system_prompt=instance_check_prompt.SYSTEM_PROMPT,
         # MEASURED 2026-08-30, n=60 (not the pre-test prediction this
         # description originally carried, which expected 4/7 targeted and
@@ -126,13 +128,15 @@ def run_variant(
         fixture_id=str(fixture.get("benchmark_id") or fixture.get("fixture_id") or ""),
         ok=False)
     schema = schema_for_task(TASK_NAME, fixture)
-    if schema and variant.requires_is_red_flag:
-        # Only this variant's own schema gets is_red_flag as REQUIRED —
-        # baseline_production's schema (built the same way, via
-        # schema_for_task) stays optional-only, since its prompt never
-        # asks for the field. See output_schemas.py::red_flag_schema's
-        # own note.
-        schema = {**schema, "required": [*schema["required"], "is_red_flag"]}
+    # 2026-09-19 Stage 1 promotion: is_red_flag is now REQUIRED by default
+    # in red_flag_schema() (the production prompt asks for it). A variant
+    # whose prompt does NOT explain the field (e.g. the retired
+    # instance_check_v1, or production_variant() if ever pointed at a
+    # pre-Stage-1 prompt snapshot) opts out via requires_is_red_flag=False
+    # so the model isn't forced to answer a question its instructions
+    # never asked.
+    if schema and not variant.requires_is_red_flag and "is_red_flag" in schema.get("required", []):
+        schema = {**schema, "required": [r for r in schema["required"] if r != "is_red_flag"]}
     candidates = list(fixture.get("candidates") or [])
 
     if not candidates:
