@@ -141,6 +141,22 @@ def red_flag_schema(candidates: Sequence[str]) -> Dict[str, Any]:
     null is a first-class value here: "this excerpt does not genuinely
     discuss any candidate category" is the correct answer for a keyword
     false positive, and 2 of the 6 first-run cases were exactly that.
+
+    `is_red_flag` (2026-09-19, Stage 1 follow-up to the CONTROLLED FIX
+    revert) makes explicit the same distinction RedixFi's own
+    risk_flag_classifier.py::classify_chunk now requires: a `category`
+    match alone means the excerpt genuinely DISCUSSES that topic, not that
+    it states an actual adverse/company-specific condition. Deliberately
+    NOT in `required`: this same schema builder backs BOTH the production
+    baseline (app/tasks/red_flag.py, whose live prompt — the Stage 0
+    revert — never mentions this field) and any Stage 1 candidate variant
+    that does. Requiring it would force the baseline prompt's model to
+    answer a question its instructions never asked, corrupting the
+    control group. app/tasks/red_flag.py and app/experiments/
+    red_flag_variants.py both default a missing `is_red_flag` to "legacy
+    behaviour" (category confirmed = flag confirmed) and only enforce the
+    stricter category-AND-is_red_flag rule when the model actually
+    returned the field.
     """
     cats = [c for c in candidates if c]
     if not cats:
@@ -157,6 +173,7 @@ def red_flag_schema(candidates: Sequence[str]) -> Dict[str, Any]:
                     {"type": "null"},
                 ]
             },
+            "is_red_flag": {"type": "boolean"},
             # Empty string is the documented value when category is null.
             "summary": {"type": "string"},
         },

@@ -269,6 +269,17 @@ def main():
                          "instruction distinguishing accounting-policy "
                          "boilerplate from an actual disclosed instance — "
                          "see app/prompts/red_flag_instance_check.py")
+    ap.add_argument("--red-flag-stage1-v1", action="store_true",
+                    help="RUNS ONLY THIS PHASE (combinable with the other "
+                         "single-phase flags): the same 60-case "
+                         "red_flag_benchmark.json fixture (direct comparison "
+                         "against the 0.85/0.5167 baseline/instance_check_v1 "
+                         "numbers already on record) with the asymmetric "
+                         "follow-up prompt — full policy-vs-instance framing "
+                         "for contingent_liability/related_party_transaction, "
+                         "positive-only framing for auditor_qualification, "
+                         "explicit is_red_flag field — see "
+                         "app/prompts/red_flag_stage1_v1.py")
     ap.add_argument("--concall-fewshot-bank", action="store_true",
                     help="RUNS ONLY THIS PHASE (combinable with the other "
                          "single-phase flags): the 20-case "
@@ -803,6 +814,16 @@ def main():
             "red_flag_benchmark.json", "evaluation/red_flags/runs",
             "red_flag__instance_check", v, rf_run_eval,
             512, "red_flag_instance_check")
+
+    if args.red_flag_stage1_v1:
+        from app.experiments.red_flag_variants import (
+            stage1_v1_variant, run_variant_evaluation as rf_run_eval2)
+        v = stage1_v1_variant()
+        _run_prompt_variant_phase(
+            "RED FLAG STAGE1_V1 TEST (one phase only)",
+            "red_flag_benchmark.json", "evaluation/red_flags/runs",
+            "red_flag__stage1_v1", v, rf_run_eval2,
+            512, "red_flag_stage1_v1")
 
     if ran_special_phase:
         print(f"\n  TOTAL GPU TIME   : {elapsed()}", flush=True)

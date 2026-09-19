@@ -29,6 +29,7 @@ from typing import Any, Dict, List, Optional
 from ..inference.base import Backend, GenerationRequest, Message
 from ..prompts import red_flag as prod_prompt
 from ..prompts import red_flag_instance_check as instance_check_prompt
+from ..prompts import red_flag_stage1_v1 as stage1_v1_prompt
 from ..schemas.output_schemas import schema_for_task
 from ..tasks.base import TaskResult, parse_json_object
 # The REAL judging logic — imported, never reimplemented.
@@ -41,6 +42,12 @@ class Variant:
     name: str
     system_prompt: str
     description: str
+    # 2026-09-19: when True, `is_red_flag` is added to the request schema's
+    # `required` list (production/baseline leaves it optional — see
+    # output_schemas.py::red_flag_schema's own note) and run_variant()
+    # enforces it as an AND-condition alongside `category`. Only set for a
+    # variant whose prompt actually explains the field.
+    requires_is_red_flag: bool = False
 
 
 def production_variant() -> Variant:
@@ -80,6 +87,26 @@ def instance_check_variant() -> Variant:
     )
 
 
+def stage1_v1_variant() -> Variant:
+    return Variant(
+        name=stage1_v1_prompt.VARIANT_NAME,
+        system_prompt=stage1_v1_prompt.SYSTEM_PROMPT,
+        requires_is_red_flag=True,
+        description=("Asymmetric follow-up to instance_check_v1's proven "
+                     "regression, per that variant's own recommended next "
+                     "step: full policy-vs-instance framing for "
+                     "contingent_liability and related_party_transaction "
+                     "(the near-universal-boilerplate categories), but ONLY "
+                     "positive framing for auditor_qualification (what DOES "
+                     "count — never names 'Key Audit Matter' or 'unmodified "
+                     "opinion' as an exclusion, to avoid the negation-priming "
+                     "pattern measured on concall_summary at n=20). Adds an "
+                     "explicit is_red_flag field (required in this variant's "
+                     "schema, unlike baseline_production's) rather than "
+                     "relying solely on category:null."),
+    )
+
+
 def run_variant(
     backend: Backend,
     fixture: Dict[str, Any],
@@ -99,6 +126,13 @@ def run_variant(
         fixture_id=str(fixture.get("benchmark_id") or fixture.get("fixture_id") or ""),
         ok=False)
     schema = schema_for_task(TASK_NAME, fixture)
+    if schema and variant.requires_is_red_flag:
+        # Only this variant's own schema gets is_red_flag as REQUIRED —
+        # baseline_production's schema (built the same way, via
+        # schema_for_task) stays optional-only, since its prompt never
+        # asks for the field. See output_schemas.py::red_flag_schema's
+        # own note.
+        schema = {**schema, "required": [*schema["required"], "is_red_flag"]}
     candidates = list(fixture.get("candidates") or [])
 
     if not candidates:
@@ -138,6 +172,14 @@ def run_variant(
         return unflagged(
             f"category {category!r} not in candidates {candidates}"
             if category else "model returned no category (genuine non-match)")
+
+    # Same backward-compatible AND-condition app/tasks/red_flag.py::run()
+    # applies: a missing is_red_flag (baseline_production's prompt never
+    # asks for it) defaults to legacy behaviour; a variant that DOES ask
+    # for it (requires_is_red_flag=True, enforced above via the schema)
+    # gets the stricter check.
+    if "is_red_flag" in parsed and not bool(parsed.get("is_red_flag")):
+        return unflagged("category matched a topic but is_red_flag=false (no adverse finding)")
 
     summary = str(parsed.get("summary") or "").strip()
     if not summary:

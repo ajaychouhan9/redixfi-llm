@@ -103,6 +103,21 @@ def run(
             if category else "model returned no category (genuine non-match)"
         )
 
+    # 2026-09-19 Stage 1: `category` non-null means the excerpt genuinely
+    # DISCUSSES the topic; `is_red_flag` is the separate question of
+    # whether it states an actual adverse/company-specific condition —
+    # mirrors RedixFi's own risk_flag_classifier.py::classify_chunk
+    # (2026-09-19 fix). Backward compatible with the live production
+    # prompt (the Stage 0 revert, app/prompts/red_flag.py::SYSTEM_PROMPT),
+    # which never asks for this field: a missing `is_red_flag` defaults to
+    # the legacy behaviour (category confirmed = flag confirmed). Only a
+    # model that WAS asked for the field and explicitly returned false is
+    # treated as "topic mentioned, no adverse finding" — see
+    # output_schemas.py::red_flag_schema's own note on why this is
+    # deliberately not a required schema field.
+    if "is_red_flag" in parsed and not bool(parsed.get("is_red_flag")):
+        return unflagged("category matched a topic but is_red_flag=false (no adverse finding)")
+
     summary = str(parsed.get("summary") or "").strip()
     if not summary:
         return unflagged("confirmed a category but returned an empty summary")
