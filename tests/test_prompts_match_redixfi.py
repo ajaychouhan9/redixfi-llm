@@ -75,18 +75,30 @@ def test_annual_report_system_prompt_matches():
 
 
 def test_red_flag_system_prompt_matches():
-    source = _read(CLASSIFIER)
-    theirs = _extract_string_literal(source, "_SYSTEM_PROMPT")
-    ours = _normalize(rf_prompt.SYSTEM_PROMPT)
-    base = _normalize(theirs)
-    # Controlled append-only deviation (Phase 4, 2026-08-30): the vendored
-    # copy intentionally appends a classification-evidence paragraph. The
-    # RedixFi base prompt must still be present as a prefix so drift in the
-    # base text is still caught.
-    assert ours.startswith(base), (
-        "risk_flag_classifier.py::_SYSTEM_PROMPT has DIVERGED from the vendored copy."
+    """2026-09-19 — this no longer compares against live RedixFi HEAD for
+    the base-prompt text. RedixFi's risk_flag_classifier.py::_SYSTEM_PROMPT
+    was rewritten that day (topic-detection vs. actual-Red-Flag distinction,
+    new `is_red_flag` field); this vendored copy was deliberately NOT
+    resynced to it (see app/prompts/PROVENANCE.md, "Known deviations") since
+    that prompt has only been validated against gpt-4o-mini, not Qwen — a
+    Qwen-specific version is separate, tracked follow-up work. Re-enable a
+    live comparison once that follow-up lands and this copy is resynced.
+
+    What this DOES still assert: the known-regression "CONTROLLED FIX
+    (2026-08-30)" paragraph (measured by this project's own harness at
+    n=60: 7 false positives fixed but 26 new false negatives, agreement
+    0.85 -> 0.5167) is gone, and the original core prompt sentence is
+    still intact (catches accidental corruption of the revert, if not a
+    RedixFi-side rewrite)."""
+    assert "CONTROLLED FIX (2026-08-30)" not in rf_prompt.SYSTEM_PROMPT, (
+        "the CONTROLLED FIX paragraph is back — it was measured as a net "
+        "regression and should stay removed until a validated replacement "
+        "lands (see PROVENANCE.md)"
     )
-    assert "CONTROLLED FIX (2026-08-30)" in rf_prompt.SYSTEM_PROMPT
+    assert "genuinely discusses one of a" in rf_prompt.SYSTEM_PROMPT, (
+        "the original base prompt sentence is missing — check for accidental "
+        "corruption of the 2026-09-19 revert"
+    )
 
 
 def test_ask_system_templates_match():

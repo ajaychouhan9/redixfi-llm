@@ -38,6 +38,26 @@ Copy date: **2026-08-28**
   ZERO LLM calls, so there is no LLM workload to reproduce. The Red Flag LLM
   workload is `risk_flag_classifier.classify_chunk`, which IS vendored.
 
+## Known deviations from the register above
+
+* **`app/prompts/red_flag.py` — intentionally behind RedixFi as of
+  2026-09-19.** RedixFi's `data-pipeline/risk_flag_classifier.py::
+  _SYSTEM_PROMPT` was rewritten that day (topic-detection vs. actual-
+  Red-Flag distinction, new `is_red_flag` field, a deterministic
+  `_contradicts_evidence()` guard — see `docs/00_MASTER_CONTEXT.md`,
+  "risk-topic detection != Red Flag"). This vendored copy was NOT
+  resynced to that new prompt: it was only reverted to its own original
+  2026-08-24 baseline, removing the "CONTROLLED FIX (2026-08-30)"
+  paragraph this project's own eval harness had already measured as a
+  net regression (26 new false negatives for 7 false positives fixed,
+  n=60). Adopting RedixFi's new prompt here requires its own Qwen-
+  specific evaluation (not assumed to transfer from gpt-4o-mini) —
+  tracked as follow-up work, not done as part of the 2026-09-19 revert.
+  `test_prompts_match_redixfi.py::test_red_flag_system_prompt_matches`
+  reflects this: it no longer asserts against live RedixFi HEAD for the
+  base-prompt-prefix check (expected to diverge until that follow-up
+  lands) but does assert the CONTROLLED FIX text is gone.
+
 ## Re-verification command
 
 Run from the RedixFi checkout to see whether any source has moved since the

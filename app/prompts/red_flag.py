@@ -72,6 +72,24 @@ def matched_categories(text: str) -> List[str]:
     return [cat for cat, pat in KEYWORD_PATTERNS.items() if pat.search(text or "")]
 
 
+# 2026-09-19 STAGE 0 REVERT — the "CONTROLLED FIX (2026-08-30)" paragraph
+# previously appended here was measured (this project's own evaluation
+# harness, n=60, evaluation/red_flags/runs/) to be a NET REGRESSION: it
+# fixed all 7 known false positives but caused 26 new false negatives
+# (agreement 0.85 -> 0.5167), concentrated in auditor_qualification
+# wrongly excluding genuine adverse Key Audit Matters. It was never
+# reverted after that finding, so production's real `reclassify_rf`
+# Kaggle runs have been using the worse-than-original prompt since
+# 2026-08-30 (confirmed live on the VM, 2026-09-19). This revert restores
+# the exact original text, already measured as the better of the two
+# known options (0.85 agreement) — a zero-additional-eval-needed
+# correctness fix. It intentionally does NOT adopt RedixFi's separately
+# rewritten `risk_flag_classifier.py::_SYSTEM_PROMPT` (2026-09-19,
+# topic-detection vs. actual-Red-Flag distinction + `is_red_flag` field —
+# see docs/00_MASTER_CONTEXT.md and this file's own PROVENANCE.md note)
+# as the new baseline here, since that prompt has only been validated
+# against gpt-4o-mini, not Qwen; a Qwen-specific version is tracked as a
+# separate, to-be-evaluated follow-up (Stage 1), not assumed to transfer.
 SYSTEM_PROMPT = (
     "You confirm whether a document excerpt genuinely discusses one of a "
     "small set of governance/risk categories, or is just a false keyword "
@@ -87,20 +105,6 @@ SYSTEM_PROMPT = (
     "what the excerpt states about it, with no commentary, no numbers, no "
     "forward-looking language, no investment advice — empty string if "
     "category is null}."
-    " CONTROLLED FIX (2026-08-30): A disclosure is NOT automatically a "
-    "material red flag. Key Audit Matters, Emphasis of Matter paragraphs, "
-    "standard audit disclosures, generic definitions of contingent "
-    "liabilities, routine related-party disclosures, and ordinary "
-    "promoter-pledge notes are evidence that a topic was mentioned — not "
-    "proof that a material governance/financial risk exists. Only confirm a "
-    "category when the excerpt shows a company-specific fact/event/risk: an "
-    "actual qualified/adverse audit opinion, an actual pending claim or "
-    "guarantee against the company, an actual transaction with a related "
-    "party/promoter entity that creates risk, or an actual pledge of "
-    "promoter shares. If the excerpt only describes a definition, generic "
-    "policy, or standard disclosure without a company-specific material "
-    "fact, return category: null. The summary must restate the specific "
-    "company fact that justifies the category, not the generic definition."
 )
 
 
